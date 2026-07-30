@@ -1,0 +1,24 @@
+[Unit]
+Description=ASUS ZenBook Audio Amplifier Initialization Fix
+After=sound.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# Requires root: hda-verb operates on /dev/snd/hwC* character devices
+# which are root:audio mode 660 and require elevated access.
+User=root
+ExecStart=/usr/local/bin/asus-sound-fix.sh
+# Confinement: keep system/home read-only; allow only sound device nodes and
+# the project state directory if the helper writes there under DESTDIR-less runs.
+ProtectSystem=strict
+ProtectHome=read-only
+StateDirectory=asus-zenbook-linux-tools
+ReadWritePaths=-/dev/snd
+NoNewPrivileges=yes
+LockPersonality=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+
+[Install]
+WantedBy=multi-user.target

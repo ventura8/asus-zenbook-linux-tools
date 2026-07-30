@@ -1,0 +1,364 @@
+# Burmese translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: မြန်မာဘာသာ\n"
+"Language: my\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d ပြင်ပပြသမှု"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d ပြင်ပပြသမှုသာ"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS Display မုဒ်"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS ဖန်သားပြင်ဓာတ်ပုံ"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux စနစ်သတ်မှတ်မှု %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools သည် အသုံးပြုရန် အသင့်ဖြစ်နေပါပြီ။"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook ဆက်တင်များ"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook ဟာ့ဒ်ဝဲအင်္ဂါရပ်များကို ရွေးချယ်နိုင်သော အစိတ်အပိုင်းများအဖြစ် ထည့်သွင်းထားသည်။"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon သို့မဟုတ် MATE အတွက် Display Toggle, MyASUS "
+"Settings နှင့် Share ကီးဘုတ်ရှော့ကတ်များ ထည့်သည်။"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "ပြသမှုအားလုံး (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "မျက်နှာပြင်အားလုံး (ပင်မ + စခရင် Pad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "ရရှိနိုင်သော အစိတ်အပိုင်းများ-"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "မျှမျှတတ"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "ကင်မရာကို ပိတ်ထားသည်။"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "ကင်မရာဖွင့်ထားသည်။"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "ကင်မရာ သီးသန့်"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "အစိတ်အပိုင်းများကိုရွေးချယ်ပါ။"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "သစ်ကြံပိုးခေါက်ဖြတ်လမ်းများကို ပြင်ဆင်သတ်မှတ်ထားသည်။"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "ကွန်ပိုနန့်များ [ပုံသေ: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%s အတွက် GNOME ဖြတ်လမ်းများကို ပြင်ဆင်သတ်မှတ်ပါ"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "%s အတွက် KDE Plasma ဖြတ်လမ်းများကို ပြင်ဆင်သတ်မှတ်ပါ"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "လက်ရှိပြသမှု အပြင်အဆင်"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "ပြသမှုမုဒ်"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "ကော်မာများဖြင့် ပိုင်းခြားထားသော အစိတ်အပိုင်းနံပါတ်များ သို့မဟုတ် အမည်များကို ထည့်ပါ။"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "ပရိတ်သတ်နော်။"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap တိုးချဲ့မှု ထည့်သွင်းထားသည်။"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME ဖြတ်လမ်းများ ပြင်ဆင်သတ်မှတ်ထားသည်။"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "သင်၏ Linux ဒက်စ်တော့အတွက် ဟာ့ဒ်ဝဲအင်္ဂါရပ်များ"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "ဇာတ်ညွှန်းများနှင့် ဝန်ဆောင်မှုများကို ထည့်သွင်းပါ။"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "စနစ်မှီခိုမှုကို ထည့်သွင်းပါ။"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "အသုံးပြုသူမှ ထည့်သွင်းမှုကို ပယ်ဖျက်လိုက်ပါသည်။"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "တပ်ဆင်မှု ပြီးပါပြီ။"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux Tools %s ကို ထည့်သွင်းခြင်း။"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad တောက်ပမှု၊ ပန်ကာ Quiet/Balanced/Performance၊ ကင်မရာ ကိုယ်ရေးလုံခြုံမှုနှင့် "
+"မော်နီတာများအကြား ဝင်းဒိုးလဲလှယ်မှုအတွက် WMI ဟော့ကီး daemon တပ်ဆင်သည်။"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"ပံ့ပိုးထားသော ZenBook အသံ ဘုသ်ပြီးနောက်နှင့် အိပ်စက်ပြီးနောက် ပြန်လည်ရရှိရန် စပီကာအမ်ပလီဖိုင်ယာ ပြင်ဆင်မှုနှင့် "
+"suspend/resume hook တပ်ဆင်သည်။"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"ဘယ်ဘက်အပေါ်ထောင့်ကို တို့လိုက်သောအခါ ဒက်စ်တော့ပ် စခရင်ရှော့ကိရိယာ (GNOME, Spectacle နှင့် အလားတူများ) "
+"ဖွင့်ရန် touchpad Share အမူအရာ listener တပ်ဆင်သည်။"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "မမှန်ကန်သော ရွေးချယ်မှု: %s။ နံပါတ်များ (1,2,3,4)၊ ကွန်ပိုနန့်အမည်များ သို့မဟုတ် all ထည့်ပါ။"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma ဖြတ်လမ်းများကို ပြင်ဆင်သတ်မှတ်ထားသည်။"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys ကို ပြင်ဆင်သတ်မှတ်ထားသည်။"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE ဖြတ်လမ်းလင့်ခ်များကို ပြင်ဆင်သတ်မှတ်ထားသည်။"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "အဓိကပြသမှု"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "အဓိကပြသမှုသာ"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "မုဒ်- %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "မည်သည့် အစိတ်အပိုင်းကိုမျှ ရွေးမထားပါ။ တပ်ဆင်မှုကို ပယ်ဖျက်လိုက်ပါပြီ။"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "ပိတ်သည်။"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "ဂရန်"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "စွမ်းဆောင်ရည် (မြှင့်တင်ရန်)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr "အကြံပြုထားသော ကွန်ပိုနန့်အားလုံး တပ်ဆင်ရန် Enter နှိပ်ပါ၊ သို့မဟုတ် 'all' ရိုက်ထည့်ပါ။"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "တိတ်တိတ်ဆိတ်ဆိတ် (Silent)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad နောက်ခံအလင်း"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ScreenPad တောက်ပမှု"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad သာ"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"သင်အသုံးပြုသည့် အစိတ်အပိုင်းများကိုသာ ရွေးချယ်ပါ။ မရွေးချယ်ထားသော ဝန်ဆောင်မှုများနှင့် "
+"ဖြတ်လမ်းလင့်ခ်များကို ထည့်သွင်းမည်မဟုတ်ပါ။"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"မလိုအပ်သောဝန်ဆောင်မှုများနှင့် ဖြတ်လမ်းလင့်ခ်များကို ရှောင်ရှားရန် သင်အသုံးပြုသည့်အရာကိုသာ ရွေးချယ်ပါ။"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Print/Super-Shift-s၊ XF86Launch1/XF86Tools နှင့် XF86Display (F8 မပြောင်းလဲဘဲ "
+"ကျန်ခဲ့သည်) အတွက် စာရင်းသွင်းထားသော ဖြတ်လမ်းများ။"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "ဆိုင်းငံ့ထားပြီး ပြန်စရန်ချိတ်ဖြင့် အသံပြင်ဆင်ပါ။"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space က ကွန်ပိုနန့် ရွေးသည်။ Enter က အတည်ပြုသည်။ Esc က ပယ်ဖျက်သည်။"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "စာသားရွေးချယ်မှုမုဒ်။"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "အင်တာဖေ့စ်ဘာသာစကားသည် သင်၏ဒက်စ်တော့စက်ရှင်ကို လိုက်နာသည်။"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "ပက်ကေ့ချ်များ ဒေါင်းလုဒ်နှင့် တပ်ဆင်နေစဉ် မိနစ်အနည်းငယ် ကြာနိုင်သည်။"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Share gesture နားဆင်သူကို ထည့်သွင်းထားသည် (ဤပတ်ဝန်းကျင်တွင် အတည်မပြုနိုင်သော အခြေအနေ)။"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share gesture နားဆင်သူကို ထည့်သွင်းပြီး အသက်ဝင်ပါသည်။"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr "WMI Hotkey daemon ထည့်သွင်းထားသည် (ဤပတ်ဝန်းကျင်တွင် အတည်မပြုနိုင်သော အခြေအနေ)။"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon ကို ထည့်သွင်းပြီး အသုံးပြုသည်။"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "အဘယ်ကြောင့် ဤဒိုင်ယာလော့ခ်ကို အသုံးပြုရသနည်း။"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE ဖြတ်လမ်းလင့်ခ်များကို ပြင်ဆင်သတ်မှတ်ထားသည်။"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Display၊ MyASUS နှင့် ဒက်စ်တော့ဖြတ်လမ်းများကို မျှဝေပါ။"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "သင့်ဒက်စ်တော့တွင် Display၊ MyASUS နှင့် ဖြတ်လမ်းများကို မျှဝေပါ။"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "ScreenPad၊ ပန်ကာ၊ ကင်မရာနှင့် ဝင်းဒိုးလဲလှယ်မှုအတွက် ဟာ့ဒ်ဝဲ ခလုတ်များ။"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "ဟာ့ဒ်ဝဲဟော့ကီးများ- ScreenPad၊ ပန်ကာ၊ ကင်မရာနှင့် ဝင်းဒိုးလဲလှယ်"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "စတင်ပြီး ပြန်လည်စတင်ပြီးနောက် ပံ့ပိုးထားသော စပီကာအသံချဲ့စက်များကို စတင်ပါ။"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "ပြန်လည်စတင်ပြီးနောက် အပါအဝင် ပံ့ပိုးပေးထားသော စပီကာ အသံချဲ့စက်များကို စတင်လိုက်ပါ။"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "ဘယ်ဘက်အပေါ်ဆုံးမှ မျှဝေသည့်လက်ဟန်ဖြင့် ဖန်သားပြင်ဓာတ်ပုံတူးလ်ကို ဖွင့်ပါ။"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "ဘယ်ဘက်အပေါ်ရှိ မျှဝေခြင်းလက်ဟန်သည် ဖန်သားပြင်ဓာတ်ပုံတူးလ်ကို ဖွင့်သည်။"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "ကြာပွတ်"

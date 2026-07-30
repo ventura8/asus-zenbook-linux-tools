@@ -1,0 +1,37 @@
+[Unit]
+Description=ASUS ZenBook WMI Hotkey Listener Daemon
+StartLimitIntervalSec=60
+StartLimitBurst=10
+
+[Service]
+Type=simple
+# Requires root: reads /dev/input (evdev), writes /dev/uinput, and spawns
+# helper scripts that write sysfs nodes owned by root (leds, asus-wmi).
+User=root
+ExecStart=/usr/local/bin/asus-hotkey-daemon.py
+Restart=always
+RestartSec=3
+LockPersonality=yes
+RestrictRealtime=yes
+
+# ProtectSystem=strict remounts /run and /tmp read-only and, with
+# NoNewPrivileges, breaks runuser (pam_keyinit) used for session D-Bus
+# notifications and Mutter topology queries. Keep ProtectSystem=no so fan /
+# camera notifications and 3-monitor window-swap keep working. Optional ASUS
+# sysfs nodes still vary by machine (asus-nb-wmi vs asus-wmi).
+ProtectSystem=no
+# ProtectHome=read-only makes /run/user read-only; replace-IDs live under
+# RuntimeDirectory instead.
+ProtectHome=read-only
+# Shared with asus-touchpad-share.service (same RuntimeDirectory name).
+RuntimeDirectory=asus-zenbook-notif
+RuntimeDirectoryPreserve=yes
+RuntimeDirectoryMode=0755
+PrivateDevices=no
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=multi-user.target

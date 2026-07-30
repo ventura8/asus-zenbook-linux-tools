@@ -1,0 +1,377 @@
+# Sundanese translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Basa Sunda\n"
+"Language: su\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d tampilan éksternal"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d tampilan éksternal wungkul"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Modeu Tampilan ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Screenshot ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Setélan ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools tos siap dianggo."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook Setélan"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "Fitur hardware ASUS ZenBook dipasang salaku komponén pilihan."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Nambahkeun jalan pondok keyboard Display Toggle, MyASUS Settings, jeung "
+"Share pikeun GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, atawa MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Sadaya tampilan (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Sadaya tampilan (Utama + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "komponén sadia:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Saimbang"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kaméra ditumpurkeun"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kaméra diaktipkeun"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Privasi kaméra"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Pilih komponén"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Potong kompas kayu manis dikonpigurasikeun."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Komponén [standar: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Konpigurasikeun potong kompas GNOME pikeun %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Konpigurasikeun potong kompas KDE Plasma pikeun %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "perenah tampilan ayeuna"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Modeu tampilan"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Asupkeun nomer komponén atawa ngaran, dipisahkeun ku koma."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "profil kipas"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap extension dipasang."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Potong kompas GNOME dikonpigurasi."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Fitur hardware pikeun desktop Linux anjeun"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Pasang skrip sareng jasa"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Pasang dependensi sistem"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Pamasangan dibatalkeun ku pangguna."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Pamasangan réngsé."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Masang ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Ngainstal daemon hotkey WMI pikeun caang ScreenPad, kipas Quiet/Balanced/"
+"Performance, privasi kaméra, jeung silih tukeur jandéla antara monitor."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Ngainstal perbaikan amplifier spiker jeung hook suspend/resume supaya audio "
+"ZenBook anu dirojong pulih sanggeus boot jeung sanggeus saré."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Ngainstal listener gesture Share touchpad supaya toél sudut kénca luhur muka "
+"alat screenshot desktop anjeun (GNOME, Spectacle, jeung sasama)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Pilihan teu valid: %s. Lebetkeun angka (1,2,3,4), ngaran komponén, atawa all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Potong kompas KDE Plasma dikonpigurasi."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys ngonpigurasi."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "potong kompas MATE ngonpigurasi."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "tampilan utama"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "tampilan utama wungkul"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Modéle: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Taya komponén anu dipilih. Pamasangan dibatalkeun."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Pareum"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Dina"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Prestasi (Ngaronjatkeun)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Pencét Enter pikeun ngainstal sakabéh komponén anu disarankeun, atawa tulis "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Tenang (Tenang)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Lampu tukang ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Kacaangan ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad wungkul"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Pilih ukur komponén anu anjeun anggo. Ladenan sareng potong kompas anu "
+"henteu dipilih moal dipasang."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Pilih naon waé anu anjeun anggo pikeun ngahindarkeun jasa sareng potong "
+"kompas anu teu perlu."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Potong kompas didaptarkeun pikeun Print / Super-Shift-s, XF86Launch1 / "
+"XF86Tools, sarta XF86Display (F8 ditinggalkeun unchanged)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr ""
+"Perbaikan sora dipasang kalayan ngagantungkeun sareng neraskeun pancing."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space milih komponén. Enter mastikeun. Esc ngabolaykeun."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Modeu pilihan téks."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Basa panganteur nuturkeun sési desktop Anjeun."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "Ieu tiasa nyandak sababaraha menit bari pakét diunduh jeung diinstal."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Share gesture listener dipasang (kaayaan aktip teu diverifikasi di "
+"lingkungan ieu)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share gesture listener dipasang sareng aktip."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon dipasang (kaayaan aktip teu diverifikasi di lingkungan "
+"ieu)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon dipasang tur aktip."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Naha dialog ieu?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "potong kompas XFCE ngonpigurasi."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Tambahkeun potong kompas tampilan, MyASUS, sareng Bagikeun desktop"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Tambahkeun potong kompas Display, MyASUS, sareng Bagikeun kana desktop "
+#~ "anjeun."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Hotkeys hardware pikeun ScreenPad, kipas, kaméra, jeung jandela swap."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Hotkeys hardware: ScreenPad, kipas, kaméra, jeung jandela swap"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Initialize amplifier speaker nu dirojong sanggeus boot jeung neruskeun"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Initialize amplifier speaker nu dirojong, kaasup sanggeus neruskeun."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Buka alat screenshot nganggo sikep Bagikeun di kénca luhur."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Sikep Bagikeun kénca luhur muka alat screenshot"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "pecut"

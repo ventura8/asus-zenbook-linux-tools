@@ -1,0 +1,391 @@
+# Georgian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: ქართული\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d გარე ეკრანი"
+msgstr[1] "%d გარე ეკრანები"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d მხოლოდ გარე ეკრანი"
+msgstr[1] "%d მხოლოდ გარე ეკრანები"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS ჩვენების რეჟიმი"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS სკრინშოტი"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux-ის კონფიგურაცია %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools მზად არის გამოსაყენებლად."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook პარამეტრები"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook ტექნიკის ფუნქციები დაინსტალირებულია როგორც არასავალდებულო "
+"კომპონენტები."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"ამატებს Display Toggle, MyASUS Settings და Share კლავიატურის მალსახმობებს "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon ან MATE-ისთვის."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "ყველა ჩვენება (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "ყველა ჩვენება (მთავარი + ეკრანის პადი)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "ხელმისაწვდომი კომპონენტები:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "დაბალანსებული"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "კამერა გამორთულია"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "კამერა ჩართულია"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "კამერის კონფიდენციალურობა"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "აირჩიეთ კომპონენტები"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "დარიჩინის მალსახმობები კონფიგურირებულია."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "კომპონენტები [ნაგულისხმევი: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "GNOME მალსახმობების კონფიგურაცია %s-ისთვის"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "KDE Plasma მალსახმობების კონფიგურაცია %s-ისთვის"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "ეკრანის მიმდინარე განლაგება"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "ჩვენების რეჟიმი"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "შეიყვანეთ კომპონენტების ნომრები ან სახელები, გამოყოფილი მძიმეებით."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "გულშემატკივართა პროფილი"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap გაფართოება დაინსტალირებულია."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME მალსახმობები კონფიგურირებულია."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "ტექნიკის ფუნქციები თქვენი Linux დესკტოპისთვის"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "დააინსტალირეთ სკრიპტები და სერვისები"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "დააინსტალირეთ სისტემის დამოკიდებულებები"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "ინსტალაცია გაუქმებულია მომხმარებლის მიერ."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "ინსტალაცია დასრულებულია."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux Tools-ის ინსტალაცია %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"აინსტალირებს WMI ცხელი კლავიშების daemon-ს ScreenPad-ის სიკაშკაშის, "
+"ვენტილატორის Quiet/Balanced/Performance, კამერის კონფიდენციალობის და "
+"მონიტორებს შორის ფანჯრების გაცვლისთვის."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"აინსტალირებს დინამიკის გამაძლიერებლის გამოსწორებას და suspend/resume hook-ს, "
+"რომ მხარდაჭერილი ZenBook აუდიო აღდგეს ჩატვირთვისა და ძილის შემდეგ."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"აინსტალირებს touchpad Share ჟესტის listener-ს, რომ ზედა მარცხენა კუთხეზე "
+"შეხებამ გახსნას სამუშაო მაგიდის სკრინშოტის ხელსაწყო (GNOME, Spectacle და "
+"მსგავსები)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"არასწორი არჩევანი: %s. შეიყვანეთ რიცხვები (1,2,3,4), კომპონენტების სახელები "
+"ან all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma მალსახმობები კონფიგურირებულია."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt გლობალური გასაღებები კონფიგურირებულია."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE მალსახმობები კონფიგურირებულია."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "მთავარი ჩვენება"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "მხოლოდ მთავარი ჩვენება"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "რეჟიმი: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "არცერთი კომპონენტი არ იყო შერჩეული. ინსტალაცია გაუქმდა."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "გამორთულია"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "ჩართულია"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "შესრულება (გაძლიერება)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"დააჭირეთ Enter-ს ყველა რეკომენდებული კომპონენტის დასაყენებლად, ან შეიყვანეთ "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "მშვიდი (ჩუმად)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad-ის განათება"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ეკრანის სიკაშკაშე"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "მხოლოდ ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"აირჩიეთ მხოლოდ ის კომპონენტები, რომლებსაც იყენებთ. არჩეული სერვისები და "
+"მალსახმობები არ დაინსტალირდება."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"აირჩიეთ მხოლოდ ის, რასაც იყენებთ, რათა თავიდან აიცილოთ არასაჭირო სერვისები "
+"და მალსახმობები."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"მალსახმობები რეგისტრირებულია Print/Super-Shift-s, XF86Launch1/XF86Tools და "
+"XF86Display (F8 დარჩა უცვლელი)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "ხმის ფიქსაცია დამონტაჟებულია შეჩერებისა და რეზიუმეს კაუჭით."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space ირჩევს კომპონენტს. Enter ადასტურებს. Esc აუქმებს."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "ტექსტის შერჩევის რეჟიმი."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "ინტერფეისის ენა მიჰყვება თქვენს დესკტოპის სესიას."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"ამას შეიძლება დასჭირდეს რამდენიმე წუთი, სანამ პაკეტები ჩამოიტვირთება და "
+"დაინსტალირდება."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Share ჟესტების მსმენელი დაინსტალირებულია (აქტიური მდგომარეობა არ "
+"არის დადასტურებული ამ გარემოში)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share ჟესტების მსმენელი დაინსტალირებული და აქტიურია."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey დემონი დაინსტალირებულია (აქტიური მდგომარეობა არ არის დამოწმებული "
+"ამ გარემოში)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey დემონი დაინსტალირებული და აქტიურია."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "რატომ ეს დიალოგი?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE მალსახმობები კონფიგურირებულია."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "დაამატეთ ეკრანის, MyASUS და გაზიარების დესკტოპის მალსახმობები"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "დაამატეთ ეკრანის, MyASUS და გაზიარების მალსახმობები თქვენს სამუშაო "
+#~ "მაგიდაზე."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "ტექნიკის ცხელი კლავიშები ScreenPad-ისთვის, ვენტილატორისთვის, კამერისთვის "
+#~ "და ფანჯრების გაცვლისთვის."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "აპარატურის ცხელი კლავიშები: ScreenPad, ვენტილატორი, კამერა და ფანჯრების "
+#~ "შეცვლა"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "დინამიკის მხარდაჭერილი გამაძლიერებლების ინიციალიზაცია ჩატვირთვისა და "
+#~ "განახლების შემდეგ"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "მხარდაჭერილი დინამიკის გამაძლიერებლების ინიციალიზაცია, მათ შორის "
+#~ "განახლების შემდეგ."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "გახსენით ეკრანის ანაბეჭდის ინსტრუმენტი ზედა მარცხენა გაზიარების ჟესტით."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "ზედა მარცხენა გაზიარების ჟესტი ხსნის ეკრანის ანაბეჭდის ხელსაწყოს"
+
+#~ msgid "libnewt"
+#~ msgstr "ლიბნევტი"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

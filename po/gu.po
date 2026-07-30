@@ -1,0 +1,365 @@
+# Gujarati translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: ગુજરાતી\n"
+"Language: gu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=((((n == 0)) || ((n == 1))) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d બાહ્ય પ્રદર્શન"
+msgstr[1] "%d બાહ્ય ડિસ્પ્લે"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d માત્ર બાહ્ય પ્રદર્શન"
+msgstr[1] "%d ફક્ત બાહ્ય ડિસ્પ્લે"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS ડિસ્પ્લે મોડ"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS સ્ક્રીનશોટ"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux સેટઅપ %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux ટૂલ્સ ઉપયોગ માટે તૈયાર છે."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook સેટિંગ્સ"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook હાર્ડવેર સુવિધાઓ વૈકલ્પિક ઘટકો તરીકે ઇન્સ્ટોલ કરેલ છે."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon અથવા MATE માટે Display Toggle, MyASUS "
+"Settings અને Share કીબોર્ડ શૉર્ટકટ ઉમેરે છે."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "બધા ડિસ્પ્લે (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "બધા ડિસ્પ્લે (મુખ્ય + સ્ક્રીનપેડ)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "ઉપલબ્ધ ઘટકો:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "સંતુલિત"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "કૅમેરા અક્ષમ"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "કેમેરા સક્ષમ"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "કેમેરા ગોપનીયતા"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "ઘટકો પસંદ કરો"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "તજ શૉર્ટકટ્સ ગોઠવેલ."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "ઘટકો [ડિફૉલ્ટ: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%s માટે જીનોમ શૉર્ટકટ્સ ગોઠવો"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "%s માટે KDE પ્લાઝ્મા શૉર્ટકટ્સ રૂપરેખાંકિત કરો"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "વર્તમાન પ્રદર્શન લેઆઉટ"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "ડિસ્પ્લે મોડ"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "અલ્પવિરામ દ્વારા અલગ કરીને ઘટક નંબરો અથવા નામો દાખલ કરો."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "ચાહક પ્રોફાઇલ"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "જીનોમ ASUS વિન્ડો સ્વેપ એક્સ્ટેંશન ઇન્સ્ટોલ કરેલું છે."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "જીનોમ શૉર્ટકટ્સ ગોઠવેલ છે."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "તમારા Linux ડેસ્કટોપ માટે હાર્ડવેર સુવિધાઓ"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "સ્ક્રિપ્ટો અને સેવાઓ ઇન્સ્ટોલ કરો"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "સિસ્ટમ નિર્ભરતા સ્થાપિત કરો"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "વપરાશકર્તા દ્વારા ઇન્સ્ટોલેશન રદ કરવામાં આવ્યું."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "ઇન્સ્ટોલેશન પૂર્ણ."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux ટૂલ્સ %s ઇન્સ્ટોલ કરી રહ્યાં છીએ."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad તેજસ્વિતા, પંખા Quiet/Balanced/Performance, કૅમેરા ગોપનીયતા અને મૉનિટરો "
+"વચ્ચે વિન્ડો સ્વૅપ માટે WMI હૉટકી daemon ઇન્સ્ટૉલ કરે છે."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"સમર્થિત ZenBook ઑડિયો બૂટ પછી અને સ્લીપ પછી પુનઃપ્રાપ્ત થાય તે માટે સ્પીકર એમ્પ્લિફાયર "
+"ફિક્સ અને suspend/resume hook ઇન્સ્ટૉલ કરે છે."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"ઉપર-ડાબા ખૂણે ટૅપ કરતાં ડેસ્કટૉપ સ્ક્રીનશૉટ ટૂલ (GNOME, Spectacle અને સમકક્ષ) ખુલે તે માટે "
+"touchpad Share જેશ્ચર listener ઇન્સ્ટૉલ કરે છે."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "અમાન્ય પસંદગી: %s. નંબરો (1,2,3,4), ઘટક નામો અથવા all દાખલ કરો."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE પ્લાઝ્મા શૉર્ટકટ્સ ગોઠવેલ છે."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt વૈશ્વિક કી રૂપરેખાંકિત."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE શૉર્ટકટ્સ ગોઠવેલ."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "મુખ્ય પ્રદર્શન"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "માત્ર મુખ્ય પ્રદર્શન"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "મોડ: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "કોઈ ઘટકો પસંદ કર્યા ન હતા. ઇન્સ્ટોલેશન રદ કર્યું."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "બંધ"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "ચાલુ"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "પ્રદર્શન (બૂસ્ટ)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr "બધા ભલામણ કરેલ ઘટકો ઇન્સ્ટૉલ કરવા Enter દબાવો, અથવા 'all' લખો."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "શાંત (શાંત)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "સ્ક્રીનપેડ બેકલાઇટ"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "સ્ક્રીનપેડની તેજ"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "માત્ર સ્ક્રીનપેડ"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"તમે ઉપયોગ કરો છો તે જ ઘટકો પસંદ કરો. પસંદ ન કરેલી સેવાઓ અને શૉર્ટકટ્સ ઇન્સ્ટોલ કરવામાં "
+"આવશે નહીં."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "બિનજરૂરી સેવાઓ અને શૉર્ટકટ ટાળવા માટે તમે જેનો ઉપયોગ કરો છો તે જ પસંદ કરો."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Print/Super-Shift-s, XF86Launch1/XF86Tools અને XF86Display (F8 યથાવત બાકી) "
+"માટે નોંધાયેલ શૉર્ટકટ્સ."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "સસ્પેન્ડ અને રિઝ્યુમ હૂક સાથે સાઉન્ડ ફિક્સ ઇન્સ્ટોલ કરેલું છે."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space ઘટક પસંદ કરે છે. Enter પુષ્ટિ કરે છે. Esc રદ કરે છે."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "ટેક્સ્ટ પસંદગી મોડ."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "ઇન્ટરફેસ ભાષા તમારા ડેસ્કટોપ સત્રને અનુસરે છે."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "પૅકેજો ડાઉનલોડ અને ઇન્સ્ટૉલ થતાં આમાં થોડી મિનિટો લાગી શકે છે."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"ટચપેડ શેર હાવભાવ સાંભળનાર ઇન્સ્ટોલ કરેલું છે (આ વાતાવરણમાં સક્રિય સ્થિતિ ચકાસાયેલ નથી)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "ટચપેડ શેર હાવભાવ સાંભળનાર ઇન્સ્ટોલ અને સક્રિય."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr "WMI હોટકી ડિમન ઇન્સ્ટોલ કરેલ છે (આ વાતાવરણમાં સક્રિય સ્થિતિ ચકાસાયેલ નથી)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI હોટકી ડિમન ઇન્સ્ટોલ અને સક્રિય."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "આ ડાયલોગ શા માટે?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE શૉર્ટકટ્સ ગોઠવેલ."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "ડિસ્પ્લે, MyASUS અને શેર ડેસ્કટોપ શોર્ટકટ્સ ઉમેરો"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "તમારા ડેસ્કટૉપ પર ડિસ્પ્લે, માયએસુસ અને શેર શૉર્ટકટ્સ ઉમેરો."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "સ્ક્રીનપેડ, ફેન, કેમેરા અને વિન્ડો સ્વેપ માટે હાર્ડવેર હોટકી."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "હાર્ડવેર હોટકીઝ: સ્ક્રીનપેડ, ફેન, કેમેરા અને વિન્ડો સ્વેપ"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "બુટ અને ફરી શરૂ કર્યા પછી સપોર્ટેડ સ્પીકર એમ્પ્લીફાયર શરૂ કરો"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "સપોર્ટેડ સ્પીકર એમ્પ્લીફાયર શરૂ કરો, જેમાં રેઝ્યૂમે પછીનો સમાવેશ થાય છે."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "ઉપર-ડાબે શેર હાવભાવ સાથે સ્ક્રીનશૉટ ટૂલ ખોલો."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "ઉપર-ડાબે શેર હાવભાવ સ્ક્રીનશોટ ટૂલ ખોલે છે"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "વ્હીપટેલ"

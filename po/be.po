@@ -1,0 +1,392 @@
+# Belarusian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Беларуская\n"
+"Language: be\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(((((n % 10) >= 2 && (n % 10) <= 4)) && (!"
+"(((n % 100) >= 12 && (n % 100) <= 14)))) ? 1 : (((((n % 10) == 0)) || (((n % "
+"10) >= 5 && (n % 10) <= 9))) || (((n % 100) >= 11 && (n % 100) <= 14))) ? "
+"2 : ((((n % 10) == 1)) && (!(((n % 100) == 11)))) ? 0 : 3);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d знешні дысплей"
+msgstr[1] "%d знешнія дысплеі"
+msgstr[2] "%d знешнія дысплеі"
+msgstr[3] "%d знешнія дысплеі"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d толькі знешні дысплей"
+msgstr[1] "%d толькі знешнія дысплеі"
+msgstr[2] "%d толькі знешнія дысплеі"
+msgstr[3] "%d толькі знешнія дысплеі"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Рэжым дысплея ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Здымак экрана ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Наладка ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools гатовы да выкарыстання."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Налады ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Апаратныя функцыі ASUS ZenBook усталёўваюцца ў якасці дадатковых кампанентаў."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Дадае спалучэнні клавіш Display Toggle, MyASUS Settings і Share для GNOME, "
+"KDE Plasma, XFCE, LXQt, Cinnamon або MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Усе дысплеі (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Усе дысплеі (Галоўны + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Даступныя кампаненты:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Ураўнаважаны"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Камера адключана"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Камера ўключана"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Прыватнасць камеры"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Выберыце кампаненты"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Ярлыкі Cinnamon настроены."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Кампаненты [па змаўчанні: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Наладзьце ярлыкі GNOME для %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Наладзьце цэтлікі KDE Plasma для %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Бягучы макет дысплея"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Рэжым адлюстравання"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Увядзіце нумары або назвы кампанентаў праз коскі."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Профіль фаната"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Усталявана пашырэнне GNOME ASUS Window Swap."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Ярлыкі GNOME настроены."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Апаратныя функцыі для працоўнага стала Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Ўстаноўка скрыптоў і сэрвісаў"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Усталяваць сістэмныя залежнасці"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Усталёўка адменена карыстальнікам."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Устаноўка завершана."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Устаноўка ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Усталёўвае дэман гарачых клавіш WMI для яркасці ScreenPad, вентылятара Quiet/"
+"Balanced/Performance, прыватнасці камеры і абмену вокнамі паміж маніторамі."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Усталёўвае выпраўленне ўзмацняльніка дынамікаў і хук прыпынення/аднаўлення, "
+"каб падтрымліваемае аўдыё ZenBook аднаўлялася пасля загрузкі і пасля сну."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Усталёўвае слухач жэсту Share сэнсарнай панэлі, каб дотык у левым верхнім "
+"куце адкрываў сродак здымкаў экрана працоўнага стала (GNOME, Spectacle і "
+"аналагі)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Няправільны выбар: %s. Увядзіце нумары (1,2,3,4), назвы кампанентаў або all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Ярлыкі KDE Plasma настроены."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Глабальныя ключы LXQt настроены."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Ярлыкі MATE настроены."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Галоўны дысплей"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Толькі галоўны дысплей"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Рэжым: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Кампаненты не выбраны. Устаноўка адменена."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Выкл"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Укл"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Прадукцыйнасць (павышэнне)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Націсніце Enter, каб усталяваць усе рэкамендаваныя кампаненты, або ўвядзіце "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Ціха (ціха)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Падсвятленне ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Яркасць ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Толькі ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Выберыце толькі тыя кампаненты, якія вы выкарыстоўваеце. Невыбраныя службы і "
+"ярлыкі не будуць устаноўлены."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Выберыце толькі тое, што вы выкарыстоўваеце, каб пазбегнуць непатрэбных "
+"службаў і цэтлікаў."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Ярлыкі, зарэгістраваныя для Print/Super-Shift-s, XF86Launch1/XF86Tools і "
+"XF86Display (F8 застаўся без зменаў)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Выпраўленне гуку ўсталявана з дапамогай гака прыпынення і аднаўлення."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space выбірае кампанент. Enter пацвярджае. Esc скасоўвае."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Рэжым выбару тэксту."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Мова інтэрфейсу адпавядае сеансу працоўнага стала."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Гэта можа заняць некалькі хвілін, пакуль пакеты загружаюцца і ўсталёўваюцца."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Усталяваны слухач жэстаў Touchpad Share (актыўны стан не правераны ў гэтым "
+"асяроддзі)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Праслухоўвальнік жэстаў Touchpad Share усталяваны і актыўны."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Усталяваны дэман гарачых клавіш WMI (актыўны стан не правераны ў гэтым "
+"асяроддзі)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Дэман гарачых клавіш WMI усталяваны і актыўны."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Чаму гэты дыялог?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Ярлыкі XFCE настроены."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Дадайце цэтлікі Display, MyASUS і Share на працоўны стол"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Дадайце цэтлікі Display, MyASUS і Share на працоўны стол."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Апаратныя гарачыя клавішы для ScreenPad, вентылятара, камеры і замены "
+#~ "вокнаў."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Апаратныя гарачыя клавішы: ScreenPad, вентылятар, камера і замена вокнаў"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Ініцыялізуйце падтрымоўваныя ўзмацняльнікі дынамікаў пасля загрузкі і "
+#~ "аднавіце працу"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Ініцыялізуйце падтрымоўваныя ўзмацняльнікі дынамікаў, у тым ліку пасля "
+#~ "аднаўлення."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Адкрыйце інструмент скрыншота з дапамогай жэста \"Падзяліцца\" ў левым "
+#~ "верхнім куце."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Верхні левы жэст \"Падзяліцца\" адкрывае інструмент скрыншота"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "хлыстохвост"

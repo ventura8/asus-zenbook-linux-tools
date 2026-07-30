@@ -1,0 +1,375 @@
+# Faroese translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Føroyskt\n"
+"Language: fo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d uttandura skjá"
+msgstr[1] "%d uttanhýsis skjálvtar"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d bert uttandura skjálvta"
+msgstr[1] "%d bert uttanhýsis skjálvtar"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS skjástilling"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS Skjámynd"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux uppseting %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux tól er klárt at brúka."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook innstillingar"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook skermfunktiónir eru settar upp sum valfríir komponentir."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Leggur Display Toggle-, MyASUS Settings- og Share-flýtivísingar afturat fyri "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon ella MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Øll sýningar (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Øll skjálvtar (Høvuðs + Skjálvta)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Tøkir komponentir:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Javnað"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Myndatól sløkt"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Myndatól virkið"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Persónligur myndatól"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Vel komponentir"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Kanel snarvegir uppsettir."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Partar [standard: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Set upp GNOME snarvegir til %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Set upp KDE Plasma snarvegir til %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Núverandi skjálvta uppseting"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Sýnisstilling"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Skriva komponentnummur ella nøvn, skild við komma."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Fjepparaprofilur"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Vindeyga Swap útbygging er sett upp."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME snarvegir uppsettir."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Hardware funktiónir til títt Linux skriviborð"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Set skriftir og tænastur upp"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Set skipanavhengi upp"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Innlegging avlýst av brúkara."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Uppsetingin liðug."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "%s Seta ASUS ZenBook Linux tól upp."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Leggur WMI-hotkey-demon inn fyri ScreenPad-ljóma, vifta Quiet/Balanced/"
+"Performance, kameraprivatlív og vindeyðaskifti millum skjármar."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Leggur hátalaraforsterkara-rætting og suspend/resume-krók inn, so stuðlað "
+"ZenBook-ljóð kemur aftur eftir start og eftir svøvn."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Leggur touchpad Share-gestuslustara inn, so eitt trýst uppi til vinstru "
+"letur upp screendump-amboðið á skriviborðinum (GNOME, Spectacle og líknandi)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "Ógildugt val: %s. Skriva tøl (1,2,3,4), partanøvn ella all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma snarvegir uppsettir."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Alheimslyklar uppsettir."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE snarvegir uppsettir."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Høvuðsskjálvti"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Einans høvuðsskjálvti"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Háttur: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ongin komponentur varð valdur. Uppseting avlýst."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Sløkt"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Á"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Avrikið (Økja)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Trýst Enter fyri at innleggja allar mæltu partarnar, ella skriva 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Kvirt (Tøgn)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Skjálvta baklýsing"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Ljósstyrki á skjálvtanum"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Einans skermbløð"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Vel bert teir komponentir, tú brúkar. Óvaldar tænastur og snarvegir verða "
+"ikki settar upp."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Vel bert tað, tú brúkar, fyri at sleppa undan óneyðugum tænastum og "
+"snarvegum."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Snarvegir skrásettir til Prent/Super-Shift-s, XF86Sjóseting1/XF86Tól og "
+"XF86Sýn (F8 er óbroytt)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Ljóðviðgerð sett upp við suspend og resume króki."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space velur ein part. Enter váttar. Esc avlýsir."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Tekstvalháttur."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Grunnflatumálið fylgir tínari skriviborðsløtu."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Hetta kann taka nakrar minuttur meðan pakkar verða heintaðir og innlagdir."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Deil bendingarlurtari innsettur (virkin tilstandur ikki váttaður í "
+"hesum umhvørvinum)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Deil bendingarlurtari uppsettur og virkin."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon innsettur (virkin tilstandur ikki váttaður í hesum "
+"umhvørvinum)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey-demonurin er uppsettur og virkin."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Hví hesin dialogurin?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE snarvegir uppsettir."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Legg snarvegir til Sýn, MínASUS og Deil skriviborðs"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Legg snarvegir Sýn, MyASUS og Deil til títt skriviborð."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Hardware snartastar til ScreenPad, viftu, myndatól og vindeygaskifti."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Hardware-snarktastar: Skjálvta, viftur, myndatól og vindeygaskifti"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Initialisera stuðlaðar hátalaraforsterkarar eftir uppstart og taka "
+#~ "uppaftur"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "Initialisera stuðlaðar hátalaraforsterkarar, eisini eftir resume."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Opna skermmyndatólið við Deil bendingini ovast til vinstru."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Ovast til vinstru Deil bending letur skermmyndatólið upp"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "pískahala"

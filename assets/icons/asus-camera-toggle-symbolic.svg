@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!--
+    UX582HS F10 camera keycap (off): same body/lens/nub with full-glyph slash.
+    Template stroke is replaced at notify-time with message-header (app name) color.
+  -->
+  <g fill="none" stroke="gray" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9.2" y="3.4" width="5.6" height="2.2" rx="0.6"/>
+    <rect x="3.2" y="5.6" width="17.6" height="13.6" rx="2.0"/>
+    <circle cx="12" cy="12.4" r="4.2"/>
+    <path d="M4.4 4.8 L19.6 19.2"/>
+  </g>
+</svg>

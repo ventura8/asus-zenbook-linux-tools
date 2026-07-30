@@ -1,0 +1,371 @@
+# Yoruba translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Yorùbá\n"
+"Language: yo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d ita gbangba"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d ifihan ita nikan"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Asus Ifihan Ipo"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Asus Sikirinifoto"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Iṣeto ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Awọn irinṣẹ Linux Asus ZenBook ti ṣetan lati lo."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook Eto"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "Awọn ẹya ohun elo ASUS ZenBook ti fi sori ẹrọ bi awọn paati aṣayan."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Ṣafikun awọn ọna abuja bọtini Display Toggle, MyASUS Settings ati Share fun "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon tabi MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Gbogbo awọn ifihan (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Gbogbo awọn ifihan (Akọkọ + iboju iboju)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Awọn eroja to wa:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Iwontunwonsi"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamẹra alaabo"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamẹra ṣiṣẹ"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Aṣiri kamẹra"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Yan irinše"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Awọn ọna abuja eso igi gbigbẹ oloorun tunto."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Awọn apa [a<fim-middle>iyipada: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Ṣe atunto awọn ọna abuja GNOME fun %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Ṣe atunto awọn ọna abuja Plasma KDE fun %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Ifilelẹ ifihan lọwọlọwọ"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Ipo ifihan"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Tẹ awọn nọmba paati tabi awọn orukọ, niya nipasẹ aami idẹsẹ."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Fan profaili"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap itẹsiwaju ti fi sori ẹrọ."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Awọn ọna abuja GNOME tunto."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Awọn ẹya ara ẹrọ fun tabili Linux rẹ"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Fi awọn iwe afọwọkọ ati awọn iṣẹ sori ẹrọ"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Fi awọn igbẹkẹle eto sori ẹrọ"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Ti fagilee fifi sori ẹrọ nipasẹ olumulo."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Fifi sori ẹrọ ti pari."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Fifi ASUS ZenBook Linux Awọn irinṣẹ %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"N fi daemon bọtini gbigbona WMI sori ẹrọ fun imọlẹ ScreenPad, afẹfẹ Quiet/"
+"Balanced/Performance, asiri kamera ati paarọ window kọja awọn monitor."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"N fi atunṣe amplifier agbohunsoke ati ìkọ́ suspend/resume sori ẹrọ ki ohun "
+"ZenBook ti a ṣe atilẹyin le pada lẹhin boot ati lẹhin oorun."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"N fi olutetisilẹ iṣesi Share touchpad sori ẹrọ ki tẹ ni igun oke-osi ṣii "
+"irinṣẹ screenshot desktop (GNOME, Spectacle ati iru wọn)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "Yiyan ti ko tọ: %s. Tẹ awọn nọmba (1,2,3,4), orukọ apa, tabi all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Awọn ọna abuja Plasma KDE tunto."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys tunto."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Awọn ọna abuja MATE tunto."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Ifihan akọkọ"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Ifihan akọkọ nikan"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Ipo: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ko si awọn paati ti a yan. Ti fagilee fifi sori ẹrọ."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Paa"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Lori"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Iṣe (Imudara)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Tẹ Enter lati fi gbogbo awọn apa ti a ṣe iṣeduro sori ẹrọ, tabi tẹ 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Idakẹjẹ (Pakẹjẹẹ)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Ìmọ́lẹ̀ ẹ̀yìn ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Imọlẹ iboju iboju"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad nikan"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Yan awọn paati ti o lo nikan. Awọn iṣẹ ti a ko yan ati awọn ọna abuja kii "
+"yoo fi sii."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "Yan ohun ti o lo lati yago fun awọn iṣẹ ti ko wulo ati awọn ọna abuja."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Awọn ọna abuja ti a forukọsilẹ fun Print/Super-Shift-s, XF86Launch1/"
+"XF86Tools, ati XF86Display (F8 osi ko yipada)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Atunṣe ohun ti fi sori ẹrọ pẹlu idadoro ati kio bẹrẹ pada."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space yan apa kan. Enter jẹrisi. Esc fagilee."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Ipo yiyan ọrọ."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Ede ni wiwo tẹle igba tabili tabili rẹ."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Eyi le gba iṣẹju diẹ nigbati a n ṣe igbasilẹ ati fifi awọn package sori ẹrọ."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Fi sori ẹrọ olutẹtisi afarajuwe Pinpad (ipo ti nṣiṣe lọwọ ko jẹrisi ni "
+"agbegbe yii)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Pin olutẹtisi afarajuwe ti fi sori ẹrọ ati lọwọ."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon ti fi sori ẹrọ (ipinle ti nṣiṣe lọwọ ko jẹrisi ni agbegbe "
+"yii)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon ti fi sori ẹrọ ati lọwọ."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Kini idi ti ibaraẹnisọrọ yii?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Awọn ọna abuja XFCE tunto."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Ṣafikun Ifihan, MyASUS, ati Pin awọn ọna abuja tabili tabili"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Ṣafikun Ifihan, MyASUS, ati Pin awọn ọna abuja si tabili tabili rẹ."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Awọn bọtini gbona ohun elo fun ScreenPad, àìpẹ, kamẹra, ati swap window."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Awọn bọtini gbona ohun elo: ScreenPad, fan, kamẹra, ati swap window"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Bẹrẹ awọn ampilifaya agbọrọsọ ti o ni atilẹyin lẹhin bata ati bẹrẹ pada"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Bibẹrẹ awọn ampilifaya agbọrọsọ ti o ni atilẹyin, pẹlu lẹhin ti bẹrẹ pada."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Ṣii ohun elo sikirinifoto pẹlu apa osi oke-osi Pin idari."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Afarajuwe Pinpin oke-osi ṣii ohun elo sikirinifoto"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "okùn"

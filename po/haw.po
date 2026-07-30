@@ -1,0 +1,386 @@
+# Language haw translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: ʻŌlelo Hawaiʻi\n"
+"Language: haw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d hōʻike waho"
+msgstr[1] "%d hōʻike waho"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d hōʻike waho wale nō"
+msgstr[1] "%d hōʻike waho wale nō"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ʻAno Hōʻike ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Kiʻi kiʻi ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Hoʻonohonoho ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Ua mākaukau nā mea hana ASUS ZenBook Linux e hoʻohana."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Nā hoʻonohonoho ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Hoʻokomo ʻia nā hiʻohiʻona hāmeʻa ASUS ZenBook ma ke ʻano he koho koho."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Hoʻohui i nā pōkole kīpapa Display Toggle, MyASUS Settings, a me Share no "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, a i ʻole MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Nā hōʻike a pau (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Nā hōʻike a pau (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Nā ʻāpana i loaʻa:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Kaulike"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Ua pio ka pahupaʻikiʻi"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Hoʻohana ʻia ka pahupaʻikiʻi"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Palekana pahupaʻikiʻi"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "E koho i nā ʻāpana"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Hoʻonohonoho ʻia nā ʻaoʻao pōkole kinamona."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Nā ʻāpana [paʻamau: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "E hoʻonohonoho i nā pōkole GNOME no %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Hoʻonohonoho i nā pōkole KDE Plasma no %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Hoʻolālā hōʻike o kēia manawa"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "ʻano hōʻike"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "E hoʻokomo i nā helu a i ʻole nā inoa, i hoʻokaʻawale ʻia e nā koma."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Hōʻike pā"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Hoʻokomo ʻia ka hoʻonui ʻia ʻo GNOME ASUS Window Swap."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Hoʻonohonoho ʻia nā pōkole GNOME."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Nā hiʻohiʻona paʻa no kāu papapihi Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "E hoʻouka i nā palapala a me nā lawelawe"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "E hoʻouka i nā mea hilinaʻi ʻōnaehana"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Hoʻopau ʻia ke kau ʻana e ka mea hoʻohana."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Paʻa ka hoʻokomo ʻana."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Ke hoʻokomo nei i nā mea hana ASUS ZenBook Linux %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Hoʻokomo i ka daemon hotkey WMI no ka ʻālohilohi ScreenPad, ka peʻahi Quiet/"
+"Balanced/Performance, ka pilikino kāmela, a me ka hoʻololi puka ma waena o "
+"nā monitor."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Hoʻokomo i ka hoʻoponopono amplifier leo a me kahi hook suspend/resume i "
+"hiki ai i ke kani ZenBook i kākoʻo ʻia ke ola hou ma hope o ka boot a ma "
+"hope o ka hiamoe."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Hoʻokomo i ka listener gesture Share o ka touchpad i wehe ai ke paʻi ʻana ma "
+"ke kihi hema luna i kāu mea hana screenshot desktop (GNOME, Spectacle, a me "
+"nā hoa)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Koho hewa: %s. E hoʻokomo i nā helu (1,2,3,4), nā inoa ʻāpana, a i ʻole all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Hoʻonohonoho ʻia nā pōkole KDE Plasma."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys i hoʻonohonoho ʻia."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Hoʻonohonoho ʻia nā pōkole MATE."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Hōʻike nui"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Hōʻike nui wale nō"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Ke ano: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "ʻAʻohe mea i koho ʻia. Hoʻopau ʻia ke kau ʻana."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Paʻa"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Ma ka"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Hana (Hoʻonui)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"E kaomi iā Enter e hoʻokomo i nā ʻāpana āpau i manaʻo ʻia, a i ʻole e "
+"kikokiko iā 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Hamau (Silent)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Kukui hope pale pale"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Olinolino pale pale"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad wale nō"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"E koho wale i nā ʻāpana āu e hoʻohana ai. ʻAʻole e hoʻokomo ʻia nā lawelawe "
+"i koho ʻole ʻia a me nā pōkole."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"E koho wale i ka mea āu e hoʻohana ai e pale aku i nā lawelawe pono ʻole a "
+"me nā pōkole."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Hoʻopaʻa ʻia nā ʻaoʻao pōkole no Print/Super-Shift-s, XF86Launch1/XF86Tools, "
+"a me XF86Display (F8 waiho ʻole ʻia)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Hoʻokomo ʻia ka hoʻoponopono leo me ka makau hoʻomaha a hoʻomau."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Koho ʻo Space i kahi ʻāpana. Hōʻoia ʻo Enter. Hoʻopau ʻo Esc."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "ʻAno koho kikokikona."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Ke hahai nei ka ʻōlelo interface i kāu kau pākaukau."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Hiki ke lawe i kekahi mau minuke i ka wā e hoʻoili a hoʻokomo ʻia nā pūʻolo."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Hoʻokomo ʻia ʻo Touchpad Share gesture listener (ʻaʻole i hōʻoia ʻia ke "
+"kūlana hana ma kēia kaiapuni)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Hoʻokomo ʻia ʻo Touchpad Share gesture listener a paʻa."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Ua hoʻokomo ʻia ka daemon WMI Hotkey (ʻaʻole i hōʻoia ʻia ke kūlana hana ma "
+"kēia kaiapuni)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Ua hoʻokomo ʻia ka daemon WMI Hotkey."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "No ke aha kēia kamaʻilio?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Hoʻonohonoho ʻia nā pōkole XFCE."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Hoʻohui i ka hōʻike, MyASUS, a me kaʻana i nā pōkole papapihi"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Hoʻohui i ka hōʻike, MyASUS, a me kaʻana i nā pōkole pōkole i kāu "
+#~ "pākaukau."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Nā kī wela paʻa no ka ScreenPad, ka peʻa, ka pahupaʻikiʻi, a me ka "
+#~ "hoʻololi pukaaniani."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Nā kī wela paʻa: ScreenPad, fan, pahupaʻikiʻi, a me ka hoʻololi pukaaniani"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "E hoʻomaka i nā mea hoʻonui leo i kākoʻo ʻia ma hope o ka hoʻomaka ʻana a "
+#~ "hoʻomaka hou"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "E hoʻomaka i nā mea hoʻonui leo ʻōlelo i kākoʻo ʻia, me ka hoʻomaka ʻana."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "E wehe i ke kiʻi paʻi kiʻi me ka ʻaoʻao ʻaoʻao hema hema."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Wehe ʻia ka mea hana kiʻi kiʻi kiʻi kiʻi paʻi kiʻi"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

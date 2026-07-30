@@ -1,0 +1,373 @@
+# Norwegian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Norsk\n"
+"Language: no\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d ekstern skjerm"
+msgstr[1] "%d eksterne skjermer"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d kun ekstern skjerm"
+msgstr[1] "%d bare eksterne skjermer"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS skjermmodus"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS-skjermbilde"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux-oppsett %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools er klar til bruk."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook-innstillinger"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook-maskinvarefunksjoner er installert som valgfrie komponenter."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Legger til hurtigtastene Display Toggle, MyASUS Settings og Share for GNOME, "
+"KDE Plasma, XFCE, LXQt, Cinnamon eller MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Alle skjermer (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Alle skjermer (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Tilgjengelige komponenter:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Balansert"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamera deaktivert"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamera aktivert"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Kameraets personvern"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Velg komponenter"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Kanelsnarveier konfigurert."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Komponenter [standard: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Konfigurer GNOME-snarveier for %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Konfigurer KDE Plasma-snarveier for %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Gjeldende skjermoppsett"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Visningsmodus"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Skriv inn komponentnumre eller navn, atskilt med komma."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Fan profil"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap-utvidelse installert."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME-snarveier konfigurert."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Maskinvarefunksjoner for Linux-skrivebordet"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Installer skript og tjenester"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Installer systemavhengigheter"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Installasjon kansellert av bruker."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Installasjonen er fullført."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Installere ASUS ZenBook Linux-verktøy %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Installerer WMI-hurtigtastdemonen for ScreenPad-lysstyrke, viften Quiet/"
+"Balanced/Performance, kamerapersonvern og vindusbytte på tvers av skjermer."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Installerer høyttalerforsterkerfiksen og en suspend/resume-krok slik at "
+"støttet ZenBook-lyd gjenopprettes etter oppstart og etter hvilemodus."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Installerer pekeflatens Share-gestlytter slik at et trykk øverst til venstre "
+"åpner skrivebordets skjermbildeverktøy (GNOME, Spectacle og lignende)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "Ugyldig valg: %s. Skriv inn tall (1,2,3,4), komponentnavn eller all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma-snarveier konfigurert."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys konfigurert."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE-snarveier er konfigurert."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Hoveddisplay"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Kun hoveddisplay"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Modus: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ingen komponenter ble valgt. Installasjonen avbrutt."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Av"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "På"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Ytelse (boost)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Trykk Enter for å installere alle anbefalte komponenter, eller skriv 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Stille (stille)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad-bakgrunnsbelysning"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ScreenPad lysstyrke"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Bare ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Velg kun komponentene du bruker. Uvalgte tjenester og snarveier vil ikke bli "
+"installert."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "Velg kun det du bruker for å unngå unødvendige tjenester og snarveier."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Snarveier registrert for Print/Super-Shift-s, XF86Launch1/XF86Tools og "
+"XF86Display (F8 forblir uendret)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Lydfiks installert med en opphengs- og fortsettkrok."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space velger en komponent. Enter bekrefter. Esc avbryter."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Tekstvalgmodus."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Grensesnittspråket følger skrivebordsøkten."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "Dette kan ta noen minutter mens pakker lastes ned og installeres."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Berøringsplate Del bevegelseslytter installert (aktiv tilstand ikke "
+"bekreftet i dette miljøet)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Berøringsplate Del bevegelseslytter installert og aktiv."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon installert (aktiv tilstand ikke bekreftet i dette miljøet)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon installert og aktiv."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Hvorfor denne dialogen?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE-snarveier konfigurert."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Legg til Skjerm, MyASUS og Del skrivebordssnarveier"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Legg til Skjerm-, MyASUS- og Del-snarveier på skrivebordet ditt."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Hurtigtaster for maskinvare for ScreenPad, vifte, kamera og vindusbytte."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Hurtigtaster for maskinvare: ScreenPad, vifte, kamera og vindusbytte"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Initialiser støttede høyttalerforsterkere etter oppstart og gjenopptagelse"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Initialiser støttede høyttalerforsterkere, inkludert etter gjenopptagelse."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Åpne skjermbildeverktøyet med Del-bevegelsen øverst til venstre."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Del-bevegelse øverst til venstre åpner skjermbildeverktøyet"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "piskehale"

@@ -1,0 +1,388 @@
+# Bosnian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Bosanski\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((((((0 == 0)) && (((n % 10) >= 2 && (n % "
+"10) <= 4))) && (!(((n % 100) >= 12 && (n % 100) <= 14)))) || ((((0 % 10) >= "
+"2 && (0 % 10) <= 4)) && (!(((0 % 100) >= 12 && (0 % 100) <= 14))))) ? 1 : "
+"(((((0 == 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) || ((((0 % "
+"10) == 1)) && (!(((0 % 100) == 11))))) ? 0 : 2);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d vanjski ekran"
+msgstr[1] "%d spoljni ekrani"
+msgstr[2] "%d spoljni ekrani"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d Samo vanjski ekran"
+msgstr[1] "%d samo vanjski ekrani"
+msgstr[2] "%d samo vanjski ekrani"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS režim prikaza"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS snimak ekrana"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Postavljanje ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools je spreman za upotrebu."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook postavke"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook hardverske funkcije su instalirane kao opcione komponente."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Dodaje tipkovničke prečice Display Toggle, MyASUS Settings i Share za GNOME, "
+"KDE Plasma, XFCE, LXQt, Cinnamon ili MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Svi displeji (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Svi ekrani (Glavni + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Dostupne komponente:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Uravnoteženo"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamera je onemogućena"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamera je omogućena"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Privatnost kamere"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Odaberite komponente"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Prečice za cimet su konfigurirane."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Komponente [podrazumijevano: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Konfigurišite GNOME prečice za %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Konfigurišite KDE Plasma prečice za %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Trenutni izgled displeja"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Način prikaza"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Unesite brojeve ili nazive komponenti, odvojene zarezima."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Profil navijača"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap ekstenzija je instalirana."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME prečice su konfigurirane."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Hardverske karakteristike za vaš Linux desktop"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Instalirajte skripte i usluge"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Instalirajte sistemske zavisnosti"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Korisnik je otkazao instalaciju."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Instalacija završena."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Instaliranje ASUS ZenBook Linux alata %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Instalira demon tipkovničkih prečica WMI za svjetlinu ScreenPada, ventilator "
+"Quiet/Balanced/Performance, privatnost kamere i zamjenu prozora između "
+"monitora."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Instalira ispravku pojačala zvučnika i kuku suspend/resume kako bi podržani "
+"ZenBook audio radio nakon pokretanja i nakon nastavka."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Instalira listener Share geste touchpada tako da dodir u gornjem lijevom "
+"uglu otvara alat za snimke ekrana radne površine (GNOME, Spectacle i slično)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Nevažeći odabir: %s. Unesite brojeve (1,2,3,4), nazive komponenti ili all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma prečice su konfigurirane."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt globalni ključevi konfigurirani."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE prečice su konfigurirane."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Glavni ekran"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Samo glavni ekran"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Način rada: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Nisu odabrane komponente. Instalacija je otkazana."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Isključeno"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Da"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Performanse (pojačanje)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Pritisnite Enter za instalaciju svih preporučenih komponenti ili unesite "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "tiho (tiho)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad pozadinsko osvetljenje"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Osvetljenost ekrana"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Samo ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Odaberite samo komponente koje koristite. Neodabrani servisi i prečice neće "
+"biti instalirani."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Odaberite samo ono što koristite kako biste izbjegli nepotrebne usluge i "
+"prečice."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Prečice registrovane za Print/Super-Shift-s, XF86Launch1/XF86Tools i "
+"XF86Display (F8 je ostao nepromijenjen)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Popravak zvuka je instaliran s kukom za obustavu i nastavak."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space bira komponentu. Enter potvrđuje. Esc otkazuje."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Način odabira teksta."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Jezik interfejsa prati vašu desktop sesiju."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Ovo može potrajati nekoliko minuta dok se paketi preuzimaju i instaliraju."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Instaliran je prisluškivač pokreta za dijeljenje dodirne table (aktivno "
+"stanje nije potvrđeno u ovom okruženju)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share Slušatelj pokreta je instaliran i aktivan."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Instaliran WMI Hotkey demon (aktivno stanje nije provjereno u ovom "
+"okruženju)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon je instaliran i aktivan."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Zašto ovaj dijalog?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE prečice su konfigurisane."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Dodajte Display, MyASUS i Share prečice na radnoj površini"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Dodajte prečice Display, MyASUS i Share na radnu površinu."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Hardverske prečice za ScreenPad, ventilator, kameru i zamenu prozora."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Hardverske prečice: ScreenPad, ventilator, kamera i zamjena prozora"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Inicijalizirajte podržana pojačala zvučnika nakon pokretanja i nastavite"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Inicijalizirajte podržana pojačala zvučnika, uključujući i nakon nastavka."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Otvorite alatku za snimanje ekrana pomoću pokreta Dijeli u gornjem "
+#~ "lijevom kutu."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Pokret za dijeljenje u gornjem lijevom kutu otvara alat za snimanje ekrana"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

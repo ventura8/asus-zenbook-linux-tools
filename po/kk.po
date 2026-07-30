@@ -1,0 +1,385 @@
+# Kazakh translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Қазақша\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d сыртқы дисплей"
+msgstr[1] "%d сыртқы дисплейлер"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d тек сыртқы дисплей"
+msgstr[1] "%d тек сыртқы дисплейлер"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS дисплей режимі"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS скриншоты"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux баптауы %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux құралдары пайдалануға дайын."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook параметрлері"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook аппараттық құралдарының мүмкіндіктері қосымша компоненттер "
+"ретінде орнатылады."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon немесе MATE үшін Display Toggle, "
+"MyASUS Settings және Share пернетақта қысқа жолдарын қосады."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Барлық дисплейлер (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Барлық дисплейлер (Негізгі + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Қолжетімді компоненттер:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Теңдестірілген"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Камера өшірілген"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Камера қосылды"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Камераның құпиялылығы"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Компоненттерді таңдаңыз"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Cinnamon таңбашалары конфигурацияланды."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Құрамдастар [әдепкі: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%sүшін GNOME тіркесімдерін теңшеу"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "%s үшін KDE Plasma тіркесімдерін теңшеу"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Ағымдағы дисплей орналасуы"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Көрсету режимі"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Компонент нөмірлерін немесе атауларын үтірмен бөліп енгізіңіз."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Жанкүйер профилі"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap кеңейтімі орнатылған."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME таңбашалары конфигурацияланды."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Linux жұмыс үстеліне арналған аппараттық мүмкіндіктер"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Сценарийлер мен қызметтерді орнатыңыз"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Жүйелік тәуелділіктерді орнату"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Пайдаланушы орнатудан бас тартты."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Орнату аяқталды."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux құралдарын орнату %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad жарықтығы, Quiet/Balanced/Performance желдеткіш, камера "
+"құпиялылығы және мониторлар арасында терезе ауыстыру үшін WMI ыстық перне "
+"daemon орнатуы."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Қолдаулы ZenBook дыбысы жүктелуден және ұйқыдан кейін қалпына келуі үшін "
+"динамик күшейткіш түзетуін және suspend/resume hook орнатуы."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Жоғарғы сол бұрышты түрткенде жұмыс үстелі скриншот құралы (GNOME, Spectacle "
+"және ұқсастар) ашылуы үшін touchpad Share қимыл listener орнатуы."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Жарамсыз таңдау: %s. Сандар (1,2,3,4), құрамдас атаулары немесе all "
+"енгізіңіз."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE плазмалық пернелер тіркесімдері конфигурацияланды."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt жаһандық кілттері конфигурацияланды."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE таңбашалары конфигурацияланды."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Негізгі дисплей"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Тек негізгі дисплей"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Режим: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ешқандай құрамдас таңдалмаған. Орнату тоқтатылды."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Өшірулі"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Қосулы"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Өнімділік (күшейту)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Барлық ұсынылған құрамдастарды орнату үшін Enter басыңыз немесе 'all' "
+"енгізіңіз."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Тыныш (үнсіз)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad артқы жарығы"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Экран тақтасының жарықтығы"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Тек экран тақтасы"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Өзіңіз пайдаланатын құрамдастарды ғана таңдаңыз. Таңдалмаған қызметтер мен "
+"таңбашалар орнатылмайды."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Қажетсіз қызметтер мен таңбашаларды болдырмау үшін тек пайдаланатын нәрсені "
+"таңдаңыз."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Print/Super-Shift-s, XF86Launch1/XF86Tools және XF86Display үшін тіркелген "
+"таңбашалар (F8 өзгеріссіз қалдырылды)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Аспалы және жалғастыру ілгегімен орнатылған дыбысты түзету."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space құрамдасты таңдайды. Enter растайды. Esc болдырмайды."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Мәтінді таңдау режимі."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Интерфейс тілі жұмыс үстелі сеансына сәйкес келеді."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "Пакеттер жүктеліп орнатылғанда бұл бірнеше минут алуы мүмкін."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Сенсорлы тақтаны ортақ пайдалану қимылын тыңдаушы орнатылған (белсенді күй "
+"бұл ортада расталмаған)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Сенсорлы тақта Ортақ қимыл тыңдаушысы орнатылған және белсенді."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI жылдам перне демоны орнатылған (белсенді күй бұл ортада тексерілмеген)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI жылдам перне демоны орнатылған және белсенді."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Неліктен бұл диалог?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE таңбашалары конфигурацияланды."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Дисплей, MyASUS және Ортақ жұмыс үстелі таңбашаларын қосыңыз"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Дисплей, MyASUS қосыңыз және жұмыс үстеліне тіркесімдерді бөлісіңіз."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "ScreenPad, желдеткіш, камера және терезені ауыстыруға арналған аппараттық "
+#~ "жылдам пернелер."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Аппараттық жылдам пернелер: ScreenPad, желдеткіш, камера және терезені "
+#~ "ауыстыру"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Жүктелгеннен кейін қолдау көрсетілетін динамик күшейткіштерін іске "
+#~ "қосыңыз және жалғастырыңыз"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Қолдау көрсетілетін динамик күшейткіштерін, соның ішінде жалғастырудан "
+#~ "кейін іске қосыңыз."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Жоғарғы сол жақтағы Бөлісу қимылымен скриншот құралын ашыңыз."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Жоғарғы сол жақтағы Бөлісу қимылы скриншот құралын ашады"
+
+#~ msgid "libnewt"
+#~ msgstr "Линьют"
+
+#~ msgid "whiptail"
+#~ msgstr "қамшы құйрығы"

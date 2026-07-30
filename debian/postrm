@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+_purge_state_dir() {
+    rm -rf /var/lib/asus-zenbook-linux-tools
+}
+
+case "${1:-}" in
+    purge)
+        _purge_state_dir
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

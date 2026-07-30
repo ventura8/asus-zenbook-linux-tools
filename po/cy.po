@@ -1,0 +1,388 @@
+# Welsh translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Cymraeg\n"
+"Language: cy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(((n == 3)) ? 3 : ((n == 6)) ? 4 : ((n == "
+"1)) ? 1 : ((n == 2)) ? 2 : ((n == 0)) ? 0 : 5);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d arddangosfa allanol"
+msgstr[1] "%d arddangosfeydd allanol"
+msgstr[2] "%d arddangosfeydd allanol"
+msgstr[3] "%d arddangosfeydd allanol"
+msgstr[4] "%d arddangosfeydd allanol"
+msgstr[5] "%d arddangosfeydd allanol"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d arddangosfa allanol yn unig"
+msgstr[1] "%d arddangosiadau allanol yn unig"
+msgstr[2] "%d arddangosiadau allanol yn unig"
+msgstr[3] "%d arddangosiadau allanol yn unig"
+msgstr[4] "%d arddangosiadau allanol yn unig"
+msgstr[5] "%d arddangosiadau allanol yn unig"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Modd Arddangos ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Sgrinlun ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Gosodiad ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Mae ASUS ZenBook Linux Tools yn barod i'w ddefnyddio."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Gosodiadau ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Mae nodweddion caledwedd ASUS ZenBook wedi'u gosod fel cydrannau dewisol."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Ychwanega llwybrau byr bysellfwrdd Display Toggle, MyASUS Settings a Share "
+"ar gyfer GNOME, KDE Plasma, XFCE, LXQt, Cinnamon neu MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Pob arddangosfa (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Pob arddangosfa (Prif + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Cydrannau sydd ar gael:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Cytbwys"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Analluogwyd y camera"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Camera wedi'i alluogi"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Preifatrwydd camera"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Dewiswch gydrannau"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Llwybrau byr sinamon wedi'u ffurfweddu."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Cydrannau [rhagosodedig: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Ffurfweddu llwybrau byr GNOME ar gyfer %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Ffurfweddu llwybrau byr Plasma KDE ar gyfer %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Cynllun arddangos cyfredol"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Modd arddangos"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Rhowch rifau neu enwau cydrannau, wedi'u gwahanu gan atalnodau."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Proffil ffan"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Estyniad Cyfnewid Ffenestr GNOME ASUS wedi'i osod."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Llwybrau byr GNOME wedi'u ffurfweddu."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Nodweddion caledwedd ar gyfer eich bwrdd gwaith Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Gosod sgriptiau a gwasanaethau"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Gosod dibyniaethau system"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Gosodiad wedi'i ganslo gan y defnyddiwr."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Gosod wedi'i gwblhau."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Gosod Offer ASUS ZenBook Linux %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Gosoda'r daemon bysellau poeth WMI ar gyfer disgleirdeb ScreenPad, ffan "
+"Quiet/Balanced/Performance, preifatrwydd camera, a chyfnewid ffenestri ar "
+"draws monitroedd."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Gosoda'r trwsio chwyddwr siaradwr a bachyn suspend/resume fel bod sain "
+"ZenBook a gefnogir yn adfer ar ôl cychwyn ac ar ôl cysgu."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Gosoda wrandäwr ystum Share y pad cyffwrdd fel bod tap yn y gornel chwith "
+"uchaf yn agor offeryn sgrinlun y bwrdd gwaith (GNOME, Spectacle a thebyg)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "Dewis annilys: %s. Rhowch rifau (1,2,3,4), enwau cydrannau, neu all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Llwybrau byr Plasma KDE wedi'u ffurfweddu."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Allweddi Byd-eang LXQt wedi'u ffurfweddu."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Llwybrau byr MATE wedi'u ffurfweddu."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Prif arddangosfa"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Prif arddangosfa yn unig"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Modd: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ni ddewiswyd unrhyw gydrannau. Gosodiad wedi'i ganslo."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "I ffwrdd"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Ar"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Perfformiad (Hwb)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Pwyswch Enter i osod yr holl gydrannau a argymhellir, neu rhowch 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Tawel (Tawel)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Backlight ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Disgleirdeb ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad yn unig"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Dewiswch y cydrannau rydych chi'n eu defnyddio yn unig. Ni fydd gwasanaethau "
+"heb eu dewis a llwybrau byr yn cael eu gosod."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Dewiswch yr hyn rydych chi'n ei ddefnyddio yn unig i osgoi gwasanaethau a "
+"llwybrau byr diangen."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Llwybrau byr wedi'u cofrestru ar gyfer Print/Super-Shift-s, XF86Launch1/"
+"XF86Tools, a XF86Display (F8 heb ei newid)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Atgyweiriad sain wedi'i osod gyda bachyn crog ac ailddechrau."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space yn dewis cydran. Enter yn cadarnhau. Esc yn canslo."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Modd dewis testun."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Mae iaith y rhyngwyneb yn dilyn eich sesiwn bwrdd gwaith."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Gall hyn gymryd ychydig funudau tra bod pecynnau'n cael eu lawrlwytho a'u "
+"gosod."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Gwrandäwr ystum Touchpad Share wedi'i osod (cyflwr gweithredol heb ei wirio "
+"yn yr amgylchedd hwn)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Gwrandäwr ystum Touchpad Share wedi'i osod ac yn weithredol."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"ellyll WMI Hotkey wedi'i osod (cyflwr gweithredol heb ei wirio yn yr "
+"amgylchedd hwn)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "ellyll Hotkey WMI wedi'i osod ac yn weithredol."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Pam y dialog hwn?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Llwybrau byr XFCE wedi'u ffurfweddu."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Ychwanegu llwybrau byr bwrdd gwaith Display, MyASUS, a Share"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Ychwanegu llwybrau byr Display, MyASUS, a Share i'ch bwrdd gwaith."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Allweddi poeth caledwedd ar gyfer ScreenPad, ffan, camera, a chyfnewid "
+#~ "ffenestri."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Allweddi poeth caledwedd: ScreenPad, ffan, camera, a chyfnewid ffenestri"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "Cychwyn mwyhaduron siaradwr â chymorth ar ôl cychwyn ac ailddechrau"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Cychwyn mwyhaduron siaradwr â chymorth, gan gynnwys ar ôl ailddechrau."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Agorwch yr offeryn sgrinlun gyda'r ystum Rhannu ar y chwith uchaf."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Mae ystum Rhannu ar y brig ar y chwith yn agor yr offeryn sgrinlun"
+
+#~ msgid "libnewt"
+#~ msgstr "madfall lib"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

@@ -1,0 +1,365 @@
+# Tibetan translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: བོད་ཡིག\n"
+"Language: bo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%dཕྱི་རོལ་གྱི་འཆར་ཤེལ།"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%dཕྱི་རོལ་གྱི་བརྙན་ཤེལ་ཁོ་ན་ཡིན།"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS མཐོང་སྣང་ཐབས་ལམ།"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS གློག་བརྙན་པར་རིས།"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux སྒྲིག་འགོད %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux ལག་ཆ་བེད་སྤྱོད་གཏོང་རྒྱུར་གྲ་སྒྲིག་ཡོད།"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook སྒྲིག་སྟངས།"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook མཐུན་རྐྱེན་གྱི་ཁྱད་ཆོས་དེ་འདེམས་གཞིའི་ཆ་ཤས་ལྟར་སྒྲིག་འཇུག་བྱས་ཡོད།"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME، KDE Plasma، XFCE၊ LXQt، Cinnamon ཡང་ན་ MATE ལ་ Display Toggle། MyASUS "
+"Settings དང་ Share མཐེབ་གཞོང་མྱུར་ལམ་ཁག་སྣོན།"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "མཐོང་སྣང་ཚང་མ། (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "བརྙན་ཤེལ་ཚང་མ། (གཙོ་བོ+གློག་བརྙན་སྒྲོམ།)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "ཐོབ་པའི་གྲུབ་ཆ།"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "དོ་མཉམ་པ།"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "པར་ཆས་ལྕོགས་མེད་བཟོས་པ།"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "པར་ཆས་བཀོལ་སྤྱོད་བྱས།"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "པར་ཆས་ཀྱི་གསང་བ།"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "གྲུབ་ཆ་འདེམས།"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "སི་ན་མོན་མགྱོགས་ལམ་སྒྲིག་བཀོད་བྱས།"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "ཆ་ཤས་ [སྔོན་སྒྲིག: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%s ལ་ཇི་ནོམ་མགྱོགས་ཐབས་རིམ་སྒྲིག་བྱེད།"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "ཀེ་ཌི་ཨི་པླ་སི་མ་མགྱོགས་ཐབས་རིམ་སྒྲིག་བྱས་ནས་%s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "མིག་སྔའི་འགྲེམས་སྟོན་བཀོད་སྒྲིག།"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "གསལ་སྟོན་ཐབས་ལམ།"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "ཆ་ཤས་ཨང་གྲངས་ཡང་ན་མིང་ནང་འཇུག་བྱས་ནས་ཚེག་གིས་དབྱེ་དགོས།"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "དགའ་མོས་ཅན་གྱི་ངོ་སྤྲོད།"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS སྒེའུ་ཁུང་བརྗེ་རེས་རྒྱ་བསྐྱེད་སྒྲིག་འཇུག་བྱས།"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOMEམགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "ཁྱེད་རང་གི་ལི་ནགསི་ཡིག་ཆའི་སྒྲིག་ཆས་ཀྱི་ཁྱད་ཆོས།"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "ཡིག་གཟུགས་དང་ཞབས་ཞུ་སྒྲིག་འཇུག་བྱེད་པ།"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "མ་ལག་རྟེན་གཞི་འཛུགས་པ།"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "བཀོལ་སྤྱོད་པས་སྒྲིག་འཇུག་མེད་པར་བཟོས།"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "སྒྲིག་འཇུག་མཇུག་སྒྲིལ་ཡོད།"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ཨེ་ཨེས་ཨུས་ཟེན་བུཀ་ལི་ནགསི་ལག་ཆ་སྒྲིག་འཇུག་བྱེད་བཞིན་ཡོད། %s"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad འོད་གསལ། རླུང་འཁོར Quiet/Balanced/Performance། པར་ཆས་སྒེར་གསང་དང་བརྙན་ཤེལ་"
+"བར་སྒེའུ་ཁུང་བརྗེ་རེས་ཀྱི་ WMI ཚ་མཐེབ་ daemon སྒྲིག་འཇུག་བྱེད།"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"རྒྱབ་སྐྱོར་ཡོད་པའི་ ZenBook སྒྲ་ལམ་འགོ་སློང་རྗེས་དང་གཉིད་ཁུག་རྗེས་སླར་གསོ་ཡོང་ཆེད་སྐད་བརྒྱུད་ཆེ་རུ་གཏོང་"
+"བཟོ་བཅོས་དང་ suspend/resume hook སྒྲིག་འཇུག་བྱེད།"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"གཡོན་སྟེང་ཟུར་ལ་རྡེབ་ན་ཅིག་ཤོས་པར་ལེན་ལག་ཆ (GNOME། Spectacle དང་མཉམ་རིགས) ཁ་ཕྱེ་བའི་ "
+"touchpad Share བརྡ་རྟགས་ཉན་མཁན་སྒྲིག་འཇུག་བྱེད།"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "འདེམས་ཁ་ནོར་འཁྲུལ: %s། ཨང་ཀི (1,2,3,4)། ཆ་ཤས་མིང་། ཡང་ན་ all འཇུག"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE པླ་སི་མ་མགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt རྒྱལ་སྤྱིའི་ལྡེ་མིག་སྒྲིག་བཀོད་བྱས།"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATEམགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "འགྲེམས་སྟོན་གཙོ་བོ།"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "གཙོ་བོའི་འགྲེམས་སྟོན་ཁོ་ན།"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "ཐབས་ལམ། %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "ཆ་ཤས་གང་ཡང་འདེམས་སྒྲུག་བྱས་མེད། སྒྲིག་འཇུག་ཆ་མེད་དུ་བཏང་ཡོད།"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "ཁ་བསྡམས།"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "ཨང༌།"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "ལས་དོན།(མཐོར་འདེགས།)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr "འོས་སྦྱོར་ཆ་ཤས་ཚང་མ་སྒྲིག་འཇུག་བྱེད་པར Enter མནན་ནམ་ 'all' འབྲི།"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "ཁུ་སིམ་མེ།"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "གློག་ཀླད་ཀྱི་རྒྱབ་ལྗོངས།"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "གློག་བརྙན་གྱི་འོད་མདངས།"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "གློག་ཀླད་ཁོ་ན།"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"ཁྱེད་ཀྱིས་བེད་སྤྱོད་བྱེད་པའི་ཆ་ཤས་ཁོ་ན་འདེམས། འདེམས་སྒྲུག་མ་བྱས་པའི་ཞབས་ཞུ་དང་མགྱོགས་ཐབས་སྒྲིག་འཇུག་མི་"
+"བྱེད།"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "དགོས་མཁོ་མེད་པའི་ཞབས་ཞུ་དང་མགྱོགས་ཐབས་སྤང་ཆེད་བེད་སྤྱོད་གཏོང་རྒྱུ་དེ་ཁོ་ན་འདེམས་དགོས།"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"པར་སྐྲུན་/ཆེས་མཐོའི་བརྗེ་སྒྱུར་དང་ XF86Launch1/XF86ལག་ཆས་དང་XF86བཀྲམ་སྟོན་གྱི་ཆེད་དུ་ཐོ་འགོད་བྱས་"
+"པའི་མགྱོགས་ཐབས། (F8འགྱུར་བ་མེད་པར་བཞག་ཡོད།)"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "སྒྲ་སྒྲིག་དེ་མཚམས་འཇོག་དང་བསྐྱར་འགོ་འཛུགས་པའི་ཁུག་མ་དང་མཉམ་དུ་སྒྲིག་འཇུག་བྱས།"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space ཀྱིས་ཆ་ཤས་འདེམས། Enter ཀྱིས་གཏན་འཁེལ། Esc ཀྱིས་འདོར།"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "ཚིག་ཡིག་འདེམས་སྒྲུག་ཐབས་ལམ།"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "ཨིན་ཊར་ཕེས་སྐད་ཡིག་དེ་ཁྱེད་ཀྱི་ཌེཀ་སི་ཊོབ་ཀྱི་ལས་རིམ་རྗེས་སུ་འབྲང་གི་ཡོད།"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "ཐུམ་བུ་ཕབ་ལེན་དང་སྒྲིག་འཇུག་བྱེད་རིང་སྐར་མ་འགའ་འགོར་སྲིད།"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"ལག་འཇུའི་སྟེགས་བུ་མཉམ་སྤྱོད་བརྡ་རྟགས་ཉན་ཆས་སྒྲིག་འཇུག་བྱས། (ཁོར་ཡུག་འདིའི་ནང་དུ་ཤུགས་ལྡན་གྱི་གནས་སྟངས་"
+"བདེན་དཔང་བྱས་མེད།)"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "ལག་འཇུའི་སྟེགས་བུ་བརྗེ་རེས་བྱེད་པའི་བརྡ་རྟགས་ཉན་ཆས་སྒྲིག་འཇུག་དང་ཤུགས་ལྡན་ཡིན།"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon བཙུགས་ཡོད། (མཐའ་འཁོར་འདིའི་ནང་དུ་ཤུགས་ལྡན་གྱི་གནས་སྟངས་བདེན་དཔང་བྱས་མེད།)"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey ཌེ་མོན་སྒྲིག་འཇུག་དང་ཤུགས་ལྡན་ཡིན།"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "གླེང་མོལ་འདི་ཅིའི་ཕྱིར་ཡིན་ནམ།"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCEམགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "བརྙན་ཤེལ་དང་MyASUS དེ་བཞིན་ཌེཀ་སི་ཊོབ་མགྱོགས་ཐབས་བརྗེ་རེས་ཁ་སྣོན་བྱེད།"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "ཁྱེད་རང་གི་ཡིག་ཆའི་སྟེང་ལ་བཀྲམ་སྟོན་དང་། MyASUS དེ་བཞིན་བརྗེ་རེས་མགྱོགས་ཐབས་ཁ་སྣོན་བྱེད།"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "གློག་ཀླད་དང་། རླུང་འཁོར། པར་ཆས། སྒེའུ་ཁུང་བརྗེ་རེས་བཅས་ཀྱི་ཆེད་དུ་སྒྲིག་ཆས་ཀྱི་ལྡེ་མིག"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "མཐུན་རྐྱེན་གྱི་མཐེབ་གཞོང་། གློག་ཀླད་དང་རླུང་འཁོར། པར་ཆས། སྒེའུ་ཁུང་བརྗེ་རེས།"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "འགོ་འཛུགས་དང་བསྐྱར་དུ་འགོ་འཛུགས་རྗེས་རྒྱབ་སྐྱོར་བྱེད་པའི་སྒྲ་སྒམ་སྒྲ་ཆེ་རུ་གཏོང་ཆས་འགོ་བཙུགས།"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "རྒྱབ་སྐྱོར་བྱེད་པའི་སྒྲ་སྒམ་སྒྲ་ཆེ་རུ་གཏོང་ཆས་འགོ་འཛུགས་བྱེད་དགོས།"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "གཡོན་ཕྱོགས་ཀྱི་སྟེང་དུ་མཉམ་སྤྱོད་བྱེད་པའི་བརྡ་རྟགས་བཀོལ་ནས་གློག་བརྙན་པར་ལེན་ལག་ཆ་ཁ་ཕྱེ།"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "གཡོན་ཕྱོགས་ཀྱི་སྟེང་མཉམ་སྤྱོད་བརྡ་རྟགས་ཀྱིས་གློག་བརྙན་པར་ལེན་ལག་ཆ་ཁ་ཕྱེ།"
+
+#~ msgid "libnewt"
+#~ msgstr "ལིབ་ནེཝཊ།"
+
+#~ msgid "whiptail"
+#~ msgstr "རྔ་མོ།"
