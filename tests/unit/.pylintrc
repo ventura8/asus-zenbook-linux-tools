@@ -1,0 +1,19 @@
+[MASTER]
+# Multiline init-hook bodies must stay flat: ConfigParser strips leading indent.
+init-hook =
+    import os, sys
+    from pathlib import Path
+    args = sys.argv
+    rcfile_arg = next((a.split("=", 1)[1] for a in args if a.startswith("--rcfile=")), None)
+    rcfile_arg = rcfile_arg or next((args[i + 1] for i, a in enumerate(args) if a == "--rcfile" and i + 1 < len(args)), None)
+    repo_root = str(Path(rcfile_arg).expanduser().resolve().parents[2]) if rcfile_arg else None
+    repo_root = repo_root or next((str(p) for p in [Path.cwd().resolve(), *Path.cwd().resolve().parents] if (p / "VERSION").is_file() or (p / ".git").exists()), None)
+    assert repo_root is not None, "tests/unit/.pylintrc requires --rcfile or a cwd under the repository root"
+    sys.path.insert(0, repo_root)
+    sys.path.insert(0, os.path.join(repo_root, "bin"))
+
+[FORMAT]
+max-line-length = 140
+
+[BASIC]
+module-rgx = ^[a-z_][a-z0-9_]*$

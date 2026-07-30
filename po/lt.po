@@ -1,0 +1,394 @@
+# Lithuanian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Lietuvių\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(((((n % 10) >= 2 && (n % 10) <= 9)) && (!"
+"(((n % 100) >= 11 && (n % 100) <= 19)))) ? 1 : (!((0 == 0))) ? 2 : ((((n % "
+"10) == 1)) && (!(((n % 100) >= 11 && (n % 100) <= 19)))) ? 0 : 3);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d išorinis ekranas"
+msgstr[1] "%d išoriniai ekranai"
+msgstr[2] "%d išoriniai ekranai"
+msgstr[3] "%d išoriniai ekranai"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d Tik išorinis ekranas"
+msgstr[1] "%d tik išoriniai ekranai"
+msgstr[2] "%d tik išoriniai ekranai"
+msgstr[3] "%d tik išoriniai ekranai"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS ekrano režimas"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS ekrano kopija"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux sąranka %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools paruoštas naudoti."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook nustatymai"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook aparatinės įrangos funkcijos įdiegiamos kaip pasirenkami "
+"komponentai."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Prideda Display Toggle, MyASUS Settings ir Share sparčiuosius klavišus "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon arba MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Visi ekranai (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Visi ekranai (pagrindinis + ekrano planšetė)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Galimi komponentai:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Subalansuota"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamera išjungta"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamera įjungta"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Kameros privatumas"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Pasirinkite komponentus"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Cinamono spartieji klavišai sukonfigūruoti."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Komponentai [numatytasis: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Konfigūruokite GNOME sparčiuosius klavišus %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Konfigūruoti KDE Plasma sparčiuosius klavišus %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Dabartinis ekrano išdėstymas"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Ekrano režimas"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Įveskite komponentų numerius arba pavadinimus, atskirtus kableliais."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Gerbėjo profilis"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Įdiegtas GNOME ASUS langų keitimo plėtinys."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Sukonfigūruoti GNOME spartieji klavišai."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "„Linux“ darbalaukio aparatinės įrangos funkcijos"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Įdiekite scenarijus ir paslaugas"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Įdiekite sistemos priklausomybes"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Diegimą atšaukė vartotojas."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Diegimas baigtas."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux įrankių diegimas %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Įdiegia WMI sparčiųjų klavišų demoną ScreenPad šviesumui, Quiet/Balanced/"
+"Performance ventiliatoriui, kameros privatumui ir langų keitimui tarp "
+"monitorių."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Įdiegia garsiakalbių stiprintuvo pataisą ir suspend/resume kabliuką, kad "
+"palaikomas ZenBook garsas atsikurtų po paleidimo ir po miego."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Įdiegia jutiklinės dalies Share gesto klausytoją, kad bakstelėjimas "
+"kairiajame viršutiniame kampe atidarytų darbalaukio ekrano kopijų įrankį "
+"(GNOME, Spectacle ir pan.)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Netinkamas pasirinkimas: %s. Įveskite numerius (1,2,3,4), komponentų "
+"pavadinimus arba all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Sukonfigūruoti KDE plazmos spartieji klavišai."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Sukonfigūruoti LXQt pasauliniai raktai."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Sukonfigūruoti MATE spartieji klavišai."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Pagrindinis ekranas"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Tik pagrindinis ekranas"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Režimas: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Nebuvo pasirinkta jokių komponentų. Diegimas atšauktas."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Išjungta"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Įjungta"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Našumas (padidinimas)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Paspauskite Enter, kad įdiegtumėte visus rekomenduojamus komponentus, arba "
+"įveskite 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Tylus (tylus)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad foninis apšvietimas"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Ekrano planšetės ryškumas"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Tik ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Pasirinkite tik tuos komponentus, kuriuos naudojate. Nepasirinktos paslaugos "
+"ir nuorodos nebus įdiegtos."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Pasirinkite tik tai, ką naudojate, kad išvengtumėte nereikalingų paslaugų ir "
+"nuorodų."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Užregistruoti spartieji klavišai Print/Super-Shift-s, XF86Launch1/XF86Tools "
+"ir XF86Display (F8 paliktas nepakeistas)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Įdiegtas garso pataisymas su pakabinimo ir atnaujinimo kabliu."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space pasirenka komponentą. Enter patvirtina. Esc atšaukia."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Teksto pasirinkimo režimas."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Sąsajos kalba seka jūsų darbalaukio seansą."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Tai gali užtrukti kelias minutes, kol paketai atsisiunčiami ir diegiami."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Jutiklinė dalis Įdiegta bendrinimo gestų klausytoja (aktyvi būsena "
+"nepatvirtinta šioje aplinkoje)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Jutiklinė dalis Įdiegta ir aktyvi bendrinimo gestų klausytoja."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Įdiegtas WMI Hotkey demonas (aktyvi būsena nepatvirtinta šioje aplinkoje)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey demonas įdiegtas ir aktyvus."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Kodėl šis dialogas?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Sukonfigūruoti XFCE spartieji klavišai."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr ""
+#~ "Pridėkite „Display“, „MyASUS“ ir „Share“ darbalaukio sparčiuosius klavišus"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Prie darbalaukio pridėkite Display, MyASUS ir Share sparčiuosius klavišus."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Spartieji aparatūros klavišai, skirti ekrano planšetei, ventiliatoriui, "
+#~ "fotoaparatui ir langų keitimui."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Spartieji aparatinės įrangos klavišai: ekrano planšetė, ventiliatorius, "
+#~ "fotoaparatas ir langų keitimas"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Po įkrovos inicijuokite palaikomus garsiakalbių stiprintuvus ir tęskite"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Inicijuoti palaikomus garsiakalbių stiprintuvus, įskaitant po atnaujinimo."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Atidarykite ekrano kopijos įrankį naudodami viršutiniame kairiajame kampe "
+#~ "esantį bendrinimo gestą."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Viršuje, kairėje, bendrinimo gestas atidaro ekrano kopijos įrankį"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "vytinėlė"

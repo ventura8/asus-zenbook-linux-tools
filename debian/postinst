@@ -1,0 +1,96 @@
+#!/bin/bash
+set -e
+
+CONFIGURE_BIN="/usr/sbin/asus-zenbook-configure"
+
+_is_noninteractive_frontend() {
+    case "${DEBIAN_FRONTEND:-}" in
+        noninteractive)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+# Require a real stdin TTY so unattended apt cannot hang on an unused /dev/tty.
+_can_use_tty() {
+    [ -t 0 ] && [ -t 1 ]
+}
+
+_print_reconfigure_hint() {
+    echo "ASUS ZenBook Linux Tools files are installed."
+    echo "Configure components interactively with:"
+    echo "  sudo dpkg-reconfigure asus-zenbook-linux-tools"
+    echo "or:"
+    echo "  sudo asus-zenbook-configure"
+}
+
+_should_skip_interactive_configure() {
+    _is_noninteractive_frontend || ! _can_use_tty
+}
+
+_should_skip_upgrade_wizard() {
+    local previous_version="${1:-}"
+    [ -n "$previous_version" ] && [ "${DEBCONF_RECONFIGURE:-}" != "1" ]
+}
+
+_run_interactive_configure() {
+    if [ ! -x "$CONFIGURE_BIN" ]; then
+        echo "Missing configure helper: $CONFIGURE_BIN" >&2
+        return 1
+    fi
+    SKIP_PKG_INSTALL=1 "$CONFIGURE_BIN"
+}
+
+_systemd_is_live() {
+    local state
+    command -v systemctl >/dev/null 2>&1 || return 1
+    # Prefer printed state over exit status: degraded/starting/maintenance are
+    # live but often exit non-zero.
+    state=$(systemctl is-system-running 2>/dev/null || true)
+    case "$state" in
+        running|degraded|starting|maintenance)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+_daemon_reload_if_live() {
+    if ! _systemd_is_live; then
+        return 0
+    fi
+    systemctl daemon-reload
+}
+
+_configure_package() {
+    local previous_version="${1:-}"
+    if _should_skip_interactive_configure; then
+        _print_reconfigure_hint
+        _daemon_reload_if_live
+        return 0
+    fi
+    # Upgrades keep the prior component selection; dpkg-reconfigure sets
+    # DEBCONF_RECONFIGURE=1 so the wizard still runs.
+    if _should_skip_upgrade_wizard "$previous_version"; then
+        _daemon_reload_if_live
+        return 0
+    fi
+    if ! _run_interactive_configure; then
+        echo "Component configuration did not complete successfully." >&2
+        _print_reconfigure_hint >&2
+        return 1
+    fi
+    _daemon_reload_if_live
+    return 0
+}
+
+#DEBHELPER#
+
+case "${1:-}" in
+    configure)
+        _configure_package "${2:-}"
+        ;;
+esac
+
+exit 0

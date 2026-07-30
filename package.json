@@ -1,0 +1,13 @@
+{
+  "name": "asus-zenbook-linux-tools",
+  "private": true,
+  "description": "Dev tooling for GNOME Shell extension JavaScript linting",
+  "scripts": {
+    "lint:js": "eslint gnome/"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "eslint": "9.39.5"
+  }
+}

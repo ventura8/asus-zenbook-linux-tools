@@ -1,0 +1,385 @@
+# Mongolian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Монгол\n"
+"Language: mn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d гадаад дэлгэц"
+msgstr[1] "%d гадаад дэлгэц"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d Зөвхөн гадаад дэлгэц"
+msgstr[1] "%d зөвхөн гадаад дэлгэц"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS дэлгэцийн горим"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS дэлгэцийн агшин"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux тохиргоо %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools ашиглахад бэлэн боллоо."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook тохиргоо"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook техник хангамжийн функцуудыг нэмэлт бүрэлдэхүүн хэсэг болгон "
+"суулгасан."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon эсвэл MATE-д Display Toggle, MyASUS "
+"Settings болон Share гарын товчлол нэмнэ."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Бүх дэлгэц (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Бүх дэлгэц (Үндсэн + дэлгэцийн самбар)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Боломжтой бүрэлдэхүүн хэсгүүд:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Тэнцвэртэй"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Камерыг идэвхгүй болгосон"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Камерыг идэвхжүүлсэн"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Камерын нууцлал"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Бүрэлдэхүүн хэсгүүдийг сонгох"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Cinnamon товчлолыг тохируулсан."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Бүрэлдэхүүнүүд [анхдагч: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%s-д зориулсан GNOME товчлолуудыг тохируулах"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "%s-д зориулсан KDE плазмын товчлолыг тохируулах"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Одоогийн дэлгэцийн зохион байгуулалт"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Дэлгэцийн горим"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr ""
+"Бүрэлдэхүүн хэсгүүдийн дугаар эсвэл нэрийг таслалаар тусгаарлан оруулна уу."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Фен профайл"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap өргөтгөлийг суулгасан."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME товчлолуудыг тохируулсан."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Таны Linux ширээний компьютерт зориулсан техник хангамжийн онцлогууд"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Скрипт болон үйлчилгээг суулгана уу"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Системийн хамаарлыг суулгах"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Суулгацыг хэрэглэгч цуцалсан."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Суурилуулалт дууссан."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux хэрэгслүүдийг суулгаж байна %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad гэрэлтүүлэг, Quiet/Balanced/Performance сэнс, камерын нууцлал "
+"болон мониторуудын хооронд цонх солих WMI халуун товч daemon суулгана."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Дэмжигдсэн ZenBook аудио ачаалсны дараа болон нойрсны дараа сэргэхээр чанга "
+"яригчийн өсгөгчийн засвар болон suspend/resume hook суулгана."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Зүүн дээд өнцөгт товших үед ширээний зураг авах хэрэгсэл (GNOME, Spectacle "
+"болон төстэй) нээгдэхээр touchpad Share дохионы listener суулгана."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Буруу сонголт: %s. Тоо (1,2,3,4), бүрэлдэхүүний нэр эсвэл all оруулна уу."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE плазмын товчлолыг тохируулсан."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Глобал Түлхүүрийг тохируулсан."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE товчлолыг тохируулсан."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Үндсэн дэлгэц"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Зөвхөн үндсэн дэлгэц"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Горим: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ямар ч бүрэлдэхүүн хэсэг сонгоогүй. Суулгалтыг цуцалсан."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Унтраах"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Асаалттай"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Гүйцэтгэл (Өсгөх)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Бүх зөвлөсөн бүрэлдэхүүнийг суулгахын тулд Enter дарна уу, эсвэл 'all' "
+"оруулна уу."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Чимээгүй (чимээгүй)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad арын гэрэлтүүлэг"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Дэлгэцийн самбарын тод байдал"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Зөвхөн дэлгэцийн самбар"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Зөвхөн ашигладаг бүрэлдэхүүн хэсгүүдээ сонгоно уу. Сонгогдоогүй үйлчилгээ "
+"болон товчлолуудыг суулгахгүй."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Шаардлагагүй үйлчилгээ, товчлолоос зайлсхийхийн тулд зөвхөн ашигладаг зүйлээ "
+"сонго."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Print/Super-Shift-s, XF86Launch1/XF86Tools, XF86Display-д бүртгүүлсэн "
+"товчлолууд (F8 өөрчлөгдөөгүй)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Дууны засварыг түдгэлзүүлэх, үргэлжлүүлэх дэгээгээр суурилуулсан."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space бүрэлдэхүүн сонгоно. Enter баталгаажуулна. Esc цуцлана."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Текст сонгох горим."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Интерфэйсийн хэл нь таны ширээний сессийг дагадаг."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "Багцууд татагдаж суурилуулагдах үед энэ хэдэн минут зарцуулж болно."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Хуваалцах дохио сонсогч суулгасан (энэ орчинд идэвхтэй төлөвийг "
+"баталгаажуулаагүй)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr ""
+"Мэдрэгч самбар Хуваалцах дохио сонсогч суулгасан бөгөөд идэвхтэй байна."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey дэмон суулгасан (энэ орчинд идэвхтэй төлөвийг баталгаажуулаагүй)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey дэмон суулгаж, идэвхтэй байна."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Яагаад энэ харилцах цонх вэ?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE товчлолуудыг тохируулсан."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Display, MyASUS болон Share desktop товчлолуудыг нэмнэ үү"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Дэлгэц, MyASUS, Хуваалцах товчлолуудыг өөрийн ширээний компьютерт нэмнэ "
+#~ "үү."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "ScreenPad, сэнс, камер, цонх солиход зориулсан тоног төхөөрөмжийн халуун "
+#~ "товчлуурууд."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Техник хангамжийн товчлуурууд: ScreenPad, сэнс, камер, цонх солих"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Дэмжигдсэн чанга яригч өсгөгчийг ачаалсны дараа эхлүүлж, үргэлжлүүлнэ үү"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Дэмжигдсэн чанга яригч өсгөгчийг, түүний дотор үргэлжлүүлсний дараа "
+#~ "эхлүүлнэ үү."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Зүүн дээд талын Хуваалцах дохиогоор дэлгэцийн зургийн хэрэгслийг нээнэ үү."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Зүүн дээд талын Хуваалцах дохио нь дэлгэцийн зургийн хэрэгслийг нээнэ"
+
+#~ msgid "libnewt"
+#~ msgstr "Линьют"
+
+#~ msgid "whiptail"
+#~ msgstr "ташуурын сүүл"

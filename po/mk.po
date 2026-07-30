@@ -1,0 +1,391 @@
+# Macedonian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Македонски\n"
+"Language: mk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=((((((0 == 0)) && (((n % 10) == 1))) && (!"
+"(((n % 100) == 11)))) || ((((0 % 10) == 1)) && (!(((0 % 100) == 11))))) ? "
+"0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d надворешен дисплеј"
+msgstr[1] "%d надворешни дисплеи"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d само надворешен дисплеј"
+msgstr[1] "%d само надворешни дисплеи"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Режим на приказ на ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Слика од екранот на ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Поставување ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools е подготвен за употреба."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Поставки на ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Хардверските карактеристики на ASUS ZenBook се инсталирани како изборни "
+"компоненти."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Додава тастатурни кратенки Display Toggle, MyASUS Settings и Share за GNOME, "
+"KDE Plasma, XFCE, LXQt, Cinnamon или MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Сите прикази (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Сите прикази (Главна + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Достапни компоненти:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Избалансиран"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Камерата е оневозможена"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Камерата е овозможена"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Приватност на камерата"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Изберете компоненти"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Конфигурирани кратенки за цимет."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Компоненти [стандардно: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Конфигурирајте ги кратенките на GNOME за %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Конфигурирајте ги кратенките за плазма на KDE за %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Тековен распоред на екранот"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Режим на прикажување"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Внесете броеви или имиња на компоненти, одделени со запирки."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Профил на фан"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Инсталирана е екстензијата за размена на прозорци на GNOME ASUS."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Кратенките на GNOME се конфигурирани."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Хардверски карактеристики за вашиот десктоп Линукс"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Инсталирајте скрипти и услуги"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Инсталирајте системски зависности"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Инсталацијата е откажана од корисникот."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Инсталирањето е завршено."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Инсталирање на ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Инсталира демон за топли копчиња WMI за осветленост на ScreenPad, вентилатор "
+"Quiet/Balanced/Performance, приватност на камерата и замена на прозорци меѓу "
+"монитори."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Инсталира поправка на засилувачот на звучници и кука suspend/resume за да се "
+"врати поддржаното ZenBook аудио по подигнување и по сон."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Инсталира слушател на гестот Share на тачпадот за допир во горниот лев агол "
+"да го отвори алатот за снимки од екранот (GNOME, Spectacle и слични)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Неважечки избор: %s. Внесете броеви (1,2,3,4), имиња на компоненти или all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Кратенките за плазма на KDE се конфигурирани."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Глобалните клучеви LXQt се конфигурирани."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Кратенките MATE се конфигурирани."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Главен дисплеј"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Само главен дисплеј"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Режим: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Не беа избрани компоненти. Инсталирањето е откажано."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Исклучено"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Вклучено"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Перформанси (засилување)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Притиснете Enter за да ги инсталирате сите препорачани компоненти или "
+"внесете 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Тивко (Тивко)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Позадинско осветлување на ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Осветленост на екранот"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Само ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Изберете ги само компонентите што ги користите. Неизбраните услуги и "
+"кратенки нема да се инсталираат."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Изберете само она што го користите за да избегнете непотребни услуги и "
+"кратенки."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Регистрирани кратенки за Print/Super-Shift-s, XF86Launch1/XF86Tools и "
+"XF86Display (F8 остана непроменет)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Поправка на звук е инсталирана со кука за потпирање и продолжување."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space избира компонента. Enter потврдува. Esc откажува."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Режим за избор на текст."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Јазикот на интерфејсот ја следи вашата работна сесија."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Ова може да потрае неколку минути додека пакетите се преземаат и инсталираат."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Инсталиран слушател на гестови за споделување на подлогата на допир "
+"(активната состојба не е потврдена во оваа средина)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr ""
+"Инсталиран и активен слушател на гестови за споделување на подлогата на "
+"допир."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Инсталиран е демон на WMI Hotkey (активната состојба не е потврдена во оваа "
+"средина)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey демон е инсталиран и активен."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Зошто овој дијалог?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Кратенките XFCE се конфигурирани."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Додајте кратенки за приказ, MyASUS и Share на работната површина"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Додајте кратенки за Display, MyASUS и Share на вашата работна површина."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Хардверски копчиња за ScreenPad, вентилатор, камера и замена на прозорци."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Хардверски копчиња: ScreenPad, вентилатор, камера и размена на прозорци"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Иницијализирајте ги поддржаните засилувачи на звучници по подигањето и "
+#~ "продолжете"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Иницијализирајте ги поддржаните засилувачи на звучници, вклучително и по "
+#~ "продолжувањето."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Отворете ја алатката за слики од екранот со гестот „Сподели“ во горниот "
+#~ "лев агол."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Гестот „Сподели“ од горе лево ја отвора алатката за слики од екранот"
+
+#~ msgid "libnewt"
+#~ msgstr "либневт"
+
+#~ msgid "whiptail"
+#~ msgstr "камшиче"

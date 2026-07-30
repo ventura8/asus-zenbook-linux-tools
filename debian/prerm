@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+UNINSTALL_SH="/usr/share/asus-zenbook-linux-tools/uninstall.sh"
+
+_should_teardown() {
+    case "${1:-}" in
+        remove)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+_run_packaged_uninstall() {
+    if [ ! -f "$UNINSTALL_SH" ]; then
+        echo "Error: packaged uninstall helper missing: $UNINSTALL_SH" >&2
+        return 1
+    fi
+    # Keep apt-managed Depends; only tear down deployed /usr/local runtime.
+    SKIP_PKG_REMOVE=1 bash "$UNINSTALL_SH"
+}
+
+if _should_teardown "${1:-}"; then
+    if ! _run_packaged_uninstall; then
+        echo "Error: packaged uninstall teardown failed; aborting package removal." >&2
+        exit 1
+    fi
+fi
+
+#DEBHELPER#
+
+exit 0
