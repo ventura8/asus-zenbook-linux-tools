@@ -244,9 +244,9 @@ _export_python_coverage_shard_file() {
     echo "  ✓ Exported python coverage shard ${shard} to $dest"
 }
 
-_combine_python_coverage_shards() {
-    local reports_root="$1" dest="$2" shard_file
-    rm -f "$dest"
+_python_coverage_shard_data_files() {
+    local reports_root="$1" shard_file
+    # Prefer normalized python-N layout; also accept raw GHA download names.
     for shard_file in \
         "$reports_root"/coverage-shards/python-*/coverage.dat \
         "$reports_root"/coverage-shards/python-*/.coverage \
@@ -254,13 +254,26 @@ _combine_python_coverage_shards() {
         "$reports_root"/coverage-shards/coverage-shard-python-*/.coverage
     do
         [ -f "$shard_file" ] || continue
-        if [ ! -f "$dest" ]; then
-            cp -a "$shard_file" "$dest"
-            continue
-        fi
-        _coverage_cli combine --keep --data-file="$dest" "$shard_file"
+        printf '%s\n' "$shard_file"
     done
-    [ -f "$dest" ]
+}
+
+_combine_python_coverage_shards() {
+    # Combine every shard in one coverage.py invocation so [tool.coverage.paths]
+    # remaps Docker /workspace → checkout. A raw cp of the first shard leaves
+    # /workspace paths that do not match relative --include=bin/* gates.
+    local reports_root="$1" dest="$2"
+    local -a shard_files=()
+    local shard_file
+    rm -f "$dest"
+    while IFS= read -r shard_file; do
+        [ -n "$shard_file" ] || continue
+        shard_files+=("$shard_file")
+    done < <(_python_coverage_shard_data_files "$reports_root")
+    if [ "${#shard_files[@]}" -eq 0 ]; then
+        return 1
+    fi
+    _coverage_cli combine --keep --data-file="$dest" "${shard_files[@]}"
 }
 
 merge_python_coverage_shards() {

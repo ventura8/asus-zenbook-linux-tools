@@ -233,6 +233,13 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
         self.assertIn("--coverage-merge-only", ci)
         self.assertIn("coverage-shards-download", ci)
         self.assertIn("Install host merge tools", ci)
+        gates_py = (self.repo_root / "scripts/coverage/gates_python.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("combine --keep --data-file=", gates_py)
+        self.assertIn("_python_coverage_shard_data_files", gates_py)
+        # Raw cp of the first shard skips /workspace path remapping on host merge.
+        self.assertNotIn('cp -a "$shard_file" "$dest"', gates_py)
         self.assertNotIn("ASUS_COVERAGE_MODE: merge", ci)
         self.assertIn("needs: [lint, coverage-merge]", ci)
         self.assertNotIn("\n  coverage-kcov:\n", ci)

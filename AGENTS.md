@@ -489,9 +489,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `coverage-merge` runs **on the host** (no Docker image): install
   `kcov` + `coverage.py`, normalize GHA `coverage-shards-download/`
   artifact dirs into `kcov-N`/`python-N`, rewrite Docker `/workspace`
-  prefixes in kcov metadata, `coverage combine --keep` of
-  `coverage.dat` shards (with `[tool.coverage.paths]` mapping `.` ↔
-  `/workspace`), then `./scripts/build-and-test.sh --coverage-merge-only`
+  prefixes in kcov metadata, then one `coverage combine --keep` of
+  all `coverage.dat` shards (never raw-`cp` the first shard — that skips
+  `[tool.coverage.paths]` remapping of Docker `/workspace` → checkout),
+  then `./scripts/build-and-test.sh --coverage-merge-only`
   enforces ≥90%. Under `sudo --full`, python coverage runs via
   `runuser -u "$SUDO_USER" -- python3 -m coverage`. Upload python
   shards with `include-hidden-files: true` (or non-hidden

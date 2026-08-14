@@ -60,6 +60,9 @@ Use this skill to validate project code quality, formatting, unit tests, and end
    unit/e2e on the pipeline machine; lints/tests execute only inside Docker.
    Exception: `coverage-merge` / `--coverage-merge-only` runs on the host
    (kcov + coverage.py merge of already-exported shard artifacts only).
+   Python shards must be merged with one `coverage combine --keep` of all
+   `coverage.dat` files (never raw-`cp` the first shard — that skips
+   `[tool.coverage.paths]` remapping of Docker `/workspace` paths).
    CI `lint` job names use `format+syntax` / `pylint+shellcheck` (env
    still `ASUS_LINT_WAVE=cheap|heavy`); `coverage` job names use
    `kcov bin-sound+ui` / `kcov install-lib` / `python unit tests` /
