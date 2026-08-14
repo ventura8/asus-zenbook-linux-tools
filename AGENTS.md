@@ -115,16 +115,17 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   (`deb-package` job and local `./scripts/build-and-test.sh --full` both call
   `scripts/run_deb_package_smoke.sh`: apt installs `python3-yaml` / gettext with the
   other Build-Depends, runs `dpkg-checkbuilddeps` before `dpkg-buildpackage -b -us -uc`
-  (when the smoke is invoked under `sudo`, build/tests drop to `SUDO_USER` via
-  `runuser` so `dh_auto_test` matches CI’s non-root runner and does not probe the
-  live session as root), assert exactly
-  one `../*.deb` and one `artifacts/*.deb`, then noninteractive
-  `apt-get install -y` of a `./`-or-absolute local `.deb` path (apt treats an
-  unprefixed `dir/file.deb` as `release/package`), `dpkg -s` verify, and
-  `apt-get purge` before upload). No TTY →
-  postinst skips the interactive wizard. `lint-docker`, `deb-package`,
-  `coverage-gate`, and `distro-tests` each verify `install.sh.sha256` immediately
-  after checkout. PPA `upload-to-ppa` / `github-release` apt paths likewise install
+  (when the smoke is invoked under `sudo`, build drops to `SUDO_USER` via
+  `runuser` so packaging matches CI’s non-root runner). **Deb smoke always sets
+  `DEB_BUILD_OPTIONS=nocheck`** so `override_dh_auto_test` does **not** run
+  product unit tests on the pipeline/CI host — unit/kcov/e2e stay in coverage
+  Docker only. Assert exactly one `../*.deb` and one `artifacts/*.deb`, then
+  noninteractive `apt-get install -y` of a `./`-or-absolute local `.deb` path
+  (apt treats an unprefixed `dir/file.deb` as `release/package`), `dpkg -s`
+  verify, and `apt-get purge` before upload). No TTY → postinst skips the
+  interactive wizard. `lint` (cheap∥heavy matrix), `deb-package`, `coverage`,
+  and `distro-tests-*` each verify `install.sh.sha256` immediately after
+  checkout. PPA `upload-to-ppa` / `github-release` apt paths likewise install
   `python3-yaml` and run `dpkg-checkbuilddeps` before `dpkg-buildpackage -S` / `-b`.
   Hotkey OSD cancel uses `asus_hotkey_daemon_osd._subprocess_run` (patch that
   alias in tests — never `asus_hotkey_daemon_osd.subprocess.run`, which rebinds
@@ -230,8 +231,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - **Install script checksum (`install.sh.sha256`)**: Whenever `install.sh` changes, refresh
   `install.sh.sha256` in the **same change set** before finishing:
   `sha256sum install.sh > install.sh.sha256`, then confirm with `sha256sum -c install.sh.sha256`.
-  Do not ship an `install.sh` edit without the matching checksum file. CI (`lint-docker`,
-  `deb-package`, `coverage-gate`, `distro-tests`) and PPA `upload-to-ppa` / `github-release`
+  Do not ship an `install.sh` edit without the matching checksum file. CI (`lint`,
+  `deb-package`, `coverage`, `distro-tests-*`) and PPA `upload-to-ppa` / `github-release`
   verify `install.sh.sha256` immediately after checkout — a stale hash fails the pipeline.
   Piped installs also verify the captured script against this file.
 - **Code Coverage**: Minimum **90%** test coverage enforced on product Python via `coverage.py`
@@ -399,9 +400,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - `tests/e2e/mock/`: CI/local-gated process-level integration tests that run with mocks.
 - `tests/e2e/real/`: Opt-in real-system integration tests for debugging and incident reproduction only.
 - Run local CI-parity checks with `./scripts/build-and-test.sh` (`--full` =
-  lint-in-docker + Debian `.deb` smoke via `scripts/run_deb_package_smoke.sh` +
-  Docker coverage-gate/compat matrix — same gates as CI `lint-docker` /
-  `deb-package` / coverage + distro jobs).
+  lint-in-docker ∥ Debian `.deb` smoke via `scripts/run_deb_package_smoke.sh` +
+  Docker coverage/compat matrices — same gates as CI `lint` (cheap∥heavy) /
+  `deb-package` / `coverage` (kcov∥python) / `distro-tests-*` family jobs).
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
@@ -440,23 +441,33 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Any distro-lane change must also update relevant docs and tests in the same change set:
   - `README.md`, `docs/INSTRUCTIONS.md`, `docs/architecture/README.md`, release notes under `docs/releases/`
   - `tests/unit/shell/test_docker_matrix.py` and any related installer detection tests
-- **Always-on nine distro lanes** (every PR `distro-tests`, local `--full` / default
+- **Always-on nine distro lanes** (every PR `distro-tests-{debian,rhel,suse-arch}`,
+  local `--full` / default
   `run_docker_matrix.sh`, compat): `ubuntu:26.04`, `debian:trixie`, `fedora:44`,
   `rocky:9`, `opensuse/tumbleweed`, `archlinux:latest`, `opensuse/leap:16.0`,
-  `almalinux:10` (not `:9`), `manjarolinux/base:latest`. No shrink feature flag;
+  `almalinux:10` (not `:9`), `manjarolinux/base:latest`. Family lists live in
+  `DISTRO_FAMILY_*` / `--distro-family debian|rhel|suse-arch`. No shrink feature flag;
   local `--distro <one>` is debug-only. Empty `ASUS_CI_DE_FAMILY` = stub/CLI images.
-  CI `distro-tests` job `timeout-minutes` must stay **≥45** (Rocky/Alma cold
+  CI `distro-tests-*` job `timeout-minutes` must stay **≥45** (Rocky/Alma cold
   poetry+PyGObject image builds exceeded the old 20m cap and GH reported the job
   as cancelled).
   `run_docker_matrix.sh` allowlists `DE_FAMILY` / `ASUS_CI_DE_FAMILY` to
   `gnome|kde|xfce|lxqt|cinnamon|mate` (or empty) before any heredoc / `bash -lc` that
   embeds the value. `_print_target_distros` takes basename first, then strips digest
   (`@…`) and tag (`:…`), so `registry:5000/team/ubuntu:26.04` prints `ubuntu`.
-- **Always-on full-DE family job** (`ci.yml` `distro-full-de`): same push/PR pipeline;
-  matrix is nine distros × `gnome|kde|xfce|lxqt|cinnamon|mate` with Rocky/Alma
-  cinnamon/mate/lxqt excludes. Alma/RHEL 10 XFCE builds pinned `xfconf` 4.18.1 from
-  source (EPEL has `libxfce4util` but not `xfconf`; use image `curl`/`curl-minimal`
-  already on PATH — do not `dnf install curl`, which conflicts with `curl-minimal`).
+- **Always-on full-DE family jobs** (`ci.yml` `distro-full-de-{debian,rhel,suse-arch}`):
+  same push/PR pipeline; matrices are family-split (same nine distros ×
+  `gnome|kde|xfce|lxqt|cinnamon|mate` with Rocky/Alma cinnamon/mate/lxqt excludes —
+  **48 cells**, `max-parallel: 8` per family job). **F1 runtime DE:**
+  matrix builds the same stub/CLI images as `distro-tests-*` (empty bake-time
+  `ASUS_CI_DE_FAMILY`); `install-de-family.sh` runs in-container via `sudo -n`
+  before smoke when `ASUS_CI_FULL_DE=1` (up to 3 retries on CDN flakes; unsupported
+  family fails closed without retry). Dockerfiles may keep empty-ARG no-op bake
+  paths for local experiments; CI/matrix never pass a non-empty build-arg.
+  Alma/RHEL 10 XFCE builds pinned `xfconf` 4.18.1 from
+  source at runtime (EPEL has `libxfce4util` but not `xfconf`; use image
+  `curl`/`curl-minimal` already on PATH — do not `dnf install curl`, which conflicts
+  with `curl-minimal`).
   `install-de-family.sh` xfconf fetch uses curl `--connect-timeout` / `--max-time`
   with retries; dnf build-dep cleanup must fail closed (no trailing `|| true`).
   Rocky 9 KDE installs `kf5-kconfig` (`kwriteconfig5`); Alma/Fedora/etc. use
@@ -465,6 +476,46 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   CLIs/schemas in smoke; stubs remain for deterministic wiring under the smoke bus.
   Curated packages via `docker/images/tests/scripts/install-de-family.sh`. **Not
   nightly.** Mocking integrity: never mock owned code; prefer real packages/CLIs.
+- CI Docker builds use BuildKit `DOCKER_BUILDX_CACHE_BACKEND=gha` with a unique
+  `DOCKER_BUILDX_CACHE_SCOPE` per stub image (lint; `tests-debian-trixie` for
+  coverage; each of nine distros — **not** per DE family). Local builds keep default `local` under
+  `.cache/docker-buildx`. Do not restore `.cache/docker-buildx` via `actions/cache`
+  when using `gha`. Coverage is a GHA matrix job `coverage` with four
+  `include` cells on **debian:trixie** (display `matrix.label`:
+  `kcov bin-sound+ui`, `kcov install-lib`, `python unit tests`,
+  `python e2e tests`; env still `ASUS_COVERAGE_MODE` /
+  `ASUS_COVERAGE_SHARD` / `--kcov-only` / `--python-coverage-only`);
+  shards export partial data under `reports/coverage-shards/`, then
+  `coverage-merge` runs **on the host** (no Docker image): install
+  `kcov` + `coverage.py`, normalize GHA `coverage-shards-download/`
+  artifact dirs into `kcov-N`/`python-N`, rewrite Docker `/workspace`
+  prefixes in kcov metadata, `coverage combine --keep` of
+  `coverage.dat` shards (with `[tool.coverage.paths]` mapping `.` ↔
+  `/workspace`), then `./scripts/build-and-test.sh --coverage-merge-only`
+  enforces ≥90%. Under `sudo --full`, python coverage runs via
+  `runuser -u "$SUDO_USER" -- python3 -m coverage`. Upload python
+  shards with `include-hidden-files: true` (or non-hidden
+  `coverage.dat`). Local `--full` mirrors host merge after the four
+  Docker shard containers. Distro jobs need `coverage-merge` (and
+  `lint`). Lint is a GHA matrix job `lint` with display labels
+  `format+syntax` / `pylint+shellcheck` (env `ASUS_LINT_WAVE=cheap|heavy`);
+  local `--full` runs both lint-in-docker wave containers in parallel
+  with deb smoke.
+  Parallel local waves serialize the shared lint image build with
+  `flock` on `/tmp/asus-zenbook-lint-buildx.lock` (and set
+  `DOCKER_BUILDX_SKIP_PRUNE=1`) so cheap∥heavy do not race the local
+  `.cache/docker-buildx/lint-python-3.13-slim` export.
+  CI workflow concurrency uses `group: ${{ github.workflow }}` with
+  `cancel-in-progress: true` so a new push/PR sync **cancels** any prior CI run
+  (does not queue behind it). PPA release keeps `cancel-in-progress: false`.
+  **Host orchestrates only:** the machine that runs `--full` / CI job steps must
+  never execute `run-lints.sh`, product unit/e2e, or coverage *collection* on the
+  host — those run only inside Docker (`lint-in-docker.sh`, coverage shard
+  containers / `--compat-only` matrix). Exception: `coverage-merge` /
+  `--coverage-merge-only` runs on the host (merge already-exported kcov/python
+  shard artifacts + ≥90% gates; no product test execution). Deb smoke may
+  build/install on the host but always sets `DEB_BUILD_OPTIONS=nocheck` so
+  `dh_auto_test` does not run product tests.
 - Pin CI base images with `FROM tag@sha256:…` (keep the floating tag for Dependabot)
   including `fedora-44.Dockerfile`, `ubuntu-26.04.Dockerfile`, Leap/Alma/Manjaro.
   Fedora / Rocky / Alma test image `dnf install` lines use versioned name globs
@@ -490,11 +541,12 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - `run_docker_matrix.sh --serial` wraps each `run_target | tee` pipeline in `if` so `set -e`
   / `pipefail` records lane failure without aborting remaining distros.
   `--coverage-gate` resolves image tag/cache identity via `_resolve_distro_image` to
-  `ubuntu:26.04` (Dockerfile `ubuntu-26.04`, tag/cache `ubuntu-26.04` / `ubuntu__26.04`),
-  not a literal `coverage-gate` slug. Distro-tests CI cache keys use normalized
-  `env.log_slug` (slash → hyphen, colon → hyphen) after the Set matrix log slug
-  step so `upload-artifact` names stay valid (`ubuntu:26.04` → `ubuntu-26.04`).
-  Pin GitHub Actions by full commit SHA with a `# vX.Y.Z` comment; keep every
+  `debian:trixie` (Dockerfile `debian-trixie`, tag/cache `debian-trixie` /
+  `debian__trixie`), not a literal `coverage-gate` slug. Distro-tests / full-DE
+  image cache scopes use
+  normalized distro slug only (F1: no `-de-*` / `__de_*` in image identity). Artifact
+  log names may still include `de_family`. Pin GitHub Actions by full commit SHA with a
+  `# vX.Y.Z` comment; keep every
   `uses:` action on a release that declares `runs.using: node24` (currently
   `actions/upload-artifact@043fb46d…` **v7.0.1**, not v4.6.x Node 20). Same pins
   in `.github/workflows/ci.yml` and `ppa-release.yml`; bump both together.
@@ -1602,7 +1654,12 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `asus_hotkey_daemon_runtime.py` keeps script debounce/exec and re-exports session/topology/family
   symbols via `__getattr__` so existing `patch("asus_hotkey_daemon_runtime.…")` paths keep working.
   `run_in_desktop_session` caches `(uid, username, session_id, expires_at, validated_until)`
-  in `asus_hotkey_daemon_state` for ~2s with a session-env dict. `_is_active_gui_session`
+  in `asus_hotkey_daemon_state` for ~2s with a session-env dict. Unit tests that only
+  assert runuser vs sudo command construction must stub `_resolve_desktop_user` and
+  `_session_env_for_sudo` (plus `shutil.which`) — do not rely on multi-call loginctl
+  sequencing under load (cache-without-DISPLAY races made rocky:9 flake). Keep
+  resolve / systemctl-env / display-refresh coverage in
+  `tests/unit/bin/test_asus_hotkey_daemon_session_env.py`. `_is_active_gui_session`
   runs at most once per TTL via `validated_until` (skip while still current; refresh
   after a successful probe). Reserve a bounded budget
   (`_desktop_session_resolve_budget_secs`, ≤5s) for `_resolve_desktop_user` /

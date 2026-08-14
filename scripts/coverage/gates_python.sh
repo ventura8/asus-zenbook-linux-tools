@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
 
+_coverage_cli_direct() {
+    if command -v coverage >/dev/null 2>&1; then
+        coverage "$@"
+        return $?
+    fi
+    python3 -m coverage "$@"
+}
+
+_coverage_cli() {
+    # Under sudo --full, coverage lives in the invoker's user site-packages.
+    if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "$SUDO_USER" != root ]; then
+        if command -v runuser >/dev/null 2>&1; then
+            runuser -u "$SUDO_USER" -- python3 -m coverage "$@"
+            return $?
+        fi
+    fi
+    _coverage_cli_direct "$@"
+}
+
 _report_missing_python_coverage_files() {
     local missing_files="$1"
     [ -n "$missing_files" ] || return 0
@@ -11,12 +30,12 @@ _report_missing_python_coverage_files() {
 
 _python_coverage_total_percent() {
     local include_pattern="$1"
-    coverage report --include="$include_pattern" --format=total
+    _coverage_cli report --include="$include_pattern" --format=total
 }
 
 _python_coverage_write_json() {
     local include_pattern="$1" json_out="$2"
-    coverage json -o "$json_out" --include="$include_pattern" >/dev/null
+    _coverage_cli json -o "$json_out" --include="$include_pattern" >/dev/null
 }
 
 _coverage_scripts_dir() {
@@ -126,7 +145,7 @@ _python_coverage_tee_report() {
     local status=0 saved_errexit
     saved_errexit=$(shopt -po errexit)
     set +e
-    coverage report --include="$include_pattern" 2>&1 | tee "$report_log"
+    _coverage_cli report --include="$include_pattern" 2>&1 | tee "$report_log"
     status=${PIPESTATUS[0]}
     eval "$saved_errexit"
     if [ "$status" -ne 0 ]; then
@@ -207,4 +226,55 @@ _report_python_coverage_violations() {
             echo "    - $below_entry" >&2
         done <<< "$below_files"
     fi
+}
+
+_export_python_coverage_shard_file() {
+    local shard="${ASUS_COVERAGE_SHARD:-}" reports_root dest src
+    [ -n "$shard" ] || return 0
+    reports_root=$(resolve_reports_root) || return 1
+    dest="$reports_root/coverage-shards/python-${shard}"
+    mkdir -p "$dest"
+    src="${COVERAGE_FILE:-.coverage}"
+    if [ ! -f "$src" ]; then
+        echo "  ✗ Missing coverage data file for python shard ${shard}: $src" >&2
+        return 1
+    fi
+    # Non-hidden name so GHA upload-artifact includes it without special flags.
+    cp -a "$src" "$dest/coverage.dat"
+    echo "  ✓ Exported python coverage shard ${shard} to $dest"
+}
+
+_combine_python_coverage_shards() {
+    local reports_root="$1" dest="$2" shard_file
+    rm -f "$dest"
+    for shard_file in \
+        "$reports_root"/coverage-shards/python-*/coverage.dat \
+        "$reports_root"/coverage-shards/python-*/.coverage \
+        "$reports_root"/coverage-shards/coverage-shard-python-*/coverage.dat \
+        "$reports_root"/coverage-shards/coverage-shard-python-*/.coverage
+    do
+        [ -f "$shard_file" ] || continue
+        if [ ! -f "$dest" ]; then
+            cp -a "$shard_file" "$dest"
+            continue
+        fi
+        _coverage_cli combine --keep --data-file="$dest" "$shard_file"
+    done
+    [ -f "$dest" ]
+}
+
+merge_python_coverage_shards() {
+    local reports_root combined include_pattern
+    reports_root=$(resolve_reports_root) || return 1
+    normalize_coverage_shard_artifacts || return 1
+    combined="$reports_root/coverage-shards/.coverage.merged"
+    if ! _combine_python_coverage_shards "$reports_root" "$combined"; then
+        echo "  ✗ Failed to combine python coverage shards" \
+            "under $reports_root/coverage-shards" >&2
+        return 1
+    fi
+    export COVERAGE_FILE="$combined"
+    include_pattern="$(_python_coverage_include_pattern)"
+    run_python_coverage_gate "$include_pattern" || return 1
+    echo "  ✓ Merged python shards meet ≥90% coverage."
 }

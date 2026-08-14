@@ -10,7 +10,9 @@ DOCKER_IMAGE="${DOCKER_LINT_IMAGE:-asus-zenbook-lint:py313}"
 DOCKERFILE_PATH="${DOCKER_LINT_DOCKERFILE:-$REPO_ROOT/docker/images/lint/python-3.13-slim.Dockerfile}"
 DOCKER_BUILD_CACHE_DIR="${DOCKER_BUILD_CACHE_DIR:-$REPO_ROOT/.cache/docker-buildx}"
 MATRIX_RUN_ID="${MATRIX_RUN_ID:-$(date +%s)-$$}"
-CONTAINER_NAME="asus-zenbook-lints-py313-${MATRIX_RUN_ID}"
+# Parallel wave containers need unique names (CI/local ASUS_LINT_WAVE matrix).
+LINT_WAVE_SLUG="${ASUS_LINT_WAVE:-all}"
+CONTAINER_NAME="asus-zenbook-lints-py313-${LINT_WAVE_SLUG}-${MATRIX_RUN_ID}"
 
 _lint_soft() { "$@" || return 0; }
 
@@ -18,8 +20,11 @@ HOST_UID=""
 HOST_GID=""
 LINT_HOME="/tmp/asus-lint-home-${HOST_UID}"
 LOG_DIR="$REPO_ROOT/reports/distro-logs"
-LOG_FILE="$LOG_DIR/lint-python-3.13-slim.log"
-BUILD_LOG="$LOG_DIR/lint-python-3.13-slim-build.log"
+LOG_FILE="$LOG_DIR/lint-docker-${LINT_WAVE_SLUG}.log"
+# Per-wave build log so cheap∥heavy parallel hosts do not clobber tee output.
+BUILD_LOG="$LOG_DIR/lint-python-3.13-slim-build-${LINT_WAVE_SLUG}.log"
+# Stable inode across checkouts (same pattern as shellcheck stub lock).
+LINT_BUILDX_LOCK="${LINT_BUILDX_LOCK:-/tmp/asus-zenbook-lint-buildx.lock}"
 mkdir -p "$LOG_DIR"
 
 _LINT_BUILD_PID=""
@@ -63,6 +68,9 @@ _lint_setup() {
 
 _build_lint_image() {
     local build_status
+    # Cheap∥heavy waves share one local buildx cache dir; serialize builds.
+    exec {lint_build_lock_fd}>"$LINT_BUILDX_LOCK"
+    flock "$lint_build_lock_fd"
     set +e
     # setsid: tracked PID is the process-group leader of docker build + tee.
     setsid bash -c '
@@ -85,6 +93,8 @@ _build_lint_image() {
     build_status=$?
     _LINT_BUILD_PID=""
     set -e
+    flock -u "$lint_build_lock_fd"
+    exec {lint_build_lock_fd}>&-
     return "$build_status"
 }
 
@@ -96,6 +106,7 @@ set -euo pipefail
 export LANG="\${LANG:-C.UTF-8}"
 export LC_ALL="\${LC_ALL:-C.UTF-8}"
 export PATH="/opt/asus-zenbook-deps/.venv/bin:\${PATH}"
+export ASUS_LINT_WAVE="${LINT_WAVE_SLUG}"
 mkdir -p "\${HOME}" reports .ruff_cache .cache
 ./scripts/run-lints.sh
 # Avoid recursively chowning docker-buildx cache (root-owned host mount).
@@ -116,6 +127,7 @@ EOF
 "$DOCKER_BIN" run --rm --name "$CONTAINER_NAME" \
     --user "${HOST_UID}:${HOST_GID}" \
     --env "HOME=${LINT_HOME}" \
+    --env "ASUS_LINT_WAVE=${LINT_WAVE_SLUG}" \
     -v "$REPO_ROOT:/workspace" \
     -w /workspace \
     "$DOCKER_IMAGE" \

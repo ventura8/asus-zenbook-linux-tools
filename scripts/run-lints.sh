@@ -9,22 +9,28 @@ _soft() { "$@" || return 0; }
 cd "$REPO_ROOT"
 
 STEP_INDEX=0
-LINT_STEPS=(
+LINT_WAVE1_STEPS=(
     step_bash_syntax
     step_file_size_limits
     step_ruff
-    step_pylint
     step_yamllint
     step_dockerfilelint
     step_toml_lint
     step_version_sync
+    step_markdownlint
+)
+LINT_WAVE2_STEPS=(
+    step_pylint
     step_i18n_catalogs
     step_radon
-    step_markdownlint
     step_eslint
     step_shellcheck
     step_shell_complexity
     step_systemd_verify
+)
+LINT_STEPS=(
+    "${LINT_WAVE1_STEPS[@]}"
+    "${LINT_WAVE2_STEPS[@]}"
 )
 STEP_TOTAL=${#LINT_STEPS[@]}
 SHELLCHECK_LIB_NAMES=(
@@ -537,15 +543,15 @@ step_systemd_verify() {
     _run_systemd_verify
 }
 
+# shellcheck source=scripts/run-lints-waves.sh
+source "$SCRIPT_DIR/run-lints-waves.sh"
+
 run_all_lints() {
     trap '_lint_run_registered_cleanups' EXIT
     echo "=================================================="
     echo "      ASUS ZenBook Linux Tools Linting           "
     echo "=================================================="
-    local step
-    for step in "${LINT_STEPS[@]}"; do
-        "$step"
-    done
+    _run_selected_lint_waves || exit 1
     _lint_run_registered_cleanups
     trap - EXIT
     echo "=================================================="
@@ -558,5 +564,10 @@ export LANG="${LANG:-C.UTF-8}"
 export LC_ALL="${LC_ALL:-C.UTF-8}"
 
 mkdir -p "$REPO_ROOT/reports/distro-logs"
-run_all_lints 2>&1 | tee "$REPO_ROOT/reports/distro-logs/lints.log"
+_LINT_LOG_SLUG="${ASUS_LINT_WAVE:-all}"
+case "$_LINT_LOG_SLUG" in
+    all|cheap|heavy) ;;
+    *) _LINT_LOG_SLUG="all" ;;
+esac
+run_all_lints 2>&1 | tee "$REPO_ROOT/reports/distro-logs/lints-${_LINT_LOG_SLUG}.log"
 exit "${PIPESTATUS[0]}"

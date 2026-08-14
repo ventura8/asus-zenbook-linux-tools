@@ -80,6 +80,12 @@ _teardown_kcov_temp_root() {
     unset _KCOV_SAVED_EXIT_TRAP _KCOV_SAVED_EXIT_BODY _KCOV_TEMP_ROOT _KCOV_MERGED _KCOV_JSON
 }
 
+_export_and_teardown_kcov_shard() {
+    local kcov_root="$1" merged="$2"
+    _export_kcov_coverage_shard "$kcov_root" || return 1
+    _teardown_kcov_temp_root "$kcov_root" "$merged" ""
+}
+
 _run_kcov_coverage_pipeline() {
     local kcov_root="$1" merged="$2" min_percent="$3"
     local cov_json status=0
@@ -91,10 +97,26 @@ _run_kcov_coverage_pipeline() {
     status=$?
     set -e
     [ "$status" -eq 0 ] || return 1
+    if [ -n "${ASUS_COVERAGE_SHARD:-}" ]; then
+        _export_and_teardown_kcov_shard "$kcov_root" "$merged"
+        return $?
+    fi
     cov_json="$(_resolve_merged_kcov_coverage_json "$merged")" || return 1
     _KCOV_JSON="$cov_json"
     _finalize_kcov_coverage "$cov_json" "$min_percent" "$kcov_root" || return 1
     _teardown_kcov_temp_root "$kcov_root" "$merged" "$cov_json"
+}
+
+_export_kcov_coverage_shard() {
+    local kcov_root="$1" shard="${ASUS_COVERAGE_SHARD}" dest reports_root
+    reports_root=$(resolve_reports_root) || return 1
+    dest="$reports_root/coverage-shards/kcov-${shard}"
+    rm -rf "$dest"
+    mkdir -p "$dest/runs"
+    if [ -d "$kcov_root/runs" ]; then
+        cp -a "$kcov_root/runs"/. "$dest/runs/"
+    fi
+    echo "  ✓ Exported kcov shard ${shard} runs to $dest"
 }
 
 _run_and_merge_kcov_scenarios() {
@@ -136,6 +158,10 @@ step_kcov_coverage() {
     set -e
     if [ "$status" -ne 0 ]; then
         exit 1
+    fi
+    if [ -n "${ASUS_COVERAGE_SHARD:-}" ]; then
+        echo "  ✓ kcov coverage shard ${ASUS_COVERAGE_SHARD} scenarios completed (merge job gates %)."
+        return 0
     fi
     echo "  ✓ Shell line coverage ≥ ${min_percent}% on product shell scripts (bin/, lib/, install.sh, uninstall.sh)."
 }
@@ -220,4 +246,86 @@ _copy_kcov_report() {
     _copy_kcov_scenario_logs "$logs_dir" "$report_dest"
     _copy_kcov_scenario_logs_to_distro "$logs_dir" "$reports_root"
     echo "  ✓ Shell coverage report written to $report_dest/"
+}
+
+_collect_kcov_shard_runs() {
+    local reports_root="$1" dest_runs="$2" shard_runs
+    mkdir -p "$dest_runs"
+    for shard_runs in \
+        "$reports_root"/coverage-shards/kcov-*/runs \
+        "$reports_root"/coverage-shards/coverage-shard-kcov-*/runs
+    do
+        [ -d "$shard_runs" ] || continue
+        if [ -z "$(find "$shard_runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]; then
+            continue
+        fi
+        cp -a "$shard_runs"/. "$dest_runs/"
+    done
+}
+
+_copy_one_gha_coverage_shard_dir() {
+    local src_dir="$1" dest_root="$2" name mode_shard
+    name=$(basename "$src_dir")
+    case "$name" in
+        coverage-shard-*) ;;
+        *) return 0 ;;
+    esac
+    mode_shard=${name#coverage-shard-}
+    [ -n "$mode_shard" ] || return 0
+    mkdir -p "$dest_root/$mode_shard"
+    cp -a "$src_dir"/. "$dest_root/$mode_shard/"
+}
+
+_iter_gha_coverage_shard_dirs() {
+    local src="$1" dest="$2" dir
+    for dir in "$src"/coverage-shard-*; do
+        [ -d "$dir" ] || continue
+        _copy_one_gha_coverage_shard_dir "$dir" "$dest" || return 1
+    done
+}
+
+# Map GHA download-artifact dirs (coverage-shard-kcov-1/…) to kcov-1/python-1 layout.
+normalize_coverage_shard_artifacts() {
+    local reports_root src dest
+    reports_root=$(resolve_reports_root) || return 1
+    src="$reports_root/coverage-shards-download"
+    [ -d "$src" ] || return 0
+    dest="$reports_root/coverage-shards"
+    mkdir -p "$dest"
+    _iter_gha_coverage_shard_dirs "$src" "$dest"
+}
+
+_rewrite_kcov_docker_workspace_prefix() {
+    local runs_dir="$1" repo_root script_dir
+    [ -d "$runs_dir" ] || return 0
+    repo_root="${KCOV_REPO_ROOT:-$(_kcov_repo_root)}"
+    [ -n "$repo_root" ] || return 1
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    python3 "$script_dir/rewrite_kcov_workspace_prefix.py" "$runs_dir" "$repo_root"
+}
+
+_finalize_merged_kcov_temp() {
+    local tmp="$1" merged="$2" min_percent="$3" cov_json
+    _require_kcov_run_dirs "$tmp" || return 1
+    _rewrite_kcov_docker_workspace_prefix "$tmp/runs" || return 1
+    _merge_kcov_runs "$tmp" "$merged" || return 1
+    cov_json="$(_resolve_merged_kcov_coverage_json "$merged")" || return 1
+    _finalize_kcov_coverage "$cov_json" "$min_percent" "$tmp"
+}
+
+merge_kcov_coverage_shards() {
+    local reports_root tmp merged min_percent
+    reports_root=$(resolve_reports_root) || return 1
+    normalize_coverage_shard_artifacts || return 1
+    tmp=$(mktemp -d)
+    merged="$tmp/merged"
+    mkdir -p "$tmp/runs"
+    _collect_kcov_shard_runs "$reports_root" "$tmp/runs" || return 1
+    min_percent="$(_normalize_kcov_min_percent)"
+    if ! _finalize_merged_kcov_temp "$tmp" "$merged" "$min_percent"; then
+        rm -rf "$tmp"
+        return 1
+    fi
+    rm -rf "$tmp"
+    echo "  ✓ Merged kcov shards meet ≥${min_percent}% line coverage."
 }

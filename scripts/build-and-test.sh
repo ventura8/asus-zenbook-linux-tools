@@ -6,6 +6,8 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 # shellcheck source=scripts/coverage-utils.sh
 source "$SCRIPT_DIR/coverage-utils.sh"
+# shellcheck source=scripts/build-and-test-modes.sh
+source "$SCRIPT_DIR/build-and-test-modes.sh"
 MODE="full"
 declare -a MODE_STEPS=()
 STEP_INDEX=0
@@ -41,13 +43,16 @@ fi
 
 usage() {
     cat <<'USAGE_EOF'
-Usage: build-and-test.sh [--full|--lints-only|--tests-only|--compat-only]
+Usage: build-and-test.sh [--full|--lints-only|--tests-only|--compat-only|--kcov-only|--python-coverage-only|--coverage-merge-only]
 
 Runs repository verification checks.
-  --full         Lint in Docker, Debian .deb smoke (same as CI), then Docker coverage/compat
-  --lints-only   Run lint checks only (calls run-lints.sh)
-  --tests-only   Run unit, kcov, mocked E2E, and Python coverage (coverage-gate; no compat smoke)
-  --compat-only  Run unit tests, mocked E2E, and distro install/uninstall compatibility smoke
+  --full                  Lint∥deb smoke in Docker, then Docker coverage/compat
+  --lints-only            Run lint waves in Docker only (cheap ∥ heavy; no host lints)
+  --tests-only            Run unit, kcov, mocked E2E, and Python coverage (coverage-gate)
+  --kcov-only             Run kcov shell coverage (shard via ASUS_COVERAGE_SHARD)
+  --python-coverage-only  Run unit/E2E python coverage (shard via ASUS_COVERAGE_SHARD)
+  --coverage-merge-only   Merge coverage shards and enforce ≥90% gates
+  --compat-only           Run unit tests, mocked E2E, and distro install/uninstall smoke
 
 Parallel matrix lanes set REPORT_DISTRO_SLUG; coverage data defaults to
 .coverage.<slug> via COVERAGE_FILE so bind-mounted workspaces do not race.
@@ -62,16 +67,6 @@ is_container_runtime() {
         return 0
     fi
     return 1
-}
-
-_set_pipeline_mode_flag() {
-    case "$1" in
-        --full) MODE="full" ;;
-        --lints-only) MODE="lints-only" ;;
-        --tests-only) MODE="tests-only" ;;
-        --compat-only) MODE="compat-only" ;;
-        *) return 1 ;;
-    esac
 }
 
 _handle_mode_arg() {
@@ -149,27 +144,6 @@ step_unit_tests() {
         exit 1
     fi
     echo "  ✓ Unit tests passed."
-}
-
-step_lint_in_docker() {
-    start_step "Running all lint gates in Docker (python:3.13-slim)..."
-    _ensure_distro_logs_dir
-    if ! ./scripts/lint-in-docker.sh 2>&1 | tee "$DISTRO_LOG_DIR/lint-in-docker.log"; then
-        echo "  ✗ Docker lint gate failed." >&2
-        exit 1
-    fi
-    echo "  ✓ Docker lint gate passed."
-}
-
-step_deb_package_smoke() {
-    # Same script as CI job `deb-package` (shared scripts/run_deb_package_smoke.sh).
-    start_step "Running Debian package smoke (build/install/purge)..."
-    _ensure_distro_logs_dir
-    if ! ./scripts/run_deb_package_smoke.sh 2>&1 | tee "$DISTRO_LOG_DIR/deb-package.log"; then
-        echo "  ✗ Debian package smoke failed." >&2
-        exit 1
-    fi
-    echo "  ✓ Debian package smoke passed."
 }
 
 step_tests_in_docker() {
@@ -313,11 +287,25 @@ _persist_coverage_percent_artifact() {
     printf '%s\n' "$percent" > "$COVERAGE_PERCENT_FILE"
 }
 
+_coverage_available_for_sudo_user() {
+    [ "$(id -u)" -eq 0 ] || return 1
+    [ -n "${SUDO_USER:-}" ] || return 1
+    [ "$SUDO_USER" != root ] || return 1
+    command -v runuser >/dev/null 2>&1 || return 1
+    runuser -u "$SUDO_USER" -- python3 -m coverage --version &>/dev/null
+}
+
 _require_coverage_cli() {
     if command -v coverage &>/dev/null; then
         return 0
     fi
-    echo "  ✗ coverage not installed." >&2
+    if python3 -m coverage --version &>/dev/null; then
+        return 0
+    fi
+    if _coverage_available_for_sudo_user; then
+        return 0
+    fi
+    echo "  ✗ coverage not installed (need coverage on PATH or python3 -m coverage)." >&2
     exit 1
 }
 
@@ -352,6 +340,29 @@ step_python_coverage() {
     fi
 
     _write_python_coverage_reports
+}
+
+step_export_python_coverage_shard() {
+    start_step "Exporting Python coverage shard ${ASUS_COVERAGE_SHARD:-?}..."
+    _require_coverage_cli
+    if ! _export_python_coverage_shard_file; then
+        echo "  ✗ Failed to export python coverage shard." >&2
+        exit 1
+    fi
+}
+
+step_coverage_merge() {
+    start_step "Merging coverage shards and enforcing ≥90% gates..."
+    _require_coverage_cli
+    if ! merge_kcov_coverage_shards; then
+        echo "  ✗ Merged kcov coverage gate failed." >&2
+        exit 1
+    fi
+    if ! merge_python_coverage_shards; then
+        echo "  ✗ Merged python coverage gate failed." >&2
+        exit 1
+    fi
+    echo "  ✓ Coverage merge gates passed."
 }
 
 is_ci_environment() {
@@ -492,46 +503,10 @@ update_local_coverage_badge() {
     echo "  ✓ Coverage badge overwritten at assets/coverage.svg (${percent}%)."
 }
 
-_fill_mode_steps() {
-    local mode="$1"
-    MODE_STEPS=()
-    case "$mode" in
-        lints-only)
-            MODE_STEPS=(_run_lints_only_steps)
-            ;;
-        tests-only)
-            MODE_STEPS=(step_unit_tests step_kcov_coverage step_e2e_tests step_python_coverage)
-            ;;
-        compat-only)
-            MODE_STEPS=(step_unit_tests step_e2e_tests step_distro_compat_smoke)
-            ;;
-        full)
-            MODE_STEPS=(step_lint_in_docker step_deb_package_smoke step_tests_in_docker)
-            ;;
-        *)
-            echo "Unsupported mode: $mode" >&2
-            return 1
-            ;;
-    esac
-}
-
-_get_step_total() {
-    if ! _fill_mode_steps "$1"; then
-        return 1
-    fi
-    echo "${#MODE_STEPS[@]}"
-}
-
-_is_container_only_mode() {
-    case "$MODE" in
-        lints-only|tests-only|compat-only) return 0 ;;
-    esac
-    return 1
-}
-
 _print_host_mode_hint() {
     if [ "$MODE" = "lints-only" ]; then
-        echo "Run lints with: ./scripts/run-lints.sh" >&2
+        echo "Run lints in Docker with: ./scripts/lint-in-docker.sh" >&2
+        echo "  (or: ASUS_LINT_WAVE=cheap|heavy ./scripts/lint-in-docker.sh)" >&2
         return 0
     fi
     echo "Run tests in Docker with: ./scripts/run_docker_matrix.sh" >&2
@@ -539,17 +514,8 @@ _print_host_mode_hint() {
 
 _check_host_execution_disabled() {
     if _is_container_only_mode && ! is_container_runtime; then
-        echo "Host execution for '$MODE' is disabled." >&2
+        echo "Host execution for '$MODE' is disabled (lints/tests only in Docker)." >&2
         _print_host_mode_hint
-        exit 1
-    fi
-}
-
-_run_lints_only_steps() {
-    start_step "Running all lints via run-lints.sh..."
-    _ensure_distro_logs_dir
-    if ! ./scripts/run-lints.sh 2>&1 | tee "$DISTRO_LOG_DIR/run-lints.log"; then
-        echo "  ✗ Lint gate failed." >&2
         exit 1
     fi
 }

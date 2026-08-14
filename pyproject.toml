@@ -21,6 +21,13 @@ radon = "==6.0.1"
 ruff = "==0.16.1"
 yamllint = "==1.38.0"
 
+# Host merge remaps Docker /workspace paths onto the checkout root.
+[tool.coverage.paths]
+source = [
+    ".",
+    "/workspace",
+]
+
 [tool.ruff]
 line-length = 140
 target-version = "py313"

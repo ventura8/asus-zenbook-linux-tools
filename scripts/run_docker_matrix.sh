@@ -19,16 +19,26 @@ CLEANUP_RUNNING=0
 
 # Always-on nine lanes (PR / local --full / compat). Do not shrink this list.
 # Empty ASUS_CI_DE_FAMILY = stub/CLI. Full-DE variants use --de-family / CI job.
-DISTROS=(
+# Family splits (CI + local --distro-family) must stay in sync with DISTROS.
+DISTRO_FAMILY_DEBIAN=(
     "ubuntu:26.04"
     "debian:trixie"
+)
+DISTRO_FAMILY_RHEL=(
     "fedora:44"
     "rocky:9"
+    "almalinux:10"
+)
+DISTRO_FAMILY_SUSE_ARCH=(
     "opensuse/tumbleweed"
     "archlinux:latest"
     "opensuse/leap:16.0"
-    "almalinux:10"
     "manjarolinux/base:latest"
+)
+DISTROS=(
+    "${DISTRO_FAMILY_DEBIAN[@]}"
+    "${DISTRO_FAMILY_RHEL[@]}"
+    "${DISTRO_FAMILY_SUSE_ARCH[@]}"
 )
 DE_FAMILY="${ASUS_CI_DE_FAMILY:-}"
 case "$DE_FAMILY" in
@@ -119,10 +129,32 @@ dockerfile_for_distro() {
 _resolve_distro_image() {
     local image="$1"
     if [[ "$image" == "coverage-gate" ]]; then
-        echo "ubuntu:26.04"
+        # Lighter Debian base than Ubuntu for canonical kcov/Python coverage.
+        echo "debian:trixie"
         return
     fi
     echo "$image"
+}
+
+_distro_family_images() {
+    # Print family member images (one per line). Unknown family → exit 1.
+    case "$1" in
+        debian) printf '%s\n' "${DISTRO_FAMILY_DEBIAN[@]}" ;;
+        rhel) printf '%s\n' "${DISTRO_FAMILY_RHEL[@]}" ;;
+        suse-arch) printf '%s\n' "${DISTRO_FAMILY_SUSE_ARCH[@]}" ;;
+        *)
+            echo "Unsupported distro family: $1 (use debian|rhel|suse-arch)" >&2
+            return 1
+            ;;
+    esac
+}
+
+_append_distro_family() {
+    local family="$1" image
+    while IFS= read -r image; do
+        [[ -n "$image" ]] || continue
+        SELECTED_DISTROS+=("$image")
+    done < <(_distro_family_images "$family")
 }
 
 _distro_dockerfile() {
@@ -142,14 +174,12 @@ _echo_if_file_exists() {
 }
 
 tag_for_distro() {
-    local image slug tag
+    # Stub/CLI image only (F1): full-DE installs packages at container start so
+    # --de-family cells share the same tag/cache as distro-tests.
+    local image slug
     image=$(_resolve_distro_image "$1")
     slug="${image//[:\/]/-}"
-    tag="asus-zenbook-test:${slug}"
-    if [ -n "$DE_FAMILY" ]; then
-        tag="${tag}-de-${DE_FAMILY}"
-    fi
-    echo "$tag"
+    echo "asus-zenbook-test:${slug}"
 }
 
 is_supported_distro() {
@@ -163,30 +193,96 @@ is_supported_distro() {
     return 1
 }
 
+_matrix_tests_mode_flag() {
+    # ASUS_COVERAGE_MODE selects coverage-gate job slices (CI); default = full tests-only.
+    # ASUS_COVERAGE_SHARD=1|2 splits kcov/python work across matrix cells (merge job gates %).
+    case "${ASUS_COVERAGE_MODE:-all}" in
+        kcov) printf '%s\n' "--kcov-only" ;;
+        python) printf '%s\n' "--python-coverage-only" ;;
+        merge) printf '%s\n' "--coverage-merge-only" ;;
+        all|"") printf '%s\n' "--tests-only" ;;
+        *)
+            echo "Unsupported ASUS_COVERAGE_MODE='${ASUS_COVERAGE_MODE}' (use all|kcov|python|merge)" >&2
+            return 1
+            ;;
+    esac
+}
+
+_matrix_setup_tests_mode() {
+    local mode="$1"
+    if [[ "${mode}" == "compat-only" ]]; then
+        printf '%s\n' "--compat-only"
+        return 0
+    fi
+    _matrix_tests_mode_flag
+}
+
+_matrix_runtime_de_install_snippet() {
+    # Emitted into the container setup script when ASUS_CI_FULL_DE=1 (F1).
+    cat <<'RUNTIME_DE_EOF'
+_asus_runtime_install_de_family() {
+    local attempt=1 status=0 log
+    log="$(mktemp)"
+    trap 'rm -f "'"$log"'"' RETURN
+    while [ "$attempt" -le 3 ]; do
+        set +e
+        sudo -n env ASUS_CI_DE_FAMILY="${ASUS_CI_DE_FAMILY}" \
+            ./docker/images/tests/scripts/install-de-family.sh >"$log" 2>&1
+        status=$?
+        set -e
+        cat "$log"
+        if [ "$status" -eq 0 ]; then
+            return 0
+        fi
+        if grep -Fq "unsupported ASUS_CI_DE_FAMILY" "$log"; then
+            return "$status"
+        fi
+        echo "install-de-family attempt $attempt failed (status $status); retrying..." >&2
+        attempt=$((attempt + 1))
+    done
+    return "$status"
+}
+_asus_runtime_install_de_family
+RUNTIME_DE_EOF
+}
+
+_matrix_setup_env_exports() {
+    local -n _de_ref="$1" _full_ref="$2" _runtime_ref="$3"
+    _de_ref=""
+    _full_ref=""
+    _runtime_ref=""
+    if [ -n "$DE_FAMILY" ]; then
+        _de_ref="export ASUS_CI_DE_FAMILY=\"${DE_FAMILY}\""
+    fi
+    if [ "${ASUS_CI_FULL_DE:-}" = "1" ]; then
+        _full_ref="export ASUS_CI_FULL_DE=1"
+    fi
+    if [ "${ASUS_CI_FULL_DE:-}" = "1" ] && [ -n "$DE_FAMILY" ]; then
+        _runtime_ref="$(_matrix_runtime_de_install_snippet)"
+    fi
+}
+
 build_setup_script() {
     local distro_slug="$1"
     local mode="$2"
-    local tests_mode="--tests-only"
-    local skip_python_coverage_reports=0
-    local de_family_export="" full_de_export=""
+    local tests_mode skip_python_coverage_reports=0
+    local de_family_export="" full_de_export="" runtime_de_block=""
+    tests_mode="$(_matrix_setup_tests_mode "$mode")" || return 1
     if [[ "${mode}" == "compat-only" ]]; then
-        tests_mode="--compat-only"
         skip_python_coverage_reports=1
     fi
-    if [ -n "$DE_FAMILY" ]; then
-        de_family_export="export ASUS_CI_DE_FAMILY=\"${DE_FAMILY}\""
-    fi
-    if [ "${ASUS_CI_FULL_DE:-}" = "1" ]; then
-        full_de_export="export ASUS_CI_FULL_DE=1"
-    fi
+    _matrix_setup_env_exports de_family_export full_de_export runtime_de_block
     cat <<EOF
 set -euo pipefail
 export PATH="/opt/asus-zenbook-deps/.venv/bin:\${PATH}"
 export REPORT_DISTRO_SLUG="${distro_slug}"
 export REQUIRE_KCOV=1
 export SKIP_PYTHON_COVERAGE_REPORTS=${skip_python_coverage_reports}
+export ASUS_COVERAGE_MODE="${ASUS_COVERAGE_MODE:-all}"
+export ASUS_COVERAGE_SHARD="${ASUS_COVERAGE_SHARD:-}"
 ${de_family_export}
 ${full_de_export}
+${runtime_de_block}
 # Start a real D-Bus session so gdbus, gsettings, and notify-send have a live bus
 if command -v dbus-launch &>/dev/null; then
     eval "\$(dbus-launch --sh-syntax)"
@@ -226,15 +322,13 @@ build_repo_image() {
     _validate_build_inputs "$dockerfile_path" "$tag" "$distro" || return 1
 
     resolved=$(_resolve_distro_image "$distro")
+    # F1: never bake DE into the image; cache key is distro-only (shared with stub lanes).
     cache_key=$(echo "$resolved" | tr '/:' '__')
-    if [ -n "$DE_FAMILY" ]; then
-        cache_key="${cache_key}__de_${DE_FAMILY}"
-    fi
     echo "Building test image $tag from $dockerfile_path"
     if [ -n "$DE_FAMILY" ]; then
-        echo "  ASUS_CI_DE_FAMILY=$DE_FAMILY"
+        echo "  runtime ASUS_CI_DE_FAMILY=$DE_FAMILY (not baked into image)"
     fi
-    ASUS_CI_DE_FAMILY="$DE_FAMILY" docker_build_with_buildx_or_build \
+    ASUS_CI_DE_FAMILY="" docker_build_with_buildx_or_build \
         "$DOCKER_BIN" \
         "$dockerfile_path" \
         "$tag" \
@@ -292,7 +386,7 @@ run_target() {
         tag=$(tag_for_distro "$image")
         echo "[dry-run] Would build $tag from $dockerfile_path"
         if [ -n "$DE_FAMILY" ]; then
-            echo "[dry-run] ASUS_CI_DE_FAMILY=$DE_FAMILY"
+            echo "[dry-run] ASUS_CI_DE_FAMILY=$DE_FAMILY (runtime install-de-family)"
         fi
         if [[ "$COMPAT_ONLY" -eq 1 ]]; then
             echo "[dry-run] Would run compatibility-only pipeline on $image"

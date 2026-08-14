@@ -50,9 +50,24 @@ Use this skill to validate project code quality, formatting, unit tests, and end
   distro compatibility bugs.
 
 1. Run `./scripts/build-and-test.sh --full` from the repository root.
-   `--full` must stay CI-parity: lint-in-docker, then
-   `scripts/run_deb_package_smoke.sh` (same as CI `deb-package`), then the Docker
-   coverage-gate + compat matrix. Do not drop the deb smoke from local `--full`.
+   `--full` must stay CI-parity: lint waves in Docker (cheap ∥ heavy) ∥
+   `scripts/run_deb_package_smoke.sh` with **`DEB_BUILD_OPTIONS=nocheck`** (no host
+   unit tests), then coverage matrix (4 labeled cells) on **debian:trixie**
+   plus **host** `coverage-merge` ≥90% gates (no Docker for merge), then
+   three `--distro-family` compat matrices in parallel.
+   Do not drop the deb smoke from local `--full`.
+   **Host orchestrates only** — never run `run-lints.sh`, `coverage run`, or
+   unit/e2e on the pipeline machine; lints/tests execute only inside Docker.
+   Exception: `coverage-merge` / `--coverage-merge-only` runs on the host
+   (kcov + coverage.py merge of already-exported shard artifacts only).
+   CI `lint` job names use `format+syntax` / `pylint+shellcheck` (env
+   still `ASUS_LINT_WAVE=cheap|heavy`); `coverage` job names use
+   `kcov bin-sound+ui` / `kcov install-lib` / `python unit tests` /
+   `python e2e tests`; distro jobs are family-split
+   (`distro-tests-*` / `distro-full-de-*`).
+   CI concurrency: `group: ${{ github.workflow }}` + `cancel-in-progress: true`
+   (new push cancels the previous CI run; do not queue behind it).
+   Full-DE cells use **runtime** `install-de-family.sh` on stub images (F1).
    Deb smoke must clean `debian/asus-zenbook-linux-tools` (and related dh state) on
    EXIT so a leftover staged payload cannot make the next lint pass fail pylint
    `R0801` duplicate-code. Gettext freshness also requires
@@ -246,8 +261,8 @@ Full-DE XFCE builds pinned `xfconf` from source (`_install_xfconf_from_source`).
 
 1. Install checksum gate (mandatory with every `install.sh` change):
 
-- After checkout, CI runs `sha256sum -c install.sh.sha256` (`lint-docker`, `deb-package`,
-  `coverage-gate`, `distro-tests`, and PPA jobs).
+- After checkout, CI runs `sha256sum -c install.sh.sha256` (`lint`, `deb-package`,
+  `coverage`, `distro-tests-*`, and PPA jobs).
 - **Whenever `install.sh` changes**, refresh `install.sh.sha256` in the same change set:
   `sha256sum install.sh > install.sh.sha256`. Do not leave a stale checksum.
 - Confirm locally with `sha256sum -c install.sh.sha256` before declaring success.

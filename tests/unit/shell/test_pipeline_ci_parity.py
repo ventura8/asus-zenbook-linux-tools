@@ -6,16 +6,19 @@ import unittest
 from pathlib import Path
 
 
-class TestPipelineCiParity(unittest.TestCase):
-    """Ensure local --full and GitHub Actions share the same gate scripts."""
+class TestPipelineCiParityPackaging(unittest.TestCase):
+    """Deb smoke, lint discovery, and packaging-adjacent parity guards."""
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Resolve repository root once for packaging parity checks."""
         cls.repo_root = Path(__file__).resolve().parents[3]
 
     def test_deb_smoke_script_uses_safe_local_apt_path(self) -> None:
         """Local .deb install must use ./ or absolute paths (not release/package)."""
-        script = (self.repo_root / "scripts/run_deb_package_smoke.sh").read_text(encoding="utf-8")
+        script = (self.repo_root / "scripts/run_deb_package_smoke.sh").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("_apt_install_local_deb", script)
         self.assertIn('install_path="./$deb_path"', script)
         self.assertIn("runuser -u", script)
@@ -55,13 +58,6 @@ class TestPipelineCiParity(unittest.TestCase):
         self.assertNotRegex(dockerfile, r"(?i)\beslint@")
         self.assertIn("nodejs", dockerfile)
 
-    def test_ci_log_slug_sanitizes_colon_for_artifacts(self) -> None:
-        """upload-artifact rejects ':' and '/' in names (ubuntu:26.04 → ubuntu-26.04)."""
-        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
-        self.assertIn('log_slug="${log_slug//\\//-}"', ci)
-        self.assertIn('log_slug="${log_slug//:/-}"', ci)
-        self.assertIn('log_slug="${log_slug//:/-}-de-${{ matrix.de_family }}"', ci)
-
     def test_full_de_lxqt_conf_probe_accepts_debian_nested_path(self) -> None:
         """Debian ships globalkeyshortcuts.conf as a directory containing the file."""
         script = (
@@ -84,12 +80,109 @@ class TestPipelineCiParity(unittest.TestCase):
             self.assertRegex(text, r"(?m)^\s*alsa-utils-\[0-9\]\*\s*\\?\s*$", msg=rel)
             self.assertNotRegex(text, r"(?m)^\s*alsa-utils-\*\s*\\?\s*$", msg=rel)
 
+    def test_ci_deb_package_job_calls_shared_smoke_script(self) -> None:
+        """CI deb-package must not inline a divergent install path."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("scripts/run_deb_package_smoke.sh", ci)
+        self.assertIn("deb-package:", ci)
+        self.assertNotIn('apt-get install -y "$ARTIFACT_DEB"', ci)
+        self.assertNotIn("apt-get install -y \"$ARTIFACT_DEB\"", ci)
+
+    def test_full_pipeline_runs_deb_package_smoke_step(self) -> None:
+        """Local --full must include the same Debian smoke gate as CI."""
+        bat = (self.repo_root / "scripts/build-and-test.sh").read_text(encoding="utf-8")
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("step_lint_and_deb_parallel", modes)
+        self.assertIn("step_coverage_parallel", modes)
+        self.assertIn("step_compat_family_matrices", modes)
+        self.assertIn(
+            "MODE_STEPS=(step_lint_and_deb_parallel step_coverage_parallel "
+            "step_compat_family_matrices)",
+            modes,
+        )
+        self.assertIn("scripts/run_deb_package_smoke.sh", modes)
+        self.assertIn("build-and-test-modes.sh", bat)
+
+    def test_deb_smoke_skips_host_unit_tests(self) -> None:
+        """Deb package smoke must use nocheck so unittest stays in coverage Docker."""
+        script = (self.repo_root / "scripts/run_deb_package_smoke.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("nocheck", script)
+        self.assertIn("DEB_BUILD_OPTIONS", script)
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
+        )
+        # Host --full must not invoke in-process unit/kcov/e2e steps.
+        self.assertIn(
+            "MODE_STEPS=(step_lint_and_deb_parallel step_coverage_parallel "
+            "step_compat_family_matrices)",
+            modes,
+        )
+        self.assertNotRegex(
+            modes,
+            r"full\)\s*\n\s*MODE_STEPS=\([^)]*step_unit_tests",
+        )
+        self.assertNotRegex(
+            modes,
+            r"full\)\s*\n\s*MODE_STEPS=\([^)]*step_kcov_coverage",
+        )
+
+    def test_pot_freshness_requires_git_tracked_template(self) -> None:
+        """Pot check must fail when the template is only local/gitignored."""
+        extract = (self.repo_root / "scripts/i18n/extract_pot.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("_require_tracked_catalog", extract)
+        self.assertIn("_git_in_repo", extract)
+        self.assertIn("safe.directory=", extract)
+        self.assertIn("ls-files --error-unmatch", extract)
+        gitignore = (self.repo_root / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn("!po/asus-zenbook-linux-tools.pot", gitignore)
+        pot = self.repo_root / "po/asus-zenbook-linux-tools.pot"
+        self.assertTrue(pot.is_file(), msg="committed pot template must exist on disk")
+
+    def test_kcov_fixtures_avoid_hardcoded_session_uid_1000(self) -> None:
+        """GHA asusci is often UID 1001; bus/state under /1000 only passes locally."""
+        forbidden = (
+            "bus_root/1000",
+            "bus/1000",
+            "asus-zenbook-linux-tools/1000",
+            "echo 1000",
+        )
+        for rel in (
+            "scripts/coverage/kcov-install-scenarios.sh",
+            "scripts/coverage/kcov-screenpad-scenarios.sh",
+        ):
+            text = (self.repo_root / rel).read_text(encoding="utf-8")
+            for token in forbidden:
+                self.assertNotIn(token, text, msg=f"{rel} must not contain {token!r}")
+            self.assertIn('uid="$(id -u)"', text, msg=rel)
+
+
+class TestPipelineCiParityWorkflow(unittest.TestCase):
+    """GitHub Actions / local matrix and coverage workflow parity."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        """Resolve repository root once for workflow parity checks."""
+        cls.repo_root = Path(__file__).resolve().parents[3]
+
+    def test_ci_log_slug_sanitizes_colon_for_artifacts(self) -> None:
+        """upload-artifact rejects ':' and '/' in names (ubuntu:26.04 → ubuntu-26.04)."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn('log_slug="${log_slug//\\//-}"', ci)
+        self.assertIn('log_slug="${log_slug//:/-}"', ci)
+        self.assertIn('image_slug="${log_slug//:/-}"', ci)
+        self.assertIn('log_slug="${image_slug}-de-${{ matrix.de_family }}"', ci)
+
     def test_ci_distro_tests_timeout_allows_rocky_cold_build(self) -> None:
         """Rocky cold poetry/PyGObject image builds exceed a 20-minute job cap."""
         ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
-        # Bound the distro-tests job block: name … timeout-minutes before Full-DE.
-        start = ci.index("distro-tests:")
-        end = ci.index("distro-full-de:", start)
+        start = ci.index("distro-tests-rhel:")
+        end = ci.index("distro-tests-suse-arch:", start)
         block = ci[start:end]
         self.assertRegex(block, r"timeout-minutes:\s*([4-9][0-9]|[1-9][0-9]{2,})\b")
         self.assertNotRegex(block, r"timeout-minutes:\s*20\b")
@@ -114,52 +207,137 @@ class TestPipelineCiParity(unittest.TestCase):
                 msg=rel,
             )
 
-    def test_ci_deb_package_job_calls_shared_smoke_script(self) -> None:
-        """CI deb-package must not inline a divergent install path."""
+    def test_ci_uses_gha_buildx_cache_backend(self) -> None:
+        """CI must use BuildKit type=gha scopes, not actions/cache of .cache/docker-buildx."""
         ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
-        self.assertIn("scripts/run_deb_package_smoke.sh", ci)
-        self.assertIn("deb-package:", ci)
-        self.assertNotIn('apt-get install -y "$ARTIFACT_DEB"', ci)
-        self.assertNotIn("apt-get install -y \"$ARTIFACT_DEB\"", ci)
+        self.assertIn("DOCKER_BUILDX_CACHE_BACKEND: gha", ci)
+        self.assertIn("DOCKER_BUILDX_CACHE_SCOPE:", ci)
+        self.assertNotIn("path: .cache/docker-buildx", ci)
+        utils = (self.repo_root / "scripts/docker-utils.sh").read_text(encoding="utf-8")
+        self.assertIn("type=gha,scope=", utils)
+        self.assertIn("_docker_buildx_append_gha_cache_args", utils)
 
-    def test_full_pipeline_runs_deb_package_smoke_step(self) -> None:
-        """Local --full must include the same Debian smoke gate as CI."""
+    def test_ci_coverage_jobs_are_split(self) -> None:
+        """Coverage is mode×shard matrix (kcov|python)×(1|2) plus host merge gate."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("\n  coverage:\n", ci)
+        self.assertIn("name: Coverage ${{ matrix.label }} (debian:trixie)", ci)
+        self.assertIn("label: kcov bin-sound+ui", ci)
+        self.assertIn("label: kcov install-lib", ci)
+        self.assertIn("label: python unit tests", ci)
+        self.assertIn("label: python e2e tests", ci)
+        self.assertIn("ASUS_COVERAGE_MODE: ${{ matrix.mode }}", ci)
+        self.assertIn("ASUS_COVERAGE_SHARD: ${{ matrix.shard }}", ci)
+        self.assertIn("\n  coverage-merge:\n", ci)
+        self.assertIn("include-hidden-files: true", ci)
+        self.assertIn("--coverage-merge-only", ci)
+        self.assertIn("coverage-shards-download", ci)
+        self.assertIn("Install host merge tools", ci)
+        self.assertNotIn("ASUS_COVERAGE_MODE: merge", ci)
+        self.assertIn("needs: [lint, coverage-merge]", ci)
+        self.assertNotIn("\n  coverage-kcov:\n", ci)
+        self.assertNotIn("\n  coverage-python:\n", ci)
+        self.assertNotIn("coverage-gate:", ci)
         bat = (self.repo_root / "scripts/build-and-test.sh").read_text(encoding="utf-8")
-        self.assertIn("step_deb_package_smoke", bat)
-        self.assertIn(
-            "MODE_STEPS=(step_lint_in_docker step_deb_package_smoke step_tests_in_docker)",
-            bat,
+        self.assertIn("kcov-only", bat)
+        self.assertIn("python-coverage-only", bat)
+        self.assertIn("coverage-merge-only", bat)
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
         )
-        self.assertIn("scripts/run_deb_package_smoke.sh", bat)
-
-    def test_pot_freshness_requires_git_tracked_template(self) -> None:
-        """Pot check must fail when the template is only local/gitignored."""
-        extract = (self.repo_root / "scripts/i18n/extract_pot.sh").read_text(encoding="utf-8")
-        self.assertIn("_require_tracked_catalog", extract)
-        self.assertIn("_git_in_repo", extract)
-        self.assertIn("safe.directory=", extract)
-        self.assertIn("ls-files --error-unmatch", extract)
-        gitignore = (self.repo_root / ".gitignore").read_text(encoding="utf-8")
-        self.assertIn("!po/asus-zenbook-linux-tools.pot", gitignore)
-        pot = self.repo_root / "po/asus-zenbook-linux-tools.pot"
-        self.assertTrue(pot.is_file(), msg="committed pot template must exist on disk")
-
-    def test_kcov_fixtures_avoid_hardcoded_session_uid_1000(self) -> None:
-        """GHA asusci is often UID 1001; bus/state under /1000 only passes locally."""
-        forbidden = (
-            "bus_root/1000",
-            "bus/1000",
-            "asus-zenbook-linux-tools/1000",
-            'echo 1000',
+        self.assertIn("step_coverage_parallel", modes)
+        self.assertIn("_run_coverage_merge_host", modes)
+        self.assertIn("ASUS_COVERAGE_SHARD", modes)
+        self.assertNotIn("_run_coverage_merge_docker", modes)
+        matrix = (self.repo_root / "scripts/run_docker_matrix.sh").read_text(
+            encoding="utf-8"
         )
-        for rel in (
-            "scripts/coverage/kcov-install-scenarios.sh",
-            "scripts/coverage/kcov-screenpad-scenarios.sh",
-        ):
-            text = (self.repo_root / rel).read_text(encoding="utf-8")
-            for token in forbidden:
-                self.assertNotIn(token, text, msg=f"{rel} must not contain {token!r}")
-            self.assertIn('uid="$(id -u)"', text, msg=rel)
+        self.assertIn('echo "debian:trixie"', matrix)
+
+    def test_ci_lint_is_wave_matrix(self) -> None:
+        """Lint is a GHA matrix with display labels; host never runs run-lints for --full."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("\n  lint:\n", ci)
+        self.assertIn("name: Lint ${{ matrix.label }} (Docker)", ci)
+        self.assertIn("label: format+syntax", ci)
+        self.assertIn("label: pylint+shellcheck", ci)
+        self.assertIn("wave: cheap", ci)
+        self.assertIn("wave: heavy", ci)
+        self.assertIn("ASUS_LINT_WAVE: ${{ matrix.wave }}", ci)
+        self.assertNotIn("wave: [cheap, heavy]", ci)
+        self.assertNotIn("\n  lint-docker:\n", ci)
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("step_lint_waves_parallel", modes)
+        self.assertIn("lint-in-docker.sh", modes)
+        lint_docker = (self.repo_root / "scripts/lint-in-docker.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("asus-zenbook-lint-buildx.lock", lint_docker)
+        self.assertIn("DOCKER_BUILDX_SKIP_PRUNE", modes)
+        self.assertIn("ASUS_LINT_WAVE", modes)
+        self.assertNotIn("_run_lints_only_steps", modes)
+        bat = (self.repo_root / "scripts/build-and-test.sh").read_text(encoding="utf-8")
+        self.assertNotIn("_run_lints_only_steps", bat)
+        self.assertIn("lints/tests only in Docker", bat)
+
+    def test_ci_distro_tests_are_family_split(self) -> None:
+        """Compat lanes must use distro-tests-{debian,rhel,suse-arch} matrices."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("distro-tests-debian:", ci)
+        self.assertIn("distro-tests-rhel:", ci)
+        self.assertIn("distro-tests-suse-arch:", ci)
+        self.assertNotIn("\ndistro-tests:\n", ci)
+        self.assertIn("distro-full-de-debian:", ci)
+        self.assertIn("distro-full-de-rhel:", ci)
+        self.assertIn("distro-full-de-suse-arch:", ci)
+        self.assertNotIn("\ndistro-full-de:\n", ci)
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("--distro-family", modes)
+        self.assertIn("step_compat_family_matrices", modes)
+
+    def test_ci_cancels_previous_run_on_push(self) -> None:
+        """New push/PR sync must cancel any prior CI run, not queue behind it."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        # Workflow-wide group (not per-ref) so concurrent branch/PR runs cannot
+        # starve runners while an older run finishes.
+        self.assertRegex(
+            ci,
+            r"concurrency:\s*\n(?:\s*#[^\n]*\n)*\s*group:\s*\$\{\{\s*github\.workflow\s*\}\}",
+        )
+        self.assertRegex(
+            ci,
+            r"(?m)^\s*cancel-in-progress:\s*true\s*$",
+        )
+        self.assertNotRegex(
+            ci,
+            r"(?m)^\s*cancel-in-progress:\s*false\s*$",
+        )
+
+    def test_ci_full_de_max_parallel_is_eight(self) -> None:
+        """Full-DE matrix concurrency raised to cut wall-clock waves."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        start = ci.index("distro-full-de-debian:")
+        end = ci.index("nested-session:", start)
+        block = ci[start:end]
+        self.assertIn("max-parallel: 8", block)
+
+    def test_kcov_scenarios_run_in_parallel_shards(self) -> None:
+        """Default kcov suite must shard bin-sound / ui / install-lib in parallel."""
+        scenarios = (
+            self.repo_root / "scripts/coverage/kcov-install-scenarios-shards.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("_kcov_start_shard_workers", scenarios)
+        self.assertIn("bin-sound", scenarios)
+        self.assertIn("install-lib", scenarios)
+        self.assertIn("KCOV_SHARD", scenarios)
+        parent = (
+            self.repo_root / "scripts/coverage/kcov-install-scenarios.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("kcov-install-scenarios-shards.sh", parent)
 
     def test_coverage_gate_uploads_kcov_scenario_logs_on_failure(self) -> None:
         """CI must retain per-scenario kcov logs when coverage-gate fails."""

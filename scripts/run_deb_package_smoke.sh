@@ -71,14 +71,17 @@ _prepare_build_writable_dirs() {
 }
 
 _build_as_sudo_user() {
-    runuser -u "$SUDO_USER" -- dpkg-checkbuilddeps
-    runuser -u "$SUDO_USER" -- dpkg-buildpackage -b -us -uc
+    # Packaging smoke only — unit/shell checks run in coverage Docker, not here.
+    runuser -u "$SUDO_USER" -- env DEB_BUILD_OPTIONS="${DEB_BUILD_OPTIONS:-} nocheck" \
+        dpkg-checkbuilddeps
+    runuser -u "$SUDO_USER" -- env DEB_BUILD_OPTIONS="${DEB_BUILD_OPTIONS:-} nocheck" \
+        dpkg-buildpackage -b -us -uc
 }
 
 _build_unsigned_deb() {
-    # Match CI: dpkg-buildpackage / dh_auto_test run as a non-root user. When
-    # local --full is invoked via sudo, drop back to SUDO_USER so unit tests do
-    # not run as root against the live desktop session.
+    # Pipeline/CI host must not run product unit tests; coverage-gate Docker owns that.
+    # Always set nocheck (debian/rules skips override_dh_auto_test).
+    export DEB_BUILD_OPTIONS="${DEB_BUILD_OPTIONS:+$DEB_BUILD_OPTIONS }nocheck"
     _prepare_build_writable_dirs
     if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "$SUDO_USER" != root ]; then
         _build_as_sudo_user

@@ -229,26 +229,76 @@ _docker_ci_build_args() {
     )
 }
 
+_docker_buildx_cache_backend() {
+    # local (default): type=local under .cache/docker-buildx.
+    # gha: BuildKit GitHub Actions cache (CI); requires DOCKER_BUILDX_CACHE_SCOPE.
+    printf '%s\n' "${DOCKER_BUILDX_CACHE_BACKEND:-local}"
+}
+
+_docker_buildx_append_local_cache_args() {
+    local cache_path="$1"
+    local -n _local_from="$2"
+    local -n _local_to="$3"
+    mkdir -p "$cache_path"
+    if [ -f "$cache_path/index.json" ]; then
+        _local_from=(--cache-from "type=local,src=$cache_path")
+    fi
+    _local_to=(--cache-to "type=local,dest=$cache_path,mode=max")
+}
+
+_docker_buildx_append_gha_cache_args() {
+    local scope="${DOCKER_BUILDX_CACHE_SCOPE:-}"
+    local -n _gha_from="$1"
+    local -n _gha_to="$2"
+    if [ -z "$scope" ]; then
+        echo "DOCKER_BUILDX_CACHE_BACKEND=gha requires non-empty DOCKER_BUILDX_CACHE_SCOPE" >&2
+        return 1
+    fi
+    _gha_from=(--cache-from "type=gha,scope=$scope")
+    _gha_to=(--cache-to "type=gha,scope=$scope,mode=max")
+}
+
+_docker_buildx_resolve_cache_args() {
+    local _cache_base_dir="$1" cache_path="$2"
+    local from_name="$3" to_name="$4"
+    local backend
+    backend="$(_docker_buildx_cache_backend)"
+    case "$backend" in
+        local)
+            _docker_buildx_append_local_cache_args "$cache_path" "$from_name" "$to_name"
+            ;;
+        gha)
+            _docker_buildx_append_gha_cache_args "$from_name" "$to_name" || return 1
+            ;;
+        *)
+            echo "Unsupported DOCKER_BUILDX_CACHE_BACKEND='$backend' (use local|gha)" >&2
+            return 1
+            ;;
+    esac
+    return 0
+}
+
 _docker_buildx_build_with_cache() {
     local docker_bin="$1" dockerfile_path="$2" image_tag="$3" repo_root="$4"
     local cache_base_dir="$5" cache_path="$6"
     shift 6
     local -a build_args=("$@")
-    local cache_from_args=() build_status=0
-    mkdir -p "$cache_path"
-    if [ -f "$cache_path/index.json" ]; then
-        cache_from_args=(--cache-from "type=local,src=$cache_path")
-    fi
+    local cache_from_args=() cache_to_args=() build_status=0 backend
+    backend="$(_docker_buildx_cache_backend)"
+    _docker_buildx_resolve_cache_args "$cache_base_dir" "$cache_path" \
+        cache_from_args cache_to_args || return 1
     "$docker_bin" buildx build \
         --load \
         -f "$dockerfile_path" \
         -t "$image_tag" \
         "${build_args[@]}" \
         "${cache_from_args[@]}" \
-        --cache-to "type=local,dest=$cache_path,mode=max" \
+        "${cache_to_args[@]}" \
         "$repo_root" || build_status=$?
-    # Failed builds may leave partial cache exports; still prune for size control.
-    _docker_prune_buildx_local_cache "$cache_base_dir" "$cache_path"
+    # Local exports may leave partial cache; prune for size. GHA has no local tree.
+    if [ "$backend" = "local" ]; then
+        _docker_prune_buildx_local_cache "$cache_base_dir" "$cache_path"
+    fi
     return "$build_status"
 }
 

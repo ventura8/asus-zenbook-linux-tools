@@ -72,19 +72,26 @@ class TestAsusHotkeyDaemonDesktopUserHelpers(unittest.TestCase):
         self.assertEqual(call_attr(daemon_session, "_detect_desktop_user"), (None, None, None))
 
     @patch("os.geteuid", return_value=0)
-    @patch("shutil.which", return_value="/usr/bin/runuser")
+    @patch("asus_hotkey_daemon_session.shutil.which", return_value="/usr/bin/runuser")
+    @patch(
+        "asus_hotkey_daemon_session._session_env_for_sudo",
+        return_value={
+            "XDG_RUNTIME_DIR": "/run/user/1000",
+            "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
+            "XDG_SESSION_TYPE": "wayland",
+            "DISPLAY": ":0",
+        },
+    )
+    @patch(
+        "asus_hotkey_daemon_session._resolve_desktop_user",
+        return_value=(1000, "alice"),
+    )
     @patch("asus_hotkey_daemon_session.subprocess.run")
-    def test_run_in_desktop_session_uses_runuser_when_root(self, mock_run, _mock_which, _mock_euid):
+    def test_run_in_desktop_session_uses_runuser_when_root(
+        self, mock_run, _mock_resolve, _mock_env, _mock_which, _mock_euid
+    ):
         """Test desktop-session execution uses runuser for root-owned daemons when available."""
-        mock_run.side_effect = subprocess_run_responses(
-            (0, "c2 1000 alice seat0\n"),
-            (0, "Type=wayland\nState=active\n"),
-            (0, "Name=alice\nUser=1000\n"),
-            (0, "Type=wayland\n"),
-            (0, "Leader=\n"),
-            (0, "DISPLAY=:0\n"),
-            (0, "", ""),
-        )
+        mock_run.return_value = MagicMock(returncode=0, stdout="", stderr="")
         daemon_runtime.run_in_desktop_session(["/usr/bin/true"], 2, requires_dbus=True)
         self.assertEqual(
             mock_run.call_args.args[0],
@@ -103,20 +110,25 @@ class TestAsusHotkeyDaemonDesktopUserHelpers(unittest.TestCase):
         )
 
     @patch("os.geteuid", return_value=0)
-    @patch("shutil.which", return_value=None)
+    @patch("asus_hotkey_daemon_session.shutil.which", return_value=None)
+    @patch(
+        "asus_hotkey_daemon_session._session_env_for_sudo",
+        return_value={
+            "XDG_RUNTIME_DIR": "/run/user/1000",
+            "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
+            "XDG_SESSION_TYPE": "wayland",
+        },
+    )
+    @patch(
+        "asus_hotkey_daemon_session._resolve_desktop_user",
+        return_value=(1000, "alice"),
+    )
     @patch("asus_hotkey_daemon_session.subprocess.run")
-    def test_run_in_desktop_session_uses_sudo_fallback_when_no_runuser(self, mock_run, _mock_which, _mock_euid):
+    def test_run_in_desktop_session_uses_sudo_fallback_when_no_runuser(
+        self, mock_run, _mock_resolve, _mock_env, _mock_which, _mock_euid
+    ):
         """Test desktop-session execution falls back to sudo when runuser is missing."""
-        mock_run.side_effect = subprocess_run_responses(
-            (0, "c2 1000 alice seat0\n"),
-            (0, "Type=wayland\nState=active\n"),
-            (0, "Name=alice\nUser=1000\n"),
-            (0, "Type=wayland\n"),
-            (0, "Leader=\n"),
-            (0, "Type=wayland\n"),
-            (0, "Leader=\n"),
-            (0, "", ""),
-        )
+        mock_run.return_value = MagicMock(returncode=0, stdout="", stderr="")
         daemon_runtime.run_in_desktop_session(["/usr/bin/true"], 2, requires_dbus=True)
         self.assertEqual(
             mock_run.call_args.args[0],

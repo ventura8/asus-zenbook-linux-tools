@@ -11,14 +11,27 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # One in-flight CI run for this workflow (any branch/PR). A new push or PR
+  # synchronize must cancel the previous run — never queue behind it.
+  # (ppa-release.yml keeps cancel-in-progress: false on purpose.)
+  group: ${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
-  lint-docker:
-    name: Linting (Docker)
+  # Matrix: two lint waves in Docker (wave env id; label is GHA display-only).
+  # Local --full mirrors via ASUS_LINT_WAVE=cheap|heavy.
+  lint:
+    name: Lint ${{ matrix.label }} (Docker)
     runs-on: ubuntu-26.04
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - wave: cheap
+            label: format+syntax
+          - wave: heavy
+            label: pylint+shellcheck
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -29,29 +42,23 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
 
-      - name: Restore Docker layer cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
-        with:
-          path: .cache/docker-buildx
-          key: ${{ runner.os }}-lint-buildx-${{ hashFiles('docker/images/lint/*.Dockerfile', 'pyproject.toml', 'poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-lint-buildx-
-
-      - name: Run all lint gates in Docker
+      - name: Run ${{ matrix.label }}
         env:
-          DOCKER_BUILD_CACHE_DIR: ${{ github.workspace }}/.cache/docker-buildx
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: lint-py313
+          ASUS_LINT_WAVE: ${{ matrix.wave }}
         run: |
           set -euo pipefail
           mkdir -p reports/distro-logs
           chmod +x scripts/lint-in-docker.sh scripts/run-lints.sh scripts/build-and-test.sh
-          ./scripts/lint-in-docker.sh 2>&1 | tee reports/distro-logs/lint-docker.log
+          ./scripts/lint-in-docker.sh 2>&1 | tee "reports/distro-logs/lint-docker-${{ matrix.wave }}.log"
 
       - name: Upload lint Docker log
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: lint-docker-log
-          path: reports/distro-logs/lint-docker.log
+          name: lint-docker-${{ matrix.wave }}-log
+          path: reports/distro-logs/lint-docker-${{ matrix.wave }}.log
           if-no-files-found: warn
 
   deb-package:
@@ -89,11 +96,29 @@ jobs:
           path: artifacts/
           if-no-files-found: warn
 
-  coverage-gate:
-    name: Coverage Gate (ubuntu:26.04)
-    needs: lint-docker
+  # Matrix: 4 parallel cells on debian:trixie (mode+shard env; label is display-only).
+  # Shards upload partial data; coverage-merge enforces the ≥90% gates.
+  coverage:
+    name: Coverage ${{ matrix.label }} (debian:trixie)
+    needs: lint
     runs-on: ubuntu-26.04
-    timeout-minutes: 10
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: kcov
+            shard: "1"
+            label: kcov bin-sound+ui
+          - mode: kcov
+            shard: "2"
+            label: kcov install-lib
+          - mode: python
+            shard: "1"
+            label: python unit tests
+          - mode: python
+            shard: "2"
+            label: python e2e tests
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -104,64 +129,98 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
 
-      - name: Restore Docker layer cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
-        with:
-          path: .cache/docker-buildx
-          key: ${{ runner.os }}-tests-buildx-ubuntu-26.04-${{ hashFiles('docker/images/tests/**/*.Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-tests-buildx-ubuntu-26.04-
-            ${{ runner.os }}-tests-buildx-
-
-      - name: Run canonical coverage lane
+      - name: Run ${{ matrix.label }}
         env:
-          DOCKER_BUILD_CACHE_DIR: ${{ github.workspace }}/.cache/docker-buildx
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-debian-trixie
+          ASUS_COVERAGE_MODE: ${{ matrix.mode }}
+          ASUS_COVERAGE_SHARD: ${{ matrix.shard }}
         run: |
           set -euo pipefail
           mkdir -p reports/distro-logs
           chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
           ./scripts/run_docker_matrix.sh --coverage-gate \
-            2>&1 | tee reports/distro-logs/coverage-gate.log
+            2>&1 | tee "reports/distro-logs/coverage-${{ matrix.mode }}-${{ matrix.shard }}.log"
 
-      - name: Upload coverage gate log
+      - name: Upload coverage shard log
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: coverage-gate-log
-          path: reports/distro-logs/coverage-gate.log
+          name: coverage-${{ matrix.mode }}-${{ matrix.shard }}-log
+          path: reports/distro-logs/coverage-${{ matrix.mode }}-${{ matrix.shard }}.log
           if-no-files-found: warn
 
-      - name: Upload kcov scenario logs on failure
-        if: failure()
+      - name: Upload coverage shard data
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: coverage-gate-kcov-logs
+          name: coverage-shard-${{ matrix.mode }}-${{ matrix.shard }}
+          path: reports/coverage-shards/${{ matrix.mode }}-${{ matrix.shard }}
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: Upload kcov scenario logs on failure
+        if: failure() && matrix.mode == 'kcov'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: coverage-gate-kcov-logs-${{ matrix.shard }}
           path: |
             reports/distro-logs/kcov-scenarios/
             reports/kcov/
           if-no-files-found: warn
 
-  distro-tests:
+  coverage-merge:
+    name: Coverage merge (≥90% gates)
+    needs: coverage
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Download coverage shard data
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53  # v6.0.0
+        with:
+          pattern: coverage-shard-*
+          path: reports/coverage-shards-download
+
+      - name: Install host merge tools (kcov + coverage.py)
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kcov
+          python3 -m pip install --user 'coverage>=7.15,<8'
+
+      - name: Merge coverage shards on host and enforce gates
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs reports/coverage-shards
+          chmod +x scripts/build-and-test.sh
+          export PATH="${HOME}/.local/bin:${PATH}"
+          ./scripts/build-and-test.sh --coverage-merge-only \
+            2>&1 | tee reports/distro-logs/coverage-merge.log
+
+      - name: Upload coverage merge log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: coverage-merge-log
+          path: reports/distro-logs/coverage-merge.log
+          if-no-files-found: warn
+
+  # Package-family matrices (same nine lanes as DISTRO_FAMILY_* in run_docker_matrix.sh).
+  distro-tests-debian:
     name: Distro Tests (${{ matrix.image }})
-    needs: [lint-docker, coverage-gate]
+    needs: [lint, coverage-merge]
     runs-on: ubuntu-26.04
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        # Always-on nine lanes (empty ASUS_CI_DE_FAMILY stub/CLI).
-        # Full-DE family variants: distro-full-de job below (same push/PR pipeline).
-        # 45m: Rocky/Alma cold builds (poetry + PyGObject) exceed the old 20m cap.
-        image:
-          - ubuntu:26.04
-          - debian:trixie
-          - fedora:44
-          - rocky:9
-          - opensuse/tumbleweed
-          - archlinux:latest
-          - opensuse/leap:16.0
-          - almalinux:10
-          - manjarolinux/base:latest
+        image: [ubuntu:26.04, debian:trixie]
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -172,7 +231,6 @@ jobs:
       - name: Set matrix log slug
         run: |
           set -euo pipefail
-          # Artifact names forbid ':' (and '/'); normalize image refs for upload/cache.
           log_slug="${{ matrix.image }}"
           log_slug="${log_slug//\//-}"
           log_slug="${log_slug//:/-}"
@@ -181,18 +239,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
 
-      - name: Restore Docker layer cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
-        with:
-          path: .cache/docker-buildx
-          key: ${{ runner.os }}-tests-buildx-${{ env.log_slug }}-${{ hashFiles('docker/images/tests/**/*.Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-tests-buildx-${{ env.log_slug }}-
-            ${{ runner.os }}-tests-buildx-
-
-      - name: Run test-only distro container
+      - name: Run compat lane
         env:
-          DOCKER_BUILD_CACHE_DIR: ${{ github.workspace }}/.cache/docker-buildx
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.log_slug }}
         run: |
           set -euo pipefail
           mkdir -p reports/distro-logs
@@ -208,35 +258,170 @@ jobs:
           path: reports/distro-logs/
           if-no-files-found: warn
 
-  # Always-on ASUS_CI_DE_FAMILY package variants (same push/PR as distro-tests).
+  distro-tests-rhel:
+    name: Distro Tests (${{ matrix.image }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [fedora:44, rocky:9, almalinux:10]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          log_slug="${log_slug//:/-}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run compat lane
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.log_slug }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only --distro "${{ matrix.image }}" \
+            2>&1 | tee "reports/distro-logs/compat-${{ env.log_slug }}.log"
+
+      - name: Upload distro lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: distro-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-tests-suse-arch:
+    name: Distro Tests (${{ matrix.image }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - opensuse/tumbleweed
+          - archlinux:latest
+          - opensuse/leap:16.0
+          - manjarolinux/base:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          log_slug="${log_slug//:/-}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run compat lane
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.log_slug }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only --distro "${{ matrix.image }}" \
+            2>&1 | tee "reports/distro-logs/compat-${{ env.log_slug }}.log"
+
+      - name: Upload distro lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: distro-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  # Always-on ASUS_CI_DE_FAMILY variants (family-split like distro-tests-*).
+  # F1: stub images only; install-de-family.sh runs in-container before smoke.
   # Soft-skips for unpackaged Rocky/Alma cinnamon/mate/lxqt cells.
-  # Alma XFCE builds pinned xfconf from source (EPEL has libxfce4util only).
-  distro-full-de:
+  distro-full-de-debian:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
-    needs: [lint-docker, coverage-gate]
+    needs: [lint, coverage-merge]
     runs-on: ubuntu-26.04
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix:
-        image:
-          - ubuntu:26.04
-          - debian:trixie
-          - fedora:44
-          - rocky:9
-          - opensuse/tumbleweed
-          - archlinux:latest
-          - opensuse/leap:16.0
-          - almalinux:10
-          - manjarolinux/base:latest
-        de_family:
-          - gnome
-          - kde
-          - xfce
-          - lxqt
-          - cinnamon
-          - mate
+        image: [ubuntu:26.04, debian:trixie]
+        de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          image_slug="${log_slug//:/-}"
+          log_slug="${image_slug}-de-${{ matrix.de_family }}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+          echo "image_slug=${image_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Build and run full-DE compat smoke
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.image_slug }}
+          ASUS_CI_DE_FAMILY: ${{ matrix.de_family }}
+          ASUS_CI_FULL_DE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only \
+            --distro "${{ matrix.image }}" \
+            --de-family "${{ matrix.de_family }}" \
+            2>&1 | tee "reports/distro-logs/fullde-${{ env.log_slug }}.log"
+
+      - name: Upload full-DE lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: fullde-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-full-de-rhel:
+    name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        image: [fedora:44, rocky:9, almalinux:10]
+        de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
         exclude:
           - image: rocky:9
             de_family: cinnamon
@@ -260,30 +445,78 @@ jobs:
       - name: Set matrix log slug
         run: |
           set -euo pipefail
-          # Artifact names forbid ':' (and '/'); normalize image refs for upload/cache.
           log_slug="${{ matrix.image }}"
           log_slug="${log_slug//\//-}"
-          log_slug="${log_slug//:/-}-de-${{ matrix.de_family }}"
+          image_slug="${log_slug//:/-}"
+          log_slug="${image_slug}-de-${{ matrix.de_family }}"
           echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+          echo "image_slug=${image_slug}" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
 
-      - name: Restore Docker layer cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+      - name: Build and run full-DE compat smoke
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.image_slug }}
+          ASUS_CI_DE_FAMILY: ${{ matrix.de_family }}
+          ASUS_CI_FULL_DE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only \
+            --distro "${{ matrix.image }}" \
+            --de-family "${{ matrix.de_family }}" \
+            2>&1 | tee "reports/distro-logs/fullde-${{ env.log_slug }}.log"
+
+      - name: Upload full-DE lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          path: .cache/docker-buildx
-          key: >-
-            ${{ runner.os }}-fullde-buildx-${{ env.log_slug }}-${{
-            hashFiles('docker/images/tests/**/*.Dockerfile',
-            'docker/images/tests/scripts/install-de-family.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-fullde-buildx-${{ env.log_slug }}-
-            ${{ runner.os }}-fullde-buildx-
+          name: fullde-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-full-de-suse-arch:
+    name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        image:
+          - opensuse/tumbleweed
+          - archlinux:latest
+          - opensuse/leap:16.0
+          - manjarolinux/base:latest
+        de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          image_slug="${log_slug//:/-}"
+          log_slug="${image_slug}-de-${{ matrix.de_family }}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+          echo "image_slug=${image_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
 
       - name: Build and run full-DE compat smoke
         env:
-          DOCKER_BUILD_CACHE_DIR: ${{ github.workspace }}/.cache/docker-buildx
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.image_slug }}
           ASUS_CI_DE_FAMILY: ${{ matrix.de_family }}
           ASUS_CI_FULL_DE: "1"
         run: |
@@ -309,7 +542,7 @@ jobs:
   # No GDM/SDDM; no live-panel or laptop OSD-dialog claims.
   nested-session:
     name: Nested session smoke
-    needs: [lint-docker]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 30
     steps:
@@ -364,7 +597,7 @@ jobs:
 
   movefocused-nested:
     name: MoveFocused nested E2E
-    needs: [lint-docker]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 30
     steps:
@@ -421,7 +654,7 @@ jobs:
 
   sticky-osd-uinput:
     name: Sticky OSD uinput E2E
-    needs: [lint-docker]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 30
     steps:

@@ -24,6 +24,18 @@ EXPECTED_DISTROS = (
     "manjarolinux/base:latest",
 )
 
+_DISTRO_TESTS_FAMILY_JOBS = (
+    "distro-tests-debian",
+    "distro-tests-rhel",
+    "distro-tests-suse-arch",
+)
+
+_FULL_DE_FAMILY_JOBS = (
+    "distro-full-de-debian",
+    "distro-full-de-rhel",
+    "distro-full-de-suse-arch",
+)
+
 
 @functools.lru_cache(maxsize=32)
 def _cached_supported_distros(script_path: str, path: str, docker_bin: str) -> tuple[str, ...]:
@@ -41,8 +53,8 @@ def _cached_supported_distros(script_path: str, path: str, docker_bin: str) -> t
     return tuple(line.strip() for line in proc.stdout.splitlines() if line.strip())
 
 
-class TestDockerMatrixRunner(unittest.TestCase):
-    """Verify the Docker matrix runner exposes the supported distro matrix."""
+class _DockerMatrixFixture(unittest.TestCase):
+    """Stub docker PATH and helpers for matrix runner TestCases."""
 
     @classmethod
     def setUpClass(cls):
@@ -89,55 +101,31 @@ class TestDockerMatrixRunner(unittest.TestCase):
         )
 
     @staticmethod
-    def _ci_matrix_distro_images(repo_root: Path) -> list[str]:
-        """Load distro image entries from the distro-tests job matrix in ci.yml."""
-        ci_path = repo_root / ".github/workflows/ci.yml"
-        data = yaml.safe_load(ci_path.read_text(encoding="utf-8"))
-        images = (data.get("jobs") or {}).get("distro-tests", {}).get("strategy", {}).get("matrix", {}).get("image")
+    def _job_matrix_images(jobs: dict, name: str) -> list[str]:
+        """Return matrix.image list for a CI job, or raise if missing."""
+        job = jobs.get(name) or {}
+        images = (job.get("strategy") or {}).get("matrix", {}).get("image")
         if not images:
-            raise AssertionError("Could not parse distro-tests matrix images from ci.yml")
+            raise AssertionError(f"Could not parse {name} matrix images from ci.yml")
         return list(images)
+
+    @staticmethod
+    def _ci_matrix_distro_images(repo_root: Path) -> list[str]:
+        """Load distro images from family-split distro-tests-* jobs in ci.yml."""
+        data = yaml.safe_load(
+            (repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        )
+        jobs = data.get("jobs") or {}
+        images: list[str] = []
+        for name in _DISTRO_TESTS_FAMILY_JOBS:
+            images.extend(_DockerMatrixFixture._job_matrix_images(jobs, name))
+        return images
 
     @staticmethod
     def _dockerfile_for_distro_image(repo_root: Path, image: str) -> Path:
         """Map a matrix distro image to its docker/images/tests Dockerfile path."""
         slug = image.replace(":", "-").replace("/", "-")
         return repo_root / "docker/images/tests" / f"{slug}.Dockerfile"
-
-    def test_supported_distros_match_ci_and_dockerfiles(self):
-        """Matrix runner, CI workflow, and test Dockerfiles must list the same distros."""
-        supported = self._list_supported_distros()
-        ci_images = self._ci_matrix_distro_images(self.repo_root)
-        self.assertEqual(sorted(supported), sorted(ci_images))
-        self.assertEqual(
-            len(supported),
-            len(EXPECTED_DISTROS),
-            msg=f"always-on matrix must match EXPECTED_DISTROS: {supported}",
-        )
-        self.assertEqual(set(supported), set(EXPECTED_DISTROS))
-        self.assertNotIn("almalinux:9", supported)
-        for image in supported:
-            dockerfile = self._dockerfile_for_distro_image(self.repo_root, image)
-            self.assertTrue(dockerfile.is_file(), msg=str(dockerfile))
-            text = dockerfile.read_text(encoding="utf-8")
-            self.assertIn("ARG ASUS_CI_DE_FAMILY=", text)
-            self.assertIn("install-de-family.sh", text)
-
-    def test_dry_run_de_family_is_reported(self):
-        """Dry-run with --de-family should tag the DE variant."""
-        proc = self._run_docker_matrix(
-            "--dry-run",
-            "--compat-only",
-            "--distro",
-            "ubuntu:26.04",
-            "--de-family",
-            "gnome",
-        )
-        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
-        output = proc.stdout.lower()
-        self.assertIn("ubuntu-26.04", output)
-        self.assertIn("de-gnome", output)
-        self.assertIn("asus_ci_de_family=gnome", output)
 
     def _assert_ci_on_triggers(self, data, ci_text):
         """Assert ci.yml runs on push/PR and is not schedule-only nightly."""
@@ -181,25 +169,116 @@ class TestDockerMatrixRunner(unittest.TestCase):
         self.assertNotIn({"image": "almalinux:10", "de_family": "xfce"}, excludes)
         self.assertIn({"image": "almalinux:10", "de_family": "lxqt"}, excludes)
 
+    def _assert_full_de_family_jobs(self, jobs: dict) -> None:
+        """Assert family-split full-DE jobs cover nine images with max-parallel 8."""
+        self.assertNotIn("distro-full-de", jobs)
+        images: list[str] = []
+        for name in _FULL_DE_FAMILY_JOBS:
+            self.assertIn(name, jobs)
+            images.extend(self._job_matrix_images(jobs, name))
+            self.assertEqual((jobs[name].get("strategy") or {}).get("max-parallel"), 8)
+        self.assertEqual(len(images), 9)
+        self.assertNotIn("almalinux:9", images)
+        self._assert_alma_xfce_matrix_kept(jobs["distro-full-de-rhel"])
+
+    @staticmethod
+    def _consume_dockerfile_continuation(pending: str, line: str) -> tuple[str | None, str]:
+        """Fold one continuation line into *pending*; return (joined, next_pending)."""
+        if not line.strip():
+            return None, pending
+        pending = f"{pending} {line.lstrip()}"
+        if pending.rstrip().endswith("\\"):
+            return None, pending.rstrip()[:-1].rstrip()
+        return pending, ""
+
+    @staticmethod
+    def _start_or_append_install_line(joined: list[str], line: str, install_token: str) -> str:
+        """Append a complete install line or return a new pending continuation."""
+        if install_token not in line:
+            return ""
+        if line.rstrip().endswith("\\"):
+            return line.rstrip()[:-1].rstrip()
+        joined.append(line)
+        return ""
+
+    @staticmethod
+    def _joined_dockerfile_install_commands(text: str, install_token: str) -> list[str]:
+        """Join Dockerfile continuation lines that belong to *install_token* commands."""
+        joined: list[str] = []
+        pending = ""
+        for raw in text.splitlines():
+            line = raw.rstrip()
+            if pending:
+                complete, pending = _DockerMatrixFixture._consume_dockerfile_continuation(pending, line)
+                if complete is not None:
+                    joined.append(complete)
+                continue
+            pending = _DockerMatrixFixture._start_or_append_install_line(joined, line, install_token)
+        if pending:
+            joined.append(pending)
+        return joined
+
+class TestDockerMatrixRunner(_DockerMatrixFixture):
+    """Dry-run matrix surfaces and always-on distro list parity."""
+
+    def test_supported_distros_match_ci_and_dockerfiles(self):
+        """Matrix runner, CI workflow, and test Dockerfiles must list the same distros."""
+        supported = self._list_supported_distros()
+        ci_images = self._ci_matrix_distro_images(self.repo_root)
+        self.assertEqual(sorted(supported), sorted(ci_images))
+        self.assertEqual(
+            len(supported),
+            len(EXPECTED_DISTROS),
+            msg=f"always-on matrix must match EXPECTED_DISTROS: {supported}",
+        )
+        self.assertEqual(set(supported), set(EXPECTED_DISTROS))
+        self.assertNotIn("almalinux:9", supported)
+        for image in supported:
+            dockerfile = self._dockerfile_for_distro_image(self.repo_root, image)
+            self.assertTrue(dockerfile.is_file(), msg=str(dockerfile))
+            text = dockerfile.read_text(encoding="utf-8")
+            self.assertIn("ARG ASUS_CI_DE_FAMILY=", text)
+            self.assertIn("install-de-family.sh", text)
+
+    def test_dry_run_de_family_is_reported(self):
+        """Dry-run with --de-family reports runtime DE install (F1, not baked tag)."""
+        proc = self._run_docker_matrix(
+            "--dry-run",
+            "--compat-only",
+            "--distro",
+            "ubuntu:26.04",
+            "--de-family",
+            "gnome",
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        output = proc.stdout.lower()
+        self.assertIn("ubuntu-26.04", output)
+        self.assertIn("asus_ci_de_family=gnome", output)
+        self.assertIn("runtime install-de-family", output)
+        self.assertNotIn("asus-zenbook-test:ubuntu-26.04-de-gnome", output)
+
+    def test_full_de_build_uses_stub_image_tag(self):
+        """F1: --de-family must share the stub image tag with distro-tests."""
+        script = (self.repo_root / "scripts/run_docker_matrix.sh").read_text(encoding="utf-8")
+        self.assertIn("runtime ASUS_CI_DE_FAMILY", script)
+        self.assertIn("_matrix_runtime_de_install_snippet", script)
+        self.assertIn("install-de-family.sh", script)
+        self.assertNotIn('tag="${tag}-de-${DE_FAMILY}"', script)
+        self.assertNotIn('cache_key="${cache_key}__de_${DE_FAMILY}"', script)
+
     def test_ci_full_de_and_nested_jobs_are_always_on(self):
-        """Full-DE + nested proofs live in push/PR ci.yml — no nightly workflow."""
+        """Full-DE family matrices + nested proofs live in push/PR ci.yml."""
         ci_path = self.repo_root / ".github/workflows/ci.yml"
         ci_text = ci_path.read_text(encoding="utf-8")
         data = yaml.safe_load(ci_text)
         jobs = data.get("jobs") or {}
-        self.assertIn("distro-full-de", jobs)
+        self._assert_full_de_family_jobs(jobs)
         self.assertIn("nested-session", jobs)
         self.assertIn("movefocused-nested", jobs)
         self.assertIn("sticky-osd-uinput", jobs)
-        full_de = jobs["distro-full-de"]
-        images = (full_de.get("strategy") or {}).get("matrix", {}).get("image") or []
-        self.assertEqual(len(images), 9)
-        self.assertNotIn("almalinux:9", images)
-        self._assert_alma_xfce_matrix_kept(full_de)
         self._assert_ci_on_triggers(data, ci_text)
         self.assertFalse((self.repo_root / ".github/workflows/distro-full-de.yml").exists())
         self._assert_nested_proof_scripts()
-        # Nested jobs must install deps (no permanent missing-package soft-skip).
         self.assertIn("gnome-shell", ci_text)
         self.assertIn("mutter", ci_text)
         self.assertIn("ydotool", ci_text)
@@ -238,8 +317,8 @@ class TestDockerMatrixRunner(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, msg=proc.stderr)
         output = proc.stdout.lower()
-        self.assertIn("de-lxqt", output)
         self.assertIn("asus_ci_de_family=lxqt", output)
+        self.assertIn("runtime install-de-family", output)
 
     def test_alma_dockerfile_skips_unpackaged_rhel_tools(self):
         """AlmaLinux 10 image must not hard-require unpackaged xdotool/ydotool/evdev RPMs."""
@@ -290,6 +369,9 @@ class TestDockerMatrixRunner(unittest.TestCase):
         self.assertIn("distro_install_smoke_desktop.sh", smoke_text)
         self.assertIn("distro_install_smoke_live_pkg.sh", smoke_text)
         self.assertIn("_run_desktop_install_uninstall_cycles", smoke_text)
+
+class TestDockerMatrixCiAndImages(_DockerMatrixFixture):
+    """CI full-DE wiring, Dockerfile pins, and host UID helpers."""
 
     def test_ubuntu_dockerfile_includes_pygobject_and_desktop_cli_tools(self):
         """Ubuntu test image must ship PyGObject and light DESKTOP CLI packages."""
@@ -359,43 +441,6 @@ class TestDockerMatrixRunner(unittest.TestCase):
         self.assertIn("tests-only pipeline", gate_out)
         self.assertNotIn("compatibility-only pipeline", gate_out)
 
-    @staticmethod
-    def _consume_dockerfile_continuation(pending: str, line: str) -> tuple[str | None, str]:
-        """Fold one continuation line into *pending*; return (joined, next_pending)."""
-        if not line.strip():
-            return None, pending
-        pending = f"{pending} {line.lstrip()}"
-        if pending.rstrip().endswith("\\"):
-            return None, pending.rstrip()[:-1].rstrip()
-        return pending, ""
-
-    @staticmethod
-    def _start_or_append_install_line(joined: list[str], line: str, install_token: str) -> str:
-        """Append a complete install line or return a new pending continuation."""
-        if install_token not in line:
-            return ""
-        if line.rstrip().endswith("\\"):
-            return line.rstrip()[:-1].rstrip()
-        joined.append(line)
-        return ""
-
-    @staticmethod
-    def _joined_dockerfile_install_commands(text: str, install_token: str) -> list[str]:
-        """Join Dockerfile continuation lines that belong to *install_token* commands."""
-        joined: list[str] = []
-        pending = ""
-        for raw in text.splitlines():
-            line = raw.rstrip()
-            if pending:
-                complete, pending = TestDockerMatrixRunner._consume_dockerfile_continuation(pending, line)
-                if complete is not None:
-                    joined.append(complete)
-                continue
-            pending = TestDockerMatrixRunner._start_or_append_install_line(joined, line, install_token)
-        if pending:
-            joined.append(pending)
-        return joined
-
     def test_distro_images_skip_unpackaged_ydotool(self):
         """Debian and Rocky images must not hard-require unpackaged ydotool."""
         debian = (self.repo_root / "docker/images/tests/debian-trixie.Dockerfile").read_text(encoding="utf-8")
@@ -437,15 +482,26 @@ class TestDockerMatrixRunner(unittest.TestCase):
         self.assertIn("- base -> manjarolinux/base:latest", proc.stdout)
         self.assertIn("- ubuntu -> ubuntu@sha256:deadbeef", proc.stdout)
 
+    def test_dry_run_distro_family_expands_debian_slice(self):
+        """--distro-family debian selects ubuntu + debian lanes only."""
+        proc = self._run_docker_matrix(
+            "--dry-run", "--compat-only", "--distro-family", "debian"
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        out = proc.stdout
+        self.assertIn("ubuntu:26.04", out)
+        self.assertIn("debian:trixie", out)
+        self.assertNotIn("fedora:44", out)
+        self.assertNotIn("rocky:9", out)
+
     def test_dry_run_coverage_gate_target_is_reported(self):
-        """Dry-run coverage-gate mode should reuse the ubuntu:26.04 Dockerfile."""
+        """Dry-run coverage-gate mode should reuse the debian:trixie Dockerfile."""
         proc = self._run_docker_matrix("--dry-run", "--coverage-gate")
 
         self.assertEqual(proc.returncode, 0, msg=proc.stderr)
         output = proc.stdout.lower()
         self.assertIn("coverage-gate", output)
-        self.assertIn("ubuntu-26.04.dockerfile", output)
-
+        self.assertIn("debian-trixie.dockerfile", output)
 
 if __name__ == "__main__":
     unittest.main()

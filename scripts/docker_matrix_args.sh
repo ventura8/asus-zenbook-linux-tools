@@ -3,7 +3,7 @@
 usage() {
     cat <<'EOF'
 Usage: run_docker_matrix.sh [--dry-run] [--serial|--parallel] [--compat-only] [--coverage-gate]
-                            [--distro <image>] [--de-family <family>]
+                            [--distro <image>] [--distro-family <family>] [--de-family <family>]
 
 Runs the repository test-only pipeline inside Docker containers for supported distros.
 Default matrix is always the nine distro lanes (empty ASUS_CI_DE_FAMILY / stub-CLI).
@@ -15,10 +15,13 @@ Options:
   --serial          Run distro containers one at a time (easier to read live output).
   --parallel        Run distro containers concurrently (default).
   --compat-only     Skip coverage gates and run compatibility checks only.
-  --coverage-gate   Run only the dedicated canonical coverage-gate image.
+  --coverage-gate   Run only the dedicated canonical coverage-gate image (debian:trixie).
   --print-supported-distros
                     Print supported matrix distro images (one per line) and exit.
   --distro <image>  Run only the specified distro image. Can be passed multiple times.
+  --distro-family <name>
+                    Select a package-family matrix slice: debian|rhel|suse-arch
+                    (can be combined with --distro; expands to the family's images).
   --de-family <name>
                     Build with ASUS_CI_DE_FAMILY (gnome|kde|xfce|lxqt|cinnamon|mate).
                     Also accepted via env ASUS_CI_DE_FAMILY. Always-on CI full-DE job
@@ -32,6 +35,20 @@ _handle_distro_arg() {
         exit 1
     fi
     SELECTED_DISTROS+=("$2")
+}
+
+_handle_distro_family_arg() {
+    if [[ -z "$2" || "$2" == --* ]]; then
+        echo "--distro-family requires debian|rhel|suse-arch" >&2
+        exit 1
+    fi
+    case "$2" in
+        debian|rhel|suse-arch) _append_distro_family "$2" ;;
+        *)
+            echo "Unsupported --distro-family: $2 (use debian|rhel|suse-arch)" >&2
+            exit 1
+            ;;
+    esac
 }
 
 _handle_de_family_arg() {
@@ -98,46 +115,65 @@ _handle_switch_arg() {
     _handle_mode_switch_arg "$1"
 }
 
+_is_valued_matrix_flag() {
+    case "$1" in
+        --distro|--distro-family|--de-family) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+_dispatch_valued_flag() {
+    case "$1" in
+        --distro) _handle_distro_arg "$1" "$2" ;;
+        --distro-family) _handle_distro_family_arg "$1" "$2" ;;
+        --de-family) _handle_de_family_arg "$1" "$2" ;;
+        *) return 1 ;;
+    esac
+    return 0
+}
+
 _process_arg() {
     if _handle_switch_arg "$1"; then
         return
     fi
-
-    case "$1" in
-        --distro)
-            _handle_distro_arg "$1" "${2:-}"
-            ;;
-        --de-family)
-            _handle_de_family_arg "$1" "${2:-}"
-            ;;
-        -h|--help)
-            usage
-            exit 0
-            ;;
-        *)
-            _handle_unknown_arg "$1"
-            ;;
-    esac
+    if _dispatch_valued_flag "$1" "${2:-}"; then
+        return
+    fi
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        usage
+        exit 0
+    fi
+    _handle_unknown_arg "$1"
 }
 
 _matrix_arg_has_value() {
     [ "$#" -ge 2 ] && [[ "$2" != --* ]]
 }
 
+_matrix_valued_shift_count() {
+    # How many argv slots a valued flag consumes (1 without value, else 2).
+    if _matrix_arg_has_value "$@"; then
+        echo 2
+        return
+    fi
+    echo 1
+}
+
 parse_args() {
+    local shift_n
     while [[ $# -gt 0 ]]; do
-        if [[ "$1" == "--distro" || "$1" == "--de-family" ]]; then
-            if _matrix_arg_has_value "$@"; then
+        if _is_valued_matrix_flag "$1"; then
+            shift_n="$(_matrix_valued_shift_count "$@")"
+            if [[ "$shift_n" -eq 2 ]]; then
                 _process_arg "$1" "$2"
-                shift 2
             else
                 _process_arg "$1" ""
-                shift
             fi
-        else
-            _process_arg "$1"
-            shift
+            shift "$shift_n"
+            continue
         fi
+        _process_arg "$1"
+        shift
     done
 }
 
@@ -153,7 +189,7 @@ _validate_selected_distros() {
 
 validate_mode_selection() {
     if [[ "$RUN_COVERAGE_GATE" -eq 1 && "${#SELECTED_DISTROS[@]}" -gt 0 ]]; then
-        echo "Do not combine --coverage-gate with --distro." >&2
+        echo "Do not combine --coverage-gate with --distro / --distro-family." >&2
         exit 1
     fi
 

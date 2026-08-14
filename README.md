@@ -360,12 +360,16 @@ Recommended split:
   ```
 
 `./scripts/build-and-test.sh --full` runs this same split automatically:
-canonical coverage-gate image first, then compatibility-only distro matrix.
+lint waves in Docker (cheap ∥ heavy) ∥ Debian `.deb` smoke with
+`DEB_BUILD_OPTIONS=nocheck` (no host unit tests), then canonical
+**debian:trixie** coverage-gate (kcov ∥ python), then package-family
+compatibility matrices (`--distro-family`).
 
 Mocked/CI E2E tests use a strict per-test timeout budget of 20-30 seconds. Any
 test command that exceeds its timeout is treated as a failed test.
 
-`./scripts/build-and-test.sh` now orchestrates Docker-only lint and test stages.
+`./scripts/build-and-test.sh` orchestrates Docker-only lint and test stages on
+the pipeline host (never `run-lints.sh` / unit / kcov / e2e on the host).
 Only real-system end-to-end tests are host-executed via
 `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
 

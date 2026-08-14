@@ -19,7 +19,7 @@ hotkey_state = importlib.import_module("asus_hotkey_daemon_state")
 
 
 class TestAsusHotkeyDaemonSessionEnv(unittest.TestCase):
-    """Bus-root precedence, loginctl parse, cache, and systemctl-env helpers."""
+    """Bus-root, loginctl parse, and desktop-user cache helpers."""
 
     def tearDown(self):
         """Clear systemctl env skip cache between tests."""
@@ -146,6 +146,99 @@ class TestAsusHotkeyDaemonSessionEnv(unittest.TestCase):
             call_attr(session, "prime_desktop_user_cache")
             resolve.assert_not_called()
 
+    def test_prime_desktop_user_cache_as_root(self):
+        """Root priming resolves the desktop user once."""
+        with (
+            patch("asus_hotkey_daemon_session.os.geteuid", return_value=0),
+            patch.object(session, "_resolve_desktop_user") as resolve,
+        ):
+            call_attr(session, "prime_desktop_user_cache")
+            resolve.assert_called_once_with()
+
+    def test_loginctl_show_session_value_returns_property(self):
+        """Successful show-session property lookup returns the stripped value."""
+        with patch.object(
+            session,
+            "_loginctl_show_session_properties",
+            return_value={"Type": "wayland"},
+        ):
+            self.assertEqual(call_attr(session, "_loginctl_show_session_value", "c1", "Type"), "wayland")
+
+    @patch(
+        "asus_hotkey_daemon_session.subprocess.run",
+        side_effect=OSError("no loginctl"),
+    )
+    def test_list_loginctl_session_ids_oserror(self, _run):
+        """list-sessions transport failures yield an empty id list."""
+        self.assertEqual(call_attr(session, "_list_loginctl_session_ids"), [])
+
+    def test_desktop_user_from_inactive_session(self):
+        """Inactive sessions never resolve a desktop user."""
+        with patch.object(session, "_is_active_gui_session", return_value=False):
+            self.assertIsNone(call_attr(session, "_desktop_user_from_session", "c9"))
+
+    def test_detect_desktop_user_honors_resolve_deadline(self):
+        """Detect stops probing when the resolve deadline has already passed."""
+        with (
+            patch.object(session, "_list_loginctl_session_ids", return_value=["c1"]),
+            patch.object(session, "_desktop_user_from_session") as from_session,
+            patch("asus_hotkey_daemon_session.time.monotonic", return_value=10.0),
+        ):
+            self.assertEqual(
+                call_attr(session, "_detect_desktop_user", resolve_deadline=5.0),
+                (None, None, None),
+            )
+            from_session.assert_not_called()
+
+    def test_resolve_desktop_user_caches_detected_session(self):
+        """Fresh detect populates the desktop-user cache and returns uid/name."""
+        self.addCleanup(hotkey_state.clear_desktop_user_cache)
+        hotkey_state.clear_desktop_user_cache()
+        with (
+            patch.object(session, "_detect_desktop_user", return_value=(1000, "alice", "c2")),
+            patch.object(
+                session,
+                "_desktop_session_env",
+                return_value={"DISPLAY": ":0", "XDG_RUNTIME_DIR": "/run/user/1000"},
+            ),
+            patch("asus_hotkey_daemon_session.time.monotonic", return_value=1.0),
+        ):
+            self.assertEqual(call_attr(session, "_resolve_desktop_user"), (1000, "alice"))
+        self.assertEqual(hotkey_state.get_desktop_user_session_id(), "c2")
+        self.assertEqual(hotkey_state.get_desktop_user_session_env().get("DISPLAY"), ":0")
+
+    def test_session_env_for_sudo_refreshes_when_display_missing(self):
+        """Missing display keys force a desktop-session env refresh."""
+        refreshed = {"DISPLAY": ":0", "XDG_RUNTIME_DIR": "/run/user/1000"}
+        with patch.object(session, "_desktop_session_env", return_value=refreshed) as build:
+            out = call_attr(
+                session,
+                "_session_env_for_sudo",
+                1000,
+                "c2",
+                "alice",
+                {"XDG_RUNTIME_DIR": "/run/user/1000"},
+            )
+        self.assertEqual(out, refreshed)
+        build.assert_called_once()
+
+    def test_session_env_for_sudo_reuses_display_cache(self):
+        """Cached session env with a display key is returned unchanged."""
+        cached = {"DISPLAY": ":1", "XDG_RUNTIME_DIR": "/run/user/1000"}
+        with patch.object(session, "_desktop_session_env") as build:
+            self.assertEqual(
+                call_attr(session, "_session_env_for_sudo", 1000, "c2", "alice", cached),
+                cached,
+            )
+            build.assert_not_called()
+
+class TestAsusHotkeyDaemonSystemctlEnv(unittest.TestCase):
+    """systemctl --user show-environment blob cache and merge paths."""
+
+    def tearDown(self):
+        """Clear systemctl env skip cache between tests."""
+        call_attr(session, "reset_systemctl_env_cache")
+
     def test_systemctl_env_timeout_secs(self):
         """Invalid env falls back to 1.0; deadline clamps the base timeout."""
         with patch.dict(os.environ, {"ASUS_SYSTEMCTL_ENV_TIMEOUT_SECS": "nope"}, clear=False):
@@ -200,6 +293,66 @@ class TestAsusHotkeyDaemonSessionEnv(unittest.TestCase):
         """Nonzero systemctl exit marks skip."""
         mock_run.return_value = MagicMock(returncode=1, stdout="")
         self.assertIsNone(call_attr(session, "_invoke_systemctl_show_environment", "alice", 1000))
+
+    @patch("asus_hotkey_daemon_session.subprocess.run")
+    def test_invoke_systemctl_success_caches_blob(self, mock_run):
+        """Successful show-environment stdout is cached for the username."""
+        mock_run.return_value = MagicMock(returncode=0, stdout="DISPLAY=:0\n")
+        with patch("asus_hotkey_daemon_session.time.monotonic", return_value=1.0):
+            self.assertEqual(
+                call_attr(session, "_invoke_systemctl_show_environment", "alice", 1000),
+                "DISPLAY=:0\n",
+            )
+            need, blob = call_attr(session, "_cached_systemctl_env_blob", "alice")
+        self.assertFalse(need)
+        self.assertEqual(blob, "DISPLAY=:0\n")
+
+    def test_cached_systemctl_env_blob_skip_blocks_fetch(self):
+        """Active skip window returns need_fetch=False with no blob."""
+        state = get_attr(session, "_SYSTEMCTL_ENV_STATE")
+        state.clear()
+        state.update(
+            {
+                "user": None,
+                "blob": None,
+                "blob_valid": False,
+                "blob_expires": None,
+                "skip_until": 1e18,
+            }
+        )
+        with patch("asus_hotkey_daemon_session.time.monotonic", return_value=1.0):
+            need, blob = call_attr(session, "_cached_systemctl_env_blob", "alice")
+        self.assertFalse(need)
+        self.assertIsNone(blob)
+
+    def test_fetch_systemctl_user_env_blob_paths(self):
+        """Fetch reuses cache, fails closed without runuser, else invokes systemctl."""
+        with patch.object(session, "_cached_systemctl_env_blob", return_value=(False, "DISPLAY=:0\n")):
+            self.assertEqual(call_attr(session, "_fetch_systemctl_user_env_blob", "alice", 1000), "DISPLAY=:0\n")
+        with (
+            patch.object(session, "_cached_systemctl_env_blob", return_value=(True, None)),
+            patch("asus_hotkey_daemon_session.shutil.which", return_value=None),
+            patch.object(session, "_mark_systemctl_env_skip") as mark_skip,
+        ):
+            self.assertIsNone(call_attr(session, "_fetch_systemctl_user_env_blob", "alice", 1000))
+            mark_skip.assert_called_once_with()
+        with (
+            patch.object(session, "_cached_systemctl_env_blob", return_value=(True, None)),
+            patch("asus_hotkey_daemon_session.shutil.which", return_value="/usr/sbin/runuser"),
+            patch.object(session, "_invoke_systemctl_show_environment", return_value="WAYLAND_DISPLAY=w0\n") as invoke,
+        ):
+            self.assertEqual(
+                call_attr(session, "_fetch_systemctl_user_env_blob", "alice", 1000),
+                "WAYLAND_DISPLAY=w0\n",
+            )
+            invoke.assert_called_once()
+
+    def test_apply_blob_env_keys_skips_present(self):
+        """Existing display keys are not overwritten from the blob."""
+        env = {"DISPLAY": ":1"}
+        call_attr(session, "_apply_blob_env_keys", env, "DISPLAY=:0\nWAYLAND_DISPLAY=wayland-0\n")
+        self.assertEqual(env["DISPLAY"], ":1")
+        self.assertEqual(env["WAYLAND_DISPLAY"], "wayland-0")
 
     def test_merge_systemctl_environ_empty_username(self):
         """Empty username leaves the env dict unchanged."""

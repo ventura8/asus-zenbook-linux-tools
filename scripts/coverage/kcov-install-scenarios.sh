@@ -527,25 +527,5 @@ EOF
 
 # shellcheck source=scripts/coverage/kcov-install-scenarios-desktop.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov-install-scenarios-desktop.sh"
-
-run_shell_kcov_scenarios() {
-    export KCOV_REPO_ROOT
-    KCOV_REPO_ROOT="$(pwd)"
-    local fail_file="$1/.kcov_scenario_failures"
-    rm -f "$fail_file"
-    export KCOV_SCENARIO_FAIL_FILE="$fail_file"
-    _run_kcov_bin_scenarios "$1"
-    _run_kcov_sound_scenarios "$1"
-    _run_kcov_sound_helper_scenarios "$1"
-    _run_kcov_screenshot_scenarios "$1"
-    _run_kcov_screenshot_family_scenarios "$1"
-    _run_kcov_control_center_scenarios "$1"
-    _run_kcov_cc_family_desktop_scenarios "$1"
-    _run_kcov_install_uninstall_scenarios "$1"
-    _run_kcov_product_lib_helpers "$1"
-    if _kcov_fail_file_has_entries; then
-        echo "  ✗ kcov scenario expectation failures recorded under $fail_file:" >&2
-        cat "$fail_file" >&2
-        return 1
-    fi
-}
+# shellcheck source=scripts/coverage/kcov-install-scenarios-shards.sh
+source "$(dirname "${BASH_SOURCE[0]}")/kcov-install-scenarios-shards.sh"
