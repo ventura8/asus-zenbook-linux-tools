@@ -1,0 +1,382 @@
+# Japanese translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: 日本語\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d 外部ディスプレイ"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d 外部ディスプレイのみ"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS ディスプレイモード"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUSのスクリーンショット"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux セットアップ %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools をすぐに使用できます。"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook の設定"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook ハードウェア機能は、オプションのコンポーネントとしてインストール"
+"されます。"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME、KDE Plasma、XFCE、LXQt、Cinnamon、または MATE 向けに Display Toggle、"
+"MyASUS Settings、Share のキーボードショートカットを追加します。"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "すべてのディスプレイ (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "すべてのディスプレイ (メイン + スクリーンパッド)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "利用可能なコンポーネント:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "バランスの取れた"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "カメラが無効になっています"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "カメラが有効になっています"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "カメラのプライバシー"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "コンポーネントの選択"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "シナモンのショートカットが設定されました。"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "コンポーネント [既定: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%s の GNOME ショートカットを構成する"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "%s の KDE Plasma ショートカットを構成する"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "現在の表示レイアウト"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "表示モード"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "コンポーネントの番号または名前をカンマで区切って入力します。"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "ファンプロフィール"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap 拡張機能がインストールされています。"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME ショートカットが設定されました。"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Linux デスクトップのハードウェア機能"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "スクリプトとサービスをインストールする"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "システムの依存関係をインストールする"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "ユーザーによってインストールがキャンセルされました。"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "インストールが完了しました。"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux ツール %s をインストールしています。"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad の輝度、ファン Quiet/Balanced/Performance、カメラプライバシー、モニ"
+"タ間のウィンドウ交換用の WMI ホットキーデーモンをインストールします。"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"対応する ZenBook オーディオが起動後およびスリープ後に復旧するよう、スピーカー"
+"アンプ修正と suspend/resume フックをインストールします。"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"左上隅のタップでデスクトップのスクリーンショットツール（GNOME、Spectacle な"
+"ど）を開くタッチパッド Share ジェスチャーリスナーをインストールします。"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"無効な選択: %s。番号 (1,2,3,4)、コンポーネント名、または all を入力してくださ"
+"い。"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma ショートカットが構成されました。"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt グローバル キーが設定されました。"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE ショートカットが設定されました。"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "メインディスプレイ"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "メインディスプレイのみ"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "モード: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr ""
+"コンポーネントが選択されていません。インストールがキャンセルされました。"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "オフ"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "オン"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "パフォーマンス (ブースト)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Enter を押して推奨コンポーネントをすべてインストールするか、'all' と入力して"
+"ください。"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "静か（静か）"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "スクリーンパッドのバックライト"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "スクリーンパッドの明るさ"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "スクリーンパッドのみ"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"使用するコンポーネントのみを選択してください。選択されていないサービスと"
+"ショートカットはインストールされません。"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"不要なサービスやショートカットを避けるために、使用するものだけを選択してくだ"
+"さい。"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Print/Super-Shift-s、XF86Launch1/XF86Tools、および XF86Display に登録された"
+"ショートカット (F8 は変更されないまま)。"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr ""
+"サスペンドおよびレジュームフックを使用してサウンド修正がインストールされまし"
+"た。"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space でコンポーネントを選択。Enter で確定。Esc でキャンセル。"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "テキスト選択モード。"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "インターフェイス言語はデスクトップ セッションに従います。"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "パッケージのダウンロードとインストールに数分かかることがあります。"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"タッチパッド共有ジェスチャ リスナーがインストールされています (この環境ではア"
+"クティブ状態は検証されていません)。"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr ""
+"タッチパッド共有ジェスチャ リスナーがインストールされ、アクティブになっていま"
+"す。"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI ホットキー デーモンがインストールされています (この環境ではアクティブ状態"
+"は検証されていません)。"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI ホットキー デーモンがインストールされ、アクティブになっています。"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "なぜこのダイアログが表示されるのでしょうか?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE ショートカットが設定されました。"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Display、MyASUS、および Share デスクトップ ショートカットを追加する"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Display、MyASUS、Share のショートカットをデスクトップに追加します。"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "ScreenPad、ファン、カメラ、ウィンドウ交換用のハードウェア ホットキー。"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "ハードウェア ホットキー: スクリーンパッド、ファン、カメラ、ウィンドウ ス"
+#~ "ワップ"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "起動および再開後にサポートされているスピーカーアンプを初期化する"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "再開後も含め、サポートされているスピーカーアンプを初期化します。"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "左上の共有ジェスチャーでスクリーンショット ツールを開きます。"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "左上の共有ジェスチャでスクリーンショット ツールが開きます"
+
+#~ msgid "libnewt"
+#~ msgstr "リブニュート"
+
+#~ msgid "whiptail"
+#~ msgstr "むちむち"

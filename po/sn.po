@@ -1,0 +1,374 @@
+# Shona translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: ChiShona\n"
+"Language: sn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d kuratidzwa kwekunze"
+msgstr[1] "%d zviratidzo zvekunze"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d kuratidzwa kwekunze chete"
+msgstr[1] "%d zviratidzo zvekunze chete"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS Ratidza Maitiro"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Mufananidzo weASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Kugadziriswa kwe ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Zvishandiso yakagadzirira kushandisa."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook Zvirongwa"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook hardware maficha akaiswa seanosarudza zvikamu."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Inowedzera shortcuts dze keyboard Display Toggle, MyASUS Settings ne Share "
+"ye GNOME, KDE Plasma, XFCE, LXQt, Cinnamon kana MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Zvese zvinoratidzwa (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Zvese zvinoratidzwa (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Zvinowanikwa zvikamu:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Zvakadzikama"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamera yadzimwa"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamera yakabatidzwa"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Kuvanzika kwekamera"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Sarudza zvikamu"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Mapfupi eCinnamon akagadziridzwa."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Zvikamu [default: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Gadzirisa mapfupi eGNOME e%s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Gadzira mapfupi eKDE Plasma e %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Chimiro chekuratidzira ikozvino"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Ratidza maitiro"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Isa nhamba dzezvikamu kana mazita, akaparadzaniswa nemakoma."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Rondedzero yefeni"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap yekuwedzera yakaiswa."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME mapfupi akagadziridzwa."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Hardware maficha eLinux desktop yako"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Isa zvinyorwa uye masevhisi"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Isa system dependencies"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Kuiswa kwakanzurwa nemushandisi."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Kuisa kwapera."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Kuisa ASUS ZenBook Linux Zvishandiso %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Inoisainstall daemon ye WMI hotkeys ye ScreenPad brightness, fan Quiet/"
+"Balanced/Performance, camera privacy uye kuchinjana windows pamonitor."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Inoisainstall gadziriso ye speaker amplifier ne suspend/resume hook kuti "
+"ZenBook audio inotsigirwa idzoke mushure mekutanga uye mushure mekurara."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Inoisainstall listener ye Share gesture yetouchpad kuti kubaya kukona "
+"yepamusoro kuruboshwe kuvhure chishandiso chescreenshot yedesktop (GNOME, "
+"Spectacle nezvakafanana)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Sarudzo isiriyo: %s. Nyora nhamba (1,2,3,4), mazita ezvikamu, kana all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma mapfupi akagadziridzwa."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys yakagadziriswa."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE mapfupi akagadziridzwa."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Main kuratidza"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Main kuratidza chete"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Maitiro: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Hapana zvikamu zvakasarudzwa. Kuiswa kwakanzurwa."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "ZVIMWE"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Pana"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Kuita (Boost)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Dzvanya Enter kuti uise zvikamu zvese zvinokurudzirwa, kana nyora 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Chinyarara (Chinyarara)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Chidzitiro chechidzitiro"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ScreenPad kupenya"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad chete"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Sarudza chete zvikamu zvaunoshandisa. Masevhisi asina kusarudzwa uye mapfupi "
+"haaisiswe."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Sarudza chete zvaunoshandisa kudzivirira zvisina basa masevhisi uye mapfupi."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Zvidimburiko zvakanyoreswa kuPrinta/Super-Shift-s, XF86Launch1/XF86Tools, "
+"uye XF86Display (F8 yasiiwa isina kuchinjwa)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Sound fix yakaiswa ne suspend uye tangazve hoko."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space inosarudza chikamu. Enter inosimbisa. Esc inokanzura."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Kusarudza mavara."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Mutauro weinterface unotevera chikamu chako chedesktop."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Izvi zvinogona kutora maminetsi mashoma pakati mapackage achidhaunirodha "
+"nekufakwa."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Govera gesture muteereri akaiswa (inoshanda nyika haina kusimbiswa "
+"munzvimbo ino)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Govera gesture muteereri akaiswa uye anoshanda."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon yakaiswa (inoshanda nyika isina kusimbiswa munzvimbo ino)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon yakaiswa uye inoshanda."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Sei nhaurirano iyi?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE mapfupi akagadziridzwa."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Wedzera Display, MyASUS, uye Govera desktop mapfupi"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Wedzera Display, MyASUS, uye Govera mapfupi kune desktop yako."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "Hardware hotkeys eScreenPad, fan, kamera, uye hwindo shanduko."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Hardware hotkeys: ScreenPad, fan, kamera, uye hwindo shanduko"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "Tanga anotsigirwa mutauri amplifiers mushure mebhoti uye tangazve"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Tanga anotsigirwa mutauri amplifiers, kusanganisira mushure mekutangazve."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Vhura iyo skrini ine kumusoro-kuruboshwe Govera gesture."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Pamusoro-kuruboshwe Govera gesture inovhura iyo skrini yekushandisa"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

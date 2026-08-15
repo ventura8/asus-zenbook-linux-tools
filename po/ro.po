@@ -1,0 +1,396 @@
+# Romanian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Română\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((((!((0 == 0))) || ((n == 0))) || ((!((n "
+"== 1))) && (((n % 100) >= 1 && (n % 100) <= 19)))) ? 1 : (((n == 1)) && ((0 "
+"== 0))) ? 0 : 2);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d afișaj extern"
+msgstr[1] "%d afișaje externe"
+msgstr[2] "%d afișaje externe"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d numai afișaj extern"
+msgstr[1] "%d numai afișaje externe"
+msgstr[2] "%d numai afișaje externe"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Modul de afișare ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Captură de ecran ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Configurare ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools este gata de utilizare."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Setări ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Caracteristicile hardware ASUS ZenBook sunt instalate ca componente "
+"opționale."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Adaugă scurtături de tastatură Display Toggle, MyASUS Settings și Share "
+"pentru GNOME, KDE Plasma, XFCE, LXQt, Cinnamon sau MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Toate afișajele (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Toate afișajele (Principal + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Componente disponibile:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Echilibrat"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Camera este dezactivată"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Camera este activată"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Intimitatea camerei"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Alegeți componente"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Scurtături pentru scorțișoară configurate."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Componente [implicit: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Configurați comenzile rapide GNOME pentru %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Configurați comenzile rapide KDE Plasma pentru %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Aspectul actual al afișajului"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Modul de afișare"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Introduceți numere sau nume ale componentelor, separate prin virgulă."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Profilul fanilor"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Extensia GNOME ASUS Window Swap este instalată."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Comenzile rapide GNOME au fost configurate."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Caracteristici hardware pentru desktopul dvs. Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Instalați scripturi și servicii"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Instalați dependențe de sistem"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Instalare anulată de către utilizator."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Instalare finalizată."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Instalarea ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Instalează demonul de taste rapide WMI pentru luminozitatea ScreenPad, "
+"ventilatorul Quiet/Balanced/Performance, confidențialitatea camerei și "
+"schimbul de ferestre între monitoare."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Instalează remedierea amplificatorului de boxe și un hook de suspendare/"
+"reluare, astfel încât audio-ul ZenBook suportat să se recupereze după "
+"pornire și după somn."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Instalează listenerul gestului Share al touchpadului, astfel încât o "
+"atingere în colțul stânga-sus să deschidă instrumentul de captură al "
+"desktopului (GNOME, Spectacle și similare)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Selecție invalidă: %s. Introduceți numere (1,2,3,4), nume de componente sau "
+"all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Scurtături KDE Plasma configurate."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Chei globale LXQt configurate."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Scurtături MATE configurate."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Display principal"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Numai afișajul principal"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Mod: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Nu au fost selectate componente. Instalarea a fost anulată."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Oprit"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Pornit"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Performanță (Boost)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Apăsați Enter pentru a instala toate componentele recomandate sau "
+"introduceți 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Silențios (tăcut)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Iluminare de fundal ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Luminozitatea ScreenPad-ului"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Numai ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Selectați doar componentele pe care le utilizați. Serviciile și comenzile "
+"rapide neselectate nu vor fi instalate."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Selectați doar ceea ce utilizați pentru a evita serviciile și comenzile "
+"rapide inutile."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Comenzi rapide înregistrate pentru Print/Super-Shift-s, XF86Launch1/"
+"XF86Tools și XF86Display (F8 rămas neschimbat)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Remediere de sunet instalată cu un cârlig de suspendare și reluare."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space selectează o componentă. Enter confirmă. Esc anulează."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Modul de selectare a textului."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Limba interfeței urmează sesiunea dvs. de pe desktop."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Aceasta poate dura câteva minute în timp ce pachetele sunt descărcate și "
+"instalate."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Ascultător de gesturi Touchpad Share instalat (starea activă nu a fost "
+"verificată în acest mediu)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share ascultător de gesturi instalat și activ."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Daemon WMI Hotkey instalat (starea activă nu a fost verificată în acest "
+"mediu)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Daemonul WMI Hotkey instalat și activ."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "De ce acest dialog?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Scurtături XFCE configurate."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Adăugați comenzi rapide Display, MyASUS și Share desktop"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Adăugați comenzi rapide Display, MyASUS și Share pe desktop."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Taste rapide hardware pentru ScreenPad, ventilator, cameră și schimb de "
+#~ "ferestre."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Taste rapide hardware: ScreenPad, ventilator, cameră și schimb de ferestre"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Inițializați amplificatoarele de difuzoare acceptate după pornire și "
+#~ "reluați"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Inițializați amplificatoarele de difuzoare acceptate, inclusiv după "
+#~ "reluare."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Deschideți instrumentul de captură de ecran cu gestul Partajare din "
+#~ "stânga sus."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Gestul de partajare din stânga sus deschide instrumentul de captură de "
+#~ "ecran"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "coada biciului"

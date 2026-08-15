@@ -1,0 +1,2 @@
+# Grant ydotool/uinput helpers access without adding session users to group input.
+SUBSYSTEM=="misc", KERNEL=="uinput", GROUP="asus-uinput", MODE="0660"

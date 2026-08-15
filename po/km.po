@@ -1,0 +1,363 @@
+# Central Khmer translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: ខ្មែរ\n"
+"Language: km\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d ការបង្ហាញខាងក្រៅ"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d ការបង្ហាញខាងក្រៅតែប៉ុណ្ណោះ"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "របៀបបង្ហាញ ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "រូបថតអេក្រង់ ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ការរៀបចំ ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ឧបករណ៍ ASUS ZenBook Linux រួចរាល់ក្នុងការប្រើប្រាស់។"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ការកំណត់ ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "លក្ខណៈពិសេសផ្នែករឹង ASUS ZenBook ត្រូវបានដំឡើងជាសមាសភាគស្រេចចិត្ត។"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"បន្ថែមផ្លូវកាត់ក្តារចុច Display Toggle, MyASUS Settings និង Share សម្រាប់ GNOME, KDE "
+"Plasma, XFCE, LXQt, Cinnamon ឬ MATE។"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "ការបង្ហាញទាំងអស់ (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "អេក្រង់ទាំងអស់ (មេ + បន្ទះអេក្រង់)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "សមាសធាតុដែលអាចប្រើបាន៖"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "មានតុល្យភាព"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "កាមេរ៉ាត្រូវបានបិទ"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "បានបើកកាមេរ៉ា"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "ឯកជនភាពកាមេរ៉ា"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "ជ្រើសរើសសមាសធាតុ"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "ផ្លូវកាត់ cinnamon ត្រូវបានកំណត់រចនាសម្ព័ន្ធ។"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "សមាសភាគ [លំនាំដើម: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "កំណត់រចនាសម្ព័ន្ធផ្លូវកាត់ GNOME សម្រាប់ %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "កំណត់រចនាសម្ព័ន្ធផ្លូវកាត់ KDE Plasma សម្រាប់ %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "ប្លង់បង្ហាញបច្ចុប្បន្ន"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "របៀបបង្ហាញ"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "បញ្ចូលលេខ ឬឈ្មោះសមាសភាគ ដោយបំបែកដោយសញ្ញាក្បៀស។"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "កម្រងព័ត៌មានអ្នកគាំទ្រ"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap ត្រូវបានតំឡើង។"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "ផ្លូវកាត់ GNOME ត្រូវបានកំណត់រចនាសម្ព័ន្ធ។"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "លក្ខណៈពិសេសផ្នែករឹងសម្រាប់កុំព្យូទ័រលើតុ Linux របស់អ្នក។"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "ដំឡើងស្គ្រីប និងសេវាកម្ម"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "ដំឡើងភាពអាស្រ័យនៃប្រព័ន្ធ"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "ការដំឡើងត្រូវបានលុបចោលដោយអ្នកប្រើប្រាស់។"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "ការដំឡើងបានបញ្ចប់។"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ការដំឡើង ASUS ZenBook Linux Tools %s ។"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ដំឡើង daemon គ្រាប់ចុចក្តៅ WMI សម្រាប់ពន្លឺ ScreenPad, ផ្លុំ Quiet/Balanced/Performance, "
+"ឯកជនភាពកាមេរ៉ា និងការប្តូរបង្អួចរវាង ម៉ូនីទ័រ។"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"ដំឡើងការជួសជុលអាំព្លីហ្វាយអូឡូ និង hook suspend/resume ដើម្បីឱ្យសំឡេង ZenBook "
+"ដែលគាំទ្រស្តារឡើងវិញបន្ទាប់ពីប៊ូត និងបន្ទាប់ពីគេង។"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"ដំឡើង listener ទឹកដៃ Share នៃ touchpad ដើម្បីឱ្យការប៉ះជ្រុងខាងលើឆ្វេង "
+"បើកឧបករណ៍ស្ក្រីនឆត់លើផ្ទៃតុ (GNOME, Spectacle និងស្រដៀងគ្នា)។"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "ការជ្រើសមិនត្រឹមត្រូវ: %s។ បញ្ចូលលេខ (1,2,3,4), ឈ្មោះសមាសភាគ ឬ all។"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "ផ្លូវកាត់ KDE Plasma បានកំណត់រចនាសម្ព័ន្ធ។"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys បានកំណត់រចនាសម្ព័ន្ធ។"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "ផ្លូវកាត់ MATE ត្រូវបានកំណត់រចនាសម្ព័ន្ធ។"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "ការបង្ហាញសំខាន់"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "ការបង្ហាញសំខាន់តែប៉ុណ្ណោះ"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "របៀប៖ %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "មិនមានសមាសធាតុត្រូវបានជ្រើសរើសទេ។ ការដំឡើងត្រូវបានលុបចោល។"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "បិទ"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "បើក"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "ការអនុវត្ត (ជំរុញ)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr "ចុច Enter ដើម្បីដំឡើងសមាសភាគដែលបានណែនាំទាំងអស់ ឬបញ្ចូល 'all'។"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "ស្ងាត់ (ស្ងាត់)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "អំពូល Backlight អេក្រង់"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ពន្លឺអេក្រង់"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "បន្ទះអេក្រង់តែប៉ុណ្ណោះ"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"ជ្រើសរើសតែសមាសធាតុដែលអ្នកប្រើ។ សេវាកម្ម និងផ្លូវកាត់ដែលមិនបានជ្រើសរើសនឹងមិនត្រូវបានដំឡើងទេ។"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "ជ្រើសរើសតែអ្វីដែលអ្នកប្រើ ដើម្បីជៀសវាងសេវាកម្ម និងផ្លូវកាត់ដែលមិនចាំបាច់។"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"ផ្លូវកាត់ដែលបានចុះឈ្មោះសម្រាប់ Print/Super-Shift-s, XF86Launch1/XF86Tools, និង "
+"XF86Display (F8 បានចាកចេញមិនផ្លាស់ប្តូរ)។"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "បានដំឡើងការជួសជុលសំឡេងដោយប្រើទំពក់ព្យួរ និងបន្ត។"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space ជ្រើសសមាសភាគ។ Enter បញ្ជាក់។ Esc បោះបង់។"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "របៀបជ្រើសរើសអត្ថបទ។"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "ភាសាចំណុចប្រទាក់ធ្វើតាមសម័យកុំព្យូទ័ររបស់អ្នក។"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "វាអាចចំណាយពេលពីរបីនាទីខណៈកញ្ចប់កំពុងទាញយក និងដំឡើង។"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"បានដំឡើងឧបករណ៍ស្តាប់កាយវិការ Touchpad Share "
+"(ស្ថានភាពសកម្មមិនត្រូវបានផ្ទៀងផ្ទាត់នៅក្នុងបរិយាកាសនេះទេ)។"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share gesture listener ត្រូវបានដំឡើង និងសកម្ម។"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr "បានដំឡើងដេមិន WMI Hotkey (ស្ថានភាពសកម្មមិនត្រូវបានផ្ទៀងផ្ទាត់នៅក្នុងបរិស្ថាននេះទេ)។"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "ដេមិន WMI Hotkey ត្រូវបានដំឡើង និងសកម្ម។"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "ហេតុអ្វីបានជាប្រអប់នេះ?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "ផ្លូវកាត់ XFCE ត្រូវបានកំណត់រចនាសម្ព័ន្ធ។"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "បន្ថែមផ្លូវកាត់អេក្រង់ MyASUS និងចែករំលែកកុំព្យូទ័រលើតុ"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "បន្ថែមផ្លូវកាត់ Display, MyASUS និងចែករំលែកទៅកាន់កុំព្យូទ័ររបស់អ្នក។"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "គ្រាប់ចុចផ្នែករឹងសម្រាប់ ScreenPad កង្ហារ កាមេរ៉ា និងការផ្លាស់ប្តូរបង្អួច។"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "គ្រាប់ចុចផ្នែករឹង៖ បន្ទះអេក្រង់ កង្ហារ កាមេរ៉ា និងការផ្លាស់ប្តូរបង្អួច"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "ចាប់ផ្តើមឧបករណ៍បំពងសំឡេងដែលគាំទ្របន្ទាប់ពីការចាប់ផ្ដើម និងបន្ត"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "ចាប់ផ្តើមឧបករណ៍បំពងសំឡេងដែលគាំទ្រ រួមទាំងបន្ទាប់ពីការបន្ត។"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "បើកឧបករណ៍ថតអេក្រង់ដោយប្រើកាយវិការចែករំលែកផ្នែកខាងលើខាងឆ្វេង។"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "កាយវិការចែករំលែកផ្នែកខាងលើខាងឆ្វេងបើកឧបករណ៍រូបថតអេក្រង់"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

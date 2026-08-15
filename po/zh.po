@@ -1,0 +1,360 @@
+# Chinese translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: 中文\n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=(0);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d外接显示器"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d 仅外接显示器"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "华硕显示模式"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "华硕截图"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux 安装 %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "华硕 ZenBook Linux Tools 即可使用。"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "华硕 ZenBook 设置"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "华硕 ZenBook 硬件功能作为可选组件安装。"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"为 GNOME、KDE Plasma、XFCE、LXQt、Cinnamon 或 MATE 添加 Display Toggle、"
+"MyASUS Settings 和 Share 键盘快捷键。"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "所有显示 (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "所有显示屏（主屏 + ScreenPad）"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "可用组件："
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "平衡"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "相机已禁用"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "相机已启用"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "相机隐私"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "选择组件"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "配置了 Cinnamon 快捷方式。"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "组件 [默认: all]："
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "配置 %s 的 GNOME 快捷方式"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "配置 KDE Plasma 快捷方式%s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "当前显示布局"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "显示方式"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "输入组件编号或名称，以逗号分隔。"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "粉丝简介"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "安装了 GNOME 华硕 Window Swap 扩展。"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "配置 GNOME 快捷方式。"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Linux 桌面的硬件功能"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "安装脚本和服务"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "安装系统依赖项"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "安装被用户取消。"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "安装完成。"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "安装华硕 ZenBook Linux 工具%s。"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"安装 WMI 热键守护进程，用于 ScreenPad 亮度、风扇 Quiet/Balanced/Performance、"
+"摄像头隐私以及跨显示器窗口交换。"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"安装扬声器放大器修复以及挂起/恢复钩子，使受支持的 ZenBook 音频在开机后和休眠"
+"后恢复正常。"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"安装触控板 Share 手势监听器，使左上角轻触可打开桌面截图工具（GNOME、"
+"Spectacle 及同类工具）。"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "无效选择：%s。请输入数字 (1,2,3,4)、组件名称或 all。"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "配置 KDE Plasma 快捷方式。"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt 全局键已配置。"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE 快捷键已配置。"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "主显示"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "仅主显示屏"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "模式：%s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "未选择任何组件。安装已取消。"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "关闭"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "开"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "性能（提升）"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr "按 Enter 安装所有推荐组件，或输入 'all'。"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "安静（安静）"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad背光"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "屏幕板亮度"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "仅屏幕板"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr "仅选择您使用的组件。未选择的服务和快捷方式将不会安装。"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "仅选择您使用的内容以避免不必要的服务和快捷方式。"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"为 Print/Super-Shift-s、XF86Launch1/XF86Tools 和 XF86Display 注册的快捷方式"
+"（F8 保持不变）。"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "使用挂起和恢复挂钩安装声音修复。"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space 选择组件。Enter 确认。Esc 取消。"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "文本选择模式。"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "界面语言遵循您的桌面会话。"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "下载并安装软件包可能需要几分钟。"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr "已安装触摸板共享手势侦听器（在此环境中未验证活动状态）。"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "触摸板共享手势侦听器已安装并处于活动状态。"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr "已安装 WMI 热键守护程序（在此环境中未验证活动状态）。"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI 热键守护程序已安装并处于活动状态。"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "为什么会出现这个对话框？"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE 快捷方式已配置。"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "添加 Display、MyASUS 和 Share 桌面快捷方式"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "将 Display、MyASUS 和 Share 快捷方式添加到桌面。"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "ScreenPad、风扇、相机和窗口交换的硬件热键。"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "硬件热键：ScreenPad、风扇、相机和窗口交换"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "启动和恢复后初始化支持的扬声器放大器"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "初始化支持的扬声器放大器，包括恢复后。"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "使用左上角的共享手势打开屏幕截图工具。"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "左上共享手势可打开屏幕截图工具"
+
+#~ msgid "libnewt"
+#~ msgstr "库纽特"
+
+#~ msgid "whiptail"
+#~ msgstr "鞭尾"

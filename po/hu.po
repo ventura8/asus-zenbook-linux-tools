@@ -1,0 +1,385 @@
+# Hungarian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Magyar\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d külső kijelző"
+msgstr[1] "%d külső kijelzők"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d csak külső kijelző"
+msgstr[1] "%d csak külső kijelzők"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS kijelző mód"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Asus-képernyőkép"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux beállítás %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Az ASUS ZenBook Linux Tools használatra kész."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook beállítások"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Az ASUS ZenBook hardverfunkciói opcionális összetevőként vannak telepítve."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Hozzáadja a Display Toggle, MyASUS Settings és Share billentyűparancsokat "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon vagy MATE környezethez."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Minden kijelző (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Minden kijelző (fő + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Elérhető komponensek:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Kiegyensúlyozott"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "A kamera letiltva"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamera engedélyezve"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Kamera adatvédelem"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Válasszon összetevőket"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Cinnamon parancsikonok konfigurálva."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Összetevők [alapértelmezett: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Konfigurálja a GNOME parancsikonokat a következőhöz: %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "KDE Plasma parancsikonok beállítása a következőhöz: %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Jelenlegi megjelenítési elrendezés"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Megjelenítési mód"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Írja be az összetevők számát vagy nevét, vesszővel elválasztva."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Rajongói profil"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap bővítmény telepítve."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME parancsikonok konfigurálva."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Hardverfunkciók Linux asztali számítógépéhez"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Szkriptek és szolgáltatások telepítése"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Telepítse a rendszerfüggőségeket"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "A telepítést a felhasználó megszakította."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "A telepítés kész."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Az ASUS ZenBook Linux Tools telepítése %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Telepíti a WMI gyorsbillentyű-démont a ScreenPad fényerejéhez, a Quiet/"
+"Balanced/Performance ventilátorhoz, a kamera adatvédelméhez és a monitorok "
+"közötti ablakcseréhez."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Telepíti a hangszóróerősítő javítást és egy suspend/resume horgot, hogy a "
+"támogatott ZenBook hang indulás és alvás után helyreálljon."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Telepíti az érintőpad Share gesztusfigyelőjét, hogy a bal felső sarokban "
+"történő koppintás megnyissa az asztal képernyőkép-eszközét (GNOME, Spectacle "
+"és hasonlók)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Érvénytelen kiválasztás: %s. Adjon meg számokat (1,2,3,4), összetevőneveket "
+"vagy all értéket."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "A KDE Plasma parancsikonjai beállítva."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt globális kulcsok konfigurálva."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "A MATE parancsikonok konfigurálva."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Fő kijelző"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Csak a fő kijelző"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Mód: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Nincsenek komponensek kiválasztva. A telepítés megszakítva."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Ki"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Be"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Teljesítmény (Boost)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Nyomja meg az Enter billentyűt az összes ajánlott összetevő telepítéséhez, "
+"vagy írja be: 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Csendes (néma)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad háttérvilágítás"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "A ScreenPad fényereje"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Csak ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Csak a használt összetevőket válassza ki. A ki nem választott szolgáltatások "
+"és parancsikonok nem lesznek telepítve."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Csak azt válassza ki, amit használ, hogy elkerülje a szükségtelen "
+"szolgáltatásokat és parancsikonokat."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"A Print/Super-Shift-s, az XF86Launch1/XF86Tools és az XF86Display "
+"parancsikonok regisztrálva vannak (az F8 változatlan marad)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Hangjavítás felfüggesztés és folytatás horoggal telepítve."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space kijelöl egy összetevőt. Enter megerősít. Esc megszakít."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Szövegkiválasztás mód."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "A felület nyelve követi az asztali munkamenetet."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Ez néhány percet igénybe vehet, amíg a csomagok letöltődnek és települnek."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Érintőpad Megosztási kézmozdulatfigyelő telepítve (az aktív állapot nincs "
+"ellenőrizve ebben a környezetben)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Érintőpad Megosztási kézmozdulatfigyelő telepítve és aktív."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey démon telepítve (az aktív állapot nincs ellenőrizve ebben a "
+"környezetben)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey démon telepítve és aktív."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Miért ez a párbeszéd?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE parancsikonok konfigurálva."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Adjon hozzá Display, MyASUS és Share asztali parancsikonokat"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Adjon hozzá Display, MyASUS és Share parancsikonokat az asztalához."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Hardveres gyorsbillentyűk a ScreenPadhez, ventilátorhoz, kamerához és "
+#~ "ablakcseréhez."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Hardver gyorsbillentyűk: ScreenPad, ventilátor, kamera és ablakcsere"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Inicializálja a támogatott hangszóróerősítőket a rendszerindítás és a "
+#~ "folytatás után"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Inicializálja a támogatott hangszóróerősítőket, beleértve a folytatást is."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Nyissa meg a képernyőkép eszközt a bal felső Megosztás kézmozdulattal."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "A bal felső megosztási kézmozdulat megnyitja a képernyőkép eszközt"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "ostorfarkú"

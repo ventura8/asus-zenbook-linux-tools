@@ -1,0 +1,362 @@
+# Amharic translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: አማርኛ\n"
+"Language: am\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=((((n == 0)) || ((n == 1))) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d የውጭ ማሳያ"
+msgstr[1] "%d ውጫዊ ማሳያዎች"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d ውጫዊ ማሳያ ብቻ"
+msgstr[1] "%d ውጫዊ ማሳያዎች ብቻ"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "የ ASUS ማሳያ ሁነታ"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "የ ASUS ቅጽበታዊ ገጽ እይታ"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "የ ASUS ZenBook Linux ማዋቀር %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools ለመጠቀም ዝግጁ ነው።"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook ቅንብሮች"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook ሃርድዌር ባህሪያት እንደ አማራጭ አካላት ተጭነዋል።"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"ለ GNOME፣ KDE Plasma፣ XFCE፣ LXQt፣ Cinnamon ወይም MATE የ Display Toggle፣ MyASUS "
+"Settings እና Share የቁልፍ ሰሌዳ አቋራጮችን ያክላል።"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "ሁሉም ማሳያዎች (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "ሁሉም ማሳያዎች (ዋና + ስክሪንፓድ)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "የሚገኙ ክፍሎች፡-"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "ሚዛናዊ"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "ካሜራ ተሰናክሏል።"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "ካሜራ ነቅቷል።"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "የካሜራ ግላዊነት"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "ክፍሎችን ይምረጡ"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "የቀረፋ አቋራጮች ተዋቅረዋል።"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "አካላት [ነባሪ: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "የGNOME አቋራጮችን ለ%s ያዋቅሩ"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "የKDE Plasma አቋራጮችን ለ%s ያዋቅሩ"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "የአሁኑ ማሳያ አቀማመጥ"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "የማሳያ ሁነታ"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "በነጠላ ሰረዞች የተለዩ ክፍሎችን ወይም ስሞችን ያስገቡ።"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "የደጋፊዎች መገለጫ"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS መስኮት ስዋፕ ቅጥያ ተጭኗል።"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "የGNOME አቋራጮች ተዋቅረዋል።"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "ለሊኑክስ ዴስክቶፕህ የሃርድዌር ባህሪያት"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "ስክሪፕቶችን እና አገልግሎቶችን ይጫኑ"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "የስርዓት ጥገኞችን ጫን"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "መጫኑ በተጠቃሚ ተሰርዟል።"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "መጫኑ ተጠናቅቋል።"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux Toolsን በመጫን ላይ %s።"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ለ ScreenPad ብርሃን፣ Quiet/Balanced/Performance ማራገቢያ፣ የካሜራ ግላዊነት እና በሞኒተሮች "
+"መካከል መስኮት መለዋወጥ የ WMI ሆትኪ ዲሞን ይጭናል።"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"የተደገፈ የ ZenBook ድምፅ ከቡት በኋላ እና ከእንቅልፍ በኋላ እንዲመለስ የተናጋሪ ማጉያ እርማት እና suspend/"
+"resume መንጠቆ ይጭናል።"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"በላይኛው ግራ ማዕዘን መታ ማድረግ የዴስክቶፕ ቅጽበታዊ ገጽ እቃ (GNOME፣ Spectacle እና ተመሳሳይ) እንዲከፍት "
+"የታችፓድ Share እንቅስቃሴ ማዳመጫ ይጭናል።"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "ልክ ያልሆነ ምርጫ: %s። ቁጥሮች (1,2,3,4)፣ የአካል ስሞች ወይም all ያስገቡ።"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "የKDE ፕላዝማ አቋራጮች ተዋቅረዋል።"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt ግሎባል ቁልፎች ተዋቅረዋል።"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE አቋራጮች ተዋቅረዋል።"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "ዋና ማሳያ"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "ዋና ማሳያ ብቻ"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "ሁነታ፡ %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "ምንም ክፍሎች አልተመረጡም። መጫኑ ተሰርዟል።"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "ጠፍቷል"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "በርቷል"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "አፈጻጸም (ማበልጸግ)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr "ሁሉንም የሚመከሩ አካላት ለመጫን Enter ይጫኑ፣ ወይም 'all' ያስገቡ።"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "ጸጥ (ጸጥ ያለ)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ስክሪንፓድ የጀርባ ብርሃን"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "የስክሪንፓድ ብሩህነት"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ስክሪንፓድ ብቻ"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr "የሚጠቀሙባቸውን ክፍሎች ብቻ ይምረጡ። ያልተመረጡ አገልግሎቶች እና አቋራጮች አይጫኑም።"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr "አላስፈላጊ አገልግሎቶችን እና አቋራጮችን ለማስወገድ የሚጠቀሙትን ብቻ ይምረጡ።"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"ለ Print/Super-Shift-s፣ XF86Launch1/XF86Tools እና XF86Display የተመዘገቡ አቋራጮች (F8 "
+"ሳይለወጥ ቀርቷል)።"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "የድምጽ ማስተካከያ በተንጠለጠለበት እና ከቆመበት መቀጠል ጋር ተጭኗል።"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space አካል ይመርጣል። Enter ያረጋግጣል። Esc ይሰርዛል።"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "የጽሑፍ ምርጫ ሁነታ."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "የበይነገጽ ቋንቋ የዴስክቶፕዎን ክፍለ ጊዜ ይከተላል።"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "ጥቅሎች ሲወርዱ እና ሲጫኑ ይህ ጥቂት ደቂቃዎች ሊወስድ ይችላል።"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr "የመዳሰሻ ሰሌዳ አጋራ የእጅ ምልክት አድማጭ ተጭኗል (ገባሪ ሁኔታ በዚህ አካባቢ አልተረጋገጠም)።"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "የመዳሰሻ ሰሌዳ አጋራ የእጅ ምልክት አድማጭ ተጭኗል እና ንቁ።"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr "WMI Hotkey daemon ተጭኗል (ገባሪ ሁኔታ በዚህ አካባቢ አልተረጋገጠም)።"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey ዴሞን ተጭኗል እና ንቁ።"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "ለምን ይህ ንግግር?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "የXFCE አቋራጮች ተዋቅረዋል።"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "ማሳያ፣ MyASUS አክል እና የዴስክቶፕ አቋራጮችን አጋራ"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "ማሳያ፣ MyASUS አክል እና አቋራጮችን ወደ ዴስክቶፕህ አጋራ።"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "ለስክሪንፓድ፣ ደጋፊ፣ ካሜራ እና የመስኮት መለዋወጥ የሃርድዌር ቁልፍ።"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "የሃርድዌር ቁልፍ ቁልፎች፡ ስክሪንፓድ፣ ደጋፊ፣ ካሜራ እና የመስኮት መለዋወጥ"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "ከተነሱ በኋላ የሚደገፉ የድምጽ ማጉያ ማጉያዎችን ያስጀምሩ እና ከቆመበት ይቀጥሉ"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "ከቆመበት ቀጥል በኋላ ጨምሮ የሚደገፉ የድምጽ ማጉያ ማጉያዎችን ያስጀምሩ።"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "የቅጽበታዊ ገጽ እይታ መሳሪያውን ከላይ በግራ በኩል ያለውን የአጋራ ምልክት ይክፈቱ።"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "ከላይ በስተግራ የተጋራ የእጅ ምልክት የቅጽበታዊ ገጽ እይታ መሳሪያውን ይከፍታል።"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "ጅራፍ ጅራፍ"

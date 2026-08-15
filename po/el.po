@@ -1,0 +1,399 @@
+# Greek translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Ελληνικά\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d εξωτερική οθόνη"
+msgstr[1] "%d εξωτερικές οθόνες"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d μόνο εξωτερική οθόνη"
+msgstr[1] "%d μόνο εξωτερικές οθόνες"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Λειτουργία οθόνης ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Στιγμιότυπο οθόνης ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Ρύθμιση ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Το ASUS ZenBook Linux Tools είναι έτοιμο για χρήση."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Ρυθμίσεις ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Οι δυνατότητες υλικού ASUS ZenBook εγκαθίστανται ως προαιρετικά στοιχεία."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Προσθέτει συντομεύσεις πληκτρολογίου Display Toggle, MyASUS Settings και "
+"Share για GNOME, KDE Plasma, XFCE, LXQt, Cinnamon ή MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Όλες οι οθόνες (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Όλες οι οθόνες (Κύρια + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Διαθέσιμα εξαρτήματα:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Ισορροπημένο"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Η κάμερα απενεργοποιήθηκε"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Η κάμερα ενεργοποιήθηκε"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Απόρρητο κάμερας"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Επιλέξτε εξαρτήματα"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Οι συντομεύσεις κανέλας διαμορφώθηκαν."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Στοιχεία [προεπιλογή: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Διαμόρφωση συντομεύσεων GNOME για %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Διαμόρφωση συντομεύσεων πλάσματος KDE για %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Τρέχουσα διάταξη οθόνης"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Λειτουργία εμφάνισης"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Εισαγάγετε αριθμούς ή ονόματα στοιχείων, διαχωρισμένα με κόμματα."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Προφίλ θαυμαστή"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Εγκαταστάθηκε η επέκταση Εναλλαγής παραθύρου GNOME ASUS."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Οι συντομεύσεις GNOME διαμορφώθηκαν."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Χαρακτηριστικά υλικού για την επιφάνεια εργασίας Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Εγκαταστήστε σενάρια και υπηρεσίες"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Εγκαταστήστε εξαρτήσεις συστήματος"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Η εγκατάσταση ακυρώθηκε από τον χρήστη."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Η εγκατάσταση ολοκληρώθηκε."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Εγκατάσταση ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Εγκαθιστά τον δαίμονα πλήκτρων WMI για φωτεινότητα ScreenPad, ανεμιστήρα "
+"Quiet/Balanced/Performance, απόρρητο κάμερας και εναλλαγή παραθύρων μεταξύ "
+"οθονών."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Εγκαθιστά τη διόρθωση ενισχυτή ηχείων και ένα άγκιστρο suspend/resume ώστε ο "
+"υποστηριζόμενος ήχος ZenBook να επανέρχεται μετά την εκκίνηση και μετά τον "
+"ύπνο."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Εγκαθιστά τον ακροατή χειρονομίας Share του touchpad ώστε πάτημα στην επάνω "
+"αριστερή γωνία να ανοίγει το εργαλείο στιγμιοτύπων της επιφάνειας εργασίας "
+"(GNOME, Spectacle κ.ά.)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Μη έγκυρη επιλογή: %s. Εισαγάγετε αριθμούς (1,2,3,4), ονόματα στοιχείων ή "
+"all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Οι συντομεύσεις Plasma του KDE διαμορφώθηκαν."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Τα καθολικά κλειδιά LXQt διαμορφώθηκαν."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Οι συντομεύσεις MATE διαμορφώθηκαν."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Κύρια οθόνη"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Μόνο κύρια οθόνη"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Λειτουργία: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Δεν επιλέχθηκαν στοιχεία. Η εγκατάσταση ακυρώθηκε."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Απενεργοποίηση"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Ενεργό"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Απόδοση (Boost)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Πατήστε Enter για εγκατάσταση όλων των προτεινόμενων στοιχείων ή εισαγάγετε "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Ήσυχο (Αθόρυβο)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Οπίσθιος φωτισμός ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Φωτεινότητα ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Μόνο ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Επιλέξτε μόνο τα εξαρτήματα που χρησιμοποιείτε. Οι μη επιλεγμένες υπηρεσίες "
+"και οι συντομεύσεις δεν θα εγκατασταθούν."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Επιλέξτε μόνο αυτό που χρησιμοποιείτε για να αποφύγετε περιττές υπηρεσίες "
+"και συντομεύσεις."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Εγγεγραμμένες συντομεύσεις για Print/Super-Shift-s, XF86Launch1/XF86Tools "
+"και XF86Display (Το F8 έμεινε αμετάβλητο)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr ""
+"Ηχητική επισκευή έχει εγκατασταθεί με άγκιστρο ανάρτησης και επαναφοράς."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space επιλέγει στοιχείο. Enter επιβεβαιώνει. Esc ακυρώνει."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Λειτουργία επιλογής κειμένου."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr ""
+"Η γλώσσα διεπαφής ακολουθεί την περίοδο λειτουργίας της επιφάνειας εργασίας "
+"σας."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Αυτό μπορεί να διαρκέσει λίγα λεπτά όσο γίνεται λήψη και εγκατάσταση πακέτων."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Εγκαταστάθηκε το πρόγραμμα ακρόασης χειρονομιών κοινής χρήσης επιφάνειας "
+"αφής (η ενεργή κατάσταση δεν έχει επαληθευτεί σε αυτό το περιβάλλον)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr ""
+"Το πρόγραμμα ακρόασης χειρονομιών κοινής χρήσης επιφάνεια αφής είναι "
+"εγκατεστημένο και ενεργό."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Εγκαταστάθηκε ο δαίμονας του WMI Hotkey (η ενεργή κατάσταση δεν έχει "
+"επαληθευτεί σε αυτό το περιβάλλον)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Ο δαίμονας WMI Hotkey είναι εγκατεστημένος και ενεργός."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Γιατί αυτός ο διάλογος;"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Οι συντομεύσεις XFCE διαμορφώθηκαν."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr ""
+#~ "Προσθέστε συντομεύσεις επιφάνειας εργασίας Display, MyASUS και Share"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Προσθέστε συντομεύσεις Display, MyASUS και Share στην επιφάνεια εργασίας "
+#~ "σας."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Πλήκτρα πρόσβασης υλικού για ScreenPad, ανεμιστήρα, κάμερα και εναλλαγή "
+#~ "παραθύρων."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Πλήκτρα πρόσβασης υλικού: ScreenPad, ανεμιστήρας, κάμερα και εναλλαγή "
+#~ "παραθύρων"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Εκκινήστε τους υποστηριζόμενους ενισχυτές ηχείων μετά την εκκίνηση και τη "
+#~ "συνέχιση"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Εκκινήστε τους υποστηριζόμενους ενισχυτές ηχείων, συμπεριλαμβανομένης της "
+#~ "συνέχισης."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Ανοίξτε το εργαλείο στιγμιότυπου οθόνης με την επάνω αριστερή κίνηση "
+#~ "κοινής χρήσης."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Η χειρονομία κοινής χρήσης επάνω αριστερά ανοίγει το εργαλείο "
+#~ "στιγμιότυπου οθόνης"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "μαστιγγιοουρά"

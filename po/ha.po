@@ -1,0 +1,381 @@
+# Hausa translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Hausa\n"
+"Language: ha\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d nunin waje"
+msgstr[1] "%d nunin waje"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d nunin waje kawai"
+msgstr[1] "%d nunin waje kawai"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Yanayin Nuni na ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Asus Screenshot"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Saitin ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools yana shirye don amfani."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook Saituna"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"An shigar da fasalulluka na kayan aikin ASUS ZenBook azaman abubuwan zaɓi na "
+"zaɓi."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Yana ƙara gajerun madannai Display Toggle, MyASUS Settings da Share don "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon ko MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Duk nuni (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Duk nuni (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Abubuwan da ake samu:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Daidaitacce"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "An kashe kyamara"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "An kunna kyamara"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Sirrin kyamara"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Zaɓi abubuwan haɗin gwiwa"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "An saita gajerun hanyoyin cinnamon."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Sassa [tsoho: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Sanya gajerun hanyoyin GNOME don %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Sanya gajerun hanyoyin Plasma na KDE don %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Tsarin nuni na yanzu"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Yanayin nuni"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Shigar da lambobi ko sunaye, ware ta waƙafi."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Fan bayanin martaba"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap an shigar dashi."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "An saita gajerun hanyoyin GNOME."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Fasalolin Hardware don tebur ɗin Linux ɗinku"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Shigar da rubutun da ayyuka"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Shigar da tushen tsarin"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Mai amfani ya soke shigarwa."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "An gama shigarwa."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Shigar da ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Yana shigar da aljanin hotkey na WMI don hasken ScreenPad, fanka Quiet/"
+"Balanced/Performance, sirri na kyamara da musayar tagogi tsakanin monito."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Yana shigar da gyaran amplifier ɗin lasifika da ƙugiya ta suspend/resume don "
+"sautin ZenBook da ake goyan baya ya farfado bayan kunna da bayan barci."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Yana shigar da mai sauraron alamar Share ta touchpad don taɓawa a kusurwar "
+"sama-hagu ta buɗe kayan aikin hoton allo na desktop (GNOME, Spectacle da "
+"makamantansu)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Zaɓi marar inganci: %s. Shigar da lambobi (1,2,3,4), sunayen sassa, ko all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma an saita gajerun hanyoyin."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys an saita su."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "An saita gajerun hanyoyin MATE."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Babban nuni"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Babban nuni kawai"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Yanayin: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Babu abubuwan da aka zaɓa An soke shigarwa"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Kashe"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Kunna"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Ayyuka (Ƙara)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Danna Enter don shigar da dukkan sassan da aka ba da shawara, ko shigar da "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Shuru (Shiru)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Hasken baya na ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Hasken allo"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad kawai"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Zaɓi abubuwan da kuke amfani da su kawai. Ba za a shigar da ayyuka da "
+"gajerun hanyoyin da ba a zaɓa ba."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Zaɓi abin da kuke amfani da shi kawai don guje wa ayyukan da ba dole ba da "
+"gajerun hanyoyi."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Gajerun hanyoyin da aka yi rajista don Print/Super-Shift-s, XF86Launch1/"
+"XF86Tools, da XF86Display (F8 hagu baya canzawa)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "An shigar da gyaran sauti tare da dakatarwa da ci gaba da ƙugiya."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space yana zaɓar sashi. Enter yana tabbatarwa. Esc yana soke."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Yanayin zaɓin rubutu."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Harshen mu'amala yana biye da zaman tebur ɗin ku."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Wannan na iya ɗaukar 'yan mintuna yayin da ake sauke da shigar da fakitocin."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"An shigar da mai sauraren karimcin taɓa faifan taɓawa (ba a tabbatar da "
+"yanayin aiki a wannan mahallin ba)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Maɓallin taɓawa Raba mai sauraron karimcin shigar kuma yana aiki."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon shigar (ba a tabbatar da yanayin aiki ba a wannan "
+"mahallin)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon an shigar kuma yana aiki."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Me yasa wannan zance?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "An saita gajerun hanyoyin XFCE."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Ƙara Nuni, MyASUS, da Raba gajerun hanyoyin tebur"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Ƙara Nuni, MyASUS, da Raba gajerun hanyoyin zuwa tebur ɗin ku."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Makullin zafi na kayan aiki don ScreenPad, fan, kamara, da musanyawa ta "
+#~ "taga."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Maɓallai masu zafi na Hardware: ScreenPad, fan, kamara, da musanyawa ta "
+#~ "taga"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "Fara amplifiers masu goyan bayan lasifika da ci gaba"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "Fara amplifiers masu goyan bayan magana, gami da bayan ci gaba."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Buɗe kayan aikin sikirin tare da karimcin Raba sama-hagu."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Hannun Raba na sama-hagu yana buɗe kayan aikin sikirin"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "bulala"

@@ -14,7 +14,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -25,6 +24,22 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Debian package build artifacts (source tree stays under debian/)
+debian/files
+debian/*.substvars
+debian/*.debhelper.log
+debian/.debhelper/
+debian/asus-zenbook-linux-tools/
+debian/tmp/
+debian/debhelper-build-stamp
+sign-code.sh
+/artifacts/
+/*.deb
+/*.buildinfo
+/*.changes
+/*.dsc
+/*.tar.*
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
@@ -54,6 +69,8 @@ cover/
 # Translations
 *.mo
 *.pot
+# Track the gettext template; lint freshness and msgmerge need it in-tree.
+!po/asus-zenbook-linux-tools.pot
 
 # Django stuff:
 *.log
@@ -202,6 +219,23 @@ cython_debug/
 # .vscode/
 # Temporary file for partial code execution
 tempCodeRunnerFile.py
+
+# Local install/pipeline state
+.install-deps-skip.status
+# Badge percent artifacts: bare file plus slug-scoped
+# `.coverage-percent.<REPORT_DISTRO_SLUG>` from parallel matrix lanes.
+.coverage-percent
+.coverage-percent.*
+
+# Local downloaded tooling binaries (e.g. hadolint)
+.tools/
+
+# Node / ESLint (GNOME extension JS linting)
+node_modules/
+
+# Pipeline test/coverage reports (generated per-run, distro-specific)
+reports/
+.tmp-tests/
 
 # Ruff stuff:
 .ruff_cache/

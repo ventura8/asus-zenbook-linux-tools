@@ -1,0 +1,393 @@
+# Tagalog translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Tagalog\n"
+"Language: tl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=((((((0 == 0)) && ((n == 1) || (n == 2) || "
+"(n == 3))) || (((0 == 0)) && (!(((n % 10) == 4) || ((n % 10) == 6) || ((n % "
+"10) == 9))))) || ((!((0 == 0))) && (!(((0 % 10) == 4) || ((0 % 10) == 6) || "
+"((0 % 10) == 9))))) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d panlabas na display"
+msgstr[1] "%d mga panlabas na display"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d panlabas na display lang"
+msgstr[1] "%d mga panlabas na display lang"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Mode ng Display ng ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Screenshot ng ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Pag-setup ng ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Handa nang gamitin ang ASUS ZenBook Linux Tools."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Mga Setting ng ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Ang mga feature ng ASUS ZenBook hardware ay naka-install bilang mga opsyonal "
+"na bahagi."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Nagdaragdag ng mga keyboard shortcut na Display Toggle, MyASUS Settings, at "
+"Share para sa GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, o MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Lahat ng display (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Lahat ng display (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Magagamit na mga bahagi:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Balanseng"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Naka-disable ang camera"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Pinagana ang camera"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Pagkapribado ng camera"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Pumili ng mga bahagi"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Na-configure ang mga shortcut ng cinnamon."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Mga component [default: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "I-configure ang mga shortcut ng GNOME para sa %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "I-configure ang KDE Plasma shortcut para sa %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Kasalukuyang layout ng display"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Mode ng display"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr ""
+"Maglagay ng mga numero o pangalan ng bahagi, na pinaghihiwalay ng mga kuwit."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Profile ng fan"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Naka-install ang GNOME ASUS Window Swap extension."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Na-configure ang mga shortcut ng GNOME."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Mga feature ng hardware para sa iyong Linux desktop"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Mag-install ng mga script at serbisyo"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "I-install ang mga dependency ng system"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Kinansela ng user ang pag-install."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Kumpleto na ang pag-install."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Pag-install ng ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Nag-i-install ng WMI hotkey daemon para sa ScreenPad brightness, Quiet/"
+"Balanced/Performance fan, privacy ng camera, at pagpapalitan ng window sa "
+"mga monitor."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Nag-i-install ng speaker amplifier fix at suspend/resume hook upang bumalik "
+"ang suportadong ZenBook audio pagkatapos mag-boot at pagkatapos matulog."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Nag-i-install ng touchpad Share gesture listener upang ang tap sa kaliwang "
+"itaas na sulok ay magbukas ng desktop screenshot tool (GNOME, Spectacle, at "
+"mga katulad)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Hindi wastong pagpili: %s. Maglagay ng mga numero (1,2,3,4), pangalan ng "
+"component, o all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Na-configure ang mga KDE Plasma shortcut."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Na-configure ang LXQt Global Keys."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Na-configure ang mga shortcut ng MATE."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Pangunahing display"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Pangunahing display lamang"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Mode: #%s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Walang napiling mga bahagi. Kinansela ang pag-install."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Naka-off"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Naka-on"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Pagganap (Boost)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Pindutin ang Enter para i-install ang lahat ng inirerekomendang component, o "
+"ilagay ang 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Tahimik (Tahimik)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Backlight ng ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Liwanag ng ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad lang"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Piliin lamang ang mga sangkap na iyong ginagamit. Hindi mai-install ang mga "
+"hindi napiling serbisyo at shortcut."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Piliin lamang kung ano ang iyong ginagamit upang maiwasan ang mga hindi "
+"kinakailangang serbisyo at mga shortcut."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Mga shortcut na nakarehistro para sa Print/Super-Shift-s, XF86Launch1/"
+"XF86Tools, at XF86Display (F8 ay hindi nababago)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Naka-install ang sound fix na may suspend at resume hook."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space pumipili ng component. Enter kumukumpirma. Esc kumakansela."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Mode ng pagpili ng teksto."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Ang wika ng interface ay sumusunod sa iyong sesyon sa desktop."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Maaaring tumagal ng ilang minuto habang dina-download at ini-install ang mga "
+"package."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Naka-install ang Touchpad Share gesture listener (hindi na-verify ang "
+"aktibong estado sa environment na ito)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Naka-install at aktibo ang Touchpad Share gesture listener."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Naka-install ang WMI Hotkey daemon (hindi na-verify ang aktibong estado sa "
+"environment na ito)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Naka-install at aktibo ang WMI Hotkey daemon."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Bakit ito dialog?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Na-configure ang mga shortcut ng XFCE."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Magdagdag ng Display, MyASUS, at Share ng mga desktop shortcut"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Magdagdag ng Display, MyASUS, at Share ng mga shortcut sa iyong desktop."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Mga hotkey ng hardware para sa ScreenPad, fan, camera, at window swap."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "Mga hotkey ng hardware: ScreenPad, fan, camera, at window swap"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Magsimula ng mga sinusuportahang speaker amplifier pagkatapos ng boot at "
+#~ "ipagpatuloy"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Magsimula ng mga sinusuportahang speaker amplifier, kabilang ang "
+#~ "pagkatapos ng resume."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Buksan ang tool sa screenshot gamit ang kaliwang bahagi sa itaas na "
+#~ "Ibahagi ang galaw."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Binubuksan ng gesture sa itaas sa kaliwang bahagi ang tool sa screenshot"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "whiptail"

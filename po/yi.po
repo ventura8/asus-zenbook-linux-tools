@@ -1,0 +1,378 @@
+# Yiddish translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: ייִדיש\n"
+"Language: yi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=((((n == 1)) && ((0 == 0))) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d פונדרויסנדיק אַרויסווייַזן"
+msgstr[1] "%d פונדרויסנדיק דיספּלייז"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d בלויז פונדרויסנדיק אַרויסווייַזן"
+msgstr[1] "%d בלויז פונדרויסנדיק דיספּלייז"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS ווייַז מאָדע"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS סקרעענשאָט"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux אַן־איינשטעלונג %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools איז גרייט צו נוצן."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook סעטטינגס"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook ייַזנוואַרג פֿעיִקייטן זענען אינסטאַלירן ווי אַפּשאַנאַל קאַמפּאָונאַנץ."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"לייגט צו Display Toggle, MyASUS Settings און Share קלאַוויאַטור קירצונגען פֿאַר "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon אָדער MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "אַלע דיספּלייז (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "כל דיספּלייז (הויפּט + סקרעענפּאַד)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "בנימצא קאַמפּאָונאַנץ:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "באַלאַנסט"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "אַפּאַראַט פאַרקריפּלט"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "אַפּאַראַט ענייבאַלד"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "אַפּאַראַט פּריוואַטקייט"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "קלייַבן קאַמפּאָונאַנץ"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "צימערינג שאָרטקאַץ קאַנפיגיערד."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "קאָמפּאָנענטן [סטאַנדאַרט: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "קאַנפיגיער GNOME דורכוועג פֿאַר %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "קאַנפיגיער KDE פּלאַזמאַ דורכוועג פֿאַר %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "קראַנט אַרויסווייַזן אויסלייג"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "ווייַז מאָדע"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "אַרייַן קאָמפּאָנענט נומערן אָדער נעמען, אפגעשיידט דורך קאָמע."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "פאָכער פּראָפיל"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS פֿענצטער סוואַפּ פאַרלענגערונג אינסטאַלירן."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME דורכוועג קאַנפיגיערד."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "ייַזנוואַרג פֿעיִקייטן פֿאַר דיין לינוקס דעסקטאַפּ"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "ינסטאַלירן סקריפּס און באַדינונגס"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "ינסטאַלירן סיסטעם דיפּענדאַנסיז"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "ייַנמאָנטירונג קאַנסאַלד דורך באַניצער."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "ייַנמאָנטירונג גאַנץ."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ינסטאָלינג ASUS ZenBook Linux מכשירים %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"אינסטאַלירט דעם WMI הייס־קנעפּל daemon פֿאַר ScreenPad העלקייט, פֿען Quiet/"
+"Balanced/Performance, קאַמערע פּריוואַטקייט און פֿענצטער־אויסטויש צווישן "
+"מאָניטאָרן."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"אינסטאַלירט די ספּיקער־אַמפּליפֿײַער פֿאַרריכטונג און אַ suspend/resume hook כּדי "
+"געשטיצטע ZenBook אַודיאָ זאָל זיך צוריקשטעלן נאָך boot און נאָך שלאָף."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"אינסטאַלירט דעם touchpad Share געסטור listener כּדי אַ טאַפּ אין דעם אויבערשטן־"
+"לינקן ווינקל זאָל עפֿענען אײַער דעסקטאָפּ סקרינשאָט־געצייַג (GNOME, Spectacle און "
+"ענלעכע)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"אומגילטיקע אויסוואַל: %s. גיט אַרײַן נומערן (1,2,3,4), קאָמפּאָנענט־נעמען, אָדער "
+"all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE פּלאַזמע דורכוועג קאַנפיגיערד."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt גלאבאלע קיז קאַנפיגיערד."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE דורכוועג קאַנפיגיערד."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "הויפּט אַרויסווייַזן"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "בלויז הויפּט אַרויסווייַזן"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "מאָדע: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "קיין קאַמפּאָונאַנץ זענען אויסגעקליבן. ייַנמאָנטירונג קאַנסאַלד."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "אַוועק"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "אויף"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "פאָרשטעלונג (בוסט)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"דרוקט Enter צו אינסטאַלירן אַלע רעקאָמענדירטע קאָמפּאָנענטן, אָדער שרײַבט 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "שטיל (שטיל)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "סקרעענפּאַד באַקלייט"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "סקרעענפּאַד ברייטנאַס"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "בלויז סקרעענפּאַד"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"אויסקלייַבן בלויז די קאַמפּאָונאַנץ איר נוצן. אַנסעלעקטעד באַדינונגס און שאָרטקאַץ "
+"וועט נישט זיין אינסטאַלירן."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"סעלעקטירן בלויז וואָס איר נוצן צו ויסמיידן ומנייטיק באַדינונגס און שאָרטקאַץ."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"שאָרטקאַץ רעגיסטרירט פֿאַר פּרינט / סופּער-שיפט-s, XF86Launch1 / XF86 מכשירים און "
+"XF86Display (F8 לינקס אַנטשיינדזשד)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "געזונט פאַרריכטן אינסטאַלירן מיט אַ ופהענגען און נעמענ זיכ ווידער קרוק."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space קלײַבט אַ קאָמפּאָנענט. Enter באַשטעטיקט. Esc אַנולירט."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "טעקסט סעלעקציע מאָדע."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "די צובינד שפּראַך גייט נאָך דיין דעסקטאַפּ סעסיע."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "דאָס קען נעמען אַ פּאָר מינוט בשעת פּאַקעטן ווערן אַראָפּגעלאָדן און אינסטאַלירט."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"טאָוטשפּאַד ייַנטיילן האַווייַע ליסנער אינסטאַלירן (אַקטיוו שטאַט איז נישט וועראַפייד "
+"אין דעם סוויווע)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "טאָוטשפּאַד ייַנטיילן האַווייַע ליסנער אינסטאַלירן און אַקטיוו."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI האָטקיי דיימאַן אינסטאַלירן (אַקטיוו שטאַט איז נישט וועראַפייד אין דעם "
+"סוויווע)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI האָטקיי דיימאַן אינסטאַלירן און אַקטיוו."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "פארוואס דעם דיאַלאָג?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE דורכוועג קאַנפיגיערד."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "לייג ווייַז, MyASUS און ייַנטיילן דעסקטאַפּ דורכוועג"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "לייג ווייַז, מיאַסוס און שער דורכוועג צו דיין דעסקטאַפּ."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "ייַזנוואַרג האָטקייס פֿאַר סקרעענפּאַד, פאָכער, אַפּאַראַט און פֿענצטער ויסבייַטן."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "ייַזנוואַרג האָטקייס: סקרעענפּאַד, פאָכער, אַפּאַראַט און פֿענצטער ויסבייַטן"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "יניטיאַליזע געשטיצט רעדנער אַמפּלאַפייערז נאָך שטיוול און נעמענ זיכ ווידער"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "יניטיאַליזע געשטיצט רעדנער אַמפּלאַפייערז, אַרייַנגערעכנט נאָך נעמענ זיכ ווידער."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "עפֿן די סקרעענשאָט געצייַג מיט די שפּיץ-לינקס ייַנטיילן האַווייַע."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "שפּיץ-לינקס ייַנטיילן האַווייַע אָפּענס די סקרעענשאָט געצייַג"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "ווהיפּטאַיל"
