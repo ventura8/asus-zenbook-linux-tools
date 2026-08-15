@@ -1,0 +1,699 @@
+---
+name: Linting & Code Quality
+
+"on":
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+concurrency:
+  # One in-flight CI run for this workflow (any branch/PR). A new push or PR
+  # synchronize must cancel the previous run — never queue behind it.
+  # (ppa-release.yml keeps cancel-in-progress: false on purpose.)
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  # Matrix: two lint waves in Docker (wave env id; label is GHA display-only).
+  # Local --full mirrors via ASUS_LINT_WAVE=cheap|heavy.
+  lint:
+    name: Lint ${{ matrix.label }} (Docker)
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - wave: cheap
+            label: format+syntax
+          - wave: heavy
+            label: pylint+shellcheck
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run ${{ matrix.label }}
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: lint-py313
+          ASUS_LINT_WAVE: ${{ matrix.wave }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/lint-in-docker.sh scripts/run-lints.sh scripts/build-and-test.sh
+          ./scripts/lint-in-docker.sh 2>&1 | tee "reports/distro-logs/lint-docker-${{ matrix.wave }}.log"
+
+      - name: Upload lint Docker log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: lint-docker-${{ matrix.wave }}-log
+          path: reports/distro-logs/lint-docker-${{ matrix.wave }}.log
+          if-no-files-found: warn
+
+  deb-package:
+    name: Debian package smoke
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Build, install, and purge unsigned .deb
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs artifacts
+          chmod +x scripts/run_deb_package_smoke.sh
+          # Same entrypoint as local `./scripts/build-and-test.sh --full`.
+          ./scripts/run_deb_package_smoke.sh 2>&1 | tee reports/distro-logs/deb-package.log
+
+      - name: Upload Debian packaging log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: deb-package-log
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+      - name: Upload Debian package artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: deb-package
+          path: artifacts/
+          if-no-files-found: warn
+
+  # Matrix: 4 parallel cells on debian:trixie (mode+shard env; label is display-only).
+  # Shards upload partial data; coverage-merge enforces the ≥90% gates.
+  coverage:
+    name: Coverage ${{ matrix.label }} (debian:trixie)
+    needs: lint
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: kcov
+            shard: "1"
+            label: kcov bin-sound+ui
+          - mode: kcov
+            shard: "2"
+            label: kcov install-lib
+          - mode: python
+            shard: "1"
+            label: python unit tests
+          - mode: python
+            shard: "2"
+            label: python e2e tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run ${{ matrix.label }}
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-debian-trixie
+          ASUS_COVERAGE_MODE: ${{ matrix.mode }}
+          ASUS_COVERAGE_SHARD: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --coverage-gate \
+            2>&1 | tee "reports/distro-logs/coverage-${{ matrix.mode }}-${{ matrix.shard }}.log"
+
+      - name: Upload coverage shard log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: coverage-${{ matrix.mode }}-${{ matrix.shard }}-log
+          path: reports/distro-logs/coverage-${{ matrix.mode }}-${{ matrix.shard }}.log
+          if-no-files-found: warn
+
+      - name: Upload coverage shard data
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: coverage-shard-${{ matrix.mode }}-${{ matrix.shard }}
+          path: reports/coverage-shards/${{ matrix.mode }}-${{ matrix.shard }}
+          include-hidden-files: true
+          if-no-files-found: error
+
+      - name: Upload kcov scenario logs on failure
+        if: failure() && matrix.mode == 'kcov'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: coverage-gate-kcov-logs-${{ matrix.shard }}
+          path: |
+            reports/distro-logs/kcov-scenarios/
+            reports/kcov/
+          if-no-files-found: warn
+
+  coverage-merge:
+    name: Coverage merge (≥90% gates)
+    needs: coverage
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Download coverage shard data
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          pattern: coverage-shard-*
+          path: reports/coverage-shards-download
+
+      - name: Install host merge tools (kcov + coverage.py)
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kcov
+          python3 -m pip install --user 'coverage>=7.15,<8'
+
+      - name: Merge coverage shards on host and enforce gates
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs reports/coverage-shards
+          chmod +x scripts/build-and-test.sh
+          export PATH="${HOME}/.local/bin:${PATH}"
+          ./scripts/build-and-test.sh --coverage-merge-only \
+            2>&1 | tee reports/distro-logs/coverage-merge.log
+
+      - name: Upload coverage merge log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: coverage-merge-log
+          path: reports/distro-logs/coverage-merge.log
+          if-no-files-found: warn
+
+  # Package-family matrices (same nine lanes as DISTRO_FAMILY_* in run_docker_matrix.sh).
+  distro-tests-debian:
+    name: Distro Tests (${{ matrix.image }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [ubuntu:26.04, debian:trixie]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          log_slug="${log_slug//:/-}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run compat lane
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.log_slug }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only --distro "${{ matrix.image }}" \
+            2>&1 | tee "reports/distro-logs/compat-${{ env.log_slug }}.log"
+
+      - name: Upload distro lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: distro-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-tests-rhel:
+    name: Distro Tests (${{ matrix.image }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [fedora:44, rocky:10, almalinux:10]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          log_slug="${log_slug//:/-}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run compat lane
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.log_slug }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only --distro "${{ matrix.image }}" \
+            2>&1 | tee "reports/distro-logs/compat-${{ env.log_slug }}.log"
+
+      - name: Upload distro lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: distro-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-tests-suse-arch:
+    name: Distro Tests (${{ matrix.image }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - opensuse/tumbleweed
+          - archlinux:latest
+          - opensuse/leap:16.0
+          - manjarolinux/base:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          log_slug="${log_slug//:/-}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Run compat lane
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.log_slug }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only --distro "${{ matrix.image }}" \
+            2>&1 | tee "reports/distro-logs/compat-${{ env.log_slug }}.log"
+
+      - name: Upload distro lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: distro-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  # Always-on ASUS_CI_DE_FAMILY variants (family-split like distro-tests-*).
+  # F1: stub images only; install-de-family.sh runs in-container before smoke.
+  # Soft-skips for unpackaged Rocky/Alma cinnamon/mate/lxqt cells.
+  distro-full-de-debian:
+    name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        image: [ubuntu:26.04, debian:trixie]
+        de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          image_slug="${log_slug//:/-}"
+          log_slug="${image_slug}-de-${{ matrix.de_family }}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+          echo "image_slug=${image_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Build and run full-DE compat smoke
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.image_slug }}
+          ASUS_CI_DE_FAMILY: ${{ matrix.de_family }}
+          ASUS_CI_FULL_DE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only \
+            --distro "${{ matrix.image }}" \
+            --de-family "${{ matrix.de_family }}" \
+            2>&1 | tee "reports/distro-logs/fullde-${{ env.log_slug }}.log"
+
+      - name: Upload full-DE lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: fullde-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-full-de-rhel:
+    name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        image: [fedora:44, rocky:10, almalinux:10]
+        de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
+        exclude:
+          - image: rocky:10
+            de_family: cinnamon
+          - image: rocky:10
+            de_family: mate
+          - image: rocky:10
+            de_family: lxqt
+          - image: almalinux:10
+            de_family: cinnamon
+          - image: almalinux:10
+            de_family: mate
+          - image: almalinux:10
+            de_family: lxqt
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          image_slug="${log_slug//:/-}"
+          log_slug="${image_slug}-de-${{ matrix.de_family }}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+          echo "image_slug=${image_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Build and run full-DE compat smoke
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.image_slug }}
+          ASUS_CI_DE_FAMILY: ${{ matrix.de_family }}
+          ASUS_CI_FULL_DE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only \
+            --distro "${{ matrix.image }}" \
+            --de-family "${{ matrix.de_family }}" \
+            2>&1 | tee "reports/distro-logs/fullde-${{ env.log_slug }}.log"
+
+      - name: Upload full-DE lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: fullde-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  distro-full-de-suse-arch:
+    name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
+    needs: [lint, coverage-merge]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        image:
+          - opensuse/tumbleweed
+          - archlinux:latest
+          - opensuse/leap:16.0
+          - manjarolinux/base:latest
+        de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Set matrix log slug
+        run: |
+          set -euo pipefail
+          log_slug="${{ matrix.image }}"
+          log_slug="${log_slug//\//-}"
+          image_slug="${log_slug//:/-}"
+          log_slug="${image_slug}-de-${{ matrix.de_family }}"
+          echo "log_slug=${log_slug}" >> "$GITHUB_ENV"
+          echo "image_slug=${image_slug}" >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
+
+      - name: Build and run full-DE compat smoke
+        env:
+          DOCKER_BUILDX_CACHE_BACKEND: gha
+          DOCKER_BUILDX_CACHE_SCOPE: tests-${{ env.image_slug }}
+          ASUS_CI_DE_FAMILY: ${{ matrix.de_family }}
+          ASUS_CI_FULL_DE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/run_docker_matrix.sh scripts/build-and-test.sh
+          ./scripts/run_docker_matrix.sh --compat-only \
+            --distro "${{ matrix.image }}" \
+            --de-family "${{ matrix.de_family }}" \
+            2>&1 | tee "reports/distro-logs/fullde-${{ env.log_slug }}.log"
+
+      - name: Upload full-DE lane logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: fullde-logs-${{ env.log_slug }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  # Limited nested / MoveFocused / sticky-marker proofs on every push/PR.
+  # Jobs MUST apt-install full dep sets below. Soft-skip only AFTER install when
+  # Shell/uinput still cannot start (env/DRM/kernel) — never for missing packages.
+  # No GDM/SDDM; no live-panel or laptop OSD-dialog claims.
+  nested-session:
+    name: Nested session smoke
+    needs: [lint]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+      - name: Install nested GNOME Shell / Mutter / Xvfb deps
+        run: |
+          set -euo pipefail
+          # Full set so gnome-shell/mutter can start under dbus-run-session/Xvfb.
+          # Keep in sync with plan § Nested CI full package install + movefocused-nested.
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            gnome-shell mutter mutter-common-bin \
+            gsettings-desktop-schemas libglib2.0-bin dconf-gsettings-backend \
+            dbus-x11 xvfb \
+            python3-gi gir1.2-gtk-4.0 gir1.2-mutter-18 gir1.2-adw-1 gir1.2-glib-2.0 gjs \
+            at-spi2-core gnome-settings-daemon adwaita-icon-theme \
+            fonts-cantarell fonts-dejavu-core \
+            libgl1-mesa-dri mesa-vulkan-drivers
+          command -v gnome-shell
+          command -v mutter
+          command -v xvfb-run
+          command -v dbus-run-session
+          command -v gsettings
+          command -v gdbus
+      - name: Run nested-session smoke
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/distro_nested_session_smoke.sh
+          ./scripts/distro_nested_session_smoke.sh \
+            2>&1 | tee reports/distro-logs/nested-session-smoke.log
+          if grep -Fq 'required command missing after CI install' \
+            reports/distro-logs/nested-session-smoke.log; then
+            echo "nested-session must not soft-skip missing packages" >&2
+            exit 1
+          fi
+          if ! grep -Eq 'nested-session smoke passed|SOFT-SKIP: nested Shell' \
+            reports/distro-logs/nested-session-smoke.log; then
+            echo "nested-session produced neither pass nor env soft-skip" >&2
+            exit 1
+          fi
+      - name: Upload nested-session logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: nested-session-logs
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  movefocused-nested:
+    name: MoveFocused nested E2E
+    needs: [lint]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+      - name: Install nested GNOME Shell / Mutter / Xvfb deps
+        run: |
+          set -euo pipefail
+          # Same full Shell/Mutter set as nested-session (Tier A needs org.gnome.Shell).
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            gnome-shell mutter mutter-common-bin \
+            gsettings-desktop-schemas libglib2.0-bin dconf-gsettings-backend \
+            dbus-x11 xvfb \
+            python3-gi gir1.2-gtk-4.0 gir1.2-mutter-18 gir1.2-adw-1 gir1.2-glib-2.0 gjs \
+            at-spi2-core gnome-settings-daemon adwaita-icon-theme \
+            fonts-cantarell fonts-dejavu-core \
+            libgl1-mesa-dri mesa-vulkan-drivers
+          command -v gnome-shell
+          command -v mutter
+          command -v dbus-run-session
+          command -v xvfb-run
+          command -v gdbus
+          command -v gsettings
+          command -v python3
+      - name: Run MoveFocused nested E2E
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/distro_movefocused_nested_e2e.sh
+          ./scripts/distro_movefocused_nested_e2e.sh \
+            2>&1 | tee reports/distro-logs/movefocused-nested-e2e.log
+          # Fail closed if the job soft-skipped because packages were missing
+          # (script must fail those paths). Soft-skip lines must only be env start.
+          if grep -Fq 'required command missing after CI install' \
+            reports/distro-logs/movefocused-nested-e2e.log; then
+            echo "MoveFocused E2E must not soft-skip missing packages" >&2
+            exit 1
+          fi
+          if ! grep -Eq 'Tier A GetFocusedMonitor|SOFT-SKIP: nested Shell' \
+            reports/distro-logs/movefocused-nested-e2e.log; then
+            echo "MoveFocused E2E produced neither Tier A success nor env soft-skip" >&2
+            exit 1
+          fi
+      - name: Upload MoveFocused logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: movefocused-nested-logs
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+  sticky-osd-uinput:
+    name: Sticky OSD uinput E2E
+    needs: [lint]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+      - name: Install ydotool + Xvfb; enable uinput
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            ydotool xvfb dbus-x11
+          command -v ydotool
+          command -v ydotoold
+          command -v xvfb-run
+          sudo modprobe uinput || true
+          sudo chmod a+rw /dev/uinput || true
+      - name: Run sticky OSD marker E2E
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          chmod +x scripts/distro_sticky_osd_uinput_e2e.sh
+          ./scripts/distro_sticky_osd_uinput_e2e.sh \
+            2>&1 | tee reports/distro-logs/sticky-osd-uinput-e2e.log
+          if grep -Fq 'required command missing after CI install' \
+            reports/distro-logs/sticky-osd-uinput-e2e.log; then
+            echo "sticky OSD E2E must not soft-skip missing packages" >&2
+            exit 1
+          fi
+          if ! grep -Eq 'sticky OSD uinput E2E passed|SOFT-SKIP:' \
+            reports/distro-logs/sticky-osd-uinput-e2e.log; then
+            echo "sticky OSD E2E produced neither pass nor env soft-skip" >&2
+            exit 1
+          fi
+      - name: Upload sticky-OSD logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: sticky-osd-uinput-logs
+          path: reports/distro-logs/
+          if-no-files-found: warn

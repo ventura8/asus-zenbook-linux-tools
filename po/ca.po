@@ -1,0 +1,395 @@
+# Catalan translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Català\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(((((((0 == 0)) && (!((n == 0)))) && (((n % "
+"1000000) == 0))) && ((0 == 0))) || (!((0 >= 0 && 0 <= 5)))) ? 1 : (((n == "
+"1)) && ((0 == 0))) ? 0 : 2);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d pantalla externa"
+msgstr[1] "%d pantalles externes"
+msgstr[2] "%d pantalles externes"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d només amb pantalla externa"
+msgstr[1] "%d només pantalles externes"
+msgstr[2] "%d només pantalles externes"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Mode de visualització ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Captura de pantalla d'ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Configuració d'ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools està llest per utilitzar."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Configuració ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Les funcions de maquinari ASUS ZenBook s'instal·len com a components "
+"opcionals."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Afegeix les dreceres de teclat Display Toggle, MyASUS Settings i Share per a "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon o MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Totes les pantalles (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Totes les pantalles (principal + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Components disponibles:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Equilibrat"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Càmera desactivada"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Càmera activada"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Privadesa de la càmera"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Trieu components"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Dreceres de canyella configurades."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Components [per defecte: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Configura les dreceres de GNOME per a %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Configura les dreceres de KDE Plasma per a %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Disposició actual de la pantalla"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Mode de visualització"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Introduïu números o noms de components, separats per comes."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Perfil de fan"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "S'ha instal·lat l'extensió GNOME ASUS Window Swap."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Dreceres de GNOME configurades."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Funcions de maquinari per al vostre escriptori Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Instal·leu scripts i serveis"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Instal·lar dependències del sistema"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Instal·lació cancel·lada per l'usuari."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Instal·lació completa."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Instal·lació de les eines ASUS ZenBook Linux %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Instal·la el dimoni de tecles ràpides WMI per a la brillantor del ScreenPad, "
+"el ventilador Quiet/Balanced/Performance, la privadesa de la càmera i el "
+"canvi de finestres entre monitors."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Instal·la la correcció de l'amplificador dels altaveus i un ganxo de "
+"suspensió/reprèn perquè l'àudio ZenBook compatible es recuperi després de "
+"l'arrencada i després de la suspensió."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Instal·la l'oient del gest Share del touchpad perquè un toc a l'angle "
+"superior esquerre obri l'eina de captures de l'escriptori (GNOME, Spectacle "
+"i similars)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Selecció no vàlida: %s. Introduïu números (1,2,3,4), noms de components o "
+"all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Dreceres de KDE Plasma configurades."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Claus globals LXQt configurades."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Dreceres MATE configurades."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Pantalla principal"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Només la pantalla principal"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Mode: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "No s'ha seleccionat cap components. S'ha cancel·lat la instal·lació."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Apagat"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Encès"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Rendiment (augment)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Premeu Enter per instal·lar tots els components recomanats, o introduïu "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Silenci (Silenci)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Il·luminació de fons del ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Brillantor del ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Només ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Seleccioneu només els components que feu servir. Els serveis i les dreceres "
+"no seleccionats no s'instal·laran."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Seleccioneu només el que feu servir per evitar serveis i dreceres "
+"innecessàries."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Dreceres registrades per a Print/Super-Shift-s, XF86Launch1/XF86Tools i "
+"XF86Display (F8 no ha canviat)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Correcció de so instal·lada amb un ganxo de suspensió i reinici."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space selecciona un component. Enter confirma. Esc cancel·la."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Mode de selecció de text."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "L'idioma de la interfície segueix la vostra sessió d'escriptori."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Això pot trigar uns minuts mentre es baixen i s'instal·len els paquets."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"L'auditor de gestos del Touchpad Share està instal·lat (l'estat actiu no "
+"s'ha verificat en aquest entorn)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share oient de gestos instal·lat i actiu."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Dimoni WMI Hotkey instal·lat (estat actiu no verificat en aquest entorn)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Dimoni WMI Hotkey instal·lat i actiu."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Per què aquest diàleg?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Dreceres XFCE configurades."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Afegiu dreceres d'escriptori Display, MyASUS i Share"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Afegiu dreceres de Display, MyASUS i Share al vostre escriptori."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Tecles d'accés ràpid de maquinari per a l'intercanvi de pantalla, "
+#~ "ventilador, càmera i finestres."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Tecles d'accés ràpid de maquinari: ScreenPad, ventilador, càmera i "
+#~ "intercanvi de finestres"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Inicialitzeu els amplificadors d'altaveus compatibles després de "
+#~ "l'arrencada i reinicieu-los"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Inicialitzeu els amplificadors d'altaveus compatibles, fins i tot després "
+#~ "de reprendre."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Obriu l'eina de captura de pantalla amb el gest de compartir a la part "
+#~ "superior esquerra."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "El gest de compartir a la part superior esquerra obre l'eina de captura "
+#~ "de pantalla"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "cua de fuet"

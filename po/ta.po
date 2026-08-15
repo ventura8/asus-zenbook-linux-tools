@@ -1,0 +1,371 @@
+# Tamil translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: தமிழ்\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d வெளிப்புற காட்சி"
+msgstr[1] "%d வெளிப்புற காட்சிகள்"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d வெளிப்புற காட்சி மட்டும்"
+msgstr[1] "%d வெளிப்புற காட்சிகள் மட்டும்"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS காட்சி முறை"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS ஸ்கிரீன்ஷாட்"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux அமைவு %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools பயன்படுத்த தயாராக உள்ளது."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook அமைப்புகள்"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "ASUS ZenBook வன்பொருள் அம்சங்கள் விருப்பக் கூறுகளாக நிறுவப்பட்டுள்ளன."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon அல்லது MATE க்கான Display Toggle, "
+"MyASUS Settings மற்றும் Share விசைப்பலகை குறுக்குவழிகளை சேர்க்கிறது."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "அனைத்து காட்சிகளும் (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "அனைத்து காட்சிகளும் (முதன்மை + ஸ்கிரீன்பேட்)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "கிடைக்கும் கூறுகள்:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "சமச்சீர்"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "கேமரா முடக்கப்பட்டுள்ளது"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "கேமரா இயக்கப்பட்டது"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "கேமரா தனியுரிமை"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "கூறுகளைத் தேர்ந்தெடுக்கவும்"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "இலவங்கப்பட்டை குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "கூறுகள் [இயல்புநிலை: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "%s க்கான க்னோம் குறுக்குவழிகளை உள்ளமைக்கவும்"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "%s க்கான KDE பிளாஸ்மா குறுக்குவழிகளை உள்ளமைக்கவும்"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "தற்போதைய காட்சி அமைப்பு"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "காட்சி முறை"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "காற்புள்ளிகளால் பிரிக்கப்பட்ட கூறு எண்கள் அல்லது பெயர்களை உள்ளிடவும்."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "ரசிகர் சுயவிவரம்"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS விண்டோ ஸ்வாப் நீட்டிப்பு நிறுவப்பட்டது."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "க்னோம் குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "உங்கள் லினக்ஸ் டெஸ்க்டாப்பிற்கான வன்பொருள் அம்சங்கள்"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "ஸ்கிரிப்டுகள் மற்றும் சேவைகளை நிறுவவும்"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "கணினி சார்புகளை நிறுவவும்"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "பயனரால் நிறுவல் ரத்து செய்யப்பட்டது."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "நிறுவல் முடிந்தது."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux கருவிகளை நிறுவுகிறது %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"ScreenPad ஒளிர்வு, விசிறி Quiet/Balanced/Performance, கேமரா தனியுரிமை மற்றும் "
+"மானிட்டர்களுக்கிடையே சாளர மாற்றத்திற்கான WMI ஹாட்கீ daemon நிறுவுகிறது."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"ஆதரிக்கப்படும் ZenBook ஒலி துவக்கத்திற்குப் பிறகும் உறக்கத்திற்குப் பிறகும் மீள ஸ்பீக்கர் "
+"ஆம்ப்ளிஃபையர் சரிசெய்தல் மற்றும் suspend/resume hook நிறுவுகிறது."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"மேல்-இடது மூலையில் தட்டும்போது டெஸ்க்டாப் ஸ்கிரீன்ஷாட் கருவி (GNOME, Spectacle மற்றும் "
+"ஒப்பானவை) திறக்க touchpad Share சைகை listener நிறுவுகிறது."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "செல்லாத தேர்வு: %s. எண்கள் (1,2,3,4), கூறு பெயர்கள் அல்லது all உள்ளிடவும்."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE பிளாஸ்மா குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt குளோபல் விசைகள் கட்டமைக்கப்பட்டுள்ளன."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE குறுக்குவழிகள் உள்ளமைக்கப்பட்டன."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "முக்கிய காட்சி"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "பிரதான காட்சி மட்டும்"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "பயன்முறை: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "கூறுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. நிறுவல் ரத்து செய்யப்பட்டது."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "ஆஃப்"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "அன்று"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "செயல்திறன் (பூஸ்ட்)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"பரிந்துரைக்கப்பட்ட அனைத்து கூறுகளையும் நிறுவ Enter அழுத்தவும், அல்லது 'all' உள்ளிடவும்."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "அமைதியான (அமைதியான)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad பின்னொளி"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ஸ்கிரீன்பேட் பிரகாசம்"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad மட்டும்"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"நீங்கள் பயன்படுத்தும் கூறுகளை மட்டும் தேர்ந்தெடுக்கவும். தேர்ந்தெடுக்கப்படாத சேவைகள் மற்றும் "
+"குறுக்குவழிகள் நிறுவப்படாது."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"தேவையற்ற சேவைகள் மற்றும் குறுக்குவழிகளைத் தவிர்க்க நீங்கள் பயன்படுத்துவதை மட்டும் "
+"தேர்ந்தெடுக்கவும்."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"அச்சு/Super-Shift-s, XF86Launch1/XF86Tools மற்றும் XF86Display (F8 மாறாமல் "
+"உள்ளது) ஆகியவற்றிற்காக பதிவுசெய்யப்பட்ட குறுக்குவழிகள்."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "சஸ்பெண்ட் மற்றும் ரெஸ்யூம் ஹூக் மூலம் சவுண்ட் ஃபிக்ஸ் நிறுவப்பட்டுள்ளது."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr ""
+"Space ஒரு கூறைத் தேர்ந்தெடுக்கிறது. Enter உறுதிப்படுத்துகிறது. Esc ரத்துசெய்கிறது."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "உரை தேர்வு முறை."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "இடைமுக மொழி உங்கள் டெஸ்க்டாப் அமர்வைப் பின்பற்றுகிறது."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "தொகுப்புகள் பதிவிறக்கப்பட்டு நிறுவப்படும்போது இதற்கு சில நிமிடங்கள் ஆகலாம்."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"டச்பேட் பகிர் சைகை கேட்பான் நிறுவப்பட்டது (இந்த சூழலில் செயலில் உள்ள நிலை "
+"சரிபார்க்கப்படவில்லை)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "டச்பேட் பகிர் சைகை கேட்பான் நிறுவப்பட்டு செயலில் உள்ளது."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey டீமான் நிறுவப்பட்டது (இந்த சூழலில் செயலில் உள்ள நிலை சரிபார்க்கப்படவில்லை)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey டீமான் நிறுவப்பட்டு செயலில் உள்ளது."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "ஏன் இந்த டயலாக்?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "காட்சி, MyASUS மற்றும் பகிர் டெஸ்க்டாப் குறுக்குவழிகளைச் சேர்க்கவும்"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "உங்கள் டெஸ்க்டாப்பில் காட்சி, MyASUS மற்றும் ஷேர் ஷார்ட்கட்களைச் சேர்க்கவும்."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr "ScreenPad, fan, camera மற்றும் window swapக்கான வன்பொருள் ஹாட்ஸ்கிகள்."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr "வன்பொருள் ஹாட்ஸ்கிகள்: ScreenPad, fan, camera மற்றும் window swap"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr "பூட் மற்றும் ரெஸ்யூம் செய்த பிறகு ஆதரிக்கப்படும் ஸ்பீக்கர் பெருக்கிகளை துவக்கவும்"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr "மறுதொடக்கத்திற்குப் பிறகு உட்பட, ஆதரிக்கப்படும் ஸ்பீக்கர் பெருக்கிகளைத் தொடங்கவும்."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "மேல் இடது பகிர் சைகை மூலம் ஸ்கிரீன்ஷாட் கருவியைத் திறக்கவும்."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "மேல் இடது பகிர் சைகை ஸ்கிரீன்ஷாட் கருவியைத் திறக்கும்"
+
+#~ msgid "libnewt"
+#~ msgstr "லிப்நியூட்"
+
+#~ msgid "whiptail"
+#~ msgstr "சாட்டையால்"

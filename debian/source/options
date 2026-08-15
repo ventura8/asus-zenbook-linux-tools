@@ -1,0 +1,13 @@
+# Keep native source uploads free of local tooling / CI caches if present.
+tar-ignore = .cache
+tar-ignore = .git
+tar-ignore = .venv
+tar-ignore = .tools
+tar-ignore = node_modules
+tar-ignore = reports
+tar-ignore = .ruff_cache
+tar-ignore = .pytest_cache
+tar-ignore = __pycache__
+tar-ignore = .coverage
+tar-ignore = .coverage.*
+tar-ignore = .tmp-tests

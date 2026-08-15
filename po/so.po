@@ -1,0 +1,385 @@
+# Somali translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Soomaali\n"
+"Language: so\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d muuqaal dibadda ah"
+msgstr[1] "%d bandhigyo dibadda ah"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d bandhig dibadda ah oo kaliya"
+msgstr[1] "%d bandhigyo dibadda ah oo kaliya"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Qaabka Muujinta ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Sawirka ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Dejinta ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools waa diyaar in la isticmaalo."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook Dejinta"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr "Astaamaha qalabka ASUS ZenBook waxaa lagu rakibay qaybo ikhtiyaari ah."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Waxay ku dartaa furayaasha keyboard Display Toggle, MyASUS Settings, iyo "
+"Share ee GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, ama MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Dhammaan bandhigyada (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Dhammaan bandhigyada (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Qaybaha la heli karo:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Isku dheeli tiran"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamarada waa la joojiyay"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kaamirada waa la furay"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Qarsoonaanta kamarada"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Dooro qaybaha"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Jidadka gaaban ee qorfaha waa la habeeyey."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Qaybaha [caadi: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "U habeyn GNOME-gaabyada gaaban ee %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "U habee KDE Plasma-gaabyada %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Qaab dhismeedka hadda jira"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Qaabka muuqaalka"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Geli lambarada ama magacyada qaybaha, oo ay kala soocaan hakad."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "profile taageer"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Daaqadda Isbeddelka Kordhinta ayaa la rakibay."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Jidadka gaaban ee GNOME waa la habeeyey."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Astaamaha Hardware ee desktop-kaaga Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Ku rakib qoraalada iyo adeegyada"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Ku-tiirsanaanta nidaamka ku rakib"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Rakibaadda waxaa joojiyay isticmaale"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Rakibaddii waa dhammaatay"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Ku rakibida ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Waxay rakibtaa daemon hotkey WMI ee iftiinka ScreenPad, fan Quiet/Balanced/"
+"Performance, sirta kamarada, iyo isweydaarsiga daaqadaha ee u dhexeeya "
+"monitors."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Waxay rakibtaa hagaajinta amplifier-ka speaker iyo hook suspend/resume si "
+"maqalka ZenBook ee la taageero uu u soo laabto boot ka dib iyo hurdo ka dib."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Waxay rakibtaa listener gesture Share ee touchpad si taabashada geeska bidix "
+"ee sare ay u furto qalabka screenshot ee desktop (GNOME, Spectacle, iyo kuwa "
+"la mid ah)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Doorasho aan sax ahayn: %s. Geli tirooyin (1,2,3,4), magacyada qaybaha, ama "
+"all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma-gaabyada gaaban waa la habeeyey."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Furayaasha caalamiga ah ee LXQt waa la habeeyey."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE-gaabyada gaaban waa la habeeyey"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Bandhiga ugu weyn"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Bandhiga ugu weyn kaliya"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Qaabka: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ma jiraan qaybo la doortay Rakibaddii waa la joojiyay"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Demin"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Daar"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Waxqabadka (kor u kaca)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Riix Enter si aad u rakibto dhammaan qaybaha la taliyay, ama qor 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Deggan (Aamusan)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad nalka dambe"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Iftiinka ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad kaliya"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Dooro kaliya qaybaha aad isticmaasho. Adeegyada aan la dooran iyo jid-"
+"gaabyada lama rakibi doono."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Dooro kaliya waxaad isticmaasho si aad uga fogaato adeegyada aan loo "
+"baahnayn iyo jid-gaabyada."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Jid-gaabyada u diiwaan gashan Print/Super-Shift-s, XF86Launch1/XF86Tools, "
+"iyo XF86Display (F8 wuu tagay isagoo aan isbeddelin)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Hagaajinta codka oo lagu rakibay xadhig laalid iyo dib u bilow"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space waxay doorataa qayb. Enter way xaqiijisaa. Esc way joojisaa."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Habka xulashada qoraalka"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Luqadda is-dhexgalku waxay raacdaa fadhigaaga miiska."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Tani waxay qaadan kartaa daqiiqado yar inta xirmooyinka la soo dejinayo oo "
+"la rakibayo."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Taabashada taabashada la wadaag dhegeystaha tilmaama ayaa rakibay (xaalad "
+"firfircoon lama xaqiijin deegaankan)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Tababbarka la wadaago dhegeystaha tilmaanta la rakibay oo firfircoon."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon ayaa lagu rakibay (xaalad firfircoon lama xaqiijin "
+"deegaankan)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon rakibay oo shaqaynaya"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Waa maxay sababta wada hadalkan?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE-gaabyada gaaban waa la habeeyey."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Ku dar Muqaal, MyASUS, oo wadaag miisaska gaaban"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Ku dar Muqaal, MyASUS, oo Wadaag dariiqyada gaaban ee miiskaaga."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Furayaasha kulul ee qalabka loogu talagalay ScreenPad, taageere, kamarad, "
+#~ "iyo isku beddelashada daaqadaha."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Furayaasha kulul ee qalabka: ScreenPad, taageere, kamarad, iyo daaqado "
+#~ "kala beddelasho"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Bilow cod-weyneyaasha cod-weyneyaasha ee la taageeray ka dib bootinta iyo "
+#~ "dib u bilow"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Bilow cod-weyneyayaasha hadalka ee la taageeray, oo ay ku jiraan "
+#~ "resumeyga kadib."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Ku fur aaladda sawir-qaadista ee bidix-sare ee tilmaanta Wadaagga."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Tilmaanta wadaagga ee bidix ee sare waxay furaysaa aaladda sawirka"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "jeedal"

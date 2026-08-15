@@ -1,0 +1,6 @@
+asus-zenbook-linux-tools (1.0.0) resolute; urgency=medium
+
+  * Initial Launchpad PPA packaging for resolute.
+  * Interactive component wizard on first configure.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Sat, 08 Aug 2026 21:16:57 +0300

@@ -1,0 +1,391 @@
+# Malagasy translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Malagasy\n"
+"Language: mg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n >= 0 && n <= 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d fampisehoana ivelany"
+msgstr[1] "%d fampisehoana ivelany"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d ivelany ihany"
+msgstr[1] "%d fampisehoana ivelany ihany"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Fomban'ny ASUS Display"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Pikantsary tamin'ny asus"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Fametrahana ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools dia vonona hampiasaina."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Fandrindran'ny ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Ny endri-javatra hardware ASUS ZenBook dia napetraka ho singa azo ampiasaina."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Manampy raccourcis clavier Display Toggle, MyASUS Settings ary Share ho "
+"an'ny GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, na MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Fampisehoana rehetra (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Fampisehoana rehetra (Main + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "singa misy:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Mifandanja"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Fakan-tsary kilemaina"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Nalefa ny fakan-tsary"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Fiarovana manokan'ny fakantsary"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Mifidiana singa"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Voafefy ny hitsin-dàlana kanelina."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Singa [default: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Amboary ny hitsin-dàlana GNOME ho an'ny %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Ampifanaraho ny hitsin-dàlana KDE Plasma ho an'ny %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Fametrahana fampisehoana ankehitriny"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Fomba fampisehoana"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Ampidiro isa na anarana singa, misaraka amin'ny faingo."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Profile mpankafy"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "GNOME ASUS Window Swap fanitarana napetraka."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Namboarina ny hitsin-dàlana GNOME."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Fitaovana fitaovana ho an'ny biraonao Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Mametraka script sy serivisy"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Mametraka fiankinan'ny rafitra"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Nofoanan'ny mpampiasa ny fametrahana."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Vita ny fametrahana."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Fametrahana ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Mametraka ny daemon hotkey WMI ho an'ny fahazavan'ny ScreenPad, ny "
+"ventilateur Quiet/Balanced/Performance, ny fiainam-bahoaka kamera, ary ny "
+"fifanakalozana varavarankely eo amin'ny monitor."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Mametraka ny fanamboarana amplifier speaker ary hook suspend/resume mba "
+"hiverenan'ny feo ZenBook tohanana aorian'ny boot ary aorian'ny fatoriana."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Mametraka ny listener gesture Share amin'ny touchpad mba hanokafana ny "
+"fitaovana screenshot desktop (GNOME, Spectacle ary mitovy) rehefa mikitika "
+"ny zoro havia ambony."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "Safidy tsy mety: %s. Ampidiro isa (1,2,3,4), anaran'ny singa, na all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma hitsin-dàlana voarindra."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys namboarina."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Voafefy ny hitsin-dàlana MATE."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Fampisehoana fototra"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Fampisehoana lehibe ihany"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Fomba: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Tsy nisy singa voafantina. Nofoanana ny fametrahana."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Miala"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "amin'ny"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Fahombiazana (Fampiakarana)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Tsindrio Enter hametrahana ny singa rehetra atolotra, na manorata 'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Mangina (mangina)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Jiro ambadiky ny ScreenPad"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Famirapiratry ny ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "ScreenPad ihany"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Fidio ireo singa ampiasainao ihany. Serivisy tsy voafantina sy hitsin-dàlana "
+"tsy hapetraka."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Fidio izay ampiasainao ihany mba hialana amin'ny serivisy sy hitsin-dàlana "
+"tsy ilaina."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Shortcuts voasoratra ho an'ny Print/Super-Shift-s, XF86Launch1/XF86Tools, "
+"ary XF86Display (F8 navela tsy niova)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr ""
+"Napetraka miaraka amin'ny fatorana fampiatoana sy famerenana indray ny "
+"fanamboarana feo."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Misafidy singa i Space. Manamarina i Enter. Manafoana i Esc."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Fomba fisafidianana lahatsoratra."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Ny fiteny interface dia manaraka ny session desktop-nao."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Mety haharitra minitra vitsivitsy izany raha ampidinina sy apetraka ny "
+"packages."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Share gesture listener napetraka (tsy voamarina amin'ity tontolo "
+"ity ny toe-javatra mavitrika)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share gesture listener napetraka sy mavitrika."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"WMI Hotkey daemon napetraka (fanjakana mavitrika tsy voamarina amin'ity "
+"tontolo ity)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon napetraka sy mavitrika."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Nahoana ity fifanakalozan-kevitra ity?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE hitsin-dàlana voarindra."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr ""
+#~ "Ampio ny fampirantiana, MyASUS, ary ny hitsin-dàlana eo amin'ny desktop"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr ""
+#~ "Ampio ny Display, MyASUS, ary Zarao ny hitsin-dàlana eo amin'ny biraonao."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Fanalahidin'ny fitaovana ho an'ny ScreenPad, mpankafy, fakan-tsary, ary "
+#~ "fikandrana."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Fanalahidy mafana amin'ny fitaovana: ScreenPad, mpankafy, fakan-tsary ary "
+#~ "fikandrana"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Ampidiro ny fanamafisam-peo tohanana aorian'ny fanombohana ary avereno "
+#~ "indray"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Atombohy ny fanamafisam-peo tohanana, ao anatin'izany ny aorian'ny "
+#~ "famerenana."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Sokafy ny fitaovana pikantsary miaraka amin'ny fihetsika Mizara ankavia "
+#~ "ambony."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr ""
+#~ "Manokatra ny fitaovan'ny pikantsary ny fihetsika Mizara ankavia ambony"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "karavasy"

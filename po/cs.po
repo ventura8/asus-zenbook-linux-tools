@@ -1,0 +1,384 @@
+# Czech translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Čeština\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=((((n >= 2 && n <= 4)) && ((0 == 0))) ? 1 : "
+"(!((0 == 0))) ? 2 : (((n == 1)) && ((0 == 0))) ? 0 : 3);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d externí displej"
+msgstr[1] "%d externích displejů"
+msgstr[2] "%d externích displejů"
+msgstr[3] "%d externích displejů"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d pouze externí displej"
+msgstr[1] "%d pouze externí displeje"
+msgstr[2] "%d pouze externí displeje"
+msgstr[3] "%d pouze externí displeje"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "Režim zobrazení ASUS"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "Snímek obrazovky ASUS"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "Nastavení ASUS ZenBook Linux %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "Nástroje ASUS ZenBook Linux jsou připraveny k použití."
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "Nastavení ASUS ZenBook"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"Hardwarové funkce ASUS ZenBook jsou instalovány jako volitelné součásti."
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Přidá klávesové zkratky Display Toggle, MyASUS Settings a Share pro GNOME, "
+"KDE Plasma, XFCE, LXQt, Cinnamon nebo MATE."
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Všechny displeje (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Všechny displeje (hlavní + ScreenPad)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Dostupné komponenty:"
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Vyvážený"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Kamera deaktivována"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Kamera povolena"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Soukromí fotoaparátu"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Vyberte komponenty"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Nakonfigurovány zkratky pro skořici."
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Komponenty [výchozí: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Nakonfigurujte zástupce GNOME pro %s"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Nakonfigurujte zkratky KDE Plasma pro %s"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Aktuální rozložení displeje"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Režim zobrazení"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr "Zadejte čísla nebo názvy součástí oddělené čárkami."
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Profil fanouška"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Bylo nainstalováno rozšíření ASUS Window Swap GNOME."
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "Nakonfigurovány zkratky GNOME."
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Hardwarové funkce pro váš desktop Linux"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Nainstalujte skripty a služby"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Nainstalujte systémové závislosti"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Instalace zrušena uživatelem."
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Instalace dokončena."
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "Instalace ASUS ZenBook Linux Tools %s."
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Nainstaluje démona klávesových zkratek WMI pro jas ScreenPad, ventilátor "
+"Quiet/Balanced/Performance, soukromí kamery a výměnu oken mezi monitory."
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Nainstaluje opravu zesilovače reproduktorů a háček suspend/resume, aby "
+"podporovaný zvuk ZenBook obnovil po spuštění a po spánku."
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Nainstaluje posluchač gesta Share touchpadu, aby klepnutí v levém horním "
+"rohu otevřelo nástroj snímku obrazovky plochy (GNOME, Spectacle a podobné)."
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr "Neplatný výběr: %s. Zadejte čísla (1,2,3,4), názvy komponent nebo all."
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "Nakonfigurovány zkratky KDE Plasma."
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "Nakonfigurovány globální klíče LXQt."
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "Nakonfigurovány zkratky MATE."
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Hlavní displej"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Pouze hlavní displej"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Režim: %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Nebyly vybrány žádné komponenty. Instalace zrušena."
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Vypnuto"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Zapnuto"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Výkon (zvýšení)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Stiskněte Enter pro instalaci všech doporučených komponent, nebo zadejte "
+"'all'."
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Tichý (Tichý)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "Podsvícení ScreenPadu"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "Jas obrazovky ScreenPad"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Pouze ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Vyberte pouze komponenty, které používáte. Nevybrané služby a zástupci "
+"nebudou nainstalovány."
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Vyberte pouze to, co používáte, abyste se vyhnuli zbytečným službám a "
+"zkratkám."
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Zástupci registrovaní pro Print/Super-Shift-s, XF86Launch1/XF86Tools a "
+"XF86Display (F8 zůstal nezměněn)."
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Oprava zvuku nainstalována s háčkem pro pozastavení a obnovení."
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space vybere komponentu. Enter potvrdí. Esc zruší."
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Režim výběru textu."
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Jazyk rozhraní se řídí vaší relací na ploše."
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr "Může to trvat několik minut, než se balíčky stáhnou a nainstalují."
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Je nainstalován posluchač gest touchpad Share (aktivní stav není v tomto "
+"prostředí ověřen)."
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Posluchač gest Touchpad Share nainstalovaný a aktivní."
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Je nainstalován démon WMI Hotkey (aktivní stav není v tomto prostředí "
+"ověřen)."
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "Démon WMI Hotkey nainstalován a aktivní."
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Proč tento dialog?"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "Nakonfigurovány zkratky XFCE."
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Přidejte na plochu zástupce Display, MyASUS a Share"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Přidejte na plochu zástupce Display, MyASUS a Share."
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Hardwarové klávesové zkratky pro ScreenPad, ventilátor, fotoaparát a "
+#~ "výměnu oken."
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Hardwarové klávesové zkratky: ScreenPad, ventilátor, kamera a výměna oken"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Po spuštění a obnovení inicializujte podporované zesilovače reproduktorů"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Inicializujte podporované zesilovače reproduktorů, a to i po obnovení."
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr ""
+#~ "Otevřete nástroj pro snímání obrazovky pomocí gesta sdílení vlevo nahoře."
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Gesto sdílení vlevo nahoře otevře nástroj pro snímání obrazovky"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "bičíkovec"

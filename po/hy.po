@@ -1,0 +1,386 @@
+# Armenian translations for asus-zenbook-linux-tools package.
+# Copyright (C) 2026 THE asus-zenbook-linux-tools'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the asus-zenbook-linux-tools package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: asus-zenbook-linux-tools\n"
+"Report-Msgid-Bugs-To: https://github.com/ventura8/asus-zenbook-linux-tools/"
+"issues\n"
+"POT-Creation-Date: 1970-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: Հայերեն\n"
+"Language: hy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(((n == 0) || (n == 1)) ? 0 : 1);\n"
+
+#: bin/asus_display_mode_profiles.py:209
+#, python-format
+msgid "%d external display"
+msgid_plural "%d external displays"
+msgstr[0] "%d արտաքին էկրան"
+msgstr[1] "%d արտաքին էկրաններ"
+
+#: bin/asus_display_mode_profiles.py:236
+#, python-format
+msgid "%d external display only"
+msgid_plural "%d external displays only"
+msgstr[0] "%d միայն արտաքին էկրան"
+msgstr[1] "%d միայն արտաքին էկրաններ"
+
+#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+msgid "ASUS Display Mode"
+msgstr "ASUS ցուցադրման ռեժիմ"
+
+#: lib/install-kde.sh:171 lib/install-kde.sh:260
+msgid "ASUS Screenshot"
+msgstr "ASUS-ի սքրինշոթ"
+
+#: lib/asus-common.sh:349
+msgid "ASUS ZenBook"
+msgstr "ASUS ZenBook"
+
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#, sh-format
+msgid "ASUS ZenBook Linux Setup %s"
+msgstr "ASUS ZenBook Linux կարգավորում %s"
+
+#: install.sh:283
+msgid "ASUS ZenBook Linux Tools is ready to use."
+msgstr "ASUS ZenBook Linux Tools-ը պատրաստ է օգտագործման:"
+
+#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+msgid "ASUS ZenBook Settings"
+msgstr "ASUS ZenBook-ի կարգավորումներ"
+
+#: lib/install-selection.sh:159
+msgid "ASUS ZenBook hardware features are installed as optional components."
+msgstr ""
+"ASUS ZenBook ապարատային առանձնահատկությունները տեղադրված են որպես կամընտիր "
+"բաղադրիչներ:"
+
+#: lib/install-selection.sh:171
+msgid ""
+"Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
+"GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
+msgstr ""
+"Ավելացնում է Display Toggle, MyASUS Settings և Share ստեղնաշարի "
+"դյուրանցումներ GNOME, KDE Plasma, XFCE, LXQt, Cinnamon կամ MATE-ի համար։"
+
+#: bin/asus_display_mode_profiles.py:253
+#, python-format
+msgid "All displays (%s)"
+msgstr "Բոլոր ցուցադրումները (%s)"
+
+#: lib/asus-display-mutter.sh:83
+msgid "All displays (Main + ScreenPad)"
+msgstr "Բոլոր ցուցադրումները (Հիմնական + Էկրանի պահոց)"
+
+#: lib/install-selection.sh:162
+msgid "Available components:"
+msgstr "Հասանելի բաղադրիչներ."
+
+#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+msgid "Balanced"
+msgstr "Հավասարակշռված"
+
+#: bin/asus-camera-toggle.sh:263
+msgid "Camera disabled"
+msgstr "Տեսախցիկը անջատված է"
+
+#: bin/asus-camera-toggle.sh:267
+msgid "Camera enabled"
+msgstr "Տեսախցիկը միացված է"
+
+#: bin/asus-camera-toggle.sh:271
+msgid "Camera privacy"
+msgstr "Տեսախցիկի գաղտնիություն"
+
+#: install.sh:262
+msgid "Choose components"
+msgstr "Ընտրեք բաղադրիչներ"
+
+#: lib/install-cinnamon.sh:281
+msgid "Cinnamon shortcuts configured."
+msgstr "Դարչինով դյուրանցումները կազմաձևված են:"
+
+#: lib/install-selection.sh:243
+msgid "Components [default: all]:"
+msgstr "Բաղադրիչներ [լռելյայն: all]:"
+
+#: lib/install-gnome.sh:557
+#, sh-format
+msgid "Configure GNOME shortcuts for %s"
+msgstr "Կարգավորեք GNOME-ի դյուրանցումները %s համար"
+
+#: lib/install-kde.sh:327
+#, sh-format
+msgid "Configure KDE Plasma shortcuts for %s"
+msgstr "Կարգավորեք KDE Plasma դյուրանցումները %s համար"
+
+#: bin/asus_display_mode_profiles.py:225
+#, python-format
+msgid "Current display layout"
+msgstr "Ցուցադրման ընթացիկ դասավորությունը"
+
+#: lib/asus-display-mutter.sh:146
+msgid "Display mode"
+msgstr "Ցուցադրման ռեժիմ"
+
+#: lib/install-selection.sh:184
+msgid "Enter component numbers or names, separated by commas."
+msgstr ""
+"Մուտքագրեք բաղադրիչների համարները կամ անունները՝ բաժանված ստորակետերով:"
+
+#: bin/asus-fan-toggle.sh:229
+msgid "Fan profile"
+msgstr "Երկրպագուի պրոֆիլը"
+
+#: lib/install-gnome.sh:514
+msgid "GNOME ASUS Window Swap extension installed."
+msgstr "Տեղադրված է GNOME ASUS Window Swap ընդլայնումը:"
+
+#: lib/install-gnome.sh:565
+msgid "GNOME shortcuts configured."
+msgstr "GNOME-ի դյուրանցումները կազմաձևված են:"
+
+#: lib/install-shared.sh:101
+msgid "Hardware features for your Linux desktop"
+msgstr "Սարքավորումների առանձնահատկություններ ձեր Linux աշխատասեղանի համար"
+
+#: install.sh:277
+msgid "Install scripts and services"
+msgstr "Տեղադրեք սկրիպտներ և ծառայություններ"
+
+#: lib/install-os-detection.sh:565
+msgid "Install system dependencies"
+msgstr "Տեղադրեք համակարգի կախվածությունները"
+
+#: lib/install-selection-tui.sh:150
+msgid "Installation cancelled by user."
+msgstr "Տեղադրումը չեղարկվել է օգտագործողի կողմից:"
+
+#: install.sh:282
+msgid "Installation complete."
+msgstr "Տեղադրումն ավարտված է։"
+
+#: bin/asus_install_selection_tui.py:525
+#, python-format
+msgid "Installing ASUS ZenBook Linux Tools %s."
+msgstr "ASUS ZenBook Linux Tools-ի տեղադրում %s:"
+
+#: lib/install-selection.sh:165
+msgid ""
+"Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
+"Performance, camera privacy, and window swap across monitors."
+msgstr ""
+"Տեղադրում է WMI թեժ ստեղների daemon՝ ScreenPad պայծառության, Quiet/Balanced/"
+"Performance օդափոխիչի, տեսախցիկի գաղտնիության և մոնիտորների միջև "
+"պատուհանների փոխանակման համար։"
+
+#: lib/install-selection.sh:169
+msgid ""
+"Installs the speaker amplifier fix and a suspend/resume hook so supported "
+"ZenBook audio recovers after boot and after sleep."
+msgstr ""
+"Տեղադրում է բարձրախոսի ուժեղացուցիչի ուղղումը և suspend/resume hook, որպեսզի "
+"աջակցվող ZenBook ձայնը վերականգնվի բեռնումից և քնից հետո։"
+
+#: lib/install-selection.sh:167
+msgid ""
+"Installs the touchpad Share gesture listener so a top-left corner tap opens "
+"your desktop screenshot tool (GNOME, Spectacle, and peers)."
+msgstr ""
+"Տեղադրում է touchpad Share ժեստի listener, որպեսզի վերին ձախ անկյան հպումը "
+"բացի աշխատասեղանի սքրինշոթ գործիքը (GNOME, Spectacle և նմանները)։"
+
+#: lib/install-selection.sh:193
+#, sh-format
+msgid ""
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+msgstr ""
+"Անվավեր ընտրություն՝ %s։ Մուտքագրեք թվեր (1,2,3,4), բաղադրիչների անուններ "
+"կամ all։"
+
+#: lib/install-kde.sh:309
+msgid "KDE Plasma shortcuts configured."
+msgstr "KDE Plasma դյուրանցումները կազմաձևվեցին:"
+
+#: lib/install-lxqt.sh:582
+msgid "LXQt Global Keys configured."
+msgstr "LXQt Global Keys-ը կազմաձևված է:"
+
+#: lib/install-mate.sh:205
+msgid "MATE shortcuts configured."
+msgstr "MATE-ի դյուրանցումները կազմաձևված են:"
+
+#: bin/asus_display_mode_profiles.py:221 bin/asus_display_mode_profiles.py:241
+#, python-format
+msgid "Main display"
+msgstr "Հիմնական ցուցադրում"
+
+#: lib/asus-display-mutter.sh:81
+msgid "Main display only"
+msgstr "Միայն հիմնական ցուցադրումը"
+
+#: bin/asus-fan-toggle.sh:230
+#, sh-format
+msgid "Mode: %s"
+msgstr "Ռեժիմ՝ %s"
+
+#: lib/install-selection-tui.sh:138
+msgid "No components were selected. Installation cancelled."
+msgstr "Ոչ մի բաղադրիչ չի ընտրվել: Տեղադրումը չեղարկվել է:"
+
+#: bin/asus-screenpad-toggle.sh:64
+msgctxt "ScreenPad backlight state"
+msgid "Off"
+msgstr "Անջատված"
+
+#: bin/asus-screenpad-toggle.sh:68
+msgctxt "ScreenPad backlight state"
+msgid "On"
+msgstr "Միացված է"
+
+#: bin/asus-fan-toggle.sh:94
+msgid "Performance (Boost)"
+msgstr "Կատարողականություն (բարձրացում)"
+
+#: lib/install-selection.sh:186
+msgid "Press Enter to install all recommended components, or enter 'all'."
+msgstr ""
+"Սեղմեք Enter՝ բոլոր առաջարկվող բաղադրիչները տեղադրելու համար, կամ մուտքագրեք "
+"'all'։"
+
+#: bin/asus-fan-toggle.sh:95
+msgid "Quiet (Silent)"
+msgstr "Հանգիստ (Լուռ)"
+
+#: bin/asus-screenpad-toggle.sh:72
+msgid "ScreenPad backlight"
+msgstr "ScreenPad-ի հետին լույս"
+
+#: lib/asus-screenpad.sh:456
+msgid "ScreenPad brightness"
+msgstr "ScreenPad-ի պայծառությունը"
+
+#: lib/asus-display-mutter.sh:82
+msgid "ScreenPad only"
+msgstr "Միայն ScreenPad"
+
+#: bin/asus_install_selection_tui.py:527
+#, python-format
+msgid ""
+"Select only the components you use. Unselected services and shortcuts will "
+"not be installed."
+msgstr ""
+"Ընտրեք միայն այն բաղադրիչները, որոնք օգտագործում եք: Չընտրված "
+"ծառայություններն ու դյուրանցումները չեն տեղադրվի:"
+
+#: lib/install-selection.sh:160
+msgid "Select only what you use to avoid unnecessary services and shortcuts."
+msgstr ""
+"Ընտրեք միայն այն, ինչ օգտագործում եք՝ ավելորդ ծառայություններից և "
+"դյուրանցումներից խուսափելու համար:"
+
+#: lib/install-gnome.sh:333
+msgid ""
+"Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
+"XF86Display (F8 left unchanged)."
+msgstr ""
+"Դյուրանցումներ գրանցված են Print/Super-Shift-s, XF86Launch1/XF86Tools և "
+"XF86Display (F8-ը մնացել է անփոփոխ):"
+
+#: lib/install-components.sh:543
+msgid "Sound fix installed with a suspend and resume hook."
+msgstr "Ձայնային ֆիքսումը տեղադրված է կասեցման և ռեզյումեի կեռիկով:"
+
+#: lib/install-selection-tui.sh:25
+msgid "Space selects a component. Enter confirms. Esc cancels."
+msgstr "Space-ը ընտրում է բաղադրիչ։ Enter-ը հաստատում է։ Esc-ը չեղարկում է։"
+
+#: lib/install-selection.sh:182
+msgid "Text selection mode."
+msgstr "Տեքստի ընտրության ռեժիմ:"
+
+#: lib/install-selection.sh:173
+msgid "The interface language follows your desktop session."
+msgstr "Ինտերֆեյսի լեզուն հետևում է ձեր աշխատասեղանի նստաշրջանին:"
+
+#: lib/install-os-detection.sh:566
+msgid ""
+"This can take a few minutes while packages are downloaded and installed."
+msgstr ""
+"Սա կարող է տևել մի քանի րոպե, մինչ փաթեթները ներբեռնվում և տեղադրվում են։"
+
+#: lib/install-components.sh:425
+msgid ""
+"Touchpad Share gesture listener installed (active state not verified in this "
+"environment)."
+msgstr ""
+"Touchpad Share ժեստերի ունկնդիրը տեղադրված է (ակտիվ վիճակը հաստատված չէ այս "
+"միջավայրում):"
+
+#: lib/install-components.sh:420
+msgid "Touchpad Share gesture listener installed and active."
+msgstr "Touchpad Share ժեստերի ունկնդիրը տեղադրված է և ակտիվ:"
+
+#: lib/install-components.sh:68
+msgid ""
+"WMI Hotkey daemon installed (active state not verified in this environment)."
+msgstr ""
+"Տեղադրված է WMI Hotkey daemon (ակտիվ վիճակը հաստատված չէ այս միջավայրում):"
+
+#: lib/install-components.sh:63
+msgid "WMI Hotkey daemon installed and active."
+msgstr "WMI Hotkey daemon-ը տեղադրված և ակտիվ է:"
+
+#: lib/install-selection.sh:157
+msgid "Why this dialog?"
+msgstr "Ինչու՞ այս երկխոսությունը:"
+
+#: lib/install-xfce.sh:182
+msgid "XFCE shortcuts configured."
+msgstr "XFCE դյուրանցումները կազմաձևված են:"
+
+#~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
+#~ msgstr "Ավելացնել Display, MyASUS և Share աշխատասեղանի դյուրանցումները"
+
+#~ msgid "Add Display, MyASUS, and Share shortcuts to your desktop."
+#~ msgstr "Ձեր աշխատասեղանին ավելացրեք Display, MyASUS և Share դյուրանցումներ:"
+
+#~ msgid "Hardware hotkeys for ScreenPad, fan, camera, and window swap."
+#~ msgstr ""
+#~ "Սարքավորումների թեժ ստեղներ ScreenPad-ի, օդափոխիչի, տեսախցիկի և "
+#~ "պատուհանների փոխանակման համար:"
+
+#~ msgid "Hardware hotkeys: ScreenPad, fan, camera, and window swap"
+#~ msgstr ""
+#~ "Սարքավորման թեժ ստեղներ՝ Էկրանի պահոց, օդափոխիչ, տեսախցիկ և պատուհանների "
+#~ "փոխանակում"
+
+#~ msgid "Initialize supported speaker amplifiers after boot and resume"
+#~ msgstr ""
+#~ "Նախաձեռնեք աջակցվող բարձրախոսների ուժեղացուցիչները բեռնումից և "
+#~ "վերսկսումից հետո"
+
+#~ msgid "Initialize supported speaker amplifiers, including after resume."
+#~ msgstr ""
+#~ "Նախաձեռնեք աջակցվող բարձրախոսների ուժեղացուցիչները, ներառյալ վերսկսումից "
+#~ "հետո:"
+
+#~ msgid "Open the screenshot tool with the top-left Share gesture."
+#~ msgstr "Բացեք սքրինշոթի գործիքը վերևի ձախ մասում Համօգտագործման ժեստով:"
+
+#~ msgid "Top-left Share gesture opens the screenshot tool"
+#~ msgstr "Վերևի ձախ կողմում Համօգտագործման ժեստը բացում է սքրինշոթի գործիքը"
+
+#~ msgid "libnewt"
+#~ msgstr "libnewt"
+
+#~ msgid "whiptail"
+#~ msgstr "մտրակի պոչ"

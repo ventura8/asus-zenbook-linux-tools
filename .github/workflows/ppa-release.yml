@@ -1,0 +1,277 @@
+---
+name: PPA Release
+
+# Trigger on version tags like v1.0.0, v1.2.3, etc.
+"on":
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: ppa-release
+  cancel-in-progress: false
+
+env:
+  PPA_NAME: "ppa:ventura8/asus-zenbook-linux-tools"
+  MAINTAINER_NAME: "ventura8"
+  MAINTAINER_EMAIL: "alexandrescu.sergiu@gmail.com"
+  # Increment when re-uploading the same VERSION (Launchpad rejects duplicate
+  # source versions). Reset to 1 when VERSION itself bumps.
+  PPA_UPLOAD_REVISION: "2"
+
+permissions:
+  contents: read
+
+jobs:
+  upload-to-ppa:
+    runs-on: ubuntu-26.04
+    environment: ppa-release
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
+    strategy:
+      matrix:
+        # Resolute-only: product Requires python3 (>= 3.13).
+        distro: [resolute]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Install build dependencies
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          {
+            sudo apt-get update
+            sudo apt-get install -y \
+              build-essential debhelper gettext \
+              devscripts dput gpg dpkg-dev \
+              python3-evdev python3-dbus python3-gi python3-yaml
+          } 2>&1 | tee reports/distro-logs/ppa-build-deps-apt.log
+
+      - name: Verify tag commit is ancestor of default branch
+        run: |
+          set -euo pipefail
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          git fetch --no-tags origin \
+            "refs/heads/${DEFAULT_BRANCH}:refs/remotes/origin/${DEFAULT_BRANCH}"
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" \
+              "origin/${DEFAULT_BRANCH}"; then
+            echo "Tag commit ${GITHUB_SHA} is not an ancestor of origin/${DEFAULT_BRANCH}" >&2
+            exit 1
+          fi
+
+      - name: Import GPG key
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          GPG_KEY_FILE=$(mktemp)
+          trap 'rm -f "$GPG_KEY_FILE"' EXIT
+          echo "$GPG_PRIVATE_KEY" > "$GPG_KEY_FILE"
+          # Fingerprint of the key file about to be imported (not an ambient keyring scan).
+          GPG_FINGERPRINT=$(gpg --batch --show-keys --with-colons "$GPG_KEY_FILE" \
+            | awk -F: '/^fpr:/ {print $10; exit}')
+          if [ -z "$GPG_FINGERPRINT" ]; then
+            echo "GPG_FINGERPRINT is empty before importing the private key" >&2
+            exit 1
+          fi
+          gpg --batch --import "$GPG_KEY_FILE"
+          rm -f "$GPG_KEY_FILE"
+          echo "${GPG_FINGERPRINT}:6:" | gpg --import-ownertrust
+          # Long key id is the last 16 hex digits of the imported fingerprint.
+          GPG_KEY_ID="${GPG_FINGERPRINT: -16}"
+          if [ -z "$GPG_KEY_ID" ]; then
+            echo "GPG_KEY_ID is empty after deriving from imported fingerprint" >&2
+            exit 1
+          fi
+          echo "GPG_KEY_ID=$GPG_KEY_ID" >> "$GITHUB_ENV"
+
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Extracted version: $VERSION"
+          if [ ! -f VERSION ]; then
+            echo "Root VERSION file is missing; cannot validate tag $VERSION" >&2
+            exit 1
+          fi
+          FILE_VERSION="$(tr -d '[:space:]' < VERSION)"
+          if [ "$FILE_VERSION" != "$VERSION" ]; then
+            echo "Tag version $VERSION does not match VERSION file $FILE_VERSION" >&2
+            exit 1
+          fi
+          POETRY_VERSION="$(
+            python3 -c \
+              'import tomllib; print(tomllib.load(open("pyproject.toml","rb"))["tool"]["poetry"]["version"])'
+          )"
+          if [ "$POETRY_VERSION" != "$FILE_VERSION" ]; then
+            echo \
+              "VERSION ($FILE_VERSION) does not match pyproject.toml ($POETRY_VERSION)" \
+              >&2
+            exit 1
+          fi
+
+      - name: Update debian/changelog for target release
+        run: |
+          set -euo pipefail
+          PPA_VERSION="${VERSION}+1ppa${PPA_UPLOAD_REVISION}~${{ matrix.distro }}1"
+
+          cat > debian/changelog <<EOF
+          asus-zenbook-linux-tools (${PPA_VERSION}) ${{ matrix.distro }}; urgency=medium
+
+            * Release ${VERSION}
+            * See https://github.com/ventura8/asus-zenbook-linux-tools/releases/tag/${GITHUB_REF_NAME}
+
+           -- ${MAINTAINER_NAME} <${MAINTAINER_EMAIL}>  $(date -R)
+          EOF
+
+          sed -i 's/^          //' debian/changelog
+          echo "--- debian/changelog ---"
+          cat debian/changelog
+
+      - name: Build source package
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          if [ -z "${GPG_PASSPHRASE:-}" ]; then
+            echo "GPG_PASSPHRASE is unset or empty; cannot sign source package" >&2
+            exit 1
+          fi
+          SIGN_DIR=$(mktemp -d)
+          SIGN_CODE="$SIGN_DIR/sign-code.sh"
+          trap 'rm -rf "$SIGN_DIR"' EXIT
+          cat << 'EOF' | sed 's/^[[:space:]]*//' > "$SIGN_CODE"
+          #!/bin/sh
+          printf '%s\n' "$GPG_PASSPHRASE" | \
+            gpg --batch --pinentry-mode loopback --passphrase-fd 0 "$@"
+          EOF
+          chmod +x "$SIGN_CODE"
+
+          dpkg-checkbuilddeps
+          dpkg-buildpackage -S -sa -k"$GPG_KEY_ID" \
+            --sign-backend=gpg \
+            --sign-command="$SIGN_CODE" \
+            2>&1 | tee reports/distro-logs/ppa-build-source.log
+
+      - name: Upload to PPA
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          shopt -s nullglob
+          changes_files=(../*.changes)
+          if [ "${#changes_files[@]}" -ne 1 ]; then
+            echo "Expected exactly one ../*.changes file, found ${#changes_files[@]}" >&2
+            printf '%s\n' "${changes_files[@]}" >&2
+            exit 1
+          fi
+          CHANGES_FILE="${changes_files[0]}"
+          echo "Uploading: $CHANGES_FILE"
+          dput "$PPA_NAME" "$CHANGES_FILE" \
+            2>&1 | tee reports/distro-logs/ppa-upload.log
+
+      - name: Upload PPA build logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: ppa-distro-logs
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+      - name: Summary
+        run: |
+          {
+            echo "## PPA Upload Complete"
+            echo ""
+            echo "- **Version:** ${VERSION}"
+            echo "- **Target:** ${{ matrix.distro }}"
+            echo "- **PPA:** ${PPA_NAME}"
+            echo ""
+            echo "Install with:"
+            echo '```bash'
+            echo "sudo add-apt-repository ${PPA_NAME}"
+            echo "sudo apt update"
+            echo "sudo apt install asus-zenbook-linux-tools"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  github-release:
+    runs-on: ubuntu-26.04
+    needs: upload-to-ppa
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Install build dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y build-essential debhelper dpkg-dev gettext \
+            python3-evdev python3-dbus python3-gi python3-yaml
+
+      - name: Build binary packages
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs
+          VERSION="${{ needs.upload-to-ppa.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            echo "Missing validated VERSION from upload-to-ppa job output" >&2
+            exit 1
+          fi
+          cat > debian/changelog <<EOF
+          asus-zenbook-linux-tools (${VERSION}) resolute; urgency=medium
+
+            * Release ${VERSION}
+            * See https://github.com/ventura8/asus-zenbook-linux-tools/releases/tag/${GITHUB_REF_NAME}
+
+           -- ${MAINTAINER_NAME} <${MAINTAINER_EMAIL}>  $(date -R)
+          EOF
+          sed -i 's/^          //' debian/changelog
+          echo "--- debian/changelog ---"
+          cat debian/changelog
+          dpkg-checkbuilddeps
+          dpkg-buildpackage -b -us -uc \
+            2>&1 | tee reports/distro-logs/ppa-build-binary.log
+          mkdir -p artifacts
+          shopt -s nullglob
+          parent_debs=(../*.deb)
+          if [ "${#parent_debs[@]}" -ne 1 ]; then
+            echo "Expected exactly one ../*.deb file, found ${#parent_debs[@]}" >&2
+            printf '%s\n' "${parent_debs[@]}" >&2
+            exit 1
+          fi
+          cp "${parent_debs[0]}" artifacts/
+          ls -la artifacts/
+
+      - name: Upload GitHub release build logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: github-release-distro-logs
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228  # v3.0.2
+        with:
+          files: artifacts/*.deb
+          generate_release_notes: true
+          draft: false
+          prerelease: false
