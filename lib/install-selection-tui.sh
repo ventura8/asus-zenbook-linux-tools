@@ -133,11 +133,8 @@ _apply_tui_selection() {
         return "$normalize_status"
     }
     rm -f "$choice_tmp"
-    [ -n "$parsed" ] && { export INSTALL_CHOICE="$parsed"; return 0; }
-
-    _asus_gettext "No components were selected. Installation cancelled." >&"$ui_out_fd"
-    echo >&"$ui_out_fd"
-    return 1
+    export INSTALL_CHOICE="$parsed"
+    return 0
 }
 
 _handle_tui_selection_error() {

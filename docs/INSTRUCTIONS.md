@@ -86,19 +86,25 @@ This runs the interactive component wizard. Reconfigure with
 `sudo dpkg-reconfigure asus-zenbook-linux-tools` or
 `sudo asus-zenbook-configure`. Tag releases upload via
 `.github/workflows/ppa-release.yml` (secrets `GPG_PRIVATE_KEY`,
-`GPG_PASSPHRASE`).
+`GPG_PASSPHRASE`). Current notes: [v1.0.1](releases/v1.0.1.md).
 
 ## Headless / Automation Install
 
 Human README quick-starts stay interactive. For CI or non-TTY automation only:
 
 ```bash
-TAG=v1.0.0
+TAG=v1.0.1
 git clone --depth 1 --branch "$TAG" \
   https://github.com/ventura8/asus-zenbook-linux-tools.git &&
   cd asus-zenbook-linux-tools &&
   sha256sum -c install.sh.sha256 &&
   sudo NONINTERACTIVE_CHOICE="WMI TOUCHPAD SOUND DESKTOP" bash ./install.sh
+```
+
+Headless no-op (install nothing):
+
+```bash
+sudo NONINTERACTIVE_CHOICE=none bash ./install.sh
 ```
 
 ## ScreenPad Brightness Portability
@@ -192,6 +198,10 @@ always-on nine-distro compatibility matrix in `--compat-only` mode (includes
 DESKTOP gnome/kde/xfce/lxqt/cinnamon/mate configure cycles with stubs, and in-container live
 package mutation). CI also runs always-on `distro-full-de` family variants and
 limited nested/MoveFocused/sticky proofs in the same push/PR workflow.
+Arch/Manjaro test images retry `pacman -Syu`/`-S` when rolling mirrors 404 a
+superseded package; Arch CI pins `archlinux-mirrorlist` (not geo/fastly).
+Rocky/Alma kcov builds install `libcurl-devel` matching the installed libcurl
+NEVRA (`el10-kcov-libcurl.sh`; `--nobest` when AppStream/BaseOS skew).
 
 Host execution of `--lints-only` and `--tests-only` modes is intentionally
 blocked. These modes run only inside Docker containers.

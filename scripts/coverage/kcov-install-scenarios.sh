@@ -86,6 +86,10 @@ _run_kcov_install_base_runs() {
         INSTALL_SOURCE_DIR="$(pwd)" INSTALL_TEMP_SCRIPT="$tmp/install-temp-script.sh" \
         DESTDIR="$tmp/dest_src" DBUS_BUS_ROOT="$tmp/bus_root" SYSTEMCTL_CMD="$tmp/systemctl" \
         ./install.sh
+    _kcov_expect_run_env "0" "$kcov_root" install_none \
+        "${fast_env[@]}" PATH="$tmp:$PATH" NONINTERACTIVE_CHOICE="none" \
+        DESTDIR="$tmp/dest_none" DBUS_BUS_ROOT="$tmp/bus_root" SYSTEMCTL_CMD="$tmp/systemctl" \
+        ./install.sh
     _kcov_expect_run_env "0" "$kcov_root" install_reexec_helpers \
         REPO_ROOT="$(pwd)" "$(_kcov_driver install_reexec_helpers.sh)"
 }

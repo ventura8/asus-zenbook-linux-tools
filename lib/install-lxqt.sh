@@ -568,13 +568,17 @@ _lxqt_try_set_or_fail() {
     _lxqt_fail_configure "$target_user" "$config_dir"
 }
 
+_lxqt_print_configure_progress() {
+    _install_print_next_step "$(_asus_gettextf "Configuring LXQt Global Keys for %s..." "$1")"
+}
+
 configure_lxqt_component() {
     local ctx target_user user_id conf config_dir
     ctx=$(_lxqt_resolve_configure_context) || return 1
     target_user=$(echo "$ctx" | cut -d'|' -f1)
     user_id=$(echo "$ctx" | cut -d'|' -f2)
     conf=$(echo "$ctx" | cut -d'|' -f3)
-    echo "[4/4] Configuring LXQt Global Keys for $target_user..."
+    _lxqt_print_configure_progress "$target_user"
     config_dir="${STATE_DIR}/${user_id}"
     _lxqt_prepare_configure_dirs "$target_user" "$conf" "$config_dir" || return 1
     _lxqt_write_markers "$config_dir" "$target_user" || return 1

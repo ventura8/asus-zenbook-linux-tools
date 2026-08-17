@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Hoʻonohonoho ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Ua mākaukau nā mea hana ASUS ZenBook Linux e hoʻohana."
 
@@ -57,12 +57,12 @@ msgstr "Ua mākaukau nā mea hana ASUS ZenBook Linux e hoʻohana."
 msgid "ASUS ZenBook Settings"
 msgstr "Nā hoʻonohonoho ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Hoʻokomo ʻia nā hiʻohiʻona hāmeʻa ASUS ZenBook ma ke ʻano he koho koho."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -79,7 +79,7 @@ msgstr "Nā hōʻike a pau (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Nā hōʻike a pau (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Nā ʻāpana i loaʻa:"
 
@@ -103,7 +103,7 @@ msgstr "Palekana pahupaʻikiʻi"
 msgid "Choose components"
 msgstr "E koho i nā ʻāpana"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Hoʻonohonoho ʻia nā ʻaoʻao pōkole kinamona."
 
@@ -121,6 +121,26 @@ msgstr "E hoʻonohonoho i nā pōkole GNOME no %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Hoʻonohonoho i nā pōkole KDE Plasma no %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "E hoʻonohonoho i nā pōkole Cinnamon no %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "E hoʻonohonoho i nā pōkole LXQt Global Keys no %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "E hoʻonohonoho i nā pōkole MATE no %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "E hoʻonohonoho i nā pōkole XFCE no %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -130,7 +150,7 @@ msgstr "Hoʻolālā hōʻike o kēia manawa"
 msgid "Display mode"
 msgstr "ʻano hōʻike"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "E hoʻokomo i nā helu a i ʻole nā inoa, i hoʻokaʻawale ʻia e nā koma."
 
@@ -150,7 +170,7 @@ msgstr "Hoʻonohonoho ʻia nā pōkole GNOME."
 msgid "Hardware features for your Linux desktop"
 msgstr "Nā hiʻohiʻona paʻa no kāu papapihi Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "E hoʻouka i nā palapala a me nā lawelawe"
 
@@ -158,11 +178,11 @@ msgstr "E hoʻouka i nā palapala a me nā lawelawe"
 msgid "Install system dependencies"
 msgstr "E hoʻouka i nā mea hilinaʻi ʻōnaehana"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Hoʻopau ʻia ke kau ʻana e ka mea hoʻohana."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Paʻa ka hoʻokomo ʻana."
 
@@ -171,7 +191,7 @@ msgstr "Paʻa ka hoʻokomo ʻana."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Ke hoʻokomo nei i nā mea hana ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -180,7 +200,7 @@ msgstr ""
 "Balanced/Performance, ka pilikino kāmela, a me ka hoʻololi puka ma waena o "
 "nā monitor."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -189,7 +209,7 @@ msgstr ""
 "hiki ai i ke kani ZenBook i kākoʻo ʻia ke ola hou ma hope o ka boot a ma "
 "hope o ka hiamoe."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -198,22 +218,23 @@ msgstr ""
 "ke kihi hema luna i kāu mea hana screenshot desktop (GNOME, Spectacle, a me "
 "nā hoa)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Koho hewa: %s. E hoʻokomo i nā helu (1,2,3,4), nā inoa ʻāpana, a i ʻole all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Koho hewa: %s. E hoʻokomo i nā helu (1,2,3,4), nā inoa ʻāpana, a i ʻole all, "
+"a i ʻole none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Hoʻonohonoho ʻia nā pōkole KDE Plasma."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys i hoʻonohonoho ʻia."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Hoʻonohonoho ʻia nā pōkole MATE."
 
@@ -231,9 +252,9 @@ msgstr "Hōʻike nui wale nō"
 msgid "Mode: %s"
 msgstr "Ke ano: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "ʻAʻohe mea i koho ʻia. Hoʻopau ʻia ke kau ʻana."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "ʻAʻohe mea i koho ʻia. ʻAʻole i hoʻokomo ʻia kekahi mea."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -249,11 +270,11 @@ msgstr "Ma ka"
 msgid "Performance (Boost)"
 msgstr "Hana (Hoʻonui)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"E kaomi iā Enter e hoʻokomo i nā ʻāpana āpau i manaʻo ʻia, a i ʻole e "
-"kikokiko iā 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "E kaomi iā Enter e hoʻokomo i nā ʻāpana āpau i manaʻo ʻia, a i ʻole "
+"ekikokiko iā 'all' a i ʻole 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -280,7 +301,7 @@ msgstr ""
 "E koho wale i nā ʻāpana āu e hoʻohana ai. ʻAʻole e hoʻokomo ʻia nā lawelawe "
 "i koho ʻole ʻia a me nā pōkole."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "E koho wale i ka mea āu e hoʻohana ai e pale aku i nā lawelawe pono ʻole a "
@@ -302,11 +323,11 @@ msgstr "Hoʻokomo ʻia ka hoʻoponopono leo me ka makau hoʻomaha a hoʻomau."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Koho ʻo Space i kahi ʻāpana. Hōʻoia ʻo Enter. Hoʻopau ʻo Esc."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "ʻAno koho kikokikona."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Ke hahai nei ka ʻōlelo interface i kāu kau pākaukau."
 
@@ -337,15 +358,30 @@ msgstr ""
 
 #: lib/install-components.sh:63
 msgid "WMI Hotkey daemon installed and active."
-msgstr "Ua hoʻokomo ʻia ka daemon WMI Hotkey."
+msgstr "Ua hoʻokomo ʻia ka daemon WMI Hotkey a ua hana."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "No ke aha kēia kamaʻilio?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Hoʻonohonoho ʻia nā pōkole XFCE."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Koho hewa: %s. E hoʻokomo i nā helu (1,2,3,4), nā inoa ʻāpana, a i ʻole "
+#~ "all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "ʻAʻohe mea i koho ʻia. Hoʻopau ʻia ke kau ʻana."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "E kaomi iā Enter e hoʻokomo i nā ʻāpana āpau i manaʻo ʻia, a i ʻole e "
+#~ "kikokiko iā 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Hoʻohui i ka hōʻike, MyASUS, a me kaʻana i nā pōkole papapihi"

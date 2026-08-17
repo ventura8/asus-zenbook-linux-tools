@@ -112,9 +112,7 @@ class _DockerMatrixFixture(unittest.TestCase):
     @staticmethod
     def _ci_matrix_distro_images(repo_root: Path) -> list[str]:
         """Load distro images from family-split distro-tests-* jobs in ci.yml."""
-        data = yaml.safe_load(
-            (repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
-        )
+        data = yaml.safe_load((repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8"))
         jobs = data.get("jobs") or {}
         images: list[str] = []
         for name in _DISTRO_TESTS_FAMILY_JOBS:
@@ -150,6 +148,9 @@ class _DockerMatrixFixture(unittest.TestCase):
             "scripts/distro_sticky_osd_uinput_e2e.sh",
             "scripts/distro_install_smoke_full_de.sh",
             "docker/images/tests/scripts/install-de-family.sh",
+            "docker/images/tests/scripts/pacman-retry.sh",
+            "docker/images/tests/scripts/archlinux-mirrorlist",
+            "docker/images/tests/scripts/el10-kcov-libcurl.sh",
         ):
             path = self.repo_root / rel
             self.assertTrue(path.is_file(), msg=rel)
@@ -218,6 +219,7 @@ class _DockerMatrixFixture(unittest.TestCase):
             joined.append(pending)
         return joined
 
+
 class TestDockerMatrixRunner(_DockerMatrixFixture):
     """Dry-run matrix surfaces and always-on distro list parity."""
 
@@ -285,9 +287,7 @@ class TestDockerMatrixRunner(_DockerMatrixFixture):
 
     def test_install_de_family_kde_and_el10_xfconf(self):
         """Rocky/Alma 10 KDE use kf6; legacy rhel keeps kf5; EL10 XFCE builds xfconf."""
-        script = (
-            self.repo_root / "docker/images/tests/scripts/install-de-family.sh"
-        ).read_text(encoding="utf-8")
+        script = (self.repo_root / "docker/images/tests/scripts/install-de-family.sh").read_text(encoding="utf-8")
         self.assertIn("kf6-kconfig", script)
         self.assertIn("kf5-kconfig", script)
         self.assertIn("rocky|almalinux|rhel", script)
@@ -301,11 +301,42 @@ class TestDockerMatrixRunner(_DockerMatrixFixture):
             r"build_pkgs=\([\s\S]*?\bcurl\b",
         )
         self.assertIn("_skip_rhel_unpackaged_de", script)
-        full_de = (
-            self.repo_root / "scripts/distro_install_smoke_full_de.sh"
-        ).read_text(encoding="utf-8")
+        full_de = (self.repo_root / "scripts/distro_install_smoke_full_de.sh").read_text(encoding="utf-8")
         self.assertIn("kwriteconfig5", full_de)
         self.assertIn("_smoke_require_any_full_de_cli", full_de)
+
+    def test_arch_family_images_retry_pacman_on_mirror_404(self):
+        """Arch/Manjaro image builds retry pacman -Syu/-S for rolling-mirror 404s."""
+        helper = (self.repo_root / "docker/images/tests/scripts/pacman-retry.sh").read_text(encoding="utf-8")
+        self.assertIn("pacman -Syy", helper)
+        de_family = (self.repo_root / "docker/images/tests/scripts/install-de-family.sh").read_text(encoding="utf-8")
+        self.assertIn("pacman-retry.sh", de_family)
+        self.assertIn("_pacman_retry_cmd", de_family)
+        mirrors = (self.repo_root / "docker/images/tests/scripts/archlinux-mirrorlist").read_text(encoding="utf-8")
+        self.assertIn("mirror.rackspace.com", mirrors)
+        self.assertNotIn("geo.mirror.pkgbuild.com", mirrors)
+        self.assertNotIn("fastly.mirror.pkgbuild.com", mirrors)
+        arch = (self.repo_root / "docker/images/tests/archlinux-latest.Dockerfile").read_text(encoding="utf-8")
+        self.assertIn("archlinux-mirrorlist", arch)
+        self.assertIn("pacman-retry.sh", arch)
+        self.assertNotIn("RUN pacman -Syu", arch)
+        manjaro = (self.repo_root / "docker/images/tests/manjarolinux-base-latest.Dockerfile").read_text(encoding="utf-8")
+        self.assertIn("pacman-retry.sh", manjaro)
+        self.assertNotIn("RUN pacman -Syu", manjaro)
+        self.assertNotIn("archlinux-mirrorlist", manjaro)
+
+    def test_el10_images_install_matching_libcurl_devel(self):
+        """Rocky/Alma kcov must install libcurl-devel at the installed libcurl VR."""
+        helper = (self.repo_root / "docker/images/tests/scripts/el10-kcov-libcurl.sh").read_text(encoding="utf-8")
+        self.assertIn("libcurl-devel-", helper)
+        self.assertIn("--nobest", helper)
+        self.assertNotIn("--skip-broken", helper)
+        for name in ("rocky-10.Dockerfile", "almalinux-10.Dockerfile"):
+            text = (self.repo_root / "docker/images/tests" / name).read_text(encoding="utf-8")
+            self.assertIn("el10-kcov-libcurl.sh", text)
+            joined = "\n".join(self._joined_dockerfile_install_commands(text, "dnf -y install"))
+            self.assertNotIn("curl-minimal", joined)
+            self.assertNotIn("libcurl-devel-*", joined)
 
     def test_dry_run_de_family_defaults_full_de_smoke(self):
         """Local --de-family implies ASUS_CI_FULL_DE=1 for real CLI probes."""
@@ -371,6 +402,7 @@ class TestDockerMatrixRunner(_DockerMatrixFixture):
         self.assertIn("distro_install_smoke_desktop.sh", smoke_text)
         self.assertIn("distro_install_smoke_live_pkg.sh", smoke_text)
         self.assertIn("_run_desktop_install_uninstall_cycles", smoke_text)
+
 
 class TestDockerMatrixCiAndImages(_DockerMatrixFixture):
     """CI full-DE wiring, Dockerfile pins, and host UID helpers."""
@@ -498,9 +530,7 @@ class TestDockerMatrixCiAndImages(_DockerMatrixFixture):
 
     def test_dry_run_distro_family_expands_debian_slice(self):
         """--distro-family debian selects ubuntu + debian lanes only."""
-        proc = self._run_docker_matrix(
-            "--dry-run", "--compat-only", "--distro-family", "debian"
-        )
+        proc = self._run_docker_matrix("--dry-run", "--compat-only", "--distro-family", "debian")
         self.assertEqual(proc.returncode, 0, msg=proc.stderr)
         out = proc.stdout
         self.assertIn("ubuntu:26.04", out)
@@ -516,6 +546,7 @@ class TestDockerMatrixCiAndImages(_DockerMatrixFixture):
         output = proc.stdout.lower()
         self.assertIn("coverage-gate", output)
         self.assertIn("debian-trixie.dockerfile", output)
+
 
 if __name__ == "__main__":
     unittest.main()

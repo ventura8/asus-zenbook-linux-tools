@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux կարգավորում %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools-ը պատրաստ է օգտագործման:"
 
@@ -57,13 +57,13 @@ msgstr "ASUS ZenBook Linux Tools-ը պատրաստ է օգտագործման:"
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook-ի կարգավորումներ"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "ASUS ZenBook ապարատային առանձնահատկությունները տեղադրված են որպես կամընտիր "
 "բաղադրիչներ:"
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -80,7 +80,7 @@ msgstr "Բոլոր ցուցադրումները (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Բոլոր ցուցադրումները (Հիմնական + Էկրանի պահոց)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Հասանելի բաղադրիչներ."
 
@@ -104,7 +104,7 @@ msgstr "Տեսախցիկի գաղտնիություն"
 msgid "Choose components"
 msgstr "Ընտրեք բաղադրիչներ"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Դարչինով դյուրանցումները կազմաձևված են:"
 
@@ -122,6 +122,26 @@ msgstr "Կարգավորեք GNOME-ի դյուրանցումները %s համա
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Կարգավորեք KDE Plasma դյուրանցումները %s համար"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Կարգավորեք Cinnamon-ի դյուրանցումները %s համար..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Կարգավորեք LXQt Global Keys-ի դյուրանցումները %s համար..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Կարգավորեք MATE-ի դյուրանցումները %s համար..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Կարգավորեք XFCE-ի դյուրանցումները %s համար..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -131,7 +151,7 @@ msgstr "Ցուցադրման ընթացիկ դասավորությունը"
 msgid "Display mode"
 msgstr "Ցուցադրման ռեժիմ"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr ""
 "Մուտքագրեք բաղադրիչների համարները կամ անունները՝ բաժանված ստորակետերով:"
@@ -152,7 +172,7 @@ msgstr "GNOME-ի դյուրանցումները կազմաձևված են:"
 msgid "Hardware features for your Linux desktop"
 msgstr "Սարքավորումների առանձնահատկություններ ձեր Linux աշխատասեղանի համար"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Տեղադրեք սկրիպտներ և ծառայություններ"
 
@@ -160,11 +180,11 @@ msgstr "Տեղադրեք սկրիպտներ և ծառայություններ"
 msgid "Install system dependencies"
 msgstr "Տեղադրեք համակարգի կախվածությունները"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Տեղադրումը չեղարկվել է օգտագործողի կողմից:"
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Տեղադրումն ավարտված է։"
 
@@ -173,7 +193,7 @@ msgstr "Տեղադրումն ավարտված է։"
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux Tools-ի տեղադրում %s:"
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -182,7 +202,7 @@ msgstr ""
 "Performance օդափոխիչի, տեսախցիկի գաղտնիության և մոնիտորների միջև "
 "պատուհանների փոխանակման համար։"
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -190,7 +210,7 @@ msgstr ""
 "Տեղադրում է բարձրախոսի ուժեղացուցիչի ուղղումը և suspend/resume hook, որպեսզի "
 "աջակցվող ZenBook ձայնը վերականգնվի բեռնումից և քնից հետո։"
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -198,23 +218,23 @@ msgstr ""
 "Տեղադրում է touchpad Share ժեստի listener, որպեսզի վերին ձախ անկյան հպումը "
 "բացի աշխատասեղանի սքրինշոթ գործիքը (GNOME, Spectacle և նմանները)։"
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Անվավեր ընտրություն՝ %s։ Մուտքագրեք թվեր (1,2,3,4), բաղադրիչների անուններ "
-"կամ all։"
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Անվավեր ընտրություն՝ %s։ Մուտքագրեք թվեր (1,2,3,4), բաղադրիչների անուններկամ "
+"all, կամ none ։"
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma դյուրանցումները կազմաձևվեցին:"
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys-ը կազմաձևված է:"
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE-ի դյուրանցումները կազմաձևված են:"
 
@@ -232,9 +252,9 @@ msgstr "Միայն հիմնական ցուցադրումը"
 msgid "Mode: %s"
 msgstr "Ռեժիմ՝ %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Ոչ մի բաղադրիչ չի ընտրվել: Տեղադրումը չեղարկվել է:"
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Ոչ մի բաղադրիչ չի ընտրվել։ Ոչինչ չի տեղադրվել։"
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -250,11 +270,11 @@ msgstr "Միացված է"
 msgid "Performance (Boost)"
 msgstr "Կատարողականություն (բարձրացում)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Սեղմեք Enter՝ բոլոր առաջարկվող բաղադրիչները տեղադրելու համար, կամ մուտքագրեք "
-"'all'։"
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Սեղմեք Enter՝ բոլոր առաջարկվող բաղադրիչները տեղադրելու համար, կամ մուտքագրեք "
+"'all' կամ 'none' ։"
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -281,7 +301,7 @@ msgstr ""
 "Ընտրեք միայն այն բաղադրիչները, որոնք օգտագործում եք: Չընտրված "
 "ծառայություններն ու դյուրանցումները չեն տեղադրվի:"
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Ընտրեք միայն այն, ինչ օգտագործում եք՝ ավելորդ ծառայություններից և "
@@ -303,11 +323,11 @@ msgstr "Ձայնային ֆիքսումը տեղադրված է կասեցման
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space-ը ընտրում է բաղադրիչ։ Enter-ը հաստատում է։ Esc-ը չեղարկում է։"
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Տեքստի ընտրության ռեժիմ:"
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Ինտերֆեյսի լեզուն հետևում է ձեր աշխատասեղանի նստաշրջանին:"
 
@@ -339,13 +359,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon-ը տեղադրված և ակտիվ է:"
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Ինչու՞ այս երկխոսությունը:"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE դյուրանցումները կազմաձևված են:"
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Անվավեր ընտրություն՝ %s։ Մուտքագրեք թվեր (1,2,3,4), բաղադրիչների անուններ "
+#~ "կամ all։"
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Ոչ մի բաղադրիչ չի ընտրվել: Տեղադրումը չեղարկվել է:"
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Սեղմեք Enter՝ բոլոր առաջարկվող բաղադրիչները տեղադրելու համար, կամ "
+#~ "մուտքագրեք 'all'։"
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Ավելացնել Display, MyASUS և Share աշխատասեղանի դյուրանցումները"

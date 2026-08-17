@@ -1,0 +1,4 @@
+# CI Arch mirrors: skip geo/fastly pkgbuild CDNs (stale DB vs missing tarball 404s).
+Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
+Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
+Server = https://ftp.osuosl.org/pub/archlinux/$repo/os/$arch

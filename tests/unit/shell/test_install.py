@@ -421,6 +421,18 @@ class TestInstallSharedHelpers(InstallTestBase):
         self.assertFalse(dest.is_symlink())
         self.assertEqual(dest.read_text(encoding="utf-8"), source.read_text(encoding="utf-8"))
 
+    def test_print_next_step_allows_unset_counters_under_nounset(self):
+        """Configure helpers must print progress when install.sh never planned steps."""
+        shared = self.repo_root / "lib" / "install-shared.sh"
+        shared_q = shlex.quote(str(shared))
+        script = (
+            f"set -euo pipefail; unset INSTALL_STEP_CURRENT INSTALL_STEP_TOTAL; "
+            f"source {shared_q}; _install_print_next_step 'Configure test'"
+        )
+        proc = run_bash_c(script, timeout=10)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(proc.stdout.strip(), "[1/1] Configure test")
+
 
 class TestInstallScriptSourcing(InstallTestBase):
     """Smoke tests for sourcing install.sh without executing main."""

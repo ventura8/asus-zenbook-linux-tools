@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Настройка на ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools е готов за използване."
 
@@ -57,13 +57,13 @@ msgstr "ASUS ZenBook Linux Tools е готов за използване."
 msgid "ASUS ZenBook Settings"
 msgstr "Настройки на ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Хардуерните функции на ASUS ZenBook са инсталирани като допълнителни "
 "компоненти."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -80,7 +80,7 @@ msgstr "Всички дисплеи (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Всички дисплеи (основен + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Налични компоненти:"
 
@@ -104,7 +104,7 @@ msgstr "Поверителност на камерата"
 msgid "Choose components"
 msgstr "Изберете компоненти"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Преките пътища за канела са конфигурирани."
 
@@ -122,6 +122,26 @@ msgstr "Конфигуриране на GNOME преки пътища за %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Конфигуриране на преки пътища за KDE Plasma за %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Конфигуриране на Cinnamon преки пътища за %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Конфигуриране на LXQt Global Keys преки пътища за %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Конфигуриране на MATE преки пътища за %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Конфигуриране на XFCE преки пътища за %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -131,7 +151,7 @@ msgstr "Текущо оформление на дисплея"
 msgid "Display mode"
 msgstr "Режим на показване"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Въведете номера или имена на компоненти, разделени със запетаи."
 
@@ -151,7 +171,7 @@ msgstr "Преките пътища на GNOME са конфигурирани."
 msgid "Hardware features for your Linux desktop"
 msgstr "Хардуерни функции за вашия Linux работен плот"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Инсталирайте скриптове и услуги"
 
@@ -159,11 +179,11 @@ msgstr "Инсталирайте скриптове и услуги"
 msgid "Install system dependencies"
 msgstr "Инсталирайте системни зависимости"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Инсталацията е отменена от потребителя."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Инсталацията е завършена."
 
@@ -172,7 +192,7 @@ msgstr "Инсталацията е завършена."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Инсталиране на ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -181,7 +201,7 @@ msgstr ""
 "Quiet/Balanced/Performance, поверителност на камерата и размяна на прозорци "
 "между монитори."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -189,7 +209,7 @@ msgstr ""
 "Инсталира поправката на усилвателя на високоговорителите и кука suspend/"
 "resume, за да се възстанови поддържаното ZenBook аудио след старт и след сън."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -198,22 +218,23 @@ msgstr ""
 "ляв ъгъл да отваря инструмента за екранни снимки на работния плот (GNOME, "
 "Spectacle и подобни)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Невалиден избор: %s. Въведете номера (1,2,3,4), имена на компоненти или all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Невалиден избор: %s. Въведете номера (1,2,3,4), имена на компоненти или all, "
+"или none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Конфигурирани са преки пътища за KDE Plasma."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Конфигурирани глобални ключове на LXQt."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Преките пътища на MATE са конфигурирани."
 
@@ -231,9 +252,9 @@ msgstr "Само основен дисплей"
 msgid "Mode: %s"
 msgstr "Режим: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Не са избрани компоненти. Инсталацията е отменена."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Не са избрани компоненти. Нищо не беше инсталирано."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -249,11 +270,11 @@ msgstr "включено"
 msgid "Performance (Boost)"
 msgstr "Производителност (Boost)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Натиснете Enter, за да инсталирате всички препоръчани компоненти, или "
-"въведете 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Натиснете Enter, за да инсталирате всички препоръчани компоненти, "
+"иливъведете 'all' или 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -280,7 +301,7 @@ msgstr ""
 "Изберете само компонентите, които използвате. Неизбраните услуги и преки "
 "пътища няма да бъдат инсталирани."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Изберете само това, което използвате, за да избегнете ненужни услуги и преки "
@@ -302,11 +323,11 @@ msgstr "Корекцията на звука е инсталирана с кук
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space избира компонент. Enter потвърждава. Esc отменя."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Режим за избор на текст."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Езикът на интерфейса следва вашата десктоп сесия."
 
@@ -339,13 +360,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey демон е инсталиран и активен."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Защо този диалог?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Конфигурирани преки пътища за XFCE."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Невалиден избор: %s. Въведете номера (1,2,3,4), имена на компоненти или "
+#~ "all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Не са избрани компоненти. Инсталацията е отменена."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Натиснете Enter, за да инсталирате всички препоръчани компоненти, или "
+#~ "въведете 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Добавете преки пътища на работния плот Display, MyASUS и Share"

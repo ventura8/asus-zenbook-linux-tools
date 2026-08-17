@@ -55,7 +55,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Postavljanje ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools je spreman za korištenje."
 
@@ -63,12 +63,12 @@ msgstr "ASUS ZenBook Linux Tools je spreman za korištenje."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook postavke"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "ASUS ZenBook hardverske značajke instalirane su kao dodatne komponente."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -85,7 +85,7 @@ msgstr "Svi prikazi (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Svi zasloni (Glavni + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Dostupne komponente:"
 
@@ -109,7 +109,7 @@ msgstr "Privatnost kamere"
 msgid "Choose components"
 msgstr "Odaberite komponente"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Cinnamon prečaci konfigurirani."
 
@@ -127,6 +127,26 @@ msgstr "Konfigurirajte GNOME prečace za %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Konfigurirajte KDE Plasma prečace za %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Konfigurirajte Cinnamon prečace za %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Konfigurirajte LXQt Global Keys prečace za %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Konfigurirajte MATE prečace za %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Konfigurirajte XFCE prečace za %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -136,7 +156,7 @@ msgstr "Trenutačni izgled zaslona"
 msgid "Display mode"
 msgstr "Način prikaza"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Unesite brojeve ili nazive komponenti odvojene zarezima."
 
@@ -156,7 +176,7 @@ msgstr "GNOME prečaci konfigurirani."
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardverske značajke za vašu Linux radnu površinu"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Instalirajte skripte i usluge"
 
@@ -164,11 +184,11 @@ msgstr "Instalirajte skripte i usluge"
 msgid "Install system dependencies"
 msgstr "Instalirajte ovisnosti sustava"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Instalaciju je otkazao korisnik."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Instalacija završena."
 
@@ -177,7 +197,7 @@ msgstr "Instalacija završena."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Instaliranje ASUS ZenBook Linux alata %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -186,7 +206,7 @@ msgstr ""
 "Quiet/Balanced/Performance, privatnost kamere i zamjenu prozora između "
 "monitora."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -194,7 +214,7 @@ msgstr ""
 "Instalira ispravak pojačala zvučnika i kuku suspend/resume kako bi podržani "
 "ZenBook audio radio nakon pokretanja i nakon nastavka."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -203,22 +223,23 @@ msgstr ""
 "kutu otvara alat za snimke zaslona radne površine (GNOME, Spectacle i "
 "slično)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Nevažeći odabir: %s. Unesite brojeve (1,2,3,4), nazive komponenti ili all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Nevažeći odabir: %s. Unesite brojeve (1,2,3,4), nazive komponenti ili all, "
+"ili none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma prečaci konfigurirani."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Globalni ključevi LXQt konfigurirani."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE prečaci konfigurirani."
 
@@ -236,9 +257,9 @@ msgstr "Samo glavni zaslon"
 msgid "Mode: %s"
 msgstr "Način rada: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Nije odabrana nijedna komponenta. Instalacija je otkazana."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Nije odabrana nijedna komponenta. Ništa nije instalirano."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -254,11 +275,11 @@ msgstr "Uključeno"
 msgid "Performance (Boost)"
 msgstr "Izvedba (pojačanje)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Pritisnite Enter za instalaciju svih preporučenih komponenti ili unesite "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Pritisnite Enter za instalaciju svih preporučenih komponenti ili unesite "
+"'all' ili 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -285,7 +306,7 @@ msgstr ""
 "Odaberite samo komponente koje koristite. Neodabrane usluge i prečaci neće "
 "biti instalirani."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Odaberite samo ono što koristite kako biste izbjegli nepotrebne usluge i "
@@ -307,11 +328,11 @@ msgstr "Popravak zvuka instaliran s kukom za obustavu i nastavak."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space bira komponentu. Enter potvrđuje. Esc otkazuje."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Način odabira teksta."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Jezik sučelja prati vašu radnu površinu."
 
@@ -343,13 +364,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey demon instaliran i aktivan."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Zašto ovaj dijalog?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE prečaci konfigurirani."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Nevažeći odabir: %s. Unesite brojeve (1,2,3,4), nazive komponenti ili all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Nije odabrana nijedna komponenta. Instalacija je otkazana."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Pritisnite Enter za instalaciju svih preporučenih komponenti ili unesite "
+#~ "'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Dodajte Display, MyASUS i Share prečace na radnoj površini"

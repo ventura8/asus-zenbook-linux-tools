@@ -469,3 +469,33 @@ _is_safe_config_dir() {
         "Warning: refusing to remove config_dir: STATE_DIR resolves invalid" || return 1
     _is_safe_config_dir_under_state "$canonical" "$state_canonical" "$config_dir"
 }
+
+_install_choice_includes_desktop() {
+    local choice="$1"
+    case " ${choice//GNOME/DESKTOP} " in
+        *" DESKTOP "*) return 0 ;;
+    esac
+    return 1
+}
+
+_install_plan_progress_steps() {
+    local choice="$1"
+    local total=1
+    INSTALL_STEP_CURRENT=0
+    if [ "${SKIP_PKG_INSTALL:-0}" != "1" ]; then
+        total=$((total + 1))
+    fi
+    if _install_choice_includes_desktop "$choice"; then
+        total=$((total + 1))
+    fi
+    INSTALL_STEP_TOTAL=$total
+    export INSTALL_STEP_CURRENT INSTALL_STEP_TOTAL
+}
+
+_install_print_next_step() {
+    local label="$1"
+    # kcov DE drivers call configure_* without install.sh planning these counters.
+    INSTALL_STEP_CURRENT=$((${INSTALL_STEP_CURRENT:-0} + 1))
+    printf '[%s/%s] %s\n' "$INSTALL_STEP_CURRENT" \
+        "${INSTALL_STEP_TOTAL:-$INSTALL_STEP_CURRENT}" "$label"
+}

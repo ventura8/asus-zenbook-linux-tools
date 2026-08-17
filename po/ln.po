@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Configuration ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools ezali prêt ya kosalela."
 
@@ -57,13 +57,13 @@ msgstr "ASUS ZenBook Linux Tools ezali prêt ya kosalela."
 msgid "ASUS ZenBook Settings"
 msgstr "Paramètres ya ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Ba fonctionnalités ya matériel ya ASUS ZenBook e installer lokola ba "
 "composants optionnels."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -80,7 +80,7 @@ msgstr "Bilakiseli nyonso (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Ba écrans nionso (Principal + ScreenPad) ."
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Ba composants oyo ezali:"
 
@@ -104,7 +104,7 @@ msgstr "Bomoi ya moto ye moko ya kamera"
 msgid "Choose components"
 msgstr "Pona ba composants"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Ba raccourcis ya cannelle e configuré."
 
@@ -122,6 +122,26 @@ msgstr "Bongisa ba raccourcis ya GNOME mpo na %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Bobongisi ba raccourcis ya Plasma ya KDE mpo na %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Bongisa ba raccourcis ya Cinnamon mpo na %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Bongisa ba raccourcis ya LXQt Global Keys mpo na %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Bongisa ba raccourcis ya MATE mpo na %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Bongisa ba raccourcis ya XFCE mpo na %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -131,7 +151,7 @@ msgstr "Bobongisi ya elakiseli ya lelo"
 msgid "Display mode"
 msgstr "Mode ya kolakisa"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Tyá mituya to bankombo ya biloko, oyo ekabwani na virgule."
 
@@ -151,7 +171,7 @@ msgstr "Ba raccourcis ya GNOME e configuré."
 msgid "Hardware features for your Linux desktop"
 msgstr "Makambo ya matériel mpo na bureau na yo ya Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Botia ba scripts na ba services"
 
@@ -159,11 +179,11 @@ msgstr "Botia ba scripts na ba services"
 msgid "Install system dependencies"
 msgstr "Botia ba dépendances ya système"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Installation elongolami na mosaleli."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Installation esili."
 
@@ -172,7 +192,7 @@ msgstr "Installation esili."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Kotia Bisaleli ya Linux ya ASUS ZenBook %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -181,7 +201,7 @@ msgstr ""
 "Quiet/Balanced/Performance, sekele ya camera mpe kobongola ba fenêtre kati "
 "na ba moniteurs."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -190,7 +210,7 @@ msgstr ""
 "resume mpo audio ya ZenBook oyo esungami ezonga nsima ya démarrage mpe nsima "
 "ya lalela."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -199,22 +219,23 @@ msgstr ""
 "gauche efungola outil ya capture écran ya bureau (GNOME, Spectacle mpe "
 "ndenge wana)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Choix ya mabe: %s. Kotia ba numéros (1,2,3,4), nkombo ya biloko, to all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Choix ya mabe: %s. Kotia ba numéros (1,2,3,4), nkombo ya biloko, to all, tǒ "
+"none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Ba raccourcis ya Plasma ebongisami."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Bafungola ya mokili mobimba ebongisi."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Ba raccourcis ya MATE e configuré."
 
@@ -232,9 +253,9 @@ msgstr "Emoniseli ya monene kaka"
 msgid "Mode: %s"
 msgstr "Mode: %s Ezali ndenge moko na ."
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Baponaki biloko oyo esalaka yango te. Installation elongolami."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Baponaki biloko oyo esalaka yango te. Eloko moko etiamaki te."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -250,10 +271,11 @@ msgstr "Na"
 msgid "Performance (Boost)"
 msgstr "Bosalisi (Boost) ."
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Tina Enter mpo kotya biloko nyonso oyo epesami conseil, to kotia 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Tina Enter mpo kotya biloko nyonso oyo epesami conseil, to kotia 'all' tǒ "
+"'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -280,7 +302,7 @@ msgstr ""
 "Pona kaka ba composants oyo osalelaka. Ba services mpe ba raccourcis oyo "
 "eponami te ekozala installé te."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Pona kaka oyo osalelaka mpo na koboya ba services mpe ba raccourcis oyo "
@@ -302,11 +324,11 @@ msgstr "Sound fix installé na crochet ya suspension na resume."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space eponi élément. Enter endimisi. Esc elongoli."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Mode ya kopona makomi."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Monoko ya interface elandi session ya bureau na yo."
 
@@ -338,13 +360,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon installé mpe ezali activé."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Mpo na nini dialogue oyo?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Ba raccourcis ya XFCE e configuré."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Choix ya mabe: %s. Kotia ba numéros (1,2,3,4), nkombo ya biloko, to all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Baponaki biloko oyo esalaka yango te. Installation elongolami."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Tina Enter mpo kotya biloko nyonso oyo epesami conseil, to kotia 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Bakisa ba raccourcis ya bureau ya Display, MyASUS, mpe Share"

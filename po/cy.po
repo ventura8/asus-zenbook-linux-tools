@@ -58,7 +58,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Gosodiad ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Mae ASUS ZenBook Linux Tools yn barod i'w ddefnyddio."
 
@@ -66,12 +66,12 @@ msgstr "Mae ASUS ZenBook Linux Tools yn barod i'w ddefnyddio."
 msgid "ASUS ZenBook Settings"
 msgstr "Gosodiadau ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Mae nodweddion caledwedd ASUS ZenBook wedi'u gosod fel cydrannau dewisol."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -88,7 +88,7 @@ msgstr "Pob arddangosfa (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Pob arddangosfa (Prif + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Cydrannau sydd ar gael:"
 
@@ -112,7 +112,7 @@ msgstr "Preifatrwydd camera"
 msgid "Choose components"
 msgstr "Dewiswch gydrannau"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Llwybrau byr sinamon wedi'u ffurfweddu."
 
@@ -130,6 +130,26 @@ msgstr "Ffurfweddu llwybrau byr GNOME ar gyfer %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Ffurfweddu llwybrau byr Plasma KDE ar gyfer %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Ffurfweddu llwybrau byr Cinnamon ar gyfer %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Ffurfweddu llwybrau byr LXQt Global Keys ar gyfer %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Ffurfweddu llwybrau byr MATE ar gyfer %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Ffurfweddu llwybrau byr XFCE ar gyfer %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -139,7 +159,7 @@ msgstr "Cynllun arddangos cyfredol"
 msgid "Display mode"
 msgstr "Modd arddangos"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Rhowch rifau neu enwau cydrannau, wedi'u gwahanu gan atalnodau."
 
@@ -159,7 +179,7 @@ msgstr "Llwybrau byr GNOME wedi'u ffurfweddu."
 msgid "Hardware features for your Linux desktop"
 msgstr "Nodweddion caledwedd ar gyfer eich bwrdd gwaith Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Gosod sgriptiau a gwasanaethau"
 
@@ -167,11 +187,11 @@ msgstr "Gosod sgriptiau a gwasanaethau"
 msgid "Install system dependencies"
 msgstr "Gosod dibyniaethau system"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Gosodiad wedi'i ganslo gan y defnyddiwr."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Gosod wedi'i gwblhau."
 
@@ -180,7 +200,7 @@ msgstr "Gosod wedi'i gwblhau."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Gosod Offer ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -189,7 +209,7 @@ msgstr ""
 "Quiet/Balanced/Performance, preifatrwydd camera, a chyfnewid ffenestri ar "
 "draws monitroedd."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -197,7 +217,7 @@ msgstr ""
 "Gosoda'r trwsio chwyddwr siaradwr a bachyn suspend/resume fel bod sain "
 "ZenBook a gefnogir yn adfer ar ôl cychwyn ac ar ôl cysgu."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -205,21 +225,23 @@ msgstr ""
 "Gosoda wrandäwr ystum Share y pad cyffwrdd fel bod tap yn y gornel chwith "
 "uchaf yn agor offeryn sgrinlun y bwrdd gwaith (GNOME, Spectacle a thebyg)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "Dewis annilys: %s. Rhowch rifau (1,2,3,4), enwau cydrannau, neu all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Dewis annilys: %s. Rhowch rifau (1,2,3,4), enwau cydrannau, neu all, neu "
+"none, neu none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Llwybrau byr Plasma KDE wedi'u ffurfweddu."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Allweddi Byd-eang LXQt wedi'u ffurfweddu."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Llwybrau byr MATE wedi'u ffurfweddu."
 
@@ -237,9 +259,9 @@ msgstr "Prif arddangosfa yn unig"
 msgid "Mode: %s"
 msgstr "Modd: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Ni ddewiswyd unrhyw gydrannau. Gosodiad wedi'i ganslo."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Ni ddewiswyd unrhyw gydrannau. Ni osodwyd dim."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -255,10 +277,11 @@ msgstr "Ar"
 msgid "Performance (Boost)"
 msgstr "Perfformiad (Hwb)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Pwyswch Enter i osod yr holl gydrannau a argymhellir, neu rhowch 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Pwyswch Enter i osod yr holl gydrannau a argymhellir, neu rhowch 'all' neu "
+"'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -285,7 +308,7 @@ msgstr ""
 "Dewiswch y cydrannau rydych chi'n eu defnyddio yn unig. Ni fydd gwasanaethau "
 "heb eu dewis a llwybrau byr yn cael eu gosod."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Dewiswch yr hyn rydych chi'n ei ddefnyddio yn unig i osgoi gwasanaethau a "
@@ -307,11 +330,11 @@ msgstr "Atgyweiriad sain wedi'i osod gyda bachyn crog ac ailddechrau."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space yn dewis cydran. Enter yn cadarnhau. Esc yn canslo."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Modd dewis testun."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Mae iaith y rhyngwyneb yn dilyn eich sesiwn bwrdd gwaith."
 
@@ -345,13 +368,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "ellyll Hotkey WMI wedi'i osod ac yn weithredol."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Pam y dialog hwn?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Llwybrau byr XFCE wedi'u ffurfweddu."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Dewis annilys: %s. Rhowch rifau (1,2,3,4), enwau cydrannau, neu all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Ni ddewiswyd unrhyw gydrannau. Gosodiad wedi'i ganslo."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Pwyswch Enter i osod yr holl gydrannau a argymhellir, neu rhowch 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Ychwanegu llwybrau byr bwrdd gwaith Display, MyASUS, a Share"

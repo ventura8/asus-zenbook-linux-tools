@@ -1,3 +1,11 @@
+asus-zenbook-linux-tools (1.0.1) resolute; urgency=medium
+
+  * Dynamic installer progress totals and empty-selection no-op.
+  * Localized DESKTOP configure progress (GNOME/KDE/LXQt/Cinnamon/MATE).
+  * Gettext PO msgfmt lint and combinatorial DESTDIR component matrix.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Mon, 17 Aug 2026 19:33:00 +0300
+
 asus-zenbook-linux-tools (1.0.0) resolute; urgency=medium
 
   * Initial Launchpad PPA packaging for resolute.

@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux אַן־איינשטעלונג %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools איז גרייט צו נוצן."
 
@@ -57,12 +57,12 @@ msgstr "ASUS ZenBook Linux Tools איז גרייט צו נוצן."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook סעטטינגס"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "ASUS ZenBook ייַזנוואַרג פֿעיִקייטן זענען אינסטאַלירן ווי אַפּשאַנאַל קאַמפּאָונאַנץ."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -79,7 +79,7 @@ msgstr "אַלע דיספּלייז (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "כל דיספּלייז (הויפּט + סקרעענפּאַד)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "בנימצא קאַמפּאָונאַנץ:"
 
@@ -103,7 +103,7 @@ msgstr "אַפּאַראַט פּריוואַטקייט"
 msgid "Choose components"
 msgstr "קלייַבן קאַמפּאָונאַנץ"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "צימערינג שאָרטקאַץ קאַנפיגיערד."
 
@@ -121,6 +121,26 @@ msgstr "קאַנפיגיער GNOME דורכוועג פֿאַר %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "קאַנפיגיער KDE פּלאַזמאַ דורכוועג פֿאַר %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "קאַנפיגיער Cinnamon דורכוועג פֿאַר %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "קאַנפיגיער LXQt Global Keys דורכוועג פֿאַר %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "קאַנפיגיער MATE דורכוועג פֿאַר %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "קאַנפיגיער XFCE דורכוועג פֿאַר %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -130,7 +150,7 @@ msgstr "קראַנט אַרויסווייַזן אויסלייג"
 msgid "Display mode"
 msgstr "ווייַז מאָדע"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "אַרייַן קאָמפּאָנענט נומערן אָדער נעמען, אפגעשיידט דורך קאָמע."
 
@@ -150,7 +170,7 @@ msgstr "GNOME דורכוועג קאַנפיגיערד."
 msgid "Hardware features for your Linux desktop"
 msgstr "ייַזנוואַרג פֿעיִקייטן פֿאַר דיין לינוקס דעסקטאַפּ"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "ינסטאַלירן סקריפּס און באַדינונגס"
 
@@ -158,11 +178,11 @@ msgstr "ינסטאַלירן סקריפּס און באַדינונגס"
 msgid "Install system dependencies"
 msgstr "ינסטאַלירן סיסטעם דיפּענדאַנסיז"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "ייַנמאָנטירונג קאַנסאַלד דורך באַניצער."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "ייַנמאָנטירונג גאַנץ."
 
@@ -171,7 +191,7 @@ msgstr "ייַנמאָנטירונג גאַנץ."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ינסטאָלינג ASUS ZenBook Linux מכשירים %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -180,7 +200,7 @@ msgstr ""
 "Balanced/Performance, קאַמערע פּריוואַטקייט און פֿענצטער־אויסטויש צווישן "
 "מאָניטאָרן."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -188,7 +208,7 @@ msgstr ""
 "אינסטאַלירט די ספּיקער־אַמפּליפֿײַער פֿאַרריכטונג און אַ suspend/resume hook כּדי "
 "געשטיצטע ZenBook אַודיאָ זאָל זיך צוריקשטעלן נאָך boot און נאָך שלאָף."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -197,23 +217,23 @@ msgstr ""
 "לינקן ווינקל זאָל עפֿענען אײַער דעסקטאָפּ סקרינשאָט־געצייַג (GNOME, Spectacle און "
 "ענלעכע)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"אומגילטיקע אויסוואַל: %s. גיט אַרײַן נומערן (1,2,3,4), קאָמפּאָנענט־נעמען, אָדער "
-"all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "אומגילטיקע אויסוואַל: %s. גיט אַרײַן נומערן (1,2,3,4), קאָמפּאָנענט־נעמען, "
+"אָדער all, אָדער none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE פּלאַזמע דורכוועג קאַנפיגיערד."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt גלאבאלע קיז קאַנפיגיערד."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE דורכוועג קאַנפיגיערד."
 
@@ -231,9 +251,9 @@ msgstr "בלויז הויפּט אַרויסווייַזן"
 msgid "Mode: %s"
 msgstr "מאָדע: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "קיין קאַמפּאָונאַנץ זענען אויסגעקליבן. ייַנמאָנטירונג קאַנסאַלד."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "קיין קאַמפּאָונאַנץ זענען אויסגעקליבן. גאָרנישט איז אינסטאַלירט געוואָרן."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -249,10 +269,11 @@ msgstr "אויף"
 msgid "Performance (Boost)"
 msgstr "פאָרשטעלונג (בוסט)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"דרוקט Enter צו אינסטאַלירן אַלע רעקאָמענדירטע קאָמפּאָנענטן, אָדער שרײַבט 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "דרוקט Enter צו אינסטאַלירן אַלע רעקאָמענדירטע קאָמפּאָנענטן, אָדער שרײַבט "
+"'all' אָדער 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -279,7 +300,7 @@ msgstr ""
 "אויסקלייַבן בלויז די קאַמפּאָונאַנץ איר נוצן. אַנסעלעקטעד באַדינונגס און שאָרטקאַץ "
 "וועט נישט זיין אינסטאַלירן."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "סעלעקטירן בלויז וואָס איר נוצן צו ויסמיידן ומנייטיק באַדינונגס און שאָרטקאַץ."
@@ -300,11 +321,11 @@ msgstr "געזונט פאַרריכטן אינסטאַלירן מיט אַ ופ�
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space קלײַבט אַ קאָמפּאָנענט. Enter באַשטעטיקט. Esc אַנולירט."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "טעקסט סעלעקציע מאָדע."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "די צובינד שפּראַך גייט נאָך דיין דעסקטאַפּ סעסיע."
 
@@ -336,13 +357,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI האָטקיי דיימאַן אינסטאַלירן און אַקטיוו."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "פארוואס דעם דיאַלאָג?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE דורכוועג קאַנפיגיערד."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "אומגילטיקע אויסוואַל: %s. גיט אַרײַן נומערן (1,2,3,4), קאָמפּאָנענט־נעמען, אָדער "
+#~ "all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "קיין קאַמפּאָונאַנץ זענען אויסגעקליבן. ייַנמאָנטירונג קאַנסאַלד."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "דרוקט Enter צו אינסטאַלירן אַלע רעקאָמענדירטע קאָמפּאָנענטן, אָדער שרײַבט 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "לייג ווייַז, MyASUS און ייַנטיילן דעסקטאַפּ דורכוועג"

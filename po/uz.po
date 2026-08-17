@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux sozlamasi %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools foydalanishga tayyor."
 
@@ -57,13 +57,13 @@ msgstr "ASUS ZenBook Linux Tools foydalanishga tayyor."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook sozlamalari"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "ASUS ZenBook apparat xususiyatlari ixtiyoriy komponentlar sifatida "
 "o'rnatiladi."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -80,7 +80,7 @@ msgstr "Barcha displeylar (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Barcha displeylar (Asosiy + Ekran paneli)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Mavjud komponentlar:"
 
@@ -104,7 +104,7 @@ msgstr "Kamera maxfiyligi"
 msgid "Choose components"
 msgstr "Komponentlarni tanlang"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Cinnamon yorliqlari sozlandi."
 
@@ -122,6 +122,26 @@ msgstr "%s uchun GNOME yorliqlarini sozlang"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "%s uchun KDE plazma yorliqlarini sozlang"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s uchun Cinnamon yorliqlarini sozlang..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s uchun LXQt Global Keys yorliqlarini sozlang..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s uchun MATE yorliqlarini sozlang..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s uchun XFCE yorliqlarini sozlang..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -131,7 +151,7 @@ msgstr "Joriy displey tartibi"
 msgid "Display mode"
 msgstr "Ko'rsatish rejimi"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr ""
 "Komponent raqamlari yoki nomlarini vergul bilan ajratilgan holda kiriting."
@@ -152,7 +172,7 @@ msgstr "GNOME yorliqlari sozlangan."
 msgid "Hardware features for your Linux desktop"
 msgstr "Linux ish stoli uchun apparat xususiyatlari"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Skriptlar va xizmatlarni o'rnating"
 
@@ -160,11 +180,11 @@ msgstr "Skriptlar va xizmatlarni o'rnating"
 msgid "Install system dependencies"
 msgstr "Tizimga bog'liqliklarni o'rnating"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "O'rnatish foydalanuvchi tomonidan bekor qilindi."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Oʻrnatish tugallandi."
 
@@ -173,7 +193,7 @@ msgstr "Oʻrnatish tugallandi."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux asboblarini o'rnatish %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -182,7 +202,7 @@ msgstr ""
 "maxfiyligi va monitorlar o‘rtasida oynani almashtirish uchun WMI hotkey "
 "daemon o‘rnatadi."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -191,7 +211,7 @@ msgstr ""
 "tiklanishi uchun dinamik kuchaytirgich tuzatmasini va suspend/resume hook "
 "o‘rnatadi."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -200,23 +220,23 @@ msgstr ""
 "Spectacle va o‘xshashlar) ochilishi uchun touchpad Share ishora listener "
 "o‘rnatadi."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Noto‘g‘ri tanlov: %s. Raqamlar (1,2,3,4), komponent nomlari yoki all "
-"kiriting."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Noto‘g‘ri tanlov: %s. Raqamlar (1,2,3,4), komponent nomlari yoki all, yoki "
+"none, yoki none kiriting."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE plazma yorliqlari sozlandi."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global kalitlari sozlangan."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE yorliqlari sozlangan."
 
@@ -234,9 +254,9 @@ msgstr "Faqat asosiy displey"
 msgid "Mode: %s"
 msgstr "Rejim: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Hech qanday komponent tanlanmagan. Oʻrnatish bekor qilindi."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Hech qanday komponent tanlanmagan. Hech narsa o'rnatilmadi."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -252,11 +272,11 @@ msgstr "Yoniq"
 msgid "Performance (Boost)"
 msgstr "Ishlash (boost)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Barcha tavsiya etilgan komponentlarni o‘rnatish uchun Enter bosing yoki "
-"'all' yozing."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Barcha tavsiya etilgan komponentlarni o‘rnatish uchun Enter bosing yoki "
+"'all' yoki 'none' yozing."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -283,7 +303,7 @@ msgstr ""
 "Faqat siz foydalanadigan komponentlarni tanlang. Tanlanmagan xizmatlar va "
 "yorliqlar o'rnatilmaydi."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Keraksiz xizmatlar va yorliqlardan qochish uchun faqat foydalanadigan "
@@ -306,11 +326,11 @@ msgstr ""
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space komponentni tanlaydi. Enter tasdiqlaydi. Esc bekor qiladi."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Matn tanlash rejimi."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Interfeys tili ish stoli seansiga amal qiladi."
 
@@ -342,13 +362,28 @@ msgstr "WMI Hotkey dasturi o'rnatilgan (faol holat bu muhitda tasdiqlanmagan)."
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey dasturi o'rnatilgan va faol."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Nega bu dialog?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE yorliqlari sozlangan."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Noto‘g‘ri tanlov: %s. Raqamlar (1,2,3,4), komponent nomlari yoki all "
+#~ "kiriting."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Hech qanday komponent tanlanmagan. Oʻrnatish bekor qilindi."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Barcha tavsiya etilgan komponentlarni o‘rnatish uchun Enter bosing yoki "
+#~ "'all' yozing."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Displey, MyASUS va Share ish stoli yorliqlarini qo'shing"

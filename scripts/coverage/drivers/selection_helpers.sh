@@ -193,6 +193,7 @@ _run_selection_close_and_special() {
     unset INSTALL_UI_IN_FD INSTALL_UI_OUT_FD
     _print_special_component_selection "" >/dev/null
     _print_special_component_selection ALL >/dev/null
+    _print_special_component_selection NONE >/dev/null
     _print_special_component_selection WMI >/dev/null || true
     _exercise ASUS_DESKTOP_FAMILY=gnome _desktop_default_on >/dev/null
     _exercise ASUS_DESKTOP_FAMILY=other _desktop_default_on >/dev/null
@@ -263,18 +264,18 @@ _run_selection_tui_coverage_boost() {
 
 _run_selection_edge_paths() {
     local ui_in ui_out in_file out_file
-    # Comma-only input → empty token array branch in normalize.
+    # Comma-only input → empty selection branch in normalize.
     _exercise _normalize_component_selection "," >/dev/null
     # Empty NONINTERACTIVE_CHOICE when the variable is set.
     _exercise NONINTERACTIVE_CHOICE= _handle_noninteractive_choice "" >/dev/null
     # Hard-fail status from text apply retry helper.
     _exercise _prompt_text_selection_retry_or_fail 5 >/dev/null
-    # Empty selection reject after normalize succeeds with blank parsed.
+    # Comma-only text selection applies an empty choice.
     out_file=$(mktemp)
     _selection_track_temp_file "$out_file"
     in_file=$(mktemp)
     _selection_track_temp_file "$in_file"
-    printf ',\n1\n' >"$in_file"
+    printf ',\n' >"$in_file"
     exec {ui_in}<"$in_file"
     exec {ui_out}>"$out_file"
     _exercise _prompt_text_selection "$ui_in" "$ui_out" >/dev/null

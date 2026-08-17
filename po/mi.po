@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Tautuhinga ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Kua reri nga Utauta ASUS ZenBook Linux ki te whakamahi."
 
@@ -55,12 +55,12 @@ msgstr "Kua reri nga Utauta ASUS ZenBook Linux ki te whakamahi."
 msgid "ASUS ZenBook Settings"
 msgstr "Tautuhinga ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Kua whakauruhia nga waahanga taputapu ASUS ZenBook hei waahanga whiriwhiri."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -77,7 +77,7 @@ msgstr "Nga whakaaturanga katoa (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Nga whakaaturanga katoa (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Wāhanga wātea:"
 
@@ -101,7 +101,7 @@ msgstr "Kaamera tūmataiti"
 msgid "Choose components"
 msgstr "Whiriwhiria nga waahanga"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Kua whirihorahia nga pokatata hinamona."
 
@@ -119,6 +119,26 @@ msgstr "Whirihorahia nga pokatata GNOME mo %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Whirihorahia nga pokatata KDE Plasma mo %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Whirihorahia nga pokatata Cinnamon mo %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Whirihorahia nga pokatata LXQt Global Keys mo %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Whirihorahia nga pokatata MATE mo %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Whirihorahia nga pokatata XFCE mo %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -128,7 +148,7 @@ msgstr "Tahora whakaatu o naianei"
 msgid "Display mode"
 msgstr "Aratau whakaatu"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Whakauruhia nga nama waahanga, ingoa ranei, ka wehea e nga piko."
 
@@ -148,7 +168,7 @@ msgstr "Kua whirihorahia nga pokatata GNOME."
 msgid "Hardware features for your Linux desktop"
 msgstr "Nga waahanga taputapu mo to papamahi Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Tāuta hōtuhi me ngā ratonga"
 
@@ -156,11 +176,11 @@ msgstr "Tāuta hōtuhi me ngā ratonga"
 msgid "Install system dependencies"
 msgstr "Tāutahia ngā whakawhirinakitanga pūnaha"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Kua whakakorehia e te kaiwhakamahi te whakaurunga."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Kua oti te whakaurunga."
 
@@ -169,7 +189,7 @@ msgstr "Kua oti te whakaurunga."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Te whakauru i nga Utauta ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "Balanced/Performance, te tūmataitinga kāmera, me te whakawhiti matapihi i "
 "waenga i ngā mata."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -187,7 +207,7 @@ msgstr ""
 "kia hoki mai ai te ororongo ZenBook e tautokona ana i muri i te boot me te "
 "moe."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -196,21 +216,23 @@ msgstr ""
 "kokonga maui o runga i tō taputapu screenshot papamahi (GNOME, Spectacle, me "
 "ōna hoa)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "Kōwhiringa muhu: %s. Tāuru nama (1,2,3,4), ingoa wāhanga, pe all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Kōwhiringa muhu: %s. Tāuru nama (1,2,3,4), ingoa wāhanga, pe all, rānei "
+"none, rānei none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Kua whirihorahia nga pokatata KDE Plasma."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys kua whirihorahia."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Kua whirihorahia nga pokatata MATE."
 
@@ -228,9 +250,9 @@ msgstr "Whakaaturanga matua anake"
 msgid "Mode: %s"
 msgstr "Aratau: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Kaore he waahanga i tohua. Kua whakakorehia te whakaurunga."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Kaore he waahanga i tohua. Kāore i whakauruhia he mea."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -246,11 +268,11 @@ msgstr "Kei runga"
 msgid "Performance (Boost)"
 msgstr "Mahinga (Whakanui)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Pēhia a Enter ki te tāuta i ngā wāhanga katoa e tūtohutia ana, pe tāuruhia "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Pēhia a Enter ki te tāuta i ngā wāhanga katoa e tūtohutia ana, pe tāuruhia "
+"'all' rānei 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -277,7 +299,7 @@ msgstr ""
 "Tīpakohia anake nga waahanga e whakamahia ana e koe. Ko nga ratonga me nga "
 "pokatata kaore i tohua e kore e whakauruhia."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Tīpakohia te mea e whakamahia ana e koe hei karo i nga ratonga me nga "
@@ -302,11 +324,11 @@ msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr ""
 "Ka kōwhiria e Space tētahi wāhanga. Ka whakaae a Enter. Ka whakakore a Esc."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Aratau whiriwhiri kupu."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Ko te reo atanga e whai ana i to waahi papamahi."
 
@@ -340,13 +362,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon i whakauruhia me te hohe."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "He aha tenei korero?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Kua whirihorahia nga pokatata XFCE."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "Kōwhiringa muhu: %s. Tāuru nama (1,2,3,4), ingoa wāhanga, pe all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Kaore he waahanga i tohua. Kua whakakorehia te whakaurunga."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Pēhia a Enter ki te tāuta i ngā wāhanga katoa e tūtohutia ana, pe "
+#~ "tāuruhia 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr ""

@@ -36,10 +36,10 @@ The package runs the same interactive component wizard as `install.sh`
 
 ```bash
 curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.0/install.sh.sha256 \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.1/install.sh.sha256 \
   -o install.sh.sha256 &&
   curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.0/install.sh \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.1/install.sh \
   -o install.sh &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh
@@ -331,7 +331,10 @@ The matrix targets nine always-on lanes: `ubuntu:26.04`, `debian:trixie`,
 `fedora:44`, `rocky:10`, `opensuse/tumbleweed`, `archlinux:latest`,
 `opensuse/leap:16.0`, `almalinux:10`, and `manjarolinux/base:latest`. Full-DE
 family variants (`ASUS_CI_DE_FAMILY`) run in the same CI pipeline
-(`distro-full-de` job), not nightly. Local debug: `--distro` and/or `--de-family`.
+(`distro-full-de` job), not nightly. Arch/Manjaro image builds retry
+`pacman -Syu`/`-S` on rolling-mirror 404s; Arch pins non-geo pacman mirrors.
+Rocky/Alma kcov builds install `libcurl-devel` matching the installed
+libcurl NEVRA (`el10-kcov-libcurl.sh`). Local debug: `--distro` and/or `--de-family`.
 
 Recommended split:
 

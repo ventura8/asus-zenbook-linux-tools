@@ -57,7 +57,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Настройка ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Инструменты ASUS ZenBook Linux готовы к использованию."
 
@@ -65,13 +65,13 @@ msgstr "Инструменты ASUS ZenBook Linux готовы к использ
 msgid "ASUS ZenBook Settings"
 msgstr "Настройки ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Аппаратные возможности ASUS ZenBook устанавливаются как дополнительные "
 "компоненты."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -88,7 +88,7 @@ msgstr "Все дисплеи (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Все дисплеи (главный + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Доступные компоненты:"
 
@@ -112,7 +112,7 @@ msgstr "Конфиденциальность камеры"
 msgid "Choose components"
 msgstr "Выберите компоненты"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Ярлыки Cinnamon настроены."
 
@@ -130,6 +130,26 @@ msgstr "Настройте ярлыки GNOME для %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Настройте ярлыки KDE Plasma для %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Настройте ярлыки Cinnamon для %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Настройте ярлыки LXQt Global Keys для %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Настройте ярлыки MATE для %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Настройте ярлыки XFCE для %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -139,7 +159,7 @@ msgstr "Текущая компоновка дисплея"
 msgid "Display mode"
 msgstr "Режим отображения"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Введите номера или названия компонентов, разделенные запятыми."
 
@@ -159,7 +179,7 @@ msgstr "Ярлыки GNOME настроены."
 msgid "Hardware features for your Linux desktop"
 msgstr "Аппаратные возможности вашего рабочего стола Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Установка скриптов и сервисов"
 
@@ -167,11 +187,11 @@ msgstr "Установка скриптов и сервисов"
 msgid "Install system dependencies"
 msgstr "Установить системные зависимости"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Установка отменена пользователем."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Установка завершена."
 
@@ -180,7 +200,7 @@ msgstr "Установка завершена."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Установка инструментов ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -189,7 +209,7 @@ msgstr ""
 "Quiet/Balanced/Performance, конфиденциальности камеры и обмена окнами между "
 "мониторами."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -198,7 +218,7 @@ msgstr ""
 "возобновления, чтобы поддерживаемое аудио ZenBook восстанавливалось после "
 "загрузки и после сна."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -207,22 +227,23 @@ msgstr ""
 "верхнем углу открывало средство снимков экрана рабочего стола (GNOME, "
 "Spectacle и аналоги)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Неверный выбор: %s. Введите номера (1,2,3,4), имена компонентов или all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Неверный выбор: %s. Введите номера (1,2,3,4), имена компонентов или all, или "
+"none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Настроены ярлыки KDE Plasma."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Глобальные ключи LXQt настроены."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Настроены ярлыки MATE."
 
@@ -240,9 +261,9 @@ msgstr "Только основной дисплей"
 msgid "Mode: %s"
 msgstr "Режим: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Никакие компоненты не были выбраны. Установка отменена."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Никакие компоненты не были выбраны. Ничего не было установлено."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -258,11 +279,11 @@ msgstr "Вкл."
 msgid "Performance (Boost)"
 msgstr "Производительность (ускорение)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Нажмите Enter, чтобы установить все рекомендуемые компоненты, или введите "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Нажмите Enter, чтобы установить все рекомендуемые компоненты, или введите "
+"'all' или 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -289,7 +310,7 @@ msgstr ""
 "Выбирайте только те компоненты, которые вы используете. Невыбранные службы и "
 "ярлыки не будут установлены."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Выбирайте только то, что используете, чтобы избежать ненужных сервисов и "
@@ -311,11 +332,11 @@ msgstr "Исправление звука установлено с помощь
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space выбирает компонент. Enter подтверждает. Esc отменяет."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Режим выделения текста."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Язык интерфейса соответствует вашему сеансу рабочего стола."
 
@@ -348,13 +369,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "Демон горячих клавиш WMI установлен и активен."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Почему этот диалог?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Ярлыки XFCE настроены."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Неверный выбор: %s. Введите номера (1,2,3,4), имена компонентов или all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Никакие компоненты не были выбраны. Установка отменена."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Нажмите Enter, чтобы установить все рекомендуемые компоненты, или введите "
+#~ "'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Добавьте ярлыки Display, MyASUS и Share на рабочий стол."

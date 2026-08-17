@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Танзими ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Асбобҳои ASUS ZenBook Linux барои истифода омодаанд."
 
@@ -55,13 +55,13 @@ msgstr "Асбобҳои ASUS ZenBook Linux барои истифода омод
 msgid "ASUS ZenBook Settings"
 msgstr "Танзимоти ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Хусусиятҳои сахтафзори ASUS ZenBook ҳамчун ҷузъҳои ихтиёрӣ насб карда "
 "шудаанд."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "Ҳама намоишҳо (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Ҳама намоишҳо (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Компонентҳои дастрас:"
 
@@ -102,7 +102,7 @@ msgstr "Махфияти камера"
 msgid "Choose components"
 msgstr "Компонентҳоро интихоб кунед"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Миёнабурҳои Cinnamon танзим карда шуданд."
 
@@ -120,6 +120,26 @@ msgstr "Миёнабурҳои GNOME-ро барои %s танзим кунед"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Миёнабурҳои KDE Plasma барои %s танзим кунед"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Миёнабурҳои Cinnamon-ро барои %s танзим кунед..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Миёнабурҳои LXQt Global Keys-ро барои %s танзим кунед..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Миёнабурҳои MATE-ро барои %s танзим кунед..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Миёнабурҳои XFCE-ро барои %s танзим кунед..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "Тарҳбандии ҳозираи намоиш"
 msgid "Display mode"
 msgstr "Ҳолати намоиш"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Рақамҳо ё номҳои ҷузъҳоро бо вергул ҷудо карда ворид кунед."
 
@@ -149,7 +169,7 @@ msgstr "Миёнабурҳои GNOME танзим карда шудаанд."
 msgid "Hardware features for your Linux desktop"
 msgstr "Хусусиятҳои сахтафзор барои мизи кории Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Скриптҳо ва хидматҳоро насб кунед"
 
@@ -157,11 +177,11 @@ msgstr "Скриптҳо ва хидматҳоро насб кунед"
 msgid "Install system dependencies"
 msgstr "Вобастагии системаро насб кунед"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Насбкунӣ аз ҷониби корбар бекор карда шуд."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Насбкунӣ анҷом ёфт."
 
@@ -170,7 +190,7 @@ msgstr "Насбкунӣ анҷом ёфт."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Насб кардани асбобҳои ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -179,7 +199,7 @@ msgstr ""
 "Performance, махфияти камера ва иваз кардани тирезаҳо байни мониторҳо насб "
 "мекунад."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -187,7 +207,7 @@ msgstr ""
 "Ислоҳи амлификатори баландгӯяк ва hook-и suspend/resume-ро насб мекунад, то "
 "аудиои дастгиришавандаи ZenBook пас аз boot ва пас аз хоб барқарор шавад."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -196,22 +216,23 @@ msgstr ""
 "чапи боло абзори скриншоти мизи корӣ (GNOME, Spectacle ва монандҳо)-ро "
 "кушояд."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Интихоби нодуруст: %s. Рақамҳо (1,2,3,4), номҳои қисмҳо ё all-ро ворид кунед."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Интихоби нодуруст: %s. Рақамҳо (1,2,3,4), номҳои қисмҳо ё all, ё none "
+"-роворид кунед."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Миёнабурҳои KDE плазма танзим карда шудаанд."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Калидҳои глобалии LXQt танзим карда шудаанд."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Миёнабурҳои MATE танзим карда шудаанд."
 
@@ -229,9 +250,9 @@ msgstr "Танҳо намоиши асосӣ"
 msgid "Mode: %s"
 msgstr "Режим: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Ягон ҷузъ интихоб нашудааст. Насбкунӣ бекор карда шуд."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Ягон ҷузъ интихоб нашудааст. Чизе насб нашуд."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -247,11 +268,11 @@ msgstr "Дар бораи"
 msgid "Performance (Boost)"
 msgstr "Иҷрои (афзоиш)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Барои насб кардани ҳамаи қисмҳои тавсияшуда Enter-ро пахш кунед ё 'all'-ро "
-"ворид кунед."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Барои насб кардани ҳамаи қисмҳои тавсияшуда Enter-ро пахш кунед ё 'all' ё "
+"'none' -ро ворид кунед."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -278,7 +299,7 @@ msgstr ""
 "Танҳо ҷузъҳоеро, ки шумо истифода мебаред, интихоб кунед. Хидматҳо ва "
 "миёнабурҳои интихобнашуда насб карда намешаванд."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Танҳо он чизеро, ки шумо истифода мебаред, интихоб кунед, то аз хидматҳои "
@@ -300,11 +321,11 @@ msgstr "Ислоҳи садо бо қалмоқчаи таваққуф ва ду
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space қисмро интихоб мекунад. Enter тасдиқ мекунад. Esc бекор мекунад."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Ҳолати интихоби матн."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Забони интерфейс сеанси мизи кории шуморо пайгирӣ мекунад."
 
@@ -336,13 +357,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey демон насб ва фаъол."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Чаро ин муколама?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Миёнабурҳои XFCE танзим карда шудаанд."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Интихоби нодуруст: %s. Рақамҳо (1,2,3,4), номҳои қисмҳо ё all-ро ворид "
+#~ "кунед."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Ягон ҷузъ интихоб нашудааст. Насбкунӣ бекор карда шуд."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Барои насб кардани ҳамаи қисмҳои тавсияшуда Enter-ро пахш кунед ё 'all'-"
+#~ "ро ворид кунед."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Миёнабурҳои мизи кории Display, MyASUS ва Share илова кунед"

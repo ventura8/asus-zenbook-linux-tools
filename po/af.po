@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux-opstelling %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools is gereed om te gebruik."
 
@@ -57,12 +57,12 @@ msgstr "ASUS ZenBook Linux Tools is gereed om te gebruik."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook-instellings"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "ASUS ZenBook-hardewarekenmerke word as opsionele komponente geïnstalleer."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -79,7 +79,7 @@ msgstr "Alle skerms (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Alle skerms (Hoof + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Beskikbare komponente:"
 
@@ -103,7 +103,7 @@ msgstr "Kamera privaatheid"
 msgid "Choose components"
 msgstr "Kies komponente"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Kaneelkortpaaie opgestel."
 
@@ -121,6 +121,26 @@ msgstr "Stel GNOME-kortpaaie op vir %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Stel KDE Plasma-kortpaaie op vir %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Stel Cinnamon-kortpaaie op vir %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Stel LXQt Global Keys-kortpaaie op vir %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Stel MATE-kortpaaie op vir %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Stel XFCE-kortpaaie op vir %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -130,7 +150,7 @@ msgstr "Huidige vertoonuitleg"
 msgid "Display mode"
 msgstr "Vertoonmodus"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Voer komponentnommers of -name in, geskei deur kommas."
 
@@ -150,7 +170,7 @@ msgstr "GNOME-kortpaaie opgestel."
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardeware-kenmerke vir jou Linux-lessenaar"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Installeer skrifte en dienste"
 
@@ -158,11 +178,11 @@ msgstr "Installeer skrifte en dienste"
 msgid "Install system dependencies"
 msgstr "Installeer stelselafhanklikhede"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Installasie gekanselleer deur gebruiker."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Installasie voltooi."
 
@@ -171,7 +191,7 @@ msgstr "Installasie voltooi."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Installeer ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -179,7 +199,7 @@ msgstr ""
 "Installeer die WMI-sneltoetsdaemon vir ScreenPad-helderheid, waaier Quiet/"
 "Balanced/Performance, kameraprivaatheid en vensterwisseling oor monitors."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -187,7 +207,7 @@ msgstr ""
 "Installeer die luidsprekerversterkerregstelling en 'n suspend/resume-haak "
 "sodat ondersteunde ZenBook-oudio ná selflaai en ná slaap herstel."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -195,21 +215,22 @@ msgstr ""
 "Installeer die raakblad se Share-gebaarluisteraar sodat 'n tik linksbó die "
 "lessenaar se skermkiekiehulpmiddel oopmaak (GNOME, Spectacle en soortgelyke)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "Ongeldige keuse: %s. Voer nommers (1,2,3,4), komponentname of all in."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Ongeldige keuse: %s. Voer nommers (1,2,3,4), komponentname, all of none in."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma-kortpaaie opgestel."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys gekonfigureer."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE-kortpaaie is opgestel."
 
@@ -227,9 +248,9 @@ msgstr "Slegs hoofvertoning"
 msgid "Mode: %s"
 msgstr "Modus: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Geen komponente is gekies nie. Installasie gekanselleer."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Geen komponente is gekies nie. Niks is geïnstalleer nie."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -245,10 +266,11 @@ msgstr "Aan"
 msgid "Performance (Boost)"
 msgstr "Prestasie (Hupstoot)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Druk Enter om alle aanbevole komponente te installeer, of voer 'all' in."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Druk Enter om alle aanbevole komponente te installeer, of voer 'all' of "
+"'none' in."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -275,7 +297,7 @@ msgstr ""
 "Kies slegs die komponente wat jy gebruik. Ongeselekteerde dienste en "
 "kortpaaie sal nie geïnstalleer word nie."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "Kies net wat jy gebruik om onnodige dienste en kortpaaie te vermy."
 
@@ -295,11 +317,11 @@ msgstr "Klankoplossing geïnstalleer met 'n hang- en hervathaak."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space kies 'n komponent. Enter bevestig. Esc kanselleer."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Tekskeusemodus."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Die koppelvlaktaal volg jou lessenaarsessie."
 
@@ -332,13 +354,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon geïnstalleer en aktief."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Hoekom hierdie dialoog?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE-kortpaaie opgestel."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Ongeldige keuse: %s. Voer nommers (1,2,3,4), komponentname of all in."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Geen komponente is gekies nie. Installasie gekanselleer."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Druk Enter om alle aanbevole komponente te installeer, of voer 'all' in."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Voeg skerm-, MyASUS- en Deel-rekenaarkortpaaie by"

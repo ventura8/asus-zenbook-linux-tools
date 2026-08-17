@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Kugadziriswa kwe ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Zvishandiso yakagadzirira kushandisa."
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux Zvishandiso yakagadzirira kushandisa."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook Zvirongwa"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook hardware maficha akaiswa seanosarudza zvikamu."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "Zvese zvinoratidzwa (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Zvese zvinoratidzwa (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Zvinowanikwa zvikamu:"
 
@@ -102,7 +102,7 @@ msgstr "Kuvanzika kwekamera"
 msgid "Choose components"
 msgstr "Sarudza zvikamu"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Mapfupi eCinnamon akagadziridzwa."
 
@@ -120,6 +120,26 @@ msgstr "Gadzirisa mapfupi eGNOME e%s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Gadzira mapfupi eKDE Plasma e %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Gadzirisa mapfupi eCinnamon e%s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Gadzirisa mapfupi eLXQt Global Keys e%s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Gadzirisa mapfupi eMATE e%s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Gadzirisa mapfupi eXFCE e%s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "Chimiro chekuratidzira ikozvino"
 msgid "Display mode"
 msgstr "Ratidza maitiro"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Isa nhamba dzezvikamu kana mazita, akaparadzaniswa nemakoma."
 
@@ -149,7 +169,7 @@ msgstr "GNOME mapfupi akagadziridzwa."
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardware maficha eLinux desktop yako"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Isa zvinyorwa uye masevhisi"
 
@@ -157,11 +177,11 @@ msgstr "Isa zvinyorwa uye masevhisi"
 msgid "Install system dependencies"
 msgstr "Isa system dependencies"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Kuiswa kwakanzurwa nemushandisi."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Kuisa kwapera."
 
@@ -170,7 +190,7 @@ msgstr "Kuisa kwapera."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Kuisa ASUS ZenBook Linux Zvishandiso %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "Inoisainstall daemon ye WMI hotkeys ye ScreenPad brightness, fan Quiet/"
 "Balanced/Performance, camera privacy uye kuchinjana windows pamonitor."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "Inoisainstall gadziriso ye speaker amplifier ne suspend/resume hook kuti "
 "ZenBook audio inotsigirwa idzoke mushure mekutanga uye mushure mekurara."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -195,22 +215,23 @@ msgstr ""
 "yepamusoro kuruboshwe kuvhure chishandiso chescreenshot yedesktop (GNOME, "
 "Spectacle nezvakafanana)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Sarudzo isiriyo: %s. Nyora nhamba (1,2,3,4), mazita ezvikamu, kana all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Sarudzo isiriyo: %s. Nyora nhamba (1,2,3,4), mazita ezvikamu, kana all, kana "
+"none, kana none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma mapfupi akagadziridzwa."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys yakagadziriswa."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE mapfupi akagadziridzwa."
 
@@ -228,9 +249,9 @@ msgstr "Main kuratidza chete"
 msgid "Mode: %s"
 msgstr "Maitiro: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Hapana zvikamu zvakasarudzwa. Kuiswa kwakanzurwa."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Hapana zvikamu zvakasarudzwa. Hapana chakaiswa."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -246,10 +267,11 @@ msgstr "Pana"
 msgid "Performance (Boost)"
 msgstr "Kuita (Boost)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Dzvanya Enter kuti uise zvikamu zvese zvinokurudzirwa, kana nyora 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Dzvanya Enter kuti uise zvikamu zvese zvinokurudzirwa, kana nyora 'all' kana "
+"'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -276,7 +298,7 @@ msgstr ""
 "Sarudza chete zvikamu zvaunoshandisa. Masevhisi asina kusarudzwa uye mapfupi "
 "haaisiswe."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Sarudza chete zvaunoshandisa kudzivirira zvisina basa masevhisi uye mapfupi."
@@ -297,11 +319,11 @@ msgstr "Sound fix yakaiswa ne suspend uye tangazve hoko."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space inosarudza chikamu. Enter inosimbisa. Esc inokanzura."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Kusarudza mavara."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Mutauro weinterface unotevera chikamu chako chedesktop."
 
@@ -334,13 +356,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon yakaiswa uye inoshanda."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Sei nhaurirano iyi?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE mapfupi akagadziridzwa."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Sarudzo isiriyo: %s. Nyora nhamba (1,2,3,4), mazita ezvikamu, kana all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Hapana zvikamu zvakasarudzwa. Kuiswa kwakanzurwa."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Dzvanya Enter kuti uise zvikamu zvese zvinokurudzirwa, kana nyora 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Wedzera Display, MyASUS, uye Govera desktop mapfupi"

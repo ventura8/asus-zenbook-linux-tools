@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "راه‌اندازی ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools آماده استفاده است."
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux Tools آماده استفاده است."
 msgid "ASUS ZenBook Settings"
 msgstr "تنظیمات ZenBook ایسوس"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ویژگی‌های سخت‌افزار ASUS ZenBook به عنوان اجزای اختیاری نصب می‌شوند."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "همه نمایشگرها (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "همه نمایشگرها (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "اجزای موجود:"
 
@@ -102,7 +102,7 @@ msgstr "حریم خصوصی دوربین"
 msgid "Choose components"
 msgstr "اجزا را انتخاب کنید"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "میانبرهای دارچینی پیکربندی شدند."
 
@@ -120,6 +120,26 @@ msgstr "پیکربندی میانبرهای گنوم برای %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "پیکربندی میانبرهای KDE Plasma برای %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "پیکربندی میانبرهای Cinnamon برای %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "پیکربندی میانبرهای LXQt Global Keys برای %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "پیکربندی میانبرهای MATE برای %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "پیکربندی میانبرهای XFCE برای %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "طرح نمایش فعلی"
 msgid "Display mode"
 msgstr "حالت نمایش"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "شماره یا نام مؤلفه ها را با کاما از هم جدا کنید."
 
@@ -149,7 +169,7 @@ msgstr "میانبرهای گنوم پیکربندی شدند."
 msgid "Hardware features for your Linux desktop"
 msgstr "ویژگی های سخت افزاری برای دسکتاپ لینوکس شما"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "اسکریپت ها و سرویس ها را نصب کنید"
 
@@ -157,11 +177,11 @@ msgstr "اسکریپت ها و سرویس ها را نصب کنید"
 msgid "Install system dependencies"
 msgstr "وابستگی های سیستم را نصب کنید"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "نصب توسط کاربر لغو شد."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "نصب کامل شد"
 
@@ -170,7 +190,7 @@ msgstr "نصب کامل شد"
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "نصب ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "دیمن کلید میانبر WMI را برای روشنایی ScreenPad، فن Quiet/Balanced/"
 "Performance، حریم خصوصی دوربین و جابه‌جایی پنجره بین مانیتورها نصب می‌کند."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "رفع تقویت‌کننده بلندگو و قلاب suspend/resume را نصب می‌کند تا صدای پشتیبانی‌شده "
 "ZenBook پس از راه‌اندازی و پس از خواب بازیابی شود."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -194,21 +214,23 @@ msgstr ""
 "شنونده ژست Share تاچ‌پد را نصب می‌کند تا ضربه در گوشه بالا-چپ ابزار عکس‌صفحه "
 "دسکتاپ را باز کند (GNOME، Spectacle و مشابه)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "انتخاب نامعتبر: %s. اعداد (1,2,3,4)، نام مؤلفه‌ها یا all را وارد کنید."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "انتخاب نامعتبر: %s. اعداد (1,2,3,4)، نام مؤلفه‌ها یا all, یا none را "
+"واردکنید."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "میانبرهای KDE Plasma پیکربندی شدند."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "کلیدهای جهانی LXQt پیکربندی شدند."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "میانبرهای MATE پیکربندی شد."
 
@@ -226,9 +248,9 @@ msgstr "فقط نمایشگر اصلی"
 msgid "Mode: %s"
 msgstr "حالت: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "هیچ جزء انتخاب نشد. نصب لغو شد."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "هیچ جزء انتخاب نشد. چیزی نصب نشد."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -244,9 +266,11 @@ msgstr "روشن"
 msgid "Performance (Boost)"
 msgstr "عملکرد (تقویت)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "برای نصب همه مؤلفه‌های توصیه‌شده Enter را بزنید یا 'all' را وارد کنید."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "برای نصب همه مؤلفه‌های توصیه‌شده Enter را بزنید یا 'all' یا 'none' را "
+"واردکنید."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -273,7 +297,7 @@ msgstr ""
 "فقط اجزایی را که استفاده می کنید انتخاب کنید. سرویس ها و میانبرهای انتخاب "
 "نشده نصب نمی شوند."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "فقط مواردی را که استفاده می کنید انتخاب کنید تا از سرویس ها و میانبرهای غیر "
@@ -295,11 +319,11 @@ msgstr "تعمیر صدا با قلاب تعلیق و رزومه نصب شده �
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space یک مؤلفه را انتخاب می‌کند. Enter تأیید می‌کند. Esc لغو می‌کند."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "حالت انتخاب متن"
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "زبان رابط از جلسه دسکتاپ شما پیروی می کند."
 
@@ -329,13 +353,26 @@ msgstr "دیمون WMI Hotkey نصب شده است (وضعیت فعال در ا�
 msgid "WMI Hotkey daemon installed and active."
 msgstr "دیمون WMI Hotkey نصب و فعال است."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "چرا این دیالوگ؟"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "میانبرهای XFCE پیکربندی شدند."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "انتخاب نامعتبر: %s. اعداد (1,2,3,4)، نام مؤلفه‌ها یا all را وارد کنید."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "هیچ جزء انتخاب نشد. نصب لغو شد."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "برای نصب همه مؤلفه‌های توصیه‌شده Enter را بزنید یا 'all' را وارد کنید."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "میانبرهای نمایش، MyASUS و اشتراک گذاری دسکتاپ را اضافه کنید"

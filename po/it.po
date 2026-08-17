@@ -53,7 +53,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Configurazione ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools è pronto per l'uso."
 
@@ -61,13 +61,13 @@ msgstr "ASUS ZenBook Linux Tools è pronto per l'uso."
 msgid "ASUS ZenBook Settings"
 msgstr "Impostazioni dell'ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Le funzionalità hardware di ASUS ZenBook sono installate come componenti "
 "opzionali."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,13 +78,13 @@ msgstr ""
 #: bin/asus_display_mode_profiles.py:253
 #, python-format
 msgid "All displays (%s)"
-msgstr "Tutti i display (+%s)"
+msgstr "Tutti i display (%s)"
 
 #: lib/asus-display-mutter.sh:83
 msgid "All displays (Main + ScreenPad)"
 msgstr "Tutti i display (Principale + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Componenti disponibili:"
 
@@ -108,7 +108,7 @@ msgstr "Privacy della fotocamera"
 msgid "Choose components"
 msgstr "Scegli i componenti"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Scorciatoie alla cannella configurate."
 
@@ -126,6 +126,26 @@ msgstr "Configura le scorciatoie di GNOME per %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Configura le scorciatoie di KDE Plasma per %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Configura le scorciatoie di Cinnamon per %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Configura le scorciatoie di LXQt Global Keys per %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Configura le scorciatoie di MATE per %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Configura le scorciatoie di XFCE per %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -135,7 +155,7 @@ msgstr "Layout di visualizzazione corrente"
 msgid "Display mode"
 msgstr "Modalità di visualizzazione"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Immettere i numeri o i nomi dei componenti, separati da virgole."
 
@@ -155,7 +175,7 @@ msgstr "Scorciatoie GNOME configurate."
 msgid "Hardware features for your Linux desktop"
 msgstr "Funzionalità hardware per il tuo desktop Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Installa script e servizi"
 
@@ -163,11 +183,11 @@ msgstr "Installa script e servizi"
 msgid "Install system dependencies"
 msgstr "Installa le dipendenze del sistema"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Installazione annullata dall'utente."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Installazione completata."
 
@@ -176,7 +196,7 @@ msgstr "Installazione completata."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Installazione degli strumenti ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -185,7 +205,7 @@ msgstr ""
 "la ventola Quiet/Balanced/Performance, la privacy della fotocamera e lo "
 "scambio di finestre tra monitor."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -194,7 +214,7 @@ msgstr ""
 "sospensione/ripresa così l'audio ZenBook supportato si ripristina dopo "
 "l'avvio e dopo la sospensione."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -203,23 +223,23 @@ msgstr ""
 "in alto a sinistra apre lo strumento di screenshot del desktop (GNOME, "
 "Spectacle e simili)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Selezione non valida: %s. Inserisci numeri (1,2,3,4), nomi dei componenti o "
-"all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Selezione non valida: %s. Inserisci numeri (1,2,3,4), nomi dei componenti o "
+"all, o none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Scorciatoie di KDE Plasma configurate."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Chiavi globali LXQt configurate."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Scorciatoie MATE configurate."
 
@@ -237,9 +257,9 @@ msgstr "Solo display principale"
 msgid "Mode: %s"
 msgstr "Modalità: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Nessun componente è stato selezionato. Installazione annullata."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Nessun componente è stato selezionato. Non è stato installato nulla."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -249,17 +269,17 @@ msgstr "Spento"
 #: bin/asus-screenpad-toggle.sh:68
 msgctxt "ScreenPad backlight state"
 msgid "On"
-msgstr "Su"
+msgstr "Acceso"
 
 #: bin/asus-fan-toggle.sh:94
 msgid "Performance (Boost)"
 msgstr "Prestazioni (aumento)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Premi Enter per installare tutti i componenti consigliati, oppure digita "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Premi Enter per installare tutti i componenti consigliati, o ppure digita "
+"'all' o 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -286,7 +306,7 @@ msgstr ""
 "Seleziona solo i componenti che utilizzi. I servizi e i collegamenti non "
 "selezionati non verranno installati."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Seleziona solo ciò che usi per evitare servizi e scorciatoie non necessarie."
@@ -308,11 +328,11 @@ msgstr ""
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space seleziona un componente. Enter conferma. Esc annulla."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Modalità di selezione del testo."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "La lingua dell'interfaccia segue la sessione del desktop."
 
@@ -346,13 +366,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "Demone WMI Hotkey installato e attivo."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Perché questo dialogo?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Scorciatoie XFCE configurate."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Selezione non valida: %s. Inserisci numeri (1,2,3,4), nomi dei componenti "
+#~ "o all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Nessun componente è stato selezionato. Installazione annullata."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Premi Enter per installare tutti i componenti consigliati, oppure digita "
+#~ "'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Aggiungi collegamenti sul desktop Display, MyASUS e Condividi"

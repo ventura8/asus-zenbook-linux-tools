@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux སྒྲིག་འགོད %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux ལག་ཆ་བེད་སྤྱོད་གཏོང་རྒྱུར་གྲ་སྒྲིག་ཡོད།"
 
@@ -55,11 +55,11 @@ msgstr "ASUS ZenBook Linux ལག་ཆ་བེད་སྤྱོད་གཏ�
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook སྒྲིག་སྟངས།"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook མཐུན་རྐྱེན་གྱི་ཁྱད་ཆོས་དེ་འདེམས་གཞིའི་ཆ་ཤས་ལྟར་སྒྲིག་འཇུག་བྱས་ཡོད།"
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -76,7 +76,7 @@ msgstr "མཐོང་སྣང་ཚང་མ། (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "བརྙན་ཤེལ་ཚང་མ། (གཙོ་བོ+གློག་བརྙན་སྒྲོམ།)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "ཐོབ་པའི་གྲུབ་ཆ།"
 
@@ -100,7 +100,7 @@ msgstr "པར་ཆས་ཀྱི་གསང་བ།"
 msgid "Choose components"
 msgstr "གྲུབ་ཆ་འདེམས།"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "སི་ན་མོན་མགྱོགས་ལམ་སྒྲིག་བཀོད་བྱས།"
 
@@ -118,6 +118,26 @@ msgstr "%s ལ་ཇི་ནོམ་མགྱོགས་ཐབས་རིམ
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "ཀེ་ཌི་ཨི་པླ་སི་མ་མགྱོགས་ཐབས་རིམ་སྒྲིག་བྱས་ནས་%s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s ལ་Cinnamonམགྱོགས་ཐབས་རིམ་སྒྲིག་བྱེད།..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s ལ་LXQt Global Keysམགྱོགས་ཐབས་རིམ་སྒྲིག་བྱེད།..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s ལ་MATEམགྱོགས་ཐབས་རིམ་སྒྲིག་བྱེད།..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s ལ་XFCEམགྱོགས་ཐབས་རིམ་སྒྲིག་བྱེད།..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -127,7 +147,7 @@ msgstr "མིག་སྔའི་འགྲེམས་སྟོན་བཀོ
 msgid "Display mode"
 msgstr "གསལ་སྟོན་ཐབས་ལམ།"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "ཆ་ཤས་ཨང་གྲངས་ཡང་ན་མིང་ནང་འཇུག་བྱས་ནས་ཚེག་གིས་དབྱེ་དགོས།"
 
@@ -147,7 +167,7 @@ msgstr "GNOMEམགྱོགས་ཐབས་སྒྲིག་བཀོད་�
 msgid "Hardware features for your Linux desktop"
 msgstr "ཁྱེད་རང་གི་ལི་ནགསི་ཡིག་ཆའི་སྒྲིག་ཆས་ཀྱི་ཁྱད་ཆོས།"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "ཡིག་གཟུགས་དང་ཞབས་ཞུ་སྒྲིག་འཇུག་བྱེད་པ།"
 
@@ -155,11 +175,11 @@ msgstr "ཡིག་གཟུགས་དང་ཞབས་ཞུ་སྒྲི
 msgid "Install system dependencies"
 msgstr "མ་ལག་རྟེན་གཞི་འཛུགས་པ།"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "བཀོལ་སྤྱོད་པས་སྒྲིག་འཇུག་མེད་པར་བཟོས།"
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "སྒྲིག་འཇུག་མཇུག་སྒྲིལ་ཡོད།"
 
@@ -168,7 +188,7 @@ msgstr "སྒྲིག་འཇུག་མཇུག་སྒྲིལ་ཡོ
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ཨེ་ཨེས་ཨུས་ཟེན་བུཀ་ལི་ནགསི་ལག་ཆ་སྒྲིག་འཇུག་བྱེད་བཞིན་ཡོད། %s"
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -176,7 +196,7 @@ msgstr ""
 "ScreenPad འོད་གསལ། རླུང་འཁོར Quiet/Balanced/Performance། པར་ཆས་སྒེར་གསང་དང་བརྙན་ཤེལ་"
 "བར་སྒེའུ་ཁུང་བརྗེ་རེས་ཀྱི་ WMI ཚ་མཐེབ་ daemon སྒྲིག་འཇུག་བྱེད།"
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -184,7 +204,7 @@ msgstr ""
 "རྒྱབ་སྐྱོར་ཡོད་པའི་ ZenBook སྒྲ་ལམ་འགོ་སློང་རྗེས་དང་གཉིད་ཁུག་རྗེས་སླར་གསོ་ཡོང་ཆེད་སྐད་བརྒྱུད་ཆེ་རུ་གཏོང་"
 "བཟོ་བཅོས་དང་ suspend/resume hook སྒྲིག་འཇུག་བྱེད།"
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -192,21 +212,22 @@ msgstr ""
 "གཡོན་སྟེང་ཟུར་ལ་རྡེབ་ན་ཅིག་ཤོས་པར་ལེན་ལག་ཆ (GNOME། Spectacle དང་མཉམ་རིགས) ཁ་ཕྱེ་བའི་ "
 "touchpad Share བརྡ་རྟགས་ཉན་མཁན་སྒྲིག་འཇུག་བྱེད།"
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "འདེམས་ཁ་ནོར་འཁྲུལ: %s། ཨང་ཀི (1,2,3,4)། ཆ་ཤས་མིང་། ཡང་ན་ all འཇུག"
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "འདེམས་ཁ་ནོར་འཁྲུལ: %s། ཨང་ཀི (1,2,3,4)། ཆ་ཤས་མིང་། ཡང་ན་ all, ཡང་ན none འཇུག"
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE པླ་སི་མ་མགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt རྒྱལ་སྤྱིའི་ལྡེ་མིག་སྒྲིག་བཀོད་བྱས།"
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATEམགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
 
@@ -224,9 +245,9 @@ msgstr "གཙོ་བོའི་འགྲེམས་སྟོན་ཁོ་
 msgid "Mode: %s"
 msgstr "ཐབས་ལམ། %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "ཆ་ཤས་གང་ཡང་འདེམས་སྒྲུག་བྱས་མེད། སྒྲིག་འཇུག་ཆ་མེད་དུ་བཏང་ཡོད།"
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "ཆ་ཤས་གང་ཡང་འདེམས་སྒྲུག་བྱས་མེད། གཞིགས་འཇུག་བྱ་མེད།"
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -242,9 +263,10 @@ msgstr "ཨང༌།"
 msgid "Performance (Boost)"
 msgstr "ལས་དོན།(མཐོར་འདེགས།)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "འོས་སྦྱོར་ཆ་ཤས་ཚང་མ་སྒྲིག་འཇུག་བྱེད་པར Enter མནན་ནམ་ 'all' འབྲི།"
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "འོས་སྦྱོར་ཆ་ཤས་ཚང་མ་སྒྲིག་འཇུག་བྱེད་པར Enter མནན་ནམ་ 'all' ཡང་ན 'none' འབྲི།"
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -271,7 +293,7 @@ msgstr ""
 "ཁྱེད་ཀྱིས་བེད་སྤྱོད་བྱེད་པའི་ཆ་ཤས་ཁོ་ན་འདེམས། འདེམས་སྒྲུག་མ་བྱས་པའི་ཞབས་ཞུ་དང་མགྱོགས་ཐབས་སྒྲིག་འཇུག་མི་"
 "བྱེད།"
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "དགོས་མཁོ་མེད་པའི་ཞབས་ཞུ་དང་མགྱོགས་ཐབས་སྤང་ཆེད་བེད་སྤྱོད་གཏོང་རྒྱུ་དེ་ཁོ་ན་འདེམས་དགོས།"
 
@@ -291,11 +313,11 @@ msgstr "སྒྲ་སྒྲིག་དེ་མཚམས་འཇོག་ད
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space ཀྱིས་ཆ་ཤས་འདེམས། Enter ཀྱིས་གཏན་འཁེལ། Esc ཀྱིས་འདོར།"
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "ཚིག་ཡིག་འདེམས་སྒྲུག་ཐབས་ལམ།"
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "ཨིན་ཊར་ཕེས་སྐད་ཡིག་དེ་ཁྱེད་ཀྱི་ཌེཀ་སི་ཊོབ་ཀྱི་ལས་རིམ་རྗེས་སུ་འབྲང་གི་ཡོད།"
 
@@ -326,13 +348,24 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey ཌེ་མོན་སྒྲིག་འཇུག་དང་ཤུགས་ལྡན་ཡིན།"
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "གླེང་མོལ་འདི་ཅིའི་ཕྱིར་ཡིན་ནམ།"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCEམགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "འདེམས་ཁ་ནོར་འཁྲུལ: %s། ཨང་ཀི (1,2,3,4)། ཆ་ཤས་མིང་། ཡང་ན་ all འཇུག"
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "ཆ་ཤས་གང་ཡང་འདེམས་སྒྲུག་བྱས་མེད། སྒྲིག་འཇུག་ཆ་མེད་དུ་བཏང་ཡོད།"
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr "འོས་སྦྱོར་ཆ་ཤས་ཚང་མ་སྒྲིག་འཇུག་བྱེད་པར Enter མནན་ནམ་ 'all' འབྲི།"
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "བརྙན་ཤེལ་དང་MyASUS དེ་བཞིན་ཌེཀ་སི་ཊོབ་མགྱོགས་ཐབས་བརྗེ་རེས་ཁ་སྣོན་བྱེད།"

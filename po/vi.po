@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Cài đặt ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Công cụ ASUS ZenBook Linux đã sẵn sàng để sử dụng."
 
@@ -55,13 +55,13 @@ msgstr "Công cụ ASUS ZenBook Linux đã sẵn sàng để sử dụng."
 msgid "ASUS ZenBook Settings"
 msgstr "Cài đặt ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Các tính năng phần cứng của ASUS ZenBook được cài đặt dưới dạng các thành "
 "phần tùy chọn."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "Tất cả màn hình (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Tất cả màn hình (Chính + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Các thành phần có sẵn:"
 
@@ -102,7 +102,7 @@ msgstr "Quyền riêng tư của máy ảnh"
 msgid "Choose components"
 msgstr "Chọn thành phần"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Phím tắt quế được cấu hình."
 
@@ -120,6 +120,26 @@ msgstr "Định cấu hình phím tắt Gnome cho %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Định cấu hình phím tắt KDE Plasma cho %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Định cấu hình phím tắt Cinnamon cho %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Định cấu hình phím tắt LXQt Global Keys cho %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Định cấu hình phím tắt MATE cho %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Định cấu hình phím tắt XFCE cho %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "Bố cục hiển thị hiện tại"
 msgid "Display mode"
 msgstr "Chế độ hiển thị"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Nhập số hoặc tên thành phần, phân tách bằng dấu phẩy."
 
@@ -149,7 +169,7 @@ msgstr "Các phím tắt Gnome được định cấu hình."
 msgid "Hardware features for your Linux desktop"
 msgstr "Các tính năng phần cứng cho máy tính để bàn Linux của bạn"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Cài đặt tập lệnh và dịch vụ"
 
@@ -157,11 +177,11 @@ msgstr "Cài đặt tập lệnh và dịch vụ"
 msgid "Install system dependencies"
 msgstr "Cài đặt phụ thuộc hệ thống"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Người dùng đã hủy cài đặt."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Cài đặt hoàn tất."
 
@@ -170,7 +190,7 @@ msgstr "Cài đặt hoàn tất."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Cài đặt Công cụ ASUS ZenBook Linux %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "Cài đặt trình nền phím nóng WMI cho độ sáng ScreenPad, quạt Quiet/Balanced/"
 "Performance, quyền riêng tư máy ảnh và hoán đổi cửa sổ giữa các màn hình."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "Cài đặt bản sửa bộ khuếch đại loa và móc suspend/resume để âm thanh ZenBook "
 "được hỗ trợ phục hồi sau khi khởi động và sau khi ngủ."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -194,21 +214,23 @@ msgstr ""
 "Cài đặt bộ lắng nghe cử chỉ Share của bàn di để chạm góc trên bên trái mở "
 "công cụ chụp màn hình desktop (GNOME, Spectacle và tương tự)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "Lựa chọn không hợp lệ: %s. Nhập số (1,2,3,4), tên thành phần hoặc all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Lựa chọn không hợp lệ: %s. Nhập số (1,2,3,4), tên thành phần hoặc all, hoặc "
+"none, hoặc none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Đã định cấu hình các phím tắt KDE Plasma."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Khóa toàn cầu LXQt được định cấu hình."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Đã định cấu hình phím tắt MATE."
 
@@ -226,9 +248,9 @@ msgstr "Chỉ hiển thị chính"
 msgid "Mode: %s"
 msgstr "Chế độ: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Không có thành phần nào được chọn. Đã hủy cài đặt."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Không có thành phần nào được chọn. Không có gì được cài đặt."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -244,9 +266,11 @@ msgstr "Bật"
 msgid "Performance (Boost)"
 msgstr "Hiệu suất (Tăng cường)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "Nhấn Enter để cài đặt tất cả thành phần được đề xuất, hoặc nhập 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Nhấn Enter để cài đặt tất cả thành phần được đề xuất, hoặc nhập 'all' hoặc "
+"'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -273,7 +297,7 @@ msgstr ""
 "Chỉ chọn các thành phần bạn sử dụng. Các dịch vụ và phím tắt không được chọn "
 "sẽ không được cài đặt."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Chỉ chọn những gì bạn sử dụng để tránh các dịch vụ và phím tắt không cần "
@@ -295,11 +319,11 @@ msgstr "Sửa lỗi âm thanh được cài đặt bằng móc tạm dừng và 
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space chọn một thành phần. Enter xác nhận. Esc hủy."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Chế độ chọn văn bản."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Ngôn ngữ giao diện tuân theo phiên máy tính để bàn của bạn."
 
@@ -333,13 +357,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "Daemon WMI Hotkey được cài đặt và hoạt động."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Tại sao lại có hộp thoại này?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Các phím tắt XFCE được định cấu hình."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Lựa chọn không hợp lệ: %s. Nhập số (1,2,3,4), tên thành phần hoặc all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Không có thành phần nào được chọn. Đã hủy cài đặt."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Nhấn Enter để cài đặt tất cả thành phần được đề xuất, hoặc nhập 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Thêm phím tắt Display, MyASUS và Share trên màn hình"

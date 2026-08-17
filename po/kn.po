@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux ಸೆಟಪ್ %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux ಪರಿಕರಗಳು ಬಳಸಲು ಸಿದ್ಧವಾಗಿದೆ."
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux ಪರಿಕರಗಳು ಬಳಸಲು ಸಿದ್
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook ಹಾರ್ಡ್‌ವೇರ್ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಐಚ್ಛಿಕ ಘಟಕಗಳಾಗಿ ಸ್ಥಾಪಿಸಲಾಗಿದೆ."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "ಎಲ್ಲಾ ಪ್ರದರ್ಶನಗಳು (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "ಎಲ್ಲಾ ಪ್ರದರ್ಶನಗಳು (ಮುಖ್ಯ + ಸ್ಕ್ರೀನ್‌ಪ್ಯಾಡ್)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "ಲಭ್ಯವಿರುವ ಘಟಕಗಳು:"
 
@@ -102,7 +102,7 @@ msgstr "ಕ್ಯಾಮರಾ ಗೌಪ್ಯತೆ"
 msgid "Choose components"
 msgstr "ಘಟಕಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "ದಾಲ್ಚಿನ್ನಿ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ."
 
@@ -120,6 +120,26 @@ msgstr "%s ಗಾಗಿ ಗ್ನೋಮ್ ಶಾರ್ಟ್‌ಕಟ್‌ಗ�
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "%s ಗಾಗಿ ಕೆಡಿಇ ಪ್ಲಾಸ್ಮಾ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s ಗಾಗಿ Cinnamon ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s ಗಾಗಿ LXQt Global Keys ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s ಗಾಗಿ MATE ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s ಗಾಗಿ XFCE ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "ಪ್ರಸ್ತುತ ಪ್ರದರ್ಶನ ವಿನ್ಯಾಸ"
 msgid "Display mode"
 msgstr "ಪ್ರದರ್ಶನ ಮೋಡ್"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "ಅಲ್ಪವಿರಾಮದಿಂದ ಬೇರ್ಪಡಿಸಲಾದ ಘಟಕ ಸಂಖ್ಯೆಗಳು ಅಥವಾ ಹೆಸರುಗಳನ್ನು ನಮೂದಿಸಿ."
 
@@ -149,7 +169,7 @@ msgstr "GNOME ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್�
 msgid "Hardware features for your Linux desktop"
 msgstr "ನಿಮ್ಮ ಲಿನಕ್ಸ್ ಡೆಸ್ಕ್‌ಟಾಪ್‌ಗಾಗಿ ಹಾರ್ಡ್‌ವೇರ್ ವೈಶಿಷ್ಟ್ಯಗಳು"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು ಮತ್ತು ಸೇವೆಗಳನ್ನು ಸ್ಥಾಪಿಸಿ"
 
@@ -157,11 +177,11 @@ msgstr "ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು ಮತ್ತು ಸೇವೆ�
 msgid "Install system dependencies"
 msgstr "ಸಿಸ್ಟಮ್ ಅವಲಂಬನೆಗಳನ್ನು ಸ್ಥಾಪಿಸಿ"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "ಬಳಕೆದಾರರಿಂದ ಅನುಸ್ಥಾಪನೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "ಅನುಸ್ಥಾಪನೆಯು ಪೂರ್ಣಗೊಂಡಿದೆ."
 
@@ -170,7 +190,7 @@ msgstr "ಅನುಸ್ಥಾಪನೆಯು ಪೂರ್ಣಗೊಂಡಿದ�
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux ಪರಿಕರಗಳನ್ನು ಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "ScreenPad ಪ್ರಕಾಶ, ಫ್ಯಾನ್ Quiet/Balanced/Performance, ಕ್ಯಾಮೆರಾ ಗೌಪ್ಯತೆ ಮತ್ತು "
 "ಮಾನಿಟರ್‌ಗಳ ನಡುವೆ ವಿಂಡೋ ಸ್ವಾಪ್‌ಗಾಗಿ WMI ಹಾಟ್‌ಕೀ daemon ಅನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "ಬೆಂಬಲಿತ ZenBook ಆಡಿಯೋ ಬೂಟ್ ನಂತರ ಮತ್ತು ನಿದ್ರೆಯ ನಂತರ ಚೇತರಿಸಿಕೊಳ್ಳುವಂತೆ ಸ್ಪೀಕರ್ "
 "ಆಂಪ್ಲಿಫಯರ್ ಸರಿಪಡಿಕೆ ಮತ್ತು suspend/resume hook ಅನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -194,21 +214,23 @@ msgstr ""
 "ಮೇಲಿನ-ಎಡ ಮೂಲೆಯನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿದಾಗ ಡೆಸ್ಕ್‌ಟಾಪ್ ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಉಪಕರಣ (GNOME, Spectacle ಮತ್ತು "
 "ಸಮಾನಗಳು) ತೆರೆಯುವಂತೆ touchpad Share ಗೆಶ್ಚರ್ listener ಅನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "ಅಮಾನ್ಯ ಆಯ್ಕೆ: %s. ಸಂಖ್ಯೆಗಳು (1,2,3,4), ಘಟಕ ಹೆಸರುಗಳು ಅಥವಾ all ನಮೂದಿಸಿ."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "ಅಮಾನ್ಯ ಆಯ್ಕೆ: %s. ಸಂಖ್ಯೆಗಳು (1,2,3,4), ಘಟಕ ಹೆಸರುಗಳು ಅಥವಾ all, ಅಥವಾ none "
+"ನಮೂದಿಸಿ."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "ಕೆಡಿಇ ಪ್ಲಾಸ್ಮಾ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt ಗ್ಲೋಬಲ್ ಕೀಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ."
 
@@ -226,9 +248,9 @@ msgstr "ಮುಖ್ಯ ಪ್ರದರ್ಶನ ಮಾತ್ರ"
 msgid "Mode: %s"
 msgstr "ಮೋಡ್: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "ಯಾವುದೇ ಘಟಕಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ. ಅನುಸ್ಥಾಪನೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "ಯಾವುದೇ ಘಟಕಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ. ಏನೂ ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -244,9 +266,11 @@ msgstr "ಆನ್"
 msgid "Performance (Boost)"
 msgstr "ಕಾರ್ಯಕ್ಷಮತೆ (ಬೂಸ್ಟ್)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "ಎಲ್ಲಾ ಶಿಫಾರಸು ಮಾಡಿದ ಘಟಕಗಳನ್ನು ಸ್ಥಾಪಿಸಲು Enter ಒತ್ತಿರಿ, ಅಥವಾ 'all' ನಮೂದಿಸಿ."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "ಎಲ್ಲಾ ಶಿಫಾರಸು ಮಾಡಿದ ಘಟಕಗಳನ್ನು ಸ್ಥಾಪಿಸಲು Enter ಒತ್ತಿರಿ, ಅಥವಾ 'all' ಅಥವಾ "
+"'none' ನಮೂದಿಸಿ."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -273,7 +297,7 @@ msgstr ""
 "ನೀವು ಬಳಸುವ ಘಟಕಗಳನ್ನು ಮಾತ್ರ ಆಯ್ಕೆಮಾಡಿ. ಆಯ್ಕೆ ಮಾಡದ ಸೇವೆಗಳು ಮತ್ತು ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು "
 "ಸ್ಥಾಪಿಸಲಾಗುವುದಿಲ್ಲ."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "ಅನಗತ್ಯ ಸೇವೆಗಳು ಮತ್ತು ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ತಪ್ಪಿಸಲು ನೀವು ಬಳಸುವುದನ್ನು ಮಾತ್ರ ಆಯ್ಕೆಮಾಡಿ."
 
@@ -293,11 +317,11 @@ msgstr "ಸಸ್ಪೆಂಡ್ ಮತ್ತು ರೆಸ್ಯೂಮ್ ಹು
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space ಘಟಕವನ್ನು ಆಯ್ಕೆ ಮಾಡುತ್ತದೆ. Enter ದೃಢೀಕರಿಸುತ್ತದೆ. Esc ರದ್ದುಮಾಡುತ್ತದೆ."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "ಪಠ್ಯ ಆಯ್ಕೆ ಮೋಡ್."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "ಇಂಟರ್ಫೇಸ್ ಭಾಷೆಯು ನಿಮ್ಮ ಡೆಸ್ಕ್‌ಟಾಪ್ ಸೆಶನ್ ಅನ್ನು ಅನುಸರಿಸುತ್ತದೆ."
 
@@ -328,13 +352,25 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey ಡೀಮನ್ ಸ್ಥಾಪಿಸಲಾಗಿದೆ ಮತ್ತು ಸಕ್ರಿಯವಾಗಿದೆ."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "ಯಾಕೆ ಈ ಡೈಲಾಗ್?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "ಅಮಾನ್ಯ ಆಯ್ಕೆ: %s. ಸಂಖ್ಯೆಗಳು (1,2,3,4), ಘಟಕ ಹೆಸರುಗಳು ಅಥವಾ all ನಮೂದಿಸಿ."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "ಯಾವುದೇ ಘಟಕಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ. ಅನುಸ್ಥಾಪನೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "ಎಲ್ಲಾ ಶಿಫಾರಸು ಮಾಡಿದ ಘಟಕಗಳನ್ನು ಸ್ಥಾಪಿಸಲು Enter ಒತ್ತಿರಿ, ಅಥವಾ 'all' ನಮೂದಿಸಿ."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "ಪ್ರದರ್ಶನ, MyASUS, ಮತ್ತು ಡೆಸ್ಕ್‌ಟಾಪ್ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ"

@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Saitin ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools yana shirye don amfani."
 
@@ -57,13 +57,13 @@ msgstr "ASUS ZenBook Linux Tools yana shirye don amfani."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook Saituna"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "An shigar da fasalulluka na kayan aikin ASUS ZenBook azaman abubuwan zaɓi na "
 "zaɓi."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -80,7 +80,7 @@ msgstr "Duk nuni (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Duk nuni (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Abubuwan da ake samu:"
 
@@ -104,7 +104,7 @@ msgstr "Sirrin kyamara"
 msgid "Choose components"
 msgstr "Zaɓi abubuwan haɗin gwiwa"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "An saita gajerun hanyoyin cinnamon."
 
@@ -122,6 +122,26 @@ msgstr "Sanya gajerun hanyoyin GNOME don %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Sanya gajerun hanyoyin Plasma na KDE don %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Sanya gajerun hanyoyin Cinnamon don %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Sanya gajerun hanyoyin LXQt Global Keys don %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Sanya gajerun hanyoyin MATE don %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Sanya gajerun hanyoyin XFCE don %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -131,7 +151,7 @@ msgstr "Tsarin nuni na yanzu"
 msgid "Display mode"
 msgstr "Yanayin nuni"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Shigar da lambobi ko sunaye, ware ta waƙafi."
 
@@ -151,7 +171,7 @@ msgstr "An saita gajerun hanyoyin GNOME."
 msgid "Hardware features for your Linux desktop"
 msgstr "Fasalolin Hardware don tebur ɗin Linux ɗinku"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Shigar da rubutun da ayyuka"
 
@@ -159,11 +179,11 @@ msgstr "Shigar da rubutun da ayyuka"
 msgid "Install system dependencies"
 msgstr "Shigar da tushen tsarin"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Mai amfani ya soke shigarwa."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "An gama shigarwa."
 
@@ -172,7 +192,7 @@ msgstr "An gama shigarwa."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Shigar da ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -180,7 +200,7 @@ msgstr ""
 "Yana shigar da aljanin hotkey na WMI don hasken ScreenPad, fanka Quiet/"
 "Balanced/Performance, sirri na kyamara da musayar tagogi tsakanin monito."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -188,7 +208,7 @@ msgstr ""
 "Yana shigar da gyaran amplifier ɗin lasifika da ƙugiya ta suspend/resume don "
 "sautin ZenBook da ake goyan baya ya farfado bayan kunna da bayan barci."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -197,22 +217,23 @@ msgstr ""
 "sama-hagu ta buɗe kayan aikin hoton allo na desktop (GNOME, Spectacle da "
 "makamantansu)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Zaɓi marar inganci: %s. Shigar da lambobi (1,2,3,4), sunayen sassa, ko all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Zaɓi marar inganci: %s. Shigar da lambobi (1,2,3,4), sunayen sassa, ko all, "
+"ko none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma an saita gajerun hanyoyin."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys an saita su."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "An saita gajerun hanyoyin MATE."
 
@@ -230,9 +251,9 @@ msgstr "Babban nuni kawai"
 msgid "Mode: %s"
 msgstr "Yanayin: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Babu abubuwan da aka zaɓa An soke shigarwa"
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Ba a zaɓi wani sashi ba. Ba a shigar da komai ba."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -248,11 +269,11 @@ msgstr "Kunna"
 msgid "Performance (Boost)"
 msgstr "Ayyuka (Ƙara)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Danna Enter don shigar da dukkan sassan da aka ba da shawara, ko shigar da "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Danna Enter don shigar da dukkan sassan da aka ba da shawara, ko shigar da "
+"'all' ko 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -279,7 +300,7 @@ msgstr ""
 "Zaɓi abubuwan da kuke amfani da su kawai. Ba za a shigar da ayyuka da "
 "gajerun hanyoyin da ba a zaɓa ba."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Zaɓi abin da kuke amfani da shi kawai don guje wa ayyukan da ba dole ba da "
@@ -301,11 +322,11 @@ msgstr "An shigar da gyaran sauti tare da dakatarwa da ci gaba da ƙugiya."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space yana zaɓar sashi. Enter yana tabbatarwa. Esc yana soke."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Yanayin zaɓin rubutu."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Harshen mu'amala yana biye da zaman tebur ɗin ku."
 
@@ -338,13 +359,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon an shigar kuma yana aiki."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Me yasa wannan zance?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "An saita gajerun hanyoyin XFCE."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Zaɓi marar inganci: %s. Shigar da lambobi (1,2,3,4), sunayen sassa, ko "
+#~ "all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Babu abubuwan da aka zaɓa An soke shigarwa"
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Danna Enter don shigar da dukkan sassan da aka ba da shawara, ko shigar "
+#~ "da 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Ƙara Nuni, MyASUS, da Raba gajerun hanyoyin tebur"

@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Dejinta ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools waa diyaar in la isticmaalo."
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux Tools waa diyaar in la isticmaalo."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook Dejinta"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "Astaamaha qalabka ASUS ZenBook waxaa lagu rakibay qaybo ikhtiyaari ah."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "Dhammaan bandhigyada (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Dhammaan bandhigyada (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Qaybaha la heli karo:"
 
@@ -102,7 +102,7 @@ msgstr "Qarsoonaanta kamarada"
 msgid "Choose components"
 msgstr "Dooro qaybaha"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Jidadka gaaban ee qorfaha waa la habeeyey."
 
@@ -120,6 +120,26 @@ msgstr "U habeyn GNOME-gaabyada gaaban ee %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "U habee KDE Plasma-gaabyada %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "U habeyn Cinnamon-gaabyada gaaban ee %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "U habeyn LXQt Global Keys-gaabyada gaaban ee %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "U habeyn MATE-gaabyada gaaban ee %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "U habeyn XFCE-gaabyada gaaban ee %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "Qaab dhismeedka hadda jira"
 msgid "Display mode"
 msgstr "Qaabka muuqaalka"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Geli lambarada ama magacyada qaybaha, oo ay kala soocaan hakad."
 
@@ -149,7 +169,7 @@ msgstr "Jidadka gaaban ee GNOME waa la habeeyey."
 msgid "Hardware features for your Linux desktop"
 msgstr "Astaamaha Hardware ee desktop-kaaga Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Ku rakib qoraalada iyo adeegyada"
 
@@ -157,11 +177,11 @@ msgstr "Ku rakib qoraalada iyo adeegyada"
 msgid "Install system dependencies"
 msgstr "Ku-tiirsanaanta nidaamka ku rakib"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Rakibaadda waxaa joojiyay isticmaale"
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Rakibaddii waa dhammaatay"
 
@@ -170,7 +190,7 @@ msgstr "Rakibaddii waa dhammaatay"
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Ku rakibida ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -179,7 +199,7 @@ msgstr ""
 "Performance, sirta kamarada, iyo isweydaarsiga daaqadaha ee u dhexeeya "
 "monitors."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -187,7 +207,7 @@ msgstr ""
 "Waxay rakibtaa hagaajinta amplifier-ka speaker iyo hook suspend/resume si "
 "maqalka ZenBook ee la taageero uu u soo laabto boot ka dib iyo hurdo ka dib."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -196,23 +216,23 @@ msgstr ""
 "ee sare ay u furto qalabka screenshot ee desktop (GNOME, Spectacle, iyo kuwa "
 "la mid ah)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Doorasho aan sax ahayn: %s. Geli tirooyin (1,2,3,4), magacyada qaybaha, ama "
-"all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Doorasho aan sax ahayn: %s. Geli tirooyin (1,2,3,4), magacyada qaybaha, ama "
+"all, ama none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma-gaabyada gaaban waa la habeeyey."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Furayaasha caalamiga ah ee LXQt waa la habeeyey."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE-gaabyada gaaban waa la habeeyey"
 
@@ -230,9 +250,9 @@ msgstr "Bandhiga ugu weyn kaliya"
 msgid "Mode: %s"
 msgstr "Qaabka: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Ma jiraan qaybo la doortay Rakibaddii waa la joojiyay"
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Waxba lama rakibin."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -248,10 +268,11 @@ msgstr "Daar"
 msgid "Performance (Boost)"
 msgstr "Waxqabadka (kor u kaca)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Riix Enter si aad u rakibto dhammaan qaybaha la taliyay, ama qor 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Riix Enter si aad u rakibto dhammaan qaybaha la taliyay, ama qor 'all' ama "
+"'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -278,7 +299,7 @@ msgstr ""
 "Dooro kaliya qaybaha aad isticmaasho. Adeegyada aan la dooran iyo jid-"
 "gaabyada lama rakibi doono."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Dooro kaliya waxaad isticmaasho si aad uga fogaato adeegyada aan loo "
@@ -300,11 +321,11 @@ msgstr "Hagaajinta codka oo lagu rakibay xadhig laalid iyo dib u bilow"
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space waxay doorataa qayb. Enter way xaqiijisaa. Esc way joojisaa."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Habka xulashada qoraalka"
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Luqadda is-dhexgalku waxay raacdaa fadhigaaga miiska."
 
@@ -338,13 +359,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon rakibay oo shaqaynaya"
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Waa maxay sababta wada hadalkan?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE-gaabyada gaaban waa la habeeyey."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Doorasho aan sax ahayn: %s. Geli tirooyin (1,2,3,4), magacyada qaybaha, "
+#~ "ama all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Ma jiraan qaybo la doortay Rakibaddii waa la joojiyay"
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Riix Enter si aad u rakibto dhammaan qaybaha la taliyay, ama qor 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Ku dar Muqaal, MyASUS, oo wadaag miisaska gaaban"

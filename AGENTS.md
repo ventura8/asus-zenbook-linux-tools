@@ -6,8 +6,10 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.0`, displayed as `v1.0.0`). `pyproject.toml` `tool.poetry.version` must match;
+  (currently `1.0.1`, displayed as `v1.0.1`). `pyproject.toml` `tool.poetry.version` must match;
   `scripts/run-lints.sh` enforces this. Bump `VERSION` first, then sync poetry metadata.
+  Cut notes with [`.agents/skills/release/SKILL.md`](.agents/skills/release/SKILL.md)
+  (version from the current branch; reset `PPA_UPLOAD_REVISION` to `1` on a new `VERSION`).
 
 ## UI Localization
 
@@ -86,10 +88,13 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `set -euo pipefail`. The
   `github-release` job verifies `install.sh.sha256` before building `.deb`
   artifacts (same as `upload-to-ppa`); its apt install step also uses
-  `set -euo pipefail`. After unsigned `-b` build, assert exactly one `../*.deb`
-  before copying into `artifacts/` (same exact-one glob rule as CI `deb-package`).
-  CI `deb-package` uses a `_require_exact_one_glob` helper that **returns** nonzero
-  (does not `exit 1` from the function); callers check status and abort the step.
+  `set -euo pipefail`. After unsigned `-b` build, assert exactly one
+  `../${PACKAGE_NAME}_*.deb` before copying into `artifacts/` (same exact-one glob
+  rule as CI `deb-package`). Smoke removes leftover parent/artifact debs for that
+  package name before build so an older `1.0.0` next to a new `1.0.1` cannot fail
+  the glob. CI `deb-package` uses a `_require_exact_one_glob` helper that **returns**
+  nonzero (does not `exit 1` from the function); callers check status and abort the
+  step.
 - Packaging lives under [`debian/`](debian/). Payload is installed to
   `/usr/share/asus-zenbook-linux-tools/`; `postinst` hardcodes
   `/usr/sbin/asus-zenbook-configure` and runs it with `SKIP_PKG_INSTALL=1`
@@ -125,7 +130,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `runuser` so packaging matches CI’s non-root runner). **Deb smoke always sets
   `DEB_BUILD_OPTIONS=nocheck`** so `override_dh_auto_test` does **not** run
   product unit tests on the pipeline/CI host — unit/kcov/e2e stay in coverage
-  Docker only. Assert exactly one `../*.deb` and one `artifacts/*.deb`, then
+  Docker only. Smoke removes leftover `../${PACKAGE_NAME}_*.deb` and matching
+  `artifacts/` debs before `-b`. Assert exactly one parent package `.deb` and one
+  `artifacts/*.deb`, then
   noninteractive `apt-get install -y` of a `./`-or-absolute local `.deb` path
   (apt treats an unprefixed `dir/file.deb` as `release/package`), `dpkg -s`
   verify, and `apt-get purge` before upload). No TTY → postinst skips the
@@ -212,6 +219,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     The lint Docker image provides Node/npm (and markdownlint-cli); it must not pretend a
     global eslint install is enough.
   - YAML: `yamllint` format validation (≤140 char lines, valid booleans).
+  - Gettext PO: cheap-wave `step_po_lint` discovers repo `*.po` via `_find_repo_files` and
+    runs `msgfmt -c --check-format` on each catalog (fail closed if `msgfmt` is missing or
+    no `.po` files are found). Heavy-wave `step_i18n_catalogs` still runs
+    `extract_pot.sh --check`, `seed_whisper_languages.py --check`, and
+    `check_catalog_quality.py`.
   - Markdown: `markdownlint` compliance (≤140 char lines, proper blank lines).
     Prefer readable wraps that break after trailing `&&` or `|` (or with `\`) so each
     physical line stays ≤140. Do **not** suppress MD013 and do **not** disable MD013 for
@@ -469,8 +481,14 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   matrix builds the same stub/CLI images as `distro-tests-*` (empty bake-time
   `ASUS_CI_DE_FAMILY`); `install-de-family.sh` runs in-container via `sudo -n`
   before smoke when `ASUS_CI_FULL_DE=1` (up to 3 retries on CDN flakes; unsupported
-  family fails closed without retry). Dockerfiles may keep empty-ARG no-op bake
-  paths for local experiments; CI/matrix never pass a non-empty build-arg.
+  family fails closed without retry). Arch/Manjaro stub `pacman -Syu`/`-S` and
+  Full-DE `_install_pacman` must use `docker/images/tests/scripts/pacman-retry.sh`
+  (default 3 attempts, wipe sync DBs as root, `pacman -Syy` between failures) so
+  rolling-mirror 404s for a superseded package tarball do not fail the image build.
+  Arch images COPY `archlinux-mirrorlist` (rackspace/kernel/osuosl — not
+  geo/fastly.mirror.pkgbuild.com) before `-Syu`. Dockerfiles may keep
+  empty-ARG no-op bake paths for local experiments; CI/matrix never pass a
+  non-empty build-arg.
   Rocky/Alma/RHEL 10 XFCE builds pinned `xfconf` 4.18.1 from
   source at runtime (EPEL has `libxfce4util` but not `xfconf`; use image
   `curl`/`curl-minimal` already on PATH — do not `dnf install curl`, which conflicts
@@ -531,7 +549,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `python3-3.14*` / `python3-devel-3.14*` (default interpreter is 3.14). Install
   `systemd-[0-9]*` (not bare `systemd-*`) so `systemd-tests` /
   `systemd-standalone-*` are not pulled into conflicting requests. Prefer exact
-  `curl-minimal` / `zlib-devel` on Alma/Rocky when `-*` globs miss on EL mirrors.
+  `zlib-devel` on Alma/Rocky when `-*` globs miss on EL mirrors.
   Use `alsa-utils-[0-9]*` (NEVRA), not `alsa-utils-*`: the latter matches only
   subpackages like `alsa-utils-alsabat` and skips the main `alsa-utils` RPM
   (Fedora 44 smoke then fails `rpm -q alsa-utils`). Install
@@ -543,6 +561,16 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   alongside `xfconf`. AlmaLinux 10 mirrors Rocky skip policy for unpackaged
   `ydotool`/`alsa-tools`/`xdotool`/`python3-evdev` (poetry + pip PyGObject). Manjaro is
   Arch-family (`ID=manjaro`); pacman mirrors differ from stock `archlinux:latest`.
+  Pinned `FROM …@sha256` still `-Syu`s against rolling repos — Arch/Manjaro test
+  images must not use a single-shot `RUN pacman -Syu && pacman -S`; route both
+  through `pacman-retry.sh`. Arch also replaces `/etc/pacman.d/mirrorlist` with
+  `archlinux-mirrorlist` so geo/fastly CDN split-brain 404s cannot loop on a stale
+  `core.db`.
+  Rocky/Alma 10 kcov builds run `el10-kcov-libcurl.sh`: align `libcurl`/`curl`
+  with `--allowerasing --nobest`, then install `libcurl-devel-${VERSION}-${RELEASE}`
+  matching the installed libcurl NEVRA (AppStream can advertise `el10_2.4` devel
+  when BaseOS has no that `libcurl`). Fall back to `--nobest libcurl-devel` only
+  when the exact NEVRA is absent. Do not `--skip-broken`.
   `install-poetry-deps.sh` removes `${HOME}/.cache/pypoetry` after
   `poetry install` only when `HOME` is set (`if [ -n "${HOME:-}" ]`) so `set -u`
   stays safe in minimal Docker `RUN` environments.
@@ -728,8 +756,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `cairo-gobject-devel`; keep `python3.13-devel` and `dbus-devel`), then smoke
   `kcov --version` fail-closed before/after stripping build deps and before
   `dnf clean all` (`kcov --help` exits 1 even when kcov works). AlmaLinux 10 mirrors that
-  PyGObject pin; prefer exact `curl-minimal` / `zlib-devel` (not `-*` globs that
-  miss on current EL10 mirrors). Fedora test images use `git-[0-9]*` (not `git-*`) —
+  PyGObject pin; prefer exact `zlib-devel` (not `-*` globs that miss on current
+  EL10 mirrors). kcov on Rocky/Alma needs `libcurl-devel` at the installed
+  libcurl NEVRA (`el10-kcov-libcurl.sh`; `--nobest` fallback — not latest
+  AppStream devel). Fedora test images use `git-[0-9]*` (not `git-*`) —
   so hadolint DL3041 stays happy without pulling `git-extras` /
   `git-pull-request`, which conflict on `/usr/bin/git-pull-request`.
   `debian-trixie` pins `FROM debian:trixie@sha256:…` (tag kept for Dependabot).
@@ -827,7 +857,20 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `/usr/local` DESTDIR copies, and must read `merged/kcov-merged/coverage.json`
   (not an arbitrary per-run `coverage.json`).
 - **Install/uninstall package deps**: After successful component selection, `install.sh` runs
-  `install_system_deps` (step `[2/3]`) before deploying files. Helper load order sources
+  `install_system_deps` before deploying files (skipped when `SKIP_PKG_INSTALL=1` or when the
+  user chose no components). Progress uses dynamic `[n/m]` totals from
+  `_install_plan_progress_steps` / `_install_print_next_step` in `lib/install-shared.sh`:
+  `Choose components` is unnumbered; post-selection work is deps (when not skipped) + scripts +
+  optional DESKTOP configure. `_install_print_next_step` defaults unset
+  `INSTALL_STEP_CURRENT`/`INSTALL_STEP_TOTAL` so `set -u` kcov DE drivers that call
+  `configure_*` without `install.sh` planning do not abort. GNOME/KDE/Cinnamon/LXQt/MATE/XFCE
+  configure steps use `_asus_gettextf` (Cinnamon/LXQt/MATE/XFCE print via a one-line helper
+  so nested quotes do not inflate CCN). Empty selection is a successful no-op (no deps, no runtime deploy,
+  no components; message `No components were selected. Nothing was installed.`). TUI Ok with
+  nothing checked, `NONINTERACTIVE_CHOICE=` / `none`, or text `,` apply empty; Esc/Cancel still
+  aborts; bare Enter in text mode still defaults to all recommended. Kcov `install_none` runs
+  `install.sh` with `NONINTERACTIVE_CHOICE=none` so `_print_empty_install_completion` is covered.
+  Helper load order sources
   `lib/install-shared.sh` before `lib/install-os-detection.sh` and desktop helpers.
   `check_root` in `lib/install-shared.sh` honors `SKIP_ROOT_CHECK` /
   `EFFECTIVE_UID_OVERRIDE` only when `ASUS_TEST_MODE=1`; otherwise it uses real `EUID`
@@ -1171,10 +1214,13 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `desktop_family` / `target_user` on backup or conf-write failure.
 - **Install selection desktop family**: `_resolve_desktop_family` is shared by
   `_default_all_components` and `_desktop_default_on` (`ASUS_DESKTOP_FAMILY` or
-  `asus_desktop_family`). `_prompt_text_selection` treats normalize status **2** as
-  invalid input and retries; other non-zero statuses hard-fail (noninteractive keeps
-  hard-fail for status 2). Shared Invalid `NONINTERACTIVE_CHOICE` text lives in
-  `_INVALID_NONINTERACTIVE_CHOICE_MSG` (reuse in both normalize-failure branches).
+  `asus_desktop_family`). `_print_special_component_selection` accepts `ALL` and `NONE`
+  (literal token `none` stays untranslated like `all`). `_prompt_text_selection` treats
+  normalize status **2** as invalid input and retries; other non-zero statuses hard-fail
+  (noninteractive keeps hard-fail for status 2). Shared Invalid `NONINTERACTIVE_CHOICE` text
+  lives in `_INVALID_NONINTERACTIVE_CHOICE_MSG` (mentions `all` and `none`; reuse in both
+  normalize-failure branches). Combinatorial DESTDIR matrix lives in
+  `tests/unit/shell/test_install_component_matrix.py` (16 subsets including empty).
   `_deploy_selected_component` must `*) return 1` for unknown component tokens.
 - **Install shared libdir**: Existence checks for installed helpers must use
   `${LIB_DIR:-}` so an unset `LIB_DIR` does not expand to a relative path.

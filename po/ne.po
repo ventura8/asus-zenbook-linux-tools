@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux सेटअप %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux उपकरणहरू प्रयोगको लागि तयार छ।"
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux उपकरणहरू प्रयोगको ल
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook सेटिङहरू"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook हार्डवेयर सुविधाहरू वैकल्पिक अवयवहरूको रूपमा स्थापित छन्।"
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "सबै डिस्प्लेहरू (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "सबै प्रदर्शनहरू (मुख्य + स्क्रिनप्याड)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "उपलब्ध अवयवहरू:"
 
@@ -102,7 +102,7 @@ msgstr "क्यामेरा गोपनीयता"
 msgid "Choose components"
 msgstr "अवयवहरू छान्नुहोस्"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "दालचीनी सर्टकटहरू कन्फिगर गरियो।"
 
@@ -120,6 +120,26 @@ msgstr "%s का लागि GNOME सर्टकटहरू कन्फि
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "%s का लागि केडीई प्लाज्मा सर्टकट कन्फिगर गर्नुहोस्"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s का लागि Cinnamon सर्टकटहरू कन्फिगर गर्नुहोस्..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s का लागि LXQt Global Keys सर्टकटहरू कन्फिगर गर्नुहोस्..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s का लागि MATE सर्टकटहरू कन्फिगर गर्नुहोस्..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s का लागि XFCE सर्टकटहरू कन्फिगर गर्नुहोस्..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "हालको प्रदर्शन लेआउट"
 msgid "Display mode"
 msgstr "प्रदर्शन मोड"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "कम्पोनेन्ट नम्बर वा नामहरू प्रविष्ट गर्नुहोस्, अल्पविरामद्वारा विभाजित।"
 
@@ -149,7 +169,7 @@ msgstr "GNOME सर्टकटहरू कन्फिगर गरियो�
 msgid "Hardware features for your Linux desktop"
 msgstr "तपाईको लिनक्स डेस्कटपका लागि हार्डवेयर सुविधाहरू"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "स्क्रिप्ट र सेवाहरू स्थापना गर्नुहोस्"
 
@@ -157,11 +177,11 @@ msgstr "स्क्रिप्ट र सेवाहरू स्थापन
 msgid "Install system dependencies"
 msgstr "प्रणाली निर्भरताहरू स्थापना गर्नुहोस्"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "प्रयोगकर्ताद्वारा स्थापना रद्द गरियो।"
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "स्थापना पूरा।"
 
@@ -170,7 +190,7 @@ msgstr "स्थापना पूरा।"
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux उपकरण स्थापना गर्दै %s।"
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "ScreenPad चम्किलोपन, फ्यान Quiet/Balanced/Performance, क्यामेरा गोपनीयता र "
 "मोनिटरहरूबीच विन्डो स्व्यापका लागि WMI हटकी daemon स्थापना गर्छ।"
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "समर्थित ZenBook अडियो बुटपछि र निद्रापछि पुनःप्राप्त होस् भनी स्पिकर एम्प्लिफायर फिक्स "
 "र suspend/resume hook स्थापना गर्छ।"
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -194,21 +214,23 @@ msgstr ""
 "माथिल्लो-बायाँ कुनामा ट्याप गर्दा डेस्कटप स्क्रिनसट उपकरण (GNOME, Spectacle र समान) "
 "खोल्न touchpad Share जेस्चर listener स्थापना गर्छ।"
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "अमान्य चयन: %s। नम्बरहरू (1,2,3,4), कम्पोनेन्ट नामहरू वा all प्रविष्ट गर्नुहोस्।"
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "अमान्य चयन: %s। नम्बरहरू (1,2,3,4), कम्पोनेन्ट नामहरू वा all, वा none "
+"प्रविष्ट गर्नुहोस्।"
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "केडीई प्लाज्मा सर्टकटहरू कन्फिगर गरियो।"
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt ग्लोबल कुञ्जीहरू कन्फिगर गरियो।"
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE सर्टकटहरू कन्फिगर गरियो।"
 
@@ -226,9 +248,9 @@ msgstr "मुख्य प्रदर्शन मात्र"
 msgid "Mode: %s"
 msgstr "मोड: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "कुनै पनि अवयवहरू चयन गरिएन। स्थापना रद्द गरियो।"
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "कुनै पनि अवयवहरू चयन गरिएन। केही पनि स्थापना गरिएन।"
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -244,9 +266,11 @@ msgstr "अन"
 msgid "Performance (Boost)"
 msgstr "प्रदर्शन (बूस्ट)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "सबै सिफारिस गरिएका कम्पोनेन्ट स्थापना गर्न Enter थिच्नुहोस्, वा 'all' लेख्नुहोस्।"
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "सबै सिफारिस गरिएका कम्पोनेन्ट स्थापना गर्न Enter थिच्नुहोस्, वा 'all' वा "
+"'none' लेख्नुहोस्।"
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -273,7 +297,7 @@ msgstr ""
 "तपाईंले प्रयोग गर्नुहुने घटकहरू मात्र चयन गर्नुहोस्। चयन नगरिएका सेवाहरू र सर्टकटहरू स्थापना "
 "गरिने छैनन्।"
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "अनावश्यक सेवाहरू र सर्टकटहरूबाट बच्न तपाईंले प्रयोग गर्ने मात्र चयन गर्नुहोस्।"
 
@@ -293,11 +317,11 @@ msgstr "एक निलम्बन र पुन: सुरु हुक स�
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space ले कम्पोनेन्ट चयन गर्छ। Enter ले पुष्टि गर्छ। Esc ले रद्द गर्छ।"
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "पाठ चयन मोड।"
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "इन्टरफेस भाषा तपाईंको डेस्कटप सत्र पछ्याउँछ।"
 
@@ -327,13 +351,26 @@ msgstr "WMI हटकी डेमन स्थापित (सक्रिय 
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI हटकी डेमन स्थापित र सक्रिय।"
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "यो संवाद किन ?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE सर्टकटहरू कन्फिगर गरियो।"
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "अमान्य चयन: %s। नम्बरहरू (1,2,3,4), कम्पोनेन्ट नामहरू वा all प्रविष्ट गर्नुहोस्।"
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "कुनै पनि अवयवहरू चयन गरिएन। स्थापना रद्द गरियो।"
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "सबै सिफारिस गरिएका कम्पोनेन्ट स्थापना गर्न Enter थिच्नुहोस्, वा 'all' लेख्नुहोस्।"
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "डिस्प्ले, MyASUS, र सेयर डेस्कटप सर्टकटहरू थप्नुहोस्"

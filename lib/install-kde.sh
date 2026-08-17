@@ -324,7 +324,7 @@ configure_kde_component() {
 
     target_user=$(echo "$info" | cut -d: -f1)
     user_id=$(echo "$info" | cut -d: -f2)
-    printf '[4/4] %s\n' "$(_asus_gettextf "Configure KDE Plasma shortcuts for %s" "$target_user")"
+    _install_print_next_step "$(_asus_gettextf "Configure KDE Plasma shortcuts for %s" "$target_user")"
     state_root="${STATE_DIR}/${user_id}"
     config_dir=$(_kde_state_config_dir "$state_root")
     _kde_prepare_install_state "$state_root" "$config_dir" "$target_user" || return 1

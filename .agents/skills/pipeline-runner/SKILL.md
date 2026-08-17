@@ -71,6 +71,11 @@ Use this skill to validate project code quality, formatting, unit tests, and end
    CI concurrency: `group: ${{ github.workflow }}` + `cancel-in-progress: true`
    (new push cancels the previous CI run; do not queue behind it).
    Full-DE cells use **runtime** `install-de-family.sh` on stub images (F1).
+   Arch/Manjaro image `pacman -Syu`/`-S` (and Full-DE `_install_pacman`) retry via
+   `docker/images/tests/scripts/pacman-retry.sh`. Arch CI images pin
+   `archlinux-mirrorlist` (not geo/fastly) so stale `core.db` 404s cannot loop.
+   Rocky/Alma kcov installs `libcurl-devel` via `el10-kcov-libcurl.sh` at the
+   installed libcurl NEVRA (`--nobest` fallback; AppStream/BaseOS can skew).
    Deb smoke must clean `debian/asus-zenbook-linux-tools` (and related dh state) on
    EXIT so a leftover staged payload cannot make the next lint pass fail pylint
    `R0801` duplicate-code. Gettext freshness also requires
@@ -106,9 +111,10 @@ Use this skill to validate project code quality, formatting, unit tests, and end
   **splitting into smaller files**, never by removing
   comments, docstrings, or blank lines to trim the count.
 - Ruff linting (same filtered command set used by `scripts/build-and-test.sh`)
-- Gettext template freshness plus all 99 catalog checks (`msgfmt --check`,
-  `msgcmp`, quality gates including a real `PO-Revision-Date` — never the
-  `YEAR-MO-DA` placeholder that warns during install locale compile;
+- Gettext PO syntax (`msgfmt -c --check-format` on every `_find_repo_files` `*.po` in
+  cheap-wave `step_po_lint`) plus template freshness and all 99 catalog checks
+  (`extract_pot.sh --check`, `msgcmp`, quality gates including a real `PO-Revision-Date` —
+  never the `YEAR-MO-DA` placeholder that warns during install locale compile;
   placeholder/plural/fuzzy validation, and translated canaries)
 - Pylint (same discovery as [scripts/run-lints.sh](../../../scripts/run-lints.sh) `find_python_files`):
 
@@ -290,7 +296,8 @@ Full-DE XFCE builds pinned `xfconf` from source (`_install_xfconf_from_source`).
   in the parent shell inside `step_kcov_coverage` — not `$()` — so EXIT traps persist.
 - Coverage drivers must keep temporary-file cleanup in their registered EXIT/RETURN traps;
   restore redirected descriptors before trap cleanup finishes, and resolve diagnostic logs
-  through `resolve_reports_root`.
+  through `resolve_reports_root`. `_install_print_next_step` must tolerate unset
+  `INSTALL_STEP_*` counters (`set -u` kcov DE `configure_*` drivers skip `install.sh` planning).
 - Coverage-driver environment scanning must stop at invalid assignment keys while preserving
   `KCOV_EXERCISE_RETURN_STATUS`; missing-peer tests should source the repository helper with
   `ASUS_COMMON_DIR` pointing at an empty/partial staging directory. AF_UNIX fixture bind
