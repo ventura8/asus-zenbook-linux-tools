@@ -12,6 +12,8 @@
 │       │   └── SKILL.md
 │       ├── pipeline-runner/
 │       │   └── SKILL.md
+│       ├── release/
+│       │   └── SKILL.md
 │       ├── resolve-pr-comments/
 │       │   ├── SKILL.md
 │       │   ├── examples.md
@@ -341,10 +343,15 @@
 - Interactive ncurses component checklist (keyboard + mouse, OS accent color),
   including piped installs via `/dev/tty`.
 - Validated text fallback when the TUI is unavailable (supports
-  component names, numeric indexes, and `all`).
-- Explicit abort semantics: `Cancel`/`Esc` aborts installation, and
-  missing controlling terminals default to all components unless
-  `NONINTERACTIVE_CHOICE` is provided.
+  component names, numeric indexes, `all`, and `none`).
+- Dynamic `[n/m]` progress after selection: optional deps (when not
+  `SKIP_PKG_INSTALL`), scripts/services, optional DESKTOP configure; `Choose components`
+  has no fraction.
+- Empty selection is a successful no-op (`No components were selected. Nothing was
+  installed.`): TUI Ok with nothing checked, `NONINTERACTIVE_CHOICE=` / `none`, or text `,`.
+  Esc/Cancel still aborts; missing TTY without `NONINTERACTIVE_CHOICE` still defaults to all
+  recommended components.
+- Explicit abort semantics: `Cancel`/`Esc` aborts installation.
 - Detects the host OS family to select distro-appropriate package-manager
   commands for Debian/Ubuntu families (apt/apt-get), Fedora/RHEL families
   (dnf/yum), openSUSE/SUSE families (zypper), and Arch families (pacman),
@@ -374,7 +381,11 @@
   Empty `ASUS_CI_DE_FAMILY` = stub/CLI. Full-DE family variants run in the same
   push/PR CI job (`distro-full-de`), not nightly. Rocky/Alma exclude unpackaged
   cinnamon/mate/lxqt cells. Alma/RHEL 10 XFCE builds pinned `xfconf` from source.
-  Rocky 10 / Alma KDE use `kf6-kconfig` (`kwriteconfig6`).
+  Rocky 10 / Alma KDE use `kf6-kconfig` (`kwriteconfig6`). Arch/Manjaro test images
+  retry `pacman -Syu`/`-S` through `pacman-retry.sh` (re-sync DBs between attempts);
+  Arch CI also pins `archlinux-mirrorlist` (rackspace/kernel/osuosl) because
+  geo/fastly can 404 a just-superseded package tarball. Rocky/Alma kcov builds
+  install `libcurl-devel` at the installed libcurl NEVRA (`el10-kcov-libcurl.sh`).
 - **Desktop proof honesty tiers:** (1) Default stub/CLI + curated full-DE packages =
   install wiring / CLI-schema smoke only — not live panels. (2) Always-on limited
   nested proofs — CI installs Xvfb / gnome-shell+mutter / ydotool and attempts

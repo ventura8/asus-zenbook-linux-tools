@@ -74,14 +74,14 @@ class InstallTestBase(unittest.TestCase):
                 "#!/bin/sh\n"
                 "out=''\n"
                 "while [ $# -gt 0 ]; do\n"
-                "  case \"$1\" in\n"
+                '  case "$1" in\n'
                 "    -o) out=$2; shift 2 ;;\n"
                 "    --check|--check-format) shift ;;\n"
                 "    *) shift ;;\n"
                 "  esac\n"
                 "done\n"
-                "[ -n \"$out\" ] || exit 1\n"
-                ": > \"$out\"\n",
+                '[ -n "$out" ] || exit 1\n'
+                ': > "$out"\n',
                 encoding="utf-8",
             )
             stub.chmod(0o755)
@@ -96,6 +96,107 @@ class InstallTestBase(unittest.TestCase):
             bus_path.unlink()
         bind_unix_socket(bus_path)
         return bus_path
+
+    def _setup_gnome_session_stubs(self, environment: dict, sudo_script_body: str) -> Path:
+        """Create loginctl/sudo/id stubs for GNOME-path tests."""
+        mock_bin = self._write_stubs(
+            {
+                "loginctl": (
+                    "#!/bin/sh\n"
+                    'if [ "$1" = "list-sessions" ]; then\n'
+                    "  echo '1'\n"
+                    "  exit 0\n"
+                    "fi\n"
+                    'if [ "$1" = "show-session" ]; then\n'
+                    '  if [ "$2" = "1" ]; then\n'
+                    '    case "$3" in\n'
+                    "      -p)\n"
+                    '        case "$4" in\n'
+                    "          Type) echo 'wayland' ;;\n"
+                    "          State) echo 'active' ;;\n"
+                    "          Name) echo 'testuser' ;;\n"
+                    "          Seat) echo 'seat0' ;;\n"
+                    "        esac\n"
+                    "        ;;\n"
+                    "    esac\n"
+                    "  fi\n"
+                    "fi\n"
+                    "exit 0\n"
+                ),
+                "sudo": sudo_script_body,
+                "id": ('#!/bin/sh\nif [ "$1" = "-u" ]; then\n  echo 1000\n  exit 0\nfi\nexit 0\n'),
+            }
+        )
+
+        environment["PATH"] = f"{mock_bin}:{environment['PATH']}"
+        return mock_bin
+
+    def _setup_gnome_install_stubs(self, environment: dict) -> Path:
+        """GNOME install stubs with passthrough privilege drop and session bus."""
+        mock_bin = self._setup_gnome_session_stubs(
+            environment,
+            "#!/bin/sh\n"
+            "while [ $# -gt 0 ]; do\n"
+            '  case "$1" in\n'
+            "    -n) shift ;;\n"
+            "    -u) shift 2 ;;\n"
+            "    -E) shift ;;\n"
+            "    --) shift; break ;;\n"
+            '    *=*) export "$1"; shift ;;\n'
+            "    *) break ;;\n"
+            "  esac\n"
+            "done\n"
+            'exec "$@"\n',
+        )
+        self._setup_dbus_session_socket()
+        self._write_stubs(
+            {
+                "gsettings": (
+                    "#!/bin/sh\n"
+                    'if [ "$1" = "get" ]; then\n'
+                    "  echo '[]'\n"
+                    "  exit 0\n"
+                    "fi\n"
+                    'if [ "$1" = "list-keys" ]; then\n'
+                    "  printf '%s\\n' 'show-screenshot-ui' 'control-center'"
+                    " 'custom-keybindings'\n"
+                    "  exit 0\n"
+                    "fi\n"
+                    "exit 0\n"
+                ),
+                "hda-verb": "#!/bin/sh\nexit 0\n",
+                "getent": (
+                    "#!/bin/sh\n"
+                    'if [ "$1" = "passwd" ] && [ "$2" = "testuser" ]; then\n'
+                    '  echo "testuser:x:1000:1000:testuser:/home/testuser:/bin/sh"\n'
+                    "  exit 0\n"
+                    "fi\n"
+                    "exit 1\n"
+                ),
+                "runuser": (
+                    "#!/bin/sh\n"
+                    "while [ $# -gt 0 ]; do\n"
+                    '  case "$1" in\n'
+                    "    -u) shift 2 ;;\n"
+                    "    --) shift; break ;;\n"
+                    "    *) shift ;;\n"
+                    "  esac\n"
+                    "done\n"
+                    'exec "$@"\n'
+                ),
+                "gnome-extensions": "#!/bin/sh\nexit 0\n",
+            },
+            mock_bin=mock_bin,
+        )
+        environment["DBUS_BUS_ROOT"] = str(Path(self.tmp_dir) / "dbus")
+        environment["ASUS_DESKTOP_FAMILY"] = "gnome"
+        return mock_bin
+
+    def _setup_sound_install_stubs(self, environment: dict) -> None:
+        """Mock sound hardware nodes and hda-verb for SOUND component installs."""
+        self._setup_mock_sound_hardware(environment)
+        mock_bin = self._write_stubs({"hda-verb": "#!/bin/sh\nexit 0\n"})
+        environment["PATH"] = f"{mock_bin}:{environment['PATH']}"
 
     def _prepend_apt_stubs(self, environment: dict, *, dpkg_query_exit: int) -> None:
         """Prepend apt/apt-get/dpkg stubs; dpkg -s exit controls 'already installed'."""

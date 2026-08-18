@@ -100,6 +100,10 @@ _print_special_component_selection() {
         _default_all_components
         return 0
     fi
+    if [ "$normalized" = "NONE" ]; then
+        echo ""
+        return 0
+    fi
     return 1
 }
 
@@ -183,14 +187,14 @@ _print_text_selection_intro() {
         echo
         _asus_gettext "Enter component numbers or names, separated by commas."
         echo
-        _asus_gettext "Press Enter to install all recommended components, or enter 'all'."
+        _asus_gettext "Press Enter to install all recommended components, or enter 'all' or 'none'."
         echo
     } >&"$ui_out_fd"
 }
 
 _reject_text_selection() {
     local ui_out_fd="$1" input="$2"
-    _asus_gettextf "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all." "$input" \
+    _asus_gettextf "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or none." "$input" \
         >&"$ui_out_fd"
     echo >&"$ui_out_fd"
 }
@@ -206,12 +210,8 @@ _try_apply_text_selection() {
         fi
         return "$status"
     }
-    if [ -n "$parsed" ]; then
-        INSTALL_CHOICE="$parsed"
-        return 0
-    fi
-    _reject_text_selection "$ui_out_fd" "$input"
-    return 1
+    INSTALL_CHOICE="$parsed"
+    return 0
 }
 
 _default_text_selection_if_empty() {
@@ -250,7 +250,7 @@ _prompt_text_selection() {
 }
 
 _INVALID_NONINTERACTIVE_CHOICE_MSG=\
-'Invalid NONINTERACTIVE_CHOICE. Use names (WMI, TOUCHPAD, SOUND, DESKTOP/GNOME), indexes (1-4), or all.'
+'Invalid NONINTERACTIVE_CHOICE. Use names (WMI, TOUCHPAD, SOUND, DESKTOP/GNOME), indexes (1-4), all, or none.'
 
 _handle_noninteractive_choice() {
     local noninteractive_choice="$1"
@@ -262,10 +262,6 @@ _handle_noninteractive_choice() {
         local normalize_status=$?
         echo "$_INVALID_NONINTERACTIVE_CHOICE_MSG" >&2
         return "$normalize_status"
-    fi
-    if [ -z "$parsed_choice" ]; then
-        echo "$_INVALID_NONINTERACTIVE_CHOICE_MSG" >&2
-        return 1
     fi
 
     INSTALL_CHOICE="$parsed_choice"

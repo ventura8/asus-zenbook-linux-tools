@@ -52,7 +52,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "הגדרת ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools מוכן לשימוש."
 
@@ -60,11 +60,11 @@ msgstr "ASUS ZenBook Linux Tools מוכן לשימוש."
 msgid "ASUS ZenBook Settings"
 msgstr "הגדרות ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "תכונות החומרה של ASUS ZenBook מותקנות כרכיבים אופציונליים."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -81,7 +81,7 @@ msgstr "כל התצוגות (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "כל התצוגות (ראשי + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "רכיבים זמינים:"
 
@@ -105,7 +105,7 @@ msgstr "פרטיות המצלמה"
 msgid "Choose components"
 msgstr "בחר רכיבים"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "קיצורי קיצור מוגדרים."
 
@@ -123,6 +123,26 @@ msgstr "הגדר קיצורי דרך של GNOME עבור %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "הגדר קיצורי דרך של KDE Plasma עבור %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "הגדר קיצורי דרך של Cinnamon עבור %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "הגדר קיצורי דרך של LXQt Global Keys עבור %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "הגדר קיצורי דרך של MATE עבור %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "הגדר קיצורי דרך של XFCE עבור %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -132,7 +152,7 @@ msgstr "פריסת תצוגה נוכחית"
 msgid "Display mode"
 msgstr "מצב תצוגה"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "הזן מספרים או שמות של רכיבים, מופרדים בפסיקים."
 
@@ -152,7 +172,7 @@ msgstr "קיצורי דרך של GNOME מוגדרים."
 msgid "Hardware features for your Linux desktop"
 msgstr "תכונות חומרה עבור שולחן העבודה של לינוקס שלך"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "התקן סקריפטים ושירותים"
 
@@ -160,11 +180,11 @@ msgstr "התקן סקריפטים ושירותים"
 msgid "Install system dependencies"
 msgstr "התקן תלות מערכת"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "ההתקנה בוטלה על ידי המשתמש."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "ההתקנה הושלמה."
 
@@ -173,7 +193,7 @@ msgstr "ההתקנה הושלמה."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "התקנת ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -181,7 +201,7 @@ msgstr ""
 "מתקין את סוכן מקשי הקיצור WMI לבהירות ScreenPad, מאוורר Quiet/Balanced/"
 "Performance, פרטיות מצלמה והחלפת חלונות בין צגים."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -189,7 +209,7 @@ msgstr ""
 "מתקין את תיקון מגבר הרמקולים ווו suspend/resume כדי שאודיו ZenBook נתמך "
 "יתאושש אחרי אתחול ואחרי שינה."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -197,21 +217,22 @@ msgstr ""
 "מתקין מאזין למחוות Share בלוח המגע כך שהקשה בפינה השמאלית העליונה תפתח את "
 "כלי צילום המסך של שולחן העבודה (GNOME, Spectacle וכדומה)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "בחירה לא חוקית: %s. הזינו מספרים (1,2,3,4), שמות רכיבים או all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "בחירה לא חוקית: %s. הזינו מספרים (1,2,3,4), שמות רכיבים או all, או none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "קיצורי דרך של KDE Plasma מוגדרים."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys מוגדרים."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "קיצורי MATE מוגדרים."
 
@@ -229,9 +250,9 @@ msgstr "תצוגה ראשית בלבד"
 msgid "Mode: %s"
 msgstr "מצב: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "לא נבחרו רכיבים. ההתקנה בוטלה."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "לא נבחרו רכיבים. שום דבר לא הותקן."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -247,9 +268,10 @@ msgstr "פועל"
 msgid "Performance (Boost)"
 msgstr "ביצועים (בוסט)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "לחצו Enter כדי להתקין את כל הרכיבים המומלצים, או הזינו 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "לחצו Enter כדי להתקין את כל הרכיבים המומלצים, או הזינו 'all' או 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -275,7 +297,7 @@ msgid ""
 msgstr ""
 "בחר רק את הרכיבים שבהם אתה משתמש. שירותים וקיצורי דרך שלא נבחרו לא יותקנו."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "בחר רק במה אתה משתמש כדי להימנע משירותים וקיצורי דרך מיותרים."
 
@@ -295,11 +317,11 @@ msgstr "תיקון סאונד מותקן עם וו השעיה והמשך."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space בוחר רכיב. Enter מאשר. Esc מבטל."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "מצב בחירת טקסט."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "שפת הממשק עוקבת אחר הפעלת שולחן העבודה שלך."
 
@@ -327,13 +349,24 @@ msgstr "ה-WMI Hotkey daemon מותקן (מצב פעיל לא מאומת בסב�
 msgid "WMI Hotkey daemon installed and active."
 msgstr "ה-WMI Hotkey daemon מותקן ופעיל."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "למה הדיאלוג הזה?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "קיצורי דרך XFCE מוגדרים."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "בחירה לא חוקית: %s. הזינו מספרים (1,2,3,4), שמות רכיבים או all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "לא נבחרו רכיבים. ההתקנה בוטלה."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr "לחצו Enter כדי להתקין את כל הרכיבים המומלצים, או הזינו 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "הוסף קיצורי דרך לתצוגה, MyASUS ושיתוף שולחן העבודה"

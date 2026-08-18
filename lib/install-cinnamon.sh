@@ -264,6 +264,10 @@ _set_cinnamon_keybindings() {
     _cinnamon_apply_bindings "$user" "$bus"
 }
 
+_cinnamon_print_configure_progress() {
+    _install_print_next_step "$(_asus_gettextf "Configuring Cinnamon shortcuts for %s..." "$1")"
+}
+
 configure_cinnamon_component() {
     local info target_user user_id bus_path config_dir
     info=$(_resolve_user_bus_info)
@@ -274,7 +278,7 @@ configure_cinnamon_component() {
     target_user=$(echo "$info" | cut -d: -f1)
     user_id=$(echo "$info" | cut -d: -f2)
     bus_path=$(echo "$info" | cut -d: -f3-)
-    echo "[4/4] Configuring Cinnamon shortcuts for $target_user..."
+    _cinnamon_print_configure_progress "$target_user"
     config_dir="${STATE_DIR}/${user_id}"
     _cinnamon_prepare_state "$config_dir" "$target_user" || return 1
     if _set_cinnamon_keybindings "$target_user" "$bus_path" "$config_dir"; then

@@ -204,12 +204,22 @@ _install_zypper() {
     zypper clean --all
 }
 
+_pacman_retry_cmd() {
+    local retry
+    retry="$(dirname "${BASH_SOURCE[0]}")/pacman-retry.sh"
+    if [ ! -f "$retry" ]; then
+        echo "install-de-family: missing pacman-retry.sh" >&2
+        return 1
+    fi
+    bash "$retry" "$@"
+}
+
 _install_pacman() {
     local -a pkgs=()
     read -r -a pkgs <<< "${PACMAN_FAMILY_PACKAGES[$FAMILY]}"
-    pacman -Syu --noconfirm
-    pacman -S --noconfirm --needed python-gobject gettext
-    pacman -S --noconfirm --needed "${pkgs[@]}"
+    _pacman_retry_cmd -Syu --noconfirm
+    _pacman_retry_cmd -S --noconfirm --needed python-gobject gettext
+    _pacman_retry_cmd -S --noconfirm --needed "${pkgs[@]}"
     pacman -Scc --noconfirm
 }
 

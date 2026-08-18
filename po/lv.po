@@ -55,7 +55,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux iestatīšana %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools ir gatavs lietošanai."
 
@@ -63,11 +63,11 @@ msgstr "ASUS ZenBook Linux Tools ir gatavs lietošanai."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook iestatījumi"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook aparatūras līdzekļi ir instalēti kā papildu komponenti."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -84,7 +84,7 @@ msgstr "Visi displeji (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Visi displeji (galvenais + ekrāna bloks)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Pieejamās sastāvdaļas:"
 
@@ -108,7 +108,7 @@ msgstr "Kameras privātums"
 msgid "Choose components"
 msgstr "Izvēlieties komponentus"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Cinnamon īsceļi ir konfigurēti."
 
@@ -126,6 +126,26 @@ msgstr "Konfigurējiet GNOME saīsnes %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Konfigurēt KDE Plasma saīsnes %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Konfigurējiet Cinnamon saīsnes %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Konfigurējiet LXQt Global Keys saīsnes %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Konfigurējiet MATE saīsnes %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Konfigurējiet XFCE saīsnes %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -135,7 +155,7 @@ msgstr "Pašreizējais displeja izkārtojums"
 msgid "Display mode"
 msgstr "Displeja režīms"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Ievadiet komponentu numurus vai nosaukumus, atdalot tos ar komatiem."
 
@@ -155,7 +175,7 @@ msgstr "Konfigurēti GNOME saīsnes."
 msgid "Hardware features for your Linux desktop"
 msgstr "Aparatūras līdzekļi jūsu Linux darbvirsmai"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Instalējiet skriptus un pakalpojumus"
 
@@ -163,11 +183,11 @@ msgstr "Instalējiet skriptus un pakalpojumus"
 msgid "Install system dependencies"
 msgstr "Instalējiet sistēmas atkarības"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Lietotājs atcēla instalēšanu."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Uzstādīšana pabeigta."
 
@@ -176,7 +196,7 @@ msgstr "Uzstādīšana pabeigta."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux rīku instalēšana %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -184,7 +204,7 @@ msgstr ""
 "Instalē WMI karsto taustiņu dēmonu ScreenPad spilgtumam, Quiet/Balanced/"
 "Performance ventilatoram, kameras privātumam un logu maiņai starp monitoriem."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -192,7 +212,7 @@ msgstr ""
 "Instalē skaļruņu pastiprinātāja labojumu un suspend/resume āķi, lai "
 "atbalstītais ZenBook audio atjaunotos pēc palaišanas un pēc miega."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -201,23 +221,23 @@ msgstr ""
 "kreisajā stūrī atvērtu darbvirsmas ekrānuzņēmumu rīku (GNOME, Spectacle "
 "u.c.)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Nederīga atlase: %s. Ievadiet numurus (1,2,3,4), komponentu nosaukumus vai "
-"all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Nederīga atlase: %s. Ievadiet numurus (1,2,3,4), komponentu nosaukumus vai "
+"all, vai none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Konfigurēti KDE plazmas saīsnes."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt globālās atslēgas ir konfigurētas."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE saīsnes ir konfigurētas."
 
@@ -235,9 +255,9 @@ msgstr "Tikai galvenais displejs"
 msgid "Mode: %s"
 msgstr "Režīms: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Nav atlasīts neviens komponents. Instalēšana atcelta."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Nav atlasīts neviens komponents. Nekas netika instalēts."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -253,11 +273,11 @@ msgstr "Ieslēgts"
 msgid "Performance (Boost)"
 msgstr "Veiktspēja (palielinājums)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Nospiediet Enter, lai instalētu visus ieteiktos komponentus, vai ievadiet "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Nospiediet Enter, lai instalētu visus ieteiktos komponentus, vai ievadiet "
+"'all' vai 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -284,7 +304,7 @@ msgstr ""
 "Atlasiet tikai tās sastāvdaļas, kuras izmantojat. Neatlasītie pakalpojumi un "
 "īsceļi netiks instalēti."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Atlasiet tikai to, ko izmantojat, lai izvairītos no nevajadzīgiem "
@@ -306,11 +326,11 @@ msgstr "Skaņas labojums uzstādīts ar apturēšanas un atsākšanas āķi."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space atlasa komponentu. Enter apstiprina. Esc atceļ."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Teksta atlases režīms."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Interfeisa valoda seko jūsu darbvirsmas sesijai."
 
@@ -343,13 +363,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey dēmons ir instalēts un aktīvs."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Kāpēc šis dialogs?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE saīsnes ir konfigurētas."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Nederīga atlase: %s. Ievadiet numurus (1,2,3,4), komponentu nosaukumus "
+#~ "vai all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Nav atlasīts neviens komponents. Instalēšana atcelta."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Nospiediet Enter, lai instalētu visus ieteiktos komponentus, vai ievadiet "
+#~ "'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Pievienojiet darbvirsmas saīsnes Display, MyASUS un Share"

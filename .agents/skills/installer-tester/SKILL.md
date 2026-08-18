@@ -14,8 +14,19 @@ Use this skill to inspect and validate `install.sh` and `uninstall.sh` behavior 
    whiptail. Each option shows tag + wrapped detailed description; keep the header
    message short (keys only). Support Space/arrows/Enter/Esc and mouse clicks; accent
    via `ASUS_TUI_ACCENT_RGB` or DE resolve. Headless coverage uses `--script-keys`.
-   Text fallback must use the same detailed component msgids. Do not reintroduce
+   Text fallback must use the same detailed component msgids. Ok with nothing checked is a
+   successful no-op (empty `INSTALL_CHOICE`); Esc/Cancel still aborts. Do not reintroduce
    `whiptail`/`libnewt`/`newt` install deps.
+
+1. **Dynamic install progress**: `Choose components` prints without a step fraction; after
+   selection, `[n/m]` totals come from `_install_plan_progress_steps` (deps when
+   `SKIP_PKG_INSTALL` is not set to 1, including `SKIP_PKG_INSTALL=0`; scripts,
+   optional DESKTOP). Empty selection skips numbered steps and prints
+   `No components were selected. Nothing was installed.` Kcov covers that path via
+   `install.sh` `NONINTERACTIVE_CHOICE=none`. `_install_print_next_step`
+   defaults unset step counters under `set -u` (kcov DE `configure_*` drivers).
+   GNOME/KDE/Cinnamon/LXQt/MATE/XFCE configure steps use `_asus_gettextf`
+   (Cinnamon/LXQt/MATE/XFCE print via a one-line helper so nested quotes do not inflate CCN).
 
 1. **Refresh `install.sh.sha256` on every `install.sh` edit**:
    Any change to `install.sh` must update the checksum in the same change set:

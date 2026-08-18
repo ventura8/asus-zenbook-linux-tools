@@ -19,12 +19,15 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
         script = (self.repo_root / "scripts/run_deb_package_smoke.sh").read_text(
             encoding="utf-8"
         )
+        self.assertIn("_require_exact_one_glob", script)
         self.assertIn("_apt_install_local_deb", script)
         self.assertIn('install_path="./$deb_path"', script)
         self.assertIn("runuser -u", script)
         self.assertIn("SUDO_USER", script)
         self.assertIn("_cleanup_debian_build_tree", script)
         self.assertIn("trap '_cleanup_debian_build_tree' EXIT", script)
+        self.assertIn("_remove_prior_package_debs", script)
+        self.assertIn("../${PACKAGE_NAME}_*.deb", script)
         self.assertNotRegex(
             script,
             r'apt-get install -y "\$\{?ARTIFACT_DEB\}?"',
@@ -300,6 +303,16 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
         bat = (self.repo_root / "scripts/build-and-test.sh").read_text(encoding="utf-8")
         self.assertNotIn("_run_lints_only_steps", bat)
         self.assertIn("lints/tests only in Docker", bat)
+
+    def test_lint_discovers_po_files_for_msgfmt(self) -> None:
+        """Cheap-wave PO lint discovers repo *.po files and runs msgfmt -c."""
+        run_lints = (self.repo_root / "scripts/run-lints.sh").read_text(encoding="utf-8")
+        self.assertIn("find_po_files", run_lints)
+        self.assertIn("step_po_lint", run_lints)
+        self.assertIn("-name '*.po'", run_lints)
+        self.assertIn("msgfmt -c --check-format", run_lints)
+        wave1 = run_lints.split("LINT_WAVE1_STEPS=(", 1)[1].split(")", 1)[0]
+        self.assertIn("step_po_lint", wave1)
 
     def test_ci_distro_tests_are_family_split(self) -> None:
         """Compat lanes must use distro-tests-{debian,rhel,suse-arch} matrices."""

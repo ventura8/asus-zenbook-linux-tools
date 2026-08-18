@@ -562,7 +562,7 @@ _execute_pkg_install() {
 
 install_system_deps() {
     [ "${SKIP_PKG_INSTALL:-0}" = "1" ] && return 0
-    printf '[2/4] %s\n' "$(_asus_gettext "Install system dependencies")"
+    _install_print_next_step "$(_asus_gettext "Install system dependencies")"
     printf '  %s\n' "$(_asus_gettext "This can take a few minutes while packages are downloaded and installed.")"
     local cmd missing_file prepare_status=0
     _prepare_pkg_install cmd missing_file || prepare_status=$?

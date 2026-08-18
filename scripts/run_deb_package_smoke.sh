@@ -60,10 +60,25 @@ _cleanup_debian_build_tree() {
         "$REPO_ROOT/debian"/*.substvars
 }
 
+_remove_prior_package_debs() {
+    local -a leftovers=()
+    shopt -s nullglob
+    leftovers=(
+        "$REPO_ROOT/../${PACKAGE_NAME}_"*.deb
+        "$ARTIFACTS_DIR/${PACKAGE_NAME}_"*.deb
+    )
+    shopt -u nullglob
+    if [ "${#leftovers[@]}" -eq 0 ]; then
+        return 0
+    fi
+    rm -f "${leftovers[@]}"
+}
+
 _prepare_build_writable_dirs() {
     mkdir -p "$REPO_ROOT/reports/distro-logs" "$ARTIFACTS_DIR"
     # Always clear prior packaging trees (root-owned leftovers block dh_clean).
     _cleanup_debian_build_tree
+    _remove_prior_package_debs
     if [ "$(id -u)" -ne 0 ] || [ -z "${SUDO_USER:-}" ] || [ "$SUDO_USER" = root ]; then
         return 0
     fi
@@ -94,7 +109,7 @@ _build_unsigned_deb() {
 _copy_parent_deb_to_artifacts() {
     local deb_file
     shopt -s nullglob
-    deb_file=$(_require_exact_one_glob '../*.deb' ../*.deb) || return 1
+    deb_file=$(_require_exact_one_glob "../${PACKAGE_NAME}_*.deb" ../"${PACKAGE_NAME}"_*.deb) || return 1
     shopt -u nullglob
     ls -la "$deb_file"
     dpkg-deb -I "$deb_file"

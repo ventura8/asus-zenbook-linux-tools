@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux 설정 %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux 도구를 사용할 준비가 되었습니다."
 
@@ -55,11 +55,11 @@ msgstr "ASUS ZenBook Linux 도구를 사용할 준비가 되었습니다."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook 설정"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook 하드웨어 기능은 옵션 구성 요소로 설치됩니다."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -76,7 +76,7 @@ msgstr "모든 디스플레이(%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "모든 디스플레이(메인 + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "사용 가능한 구성 요소:"
 
@@ -100,7 +100,7 @@ msgstr "카메라 개인 정보 보호"
 msgid "Choose components"
 msgstr "구성 요소 선택"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "계피 단축키가 구성되었습니다."
 
@@ -118,6 +118,26 @@ msgstr "%s에 대한 그놈 바로가기 구성"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "%s에 대한 KDE 플라즈마 바로가기 구성"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s에 대한 Cinnamon 바로가기 구성..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s에 대한 LXQt Global Keys 바로가기 구성..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s에 대한 MATE 바로가기 구성..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s에 대한 XFCE 바로가기 구성..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -127,7 +147,7 @@ msgstr "현재 디스플레이 레이아웃"
 msgid "Display mode"
 msgstr "디스플레이 모드"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "구성 요소 번호 또는 이름을 쉼표로 구분하여 입력합니다."
 
@@ -147,7 +167,7 @@ msgstr "그놈 단축키가 구성되었습니다."
 msgid "Hardware features for your Linux desktop"
 msgstr "Linux 데스크탑을 위한 하드웨어 기능"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "스크립트 및 서비스 설치"
 
@@ -155,11 +175,11 @@ msgstr "스크립트 및 서비스 설치"
 msgid "Install system dependencies"
 msgstr "시스템 종속성 설치"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "사용자가 설치를 취소했습니다."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "설치가 완료되었습니다."
 
@@ -168,7 +188,7 @@ msgstr "설치가 완료되었습니다."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux 도구 설치 %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -176,7 +196,7 @@ msgstr ""
 "ScreenPad 밝기, Quiet/Balanced/Performance 팬, 카메라 개인정보 보호, 모니터 "
 "간 창 전환을 위한 WMI 단축키 데몬을 설치합니다."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -184,7 +204,7 @@ msgstr ""
 "지원되는 ZenBook 오디오가 부팅 후와 절전 후 복구되도록 스피커 앰프 수정과 "
 "suspend/resume 훅을 설치합니다."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -192,21 +212,22 @@ msgstr ""
 "왼쪽 위 모서리를 탭하면 데스크톱 스크린샷 도구(GNOME, Spectacle 등)가 열리도"
 "록 터치패드 Share 제스처 리스너를 설치합니다."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "잘못된 선택: %s. 숫자(1,2,3,4), 구성 요소 이름 또는 all을 입력하세요."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "잘못된 선택: %s. 숫자(1,2,3,4), 구성 요소 이름, all 또는 none을 입력하세요."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE 플라즈마 바로가기가 구성되었습니다."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt 글로벌 키가 구성되었습니다."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE 단축키가 구성되었습니다."
 
@@ -224,9 +245,9 @@ msgstr "메인 디스플레이만"
 msgid "Mode: %s"
 msgstr "모드: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "선택한 구성 요소가 없습니다. 설치가 취소되었습니다."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "선택한 구성 요소가 없습니다. 아무 것도 설치되지 않았습니다."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -242,9 +263,10 @@ msgstr "켜기"
 msgid "Performance (Boost)"
 msgstr "성능(부스트)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "Enter를 눌러 모든 권장 구성 요소를 설치하거나 'all'을 입력하세요."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Enter를 눌러 모든 권장 구성 요소를 설치하거나 'all' 또는 'none' 을 입력하세요."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -271,7 +293,7 @@ msgstr ""
 "사용하는 구성 요소만 선택하세요. 선택하지 않은 서비스와 바로가기는 설치되지 "
 "않습니다."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "불필요한 서비스와 바로가기를 피하기 위해 사용하는 것만 선택하세요."
 
@@ -291,11 +313,11 @@ msgstr "일시 중지 및 재개 후크와 함께 사운드 수정이 설치되�
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space는 구성 요소를 선택합니다. Enter는 확인합니다. Esc는 취소합니다."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "텍스트 선택 모드."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "인터페이스 언어는 데스크탑 세션을 따릅니다."
 
@@ -326,13 +348,25 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI 핫키 데몬이 설치되어 활성화되었습니다."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "이 대화 상자가 왜 필요한가요?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE 단축키가 구성되었습니다."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "잘못된 선택: %s. 숫자(1,2,3,4), 구성 요소 이름 또는 all을 입력하세요."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "선택한 구성 요소가 없습니다. 설치가 취소되었습니다."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr "Enter를 눌러 모든 권장 구성 요소를 설치하거나 'all'을 입력하세요."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "디스플레이, MyASUS 및 공유 바탕화면 바로가기 추가"

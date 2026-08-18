@@ -554,7 +554,7 @@ configure_gnome_component() {
     user_id=$(echo "$info" | cut -d: -f2)
     bus_path=$(echo "$info" | cut -d: -f3-)
 
-    printf '[4/4] %s\n' "$(_asus_gettextf "Configure GNOME shortcuts for %s" "$target_user")"
+    _install_print_next_step "$(_asus_gettextf "Configure GNOME shortcuts for %s" "$target_user")"
     local config_dir="${STATE_DIR}/${user_id}"
     _gnome_write_desktop_family_state "$config_dir" || return 1
 

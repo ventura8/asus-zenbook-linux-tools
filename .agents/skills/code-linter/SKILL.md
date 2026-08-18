@@ -1,12 +1,13 @@
 ---
 name: code-linter
-description: Run ruff, pylint, yamllint, markdownlint, eslint, and shellcheck over repository files.
+description: Run ruff, pylint, yamllint, markdownlint, eslint, shellcheck, and gettext PO lint over repository files.
 ---
 
 # Code Linter Skill
 
 Use this skill to lint all Python scripts, shell scripts, GNOME extension JavaScript,
-Markdown files, and YAML workflows without using suppression comments or inline ignores.
+Markdown files, YAML workflows, and gettext PO catalogs without using suppression comments
+or inline ignores.
 
 ## Instructions
 
@@ -219,6 +220,26 @@ Markdown files, and YAML workflows without using suppression comments or inline 
    (`curl … | sudo bash`). Do not put `NONINTERACTIVE_CHOICE` in human README/release quick-starts;
    clearly labeled headless/automation sections in `docs/INSTRUCTIONS.md` may use it.
 
+1. **Gettext PO syntax (cheap wave)**: `step_po_lint` discovers `*.po` with `_find_repo_files`
+   (same prune set as Python/YAML/Markdown) and runs `msgfmt -c --check-format -o /dev/null`
+   on each file. Fail closed when `msgfmt` is missing or the discovery list is empty.
+
+   ```bash
+   set -euo pipefail
+   mkdir -p reports/distro-logs
+   _repo_prune_find0 PO_FILES -type f -name '*.po' -print0
+   {
+       command -v msgfmt >/dev/null 2>&1 || exit 1
+       if [ "${#PO_FILES[@]}" -eq 0 ]; then
+           exit 1
+       fi
+       for po in "${PO_FILES[@]}"; do
+           msgfmt -c --check-format -o /dev/null "$po"
+       done
+   } 2>&1 | tee reports/distro-logs/lint-po.log
+   exit "${PIPESTATUS[0]}"
+   ```
+
 1. **JavaScript Linting (GNOME Shell extension)**:
 
    Discover and lint `*.js` under `./gnome` only (do not widen discovery or `eslint.config.mjs`).
@@ -256,16 +277,18 @@ Markdown files, and YAML workflows without using suppression comments or inline 
    (no empty/fuzzy/English-only msgstr for non-English locales). The template is
    tracked despite blanket `*.pot` in `.gitignore` via
    `!po/asus-zenbook-linux-tools.pot`. Freshness (`--check`) fails if the file is
-   untracked/gitignored even when present on disk (CI checkout parity). The lint
-   driver also runs `msgfmt -c` and `scripts/i18n/check_catalog_quality.py`; fix
-   fuzzy entries, placeholders, plurals, empty translations, or canary failures at
+   untracked/gitignored even when present on disk (CI checkout parity). Cheap-wave
+   `step_po_lint` runs `msgfmt -c --check-format` on every discovered `*.po`. Heavy-wave
+   `step_i18n_catalogs` runs `extract_pot.sh --check`, `seed_whisper_languages.py --check`,
+   and `scripts/i18n/check_catalog_quality.py` (which also `msgfmt`/`msgcmp`s each catalog).
+   Fix fuzzy entries, placeholders, plurals, empty translations, or canary failures at
    the source. `PO-Revision-Date` must be a real stamp (never `YEAR-MO-DA HO:MI+ZONE`);
    the seeder replaces that placeholder with `PO_REVISION_DATE`. Never bypass
    catalog checks or hand-edit generated `.mo` files. Shell `xgettext` must pass
    `--keyword=` (clear defaults) before project keywords so a bare `gettext`
    package name in `for pkg in … gettext alsa-tools …` is not scraped as a msgid.
 
-1. **File-size gate (600 lines)** — step `[2/14]` runs `python3 scripts/check_file_size_limits.py`:
+1. **File-size gate (600 lines)** — step `[2/16]` runs `python3 scripts/check_file_size_limits.py`:
 
    - Scope: `bin/`, `lib/`, `tests/`, `tools/`, `scripts/`, `gnome/`, `docker/`, root `install.sh`,
      `uninstall.sh`, `shared_imports.py`, `sitecustomize.py`, and Debian maintainer scripts

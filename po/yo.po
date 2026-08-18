@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Iṣeto ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Awọn irinṣẹ Linux Asus ZenBook ti ṣetan lati lo."
 
@@ -55,11 +55,11 @@ msgstr "Awọn irinṣẹ Linux Asus ZenBook ti ṣetan lati lo."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook Eto"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "Awọn ẹya ohun elo ASUS ZenBook ti fi sori ẹrọ bi awọn paati aṣayan."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -76,7 +76,7 @@ msgstr "Gbogbo awọn ifihan (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Gbogbo awọn ifihan (Akọkọ + iboju iboju)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Awọn eroja to wa:"
 
@@ -100,7 +100,7 @@ msgstr "Aṣiri kamẹra"
 msgid "Choose components"
 msgstr "Yan irinše"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Awọn ọna abuja eso igi gbigbẹ oloorun tunto."
 
@@ -118,6 +118,26 @@ msgstr "Ṣe atunto awọn ọna abuja GNOME fun %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Ṣe atunto awọn ọna abuja Plasma KDE fun %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Ṣe atunto awọn ọna abuja Cinnamon fun %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Ṣe atunto awọn ọna abuja LXQt Global Keys fun %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Ṣe atunto awọn ọna abuja MATE fun %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Ṣe atunto awọn ọna abuja XFCE fun %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -127,7 +147,7 @@ msgstr "Ifilelẹ ifihan lọwọlọwọ"
 msgid "Display mode"
 msgstr "Ipo ifihan"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Tẹ awọn nọmba paati tabi awọn orukọ, niya nipasẹ aami idẹsẹ."
 
@@ -147,7 +167,7 @@ msgstr "Awọn ọna abuja GNOME tunto."
 msgid "Hardware features for your Linux desktop"
 msgstr "Awọn ẹya ara ẹrọ fun tabili Linux rẹ"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Fi awọn iwe afọwọkọ ati awọn iṣẹ sori ẹrọ"
 
@@ -155,11 +175,11 @@ msgstr "Fi awọn iwe afọwọkọ ati awọn iṣẹ sori ẹrọ"
 msgid "Install system dependencies"
 msgstr "Fi awọn igbẹkẹle eto sori ẹrọ"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Ti fagilee fifi sori ẹrọ nipasẹ olumulo."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Fifi sori ẹrọ ti pari."
 
@@ -168,7 +188,7 @@ msgstr "Fifi sori ẹrọ ti pari."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Fifi ASUS ZenBook Linux Awọn irinṣẹ %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -176,7 +196,7 @@ msgstr ""
 "N fi daemon bọtini gbigbona WMI sori ẹrọ fun imọlẹ ScreenPad, afẹfẹ Quiet/"
 "Balanced/Performance, asiri kamera ati paarọ window kọja awọn monitor."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -184,7 +204,7 @@ msgstr ""
 "N fi atunṣe amplifier agbohunsoke ati ìkọ́ suspend/resume sori ẹrọ ki ohun "
 "ZenBook ti a ṣe atilẹyin le pada lẹhin boot ati lẹhin oorun."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -192,21 +212,22 @@ msgstr ""
 "N fi olutetisilẹ iṣesi Share touchpad sori ẹrọ ki tẹ ni igun oke-osi ṣii "
 "irinṣẹ screenshot desktop (GNOME, Spectacle ati iru wọn)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "Yiyan ti ko tọ: %s. Tẹ awọn nọmba (1,2,3,4), orukọ apa, tabi all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Yiyan ti ko tọ: %s. Tẹ awọn nọmba (1,2,3,4), orukọ apa, tabi all, tàbí none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Awọn ọna abuja Plasma KDE tunto."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys tunto."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Awọn ọna abuja MATE tunto."
 
@@ -224,9 +245,9 @@ msgstr "Ifihan akọkọ nikan"
 msgid "Mode: %s"
 msgstr "Ipo: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Ko si awọn paati ti a yan. Ti fagilee fifi sori ẹrọ."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Ko si awọn paati ti a yan. Ko si nkan ti a fi sori ẹrọ."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -242,10 +263,11 @@ msgstr "Lori"
 msgid "Performance (Boost)"
 msgstr "Iṣe (Imudara)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Tẹ Enter lati fi gbogbo awọn apa ti a ṣe iṣeduro sori ẹrọ, tabi tẹ 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Tẹ Enter lati fi gbogbo awọn apa ti a ṣe iṣeduro sori ẹrọ, tabi tẹ 'all' "
+"tàbí 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -272,7 +294,7 @@ msgstr ""
 "Yan awọn paati ti o lo nikan. Awọn iṣẹ ti a ko yan ati awọn ọna abuja kii "
 "yoo fi sii."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "Yan ohun ti o lo lati yago fun awọn iṣẹ ti ko wulo ati awọn ọna abuja."
 
@@ -292,11 +314,11 @@ msgstr "Atunṣe ohun ti fi sori ẹrọ pẹlu idadoro ati kio bẹrẹ pada."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space yan apa kan. Enter jẹrisi. Esc fagilee."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Ipo yiyan ọrọ."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Ede ni wiwo tẹle igba tabili tabili rẹ."
 
@@ -329,13 +351,25 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon ti fi sori ẹrọ ati lọwọ."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Kini idi ti ibaraẹnisọrọ yii?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Awọn ọna abuja XFCE tunto."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "Yiyan ti ko tọ: %s. Tẹ awọn nọmba (1,2,3,4), orukọ apa, tabi all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Ko si awọn paati ti a yan. Ti fagilee fifi sori ẹrọ."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Tẹ Enter lati fi gbogbo awọn apa ti a ṣe iṣeduro sori ẹrọ, tabi tẹ 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Ṣafikun Ifihan, MyASUS, ati Pin awọn ọna abuja tabili tabili"

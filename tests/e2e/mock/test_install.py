@@ -142,6 +142,24 @@ class TestInstallScriptE2E(unittest.TestCase):
             self.assertNotEqual(proc.returncode, 0)
             self.assertIn("Invalid NONINTERACTIVE_CHOICE", proc.stderr)
 
+    def test_empty_noninteractive_choice_is_successful_noop(self):
+        """Empty NONINTERACTIVE_CHOICE skips deploy and completes successfully."""
+        with tempfile.TemporaryDirectory() as tmp:
+            dest_dir = Path(tmp) / "dest"
+            env = {
+                "ASUS_TEST_MODE": "1",
+                "SKIP_ROOT_CHECK": "1",
+                "SKIP_PKG_INSTALL": "1",
+                "NONINTERACTIVE_CHOICE": "",
+                "DESTDIR": str(dest_dir),
+                "SYSTEMCTL_CMD": "true",
+            }
+            proc = run_e2e_command(["bash", INSTALL_SCRIPT], env=dict(os.environ, **env), timeout=25)
+
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertIn("No components were selected. Nothing was installed.", proc.stdout)
+            self.assertFalse((dest_dir / "usr/local/bin/asus-hotkey-daemon.py").exists())
+
     def test_no_tty_without_noninteractive_choice_defaults_to_all(self):
         """Test installer defaults to all components when no TTY is available."""
         with tempfile.TemporaryDirectory() as tmp:

@@ -9,7 +9,10 @@ ARG KCOV_SHA256=4cbba86af11f72de0c7514e09d59c7927ed25df7cebdad087f6d3623213b95bf
 # Poetry installs evdev; PyGObject via pip against 3.13.
 # Prefer NEVRA-style -[0-9]* / exact python3.13 names: bare name-* globs pull
 # cross-binutils, cmake-gui, python idle/test, and git addons.
-RUN dnf -y install \
+# kcov needs libcurl-devel matching installed libcurl (EL10 appstream/baseos skew).
+COPY docker/images/tests/scripts/el10-kcov-libcurl.sh /tmp/el10-kcov-libcurl.sh
+RUN chmod +x /tmp/el10-kcov-libcurl.sh \
+    && dnf -y install \
         dnf-plugins-core-* \
         epel-release-* \
     && dnf config-manager --set-enabled crb \
@@ -22,7 +25,6 @@ RUN dnf -y install \
         gcc-c++-[0-9]* \
         make-[0-9]* \
         cmake-[0-9]* \
-        curl-minimal \
         sudo-* \
         ca-certificates-* \
         systemd-[0-9]* \
@@ -33,7 +35,6 @@ RUN dnf -y install \
         sqlite-* \
         zlib-devel \
         openssl-devel-* \
-        libcurl-devel-* \
         which-* \
         git-[0-9]* \
         dbus-daemon-* \
@@ -48,6 +49,8 @@ RUN dnf -y install \
         cairo-gobject-* \
         cairo-gobject-devel-* \
         alsa-utils-[0-9]* \
+    && /tmp/el10-kcov-libcurl.sh \
+    && rm -f /tmp/el10-kcov-libcurl.sh \
     && curl -fL --retry 8 --retry-all-errors --retry-delay 2 \
         "https://github.com/SimonKagstrom/kcov/archive/refs/tags/${KCOV_VERSION}.tar.gz" \
         -o /tmp/kcov.tar.gz \

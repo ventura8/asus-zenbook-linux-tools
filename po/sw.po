@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Usanidi wa ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Zana za ASUS ZenBook Linux ziko tayari kutumika."
 
@@ -57,12 +57,12 @@ msgstr "Zana za ASUS ZenBook Linux ziko tayari kutumika."
 msgid "ASUS ZenBook Settings"
 msgstr "Mipangilio ya ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Vipengele vya maunzi vya ASUS ZenBook vimesakinishwa kama vijenzi vya hiari."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -79,7 +79,7 @@ msgstr "Maonyesho yote (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Maonyesho yote (Kuu + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Vipengele vinavyopatikana:"
 
@@ -103,7 +103,7 @@ msgstr "Faragha ya kamera"
 msgid "Choose components"
 msgstr "Chagua vipengele"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Njia za mkato za mdalasini zimesanidiwa."
 
@@ -121,6 +121,26 @@ msgstr "Sanidi njia za mkato za GNOME za %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Sanidi mikato ya KDE Plasma ya %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Sanidi njia za mkato za Cinnamon za %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Sanidi njia za mkato za LXQt Global Keys za %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Sanidi njia za mkato za MATE za %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Sanidi njia za mkato za XFCE za %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -130,7 +150,7 @@ msgstr "Mpangilio wa maonyesho ya sasa"
 msgid "Display mode"
 msgstr "Hali ya kuonyesha"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Weka nambari za vijenzi au majina, yakitenganishwa na koma."
 
@@ -150,7 +170,7 @@ msgstr "Njia za mkato za GNOME zimesanidiwa."
 msgid "Hardware features for your Linux desktop"
 msgstr "Vipengele vya maunzi kwa eneo-kazi lako la Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Sakinisha hati na huduma"
 
@@ -158,11 +178,11 @@ msgstr "Sakinisha hati na huduma"
 msgid "Install system dependencies"
 msgstr "Sakinisha utegemezi wa mfumo"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Usakinishaji umeghairiwa na mtumiaji."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Usakinishaji umekamilika."
 
@@ -171,7 +191,7 @@ msgstr "Usakinishaji umekamilika."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Inasakinisha Zana za Linux za ASUS ZenBook %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -180,7 +200,7 @@ msgstr ""
 "feni Quiet/Balanced/Performance, faragha ya kamera na ubadilishaji wa "
 "madirisha kati ya monitor."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -188,7 +208,7 @@ msgstr ""
 "Inasakinisha marekebisho ya amp ya spika na ndoano ya suspend/resume ili "
 "sauti ya ZenBook inayotumika irejee baada ya boot na baada ya usingizi."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -197,22 +217,23 @@ msgstr ""
 "juu kushoto kufungue zana ya picha ya skrini ya eneo-kazi (GNOME, Spectacle "
 "na zinazofanana)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Uchaguzi batili: %s. Weka nambari (1,2,3,4), majina ya vipengele, au all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Uchaguzi batili: %s. Weka nambari (1,2,3,4), majina ya vipengele, au all, au "
+"none, au none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Njia za mkato za Plasma za KDE zimesanidiwa."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Vifunguo vya LXQt Global vimesanidiwa."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Njia za mkato za MATE zimesanidiwa."
 
@@ -230,9 +251,9 @@ msgstr "Onyesho kuu pekee"
 msgid "Mode: %s"
 msgstr "Njia: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Hakuna vijenzi vilivyochaguliwa. Usakinishaji umeghairiwa."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Hakuna vijenzi vilivyochaguliwa. Hakuna kilichosakinishwa."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -248,10 +269,11 @@ msgstr "Washa"
 msgid "Performance (Boost)"
 msgstr "Utendaji (Boost)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Bonyeza Enter kusakinisha vipengele vyote vilivyopendekezwa, au andika 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Bonyeza Enter kusakinisha vipengele vyote vilivyopendekezwa, au andika 'all' "
+"au 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -278,7 +300,7 @@ msgstr ""
 "Chagua tu vipengele unavyotumia. Huduma na njia za mkato ambazo "
 "hazijachaguliwa hazitasakinishwa."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Chagua tu unachotumia ili kuepuka huduma na njia za mkato zisizo za lazima."
@@ -300,11 +322,11 @@ msgstr ""
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space huchagua kipengele. Enter huthibitisha. Esc hughairi."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Hali ya uteuzi wa maandishi."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Lugha ya kiolesura hufuata kipindi chako cha eneo-kazi."
 
@@ -338,13 +360,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "Daemon ya Hotkey ya WMI imesakinishwa na inafanya kazi."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Kwa nini mazungumzo haya?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Njia za mkato za XFCE zimesanidiwa."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Uchaguzi batili: %s. Weka nambari (1,2,3,4), majina ya vipengele, au all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Hakuna vijenzi vilivyochaguliwa. Usakinishaji umeghairiwa."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Bonyeza Enter kusakinisha vipengele vyote vilivyopendekezwa, au andika "
+#~ "'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Ongeza Onyesho, MyASUS na Shiriki njia za mkato za eneo-kazi"

@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux-installation %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools är redo att användas."
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux Tools är redo att användas."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook-inställningar"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBooks hårdvarufunktioner installeras som tillvalskomponenter."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "Alla skärmar (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Alla skärmar (Main + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Tillgängliga komponenter:"
 
@@ -102,7 +102,7 @@ msgstr "Kamerans integritet"
 msgid "Choose components"
 msgstr "Välj komponenter"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Kanelgenvägar konfigurerade."
 
@@ -120,6 +120,26 @@ msgstr "Konfigurera GNOME-genvägar för %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Konfigurera KDE Plasma-genvägar för %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Konfigurera Cinnamon-genvägar för %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Konfigurera LXQt Global Keys-genvägar för %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Konfigurera MATE-genvägar för %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Konfigurera XFCE-genvägar för %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "Aktuell displaylayout"
 msgid "Display mode"
 msgstr "Visningsläge"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Ange komponentnummer eller namn, separerade med kommatecken."
 
@@ -149,7 +169,7 @@ msgstr "GNOME-genvägar konfigurerade."
 msgid "Hardware features for your Linux desktop"
 msgstr "Hårdvarufunktioner för ditt Linux-skrivbord"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Installera skript och tjänster"
 
@@ -157,20 +177,20 @@ msgstr "Installera skript och tjänster"
 msgid "Install system dependencies"
 msgstr "Installera systemberoenden"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Installationen avbröts av användaren."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Installationen är klar."
 
 #: bin/asus_install_selection_tui.py:525
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
-msgstr "Installera ASUS ZenBook Linux Tools %s."
+msgstr "Installerar ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "Installerar WMI-hotkey-demonen för ScreenPad-ljusstyrka, fläkten Quiet/"
 "Balanced/Performance, kameraintegritet och fönsterbyte mellan skärmar."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "Installerar högtalarförstärkarfixen och en suspend/resume-krok så att stödd "
 "ZenBook-ljud återställs efter uppstart och efter viloläge."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -195,21 +215,23 @@ msgstr ""
 "vänstra hörnet öppnar skrivbordets skärmdumpsverktyg (GNOME, Spectacle och "
 "liknande)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "Ogiltigt val: %s. Ange nummer (1,2,3,4), komponentnamn eller all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Ogiltigt val: %s. Ange nummer (1,2,3,4), komponentnamn eller all, eller "
+"none, eller none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma-genvägar konfigurerade."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys konfigurerade."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE-genvägar konfigurerade."
 
@@ -227,9 +249,9 @@ msgstr "Endast huvuddisplay"
 msgid "Mode: %s"
 msgstr "Läge: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Inga komponenter valdes. Installationen avbröts."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Inga komponenter valdes. Ingenting installerades."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -245,11 +267,11 @@ msgstr "På"
 msgid "Performance (Boost)"
 msgstr "Prestanda (boost)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Tryck på Enter för att installera alla rekommenderade komponenter, eller "
-"ange 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Tryck på Enter för att installera alla rekommenderade komponenter, eller "
+"ange 'all' eller 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -276,7 +298,7 @@ msgstr ""
 "Välj bara de komponenter du använder. Omarkerade tjänster och genvägar "
 "kommer inte att installeras."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Välj bara det du använder för att undvika onödiga tjänster och genvägar."
@@ -297,11 +319,11 @@ msgstr "Ljudfix installerad med en upphängnings- och återupptagningskrok."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space väljer en komponent. Enter bekräftar. Esc avbryter."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Textvalsläge."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Gränssnittsspråket följer din skrivbordssession."
 
@@ -333,13 +355,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey-demon installerad och aktiv."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Varför denna dialog?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE-genvägar konfigurerade."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "Ogiltigt val: %s. Ange nummer (1,2,3,4), komponentnamn eller all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Inga komponenter valdes. Installationen avbröts."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Tryck på Enter för att installera alla rekommenderade komponenter, eller "
+#~ "ange 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Lägg till genvägar för Display, MyASUS och Share på skrivbordet"

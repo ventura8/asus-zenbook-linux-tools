@@ -139,6 +139,12 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
         self.assertEqual(run_scripted(model2, "\x1b"), EXIT_CANCEL)
         self.assertEqual(run_scripted(model2, "z\n"), EXIT_OK)
 
+    def test_scripted_uncheck_all_confirms_empty_selection(self) -> None:
+        """Unchecking every component then Ok yields an empty selection."""
+        model = build_default_model(desktop_on=True, title="t", message="m")
+        self.assertEqual(run_scripted(model, " j j j \n"), EXIT_OK)
+        self.assertEqual(model.selected_tags(), [])
+
     def test_space_toggles_and_mouse_ok(self) -> None:
         """Space toggles focus item; mouse Ok/Cancel and miss paths."""
         model = ChecklistModel(tags=["WMI"], labels=["x"], selected=[True], focus=0)

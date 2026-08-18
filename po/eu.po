@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux konfigurazioa %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools erabiltzeko prest dago."
 
@@ -57,12 +57,12 @@ msgstr "ASUS ZenBook Linux Tools erabiltzeko prest dago."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook ezarpenak"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "ASUS ZenBook hardwarearen eginbideak aukerako osagai gisa instalatzen dira."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -79,7 +79,7 @@ msgstr "Pantaila guztiak (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Pantaila guztiak (Nagusia + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Eskuragarri dauden osagaiak:"
 
@@ -103,7 +103,7 @@ msgstr "Kameraren pribatutasuna"
 msgid "Choose components"
 msgstr "Aukeratu osagaiak"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Kanela lasterbideak konfiguratuta."
 
@@ -121,6 +121,26 @@ msgstr "Konfiguratu GNOME lasterbideak %s-rako"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Konfiguratu KDE Plasma lasterbideak %s-rako"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Konfiguratu Cinnamon lasterbideak %s-rako..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Konfiguratu LXQt Global Keys lasterbideak %s-rako..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Konfiguratu MATE lasterbideak %s-rako..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Konfiguratu XFCE lasterbideak %s-rako..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -130,7 +150,7 @@ msgstr "Uneko pantaila-diseinua"
 msgid "Display mode"
 msgstr "Bistaratzeko modua"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Sartu osagaien zenbakiak edo izenak, komaz bereizita."
 
@@ -150,7 +170,7 @@ msgstr "GNOMEren lasterbideak konfiguratuta."
 msgid "Hardware features for your Linux desktop"
 msgstr "Zure Linux mahaigainerako hardware-eginbideak"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Instalatu scriptak eta zerbitzuak"
 
@@ -158,11 +178,11 @@ msgstr "Instalatu scriptak eta zerbitzuak"
 msgid "Install system dependencies"
 msgstr "Instalatu sistemaren menpekotasunak"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Erabiltzaileak bertan behera utzi du instalazioa."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Instalazioa amaituta."
 
@@ -171,7 +191,7 @@ msgstr "Instalazioa amaituta."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux tresnak instalatzen %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -180,7 +200,7 @@ msgstr ""
 "Balanced/Performance haizagailurako, kameraren pribatutasunerako eta "
 "monitoreen arteko leiho-trukarako."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -188,7 +208,7 @@ msgstr ""
 "Bozgorailu-anplifikadorearen konponketa eta suspend/resume kakoa instalatzen "
 "ditu, onartutako ZenBook audioa abiarazi eta loaren ondoren berreskura dadin."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -197,22 +217,23 @@ msgstr ""
 "izkinako ukitu batek mahaigaineko pantaila-argazki tresna irek dezan (GNOME, "
 "Spectacle eta antzekoak)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Hautaketa baliogabea: %s. Sartu zenbakiak (1,2,3,4), osagai-izenak edo all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Hautaketa baliogabea: %s. Sartu zenbakiak (1,2,3,4), osagai-izenak edo all, "
+"edo none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE Plasma lasterbideak konfiguratuta."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt gako globalak konfiguratuta."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE lasterbideak konfiguratuta."
 
@@ -230,9 +251,9 @@ msgstr "Pantaila nagusia soilik"
 msgid "Mode: %s"
 msgstr "Modua: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Ez da osagairik hautatu. Instalazioa bertan behera utzi da."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Ez da osagairik hautatu. Ez da ezer instalatu."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -248,10 +269,11 @@ msgstr "Piztuta"
 msgid "Performance (Boost)"
 msgstr "Errendimendua (Boost)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Sakatu Enter gomendatutako osagai guztiak instalatzeko, edo idatzi 'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Sakatu Enter gomendatutako osagai guztiak instalatzeko, edo idatzi 'all' edo "
+"'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -278,7 +300,7 @@ msgstr ""
 "Hautatu bakarrik erabiltzen dituzun osagaiak. Aukeratu gabeko zerbitzuak eta "
 "lasterbideak ez dira instalatuko."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Hautatu bakarrik erabiltzen duzuna alferrikako zerbitzuak eta lasterbideak "
@@ -302,11 +324,11 @@ msgstr ""
 "Space-k osagai bat hautatzen du. Enter-ek berresten du. Esc-ek bertan behera "
 "uzten du."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Testua aukeratzeko modua."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Interfazearen hizkuntza zure mahaigaineko saioari jarraitzen dio."
 
@@ -340,13 +362,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon instalatuta eta aktibo."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Zergatik elkarrizketa hau?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE lasterbideak konfiguratuta."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Hautaketa baliogabea: %s. Sartu zenbakiak (1,2,3,4), osagai-izenak edo "
+#~ "all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Ez da osagairik hautatu. Instalazioa bertan behera utzi da."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Sakatu Enter gomendatutako osagai guztiak instalatzeko, edo idatzi 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Gehitu Display, MyASUS eta Share mahaigaineko lasterbideak"

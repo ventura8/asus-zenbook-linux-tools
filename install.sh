@@ -259,8 +259,14 @@ _prepare_install_selection() {
     local script_dir="$1"
     _source_session_helper "$script_dir" || exit 1
     print_setup_banner 1
-    printf '[1/4] %s\n' "$(_asus_gettext "Choose components")"
+    printf '%s\n' "$(_asus_gettext "Choose components")"
     prompt_user_selection || exit 1
+}
+
+_print_empty_install_completion() {
+    echo "=================================================="
+    printf '      %s\n' "$(_asus_gettext "No components were selected. Nothing was installed.")"
+    echo "=================================================="
 }
 
 main() {
@@ -272,9 +278,15 @@ main() {
     _prepare_install_selection "$script_dir"
     choice="$INSTALL_CHOICE"
 
+    if [ -z "$choice" ]; then
+        _print_empty_install_completion
+        return 0
+    fi
+
+    _install_plan_progress_steps "$choice"
     install_system_deps || exit 1
 
-    printf '[3/4] %s\n' "$(_asus_gettext "Install scripts and services")"
+    _install_print_next_step "$(_asus_gettext "Install scripts and services")"
     _prepare_install_runtime "$script_dir"
 
     if run_installer_selected_components "$choice" "$script_dir"; then

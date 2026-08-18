@@ -49,7 +49,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux அமைவு %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools பயன்படுத்த தயாராக உள்ளது."
 
@@ -57,11 +57,11 @@ msgstr "ASUS ZenBook Linux Tools பயன்படுத்த தயாரா�
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook அமைப்புகள்"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook வன்பொருள் அம்சங்கள் விருப்பக் கூறுகளாக நிறுவப்பட்டுள்ளன."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -78,7 +78,7 @@ msgstr "அனைத்து காட்சிகளும் (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "அனைத்து காட்சிகளும் (முதன்மை + ஸ்கிரீன்பேட்)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "கிடைக்கும் கூறுகள்:"
 
@@ -102,7 +102,7 @@ msgstr "கேமரா தனியுரிமை"
 msgid "Choose components"
 msgstr "கூறுகளைத் தேர்ந்தெடுக்கவும்"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "இலவங்கப்பட்டை குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
 
@@ -120,6 +120,26 @@ msgstr "%s க்கான க்னோம் குறுக்குவழி�
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "%s க்கான KDE பிளாஸ்மா குறுக்குவழிகளை உள்ளமைக்கவும்"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s க்கான Cinnamon குறுக்குவழிகளை உள்ளமைக்கவும்..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s க்கான LXQt Global Keys குறுக்குவழிகளை உள்ளமைக்கவும்..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s க்கான MATE குறுக்குவழிகளை உள்ளமைக்கவும்..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s க்கான XFCE குறுக்குவழிகளை உள்ளமைக்கவும்..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -129,7 +149,7 @@ msgstr "தற்போதைய காட்சி அமைப்பு"
 msgid "Display mode"
 msgstr "காட்சி முறை"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "காற்புள்ளிகளால் பிரிக்கப்பட்ட கூறு எண்கள் அல்லது பெயர்களை உள்ளிடவும்."
 
@@ -149,7 +169,7 @@ msgstr "க்னோம் குறுக்குவழிகள் கட்�
 msgid "Hardware features for your Linux desktop"
 msgstr "உங்கள் லினக்ஸ் டெஸ்க்டாப்பிற்கான வன்பொருள் அம்சங்கள்"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "ஸ்கிரிப்டுகள் மற்றும் சேவைகளை நிறுவவும்"
 
@@ -157,11 +177,11 @@ msgstr "ஸ்கிரிப்டுகள் மற்றும் சேவ�
 msgid "Install system dependencies"
 msgstr "கணினி சார்புகளை நிறுவவும்"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "பயனரால் நிறுவல் ரத்து செய்யப்பட்டது."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "நிறுவல் முடிந்தது."
 
@@ -170,7 +190,7 @@ msgstr "நிறுவல் முடிந்தது."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux கருவிகளை நிறுவுகிறது %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -178,7 +198,7 @@ msgstr ""
 "ScreenPad ஒளிர்வு, விசிறி Quiet/Balanced/Performance, கேமரா தனியுரிமை மற்றும் "
 "மானிட்டர்களுக்கிடையே சாளர மாற்றத்திற்கான WMI ஹாட்கீ daemon நிறுவுகிறது."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -186,7 +206,7 @@ msgstr ""
 "ஆதரிக்கப்படும் ZenBook ஒலி துவக்கத்திற்குப் பிறகும் உறக்கத்திற்குப் பிறகும் மீள ஸ்பீக்கர் "
 "ஆம்ப்ளிஃபையர் சரிசெய்தல் மற்றும் suspend/resume hook நிறுவுகிறது."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -194,21 +214,23 @@ msgstr ""
 "மேல்-இடது மூலையில் தட்டும்போது டெஸ்க்டாப் ஸ்கிரீன்ஷாட் கருவி (GNOME, Spectacle மற்றும் "
 "ஒப்பானவை) திறக்க touchpad Share சைகை listener நிறுவுகிறது."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "செல்லாத தேர்வு: %s. எண்கள் (1,2,3,4), கூறு பெயர்கள் அல்லது all உள்ளிடவும்."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "செல்லாத தேர்வு: %s. எண்கள் (1,2,3,4), கூறு பெயர்கள் அல்லது all, அல்லது none "
+"உள்ளிடவும்."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE பிளாஸ்மா குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt குளோபல் விசைகள் கட்டமைக்கப்பட்டுள்ளன."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE குறுக்குவழிகள் உள்ளமைக்கப்பட்டன."
 
@@ -226,9 +248,9 @@ msgstr "பிரதான காட்சி மட்டும்"
 msgid "Mode: %s"
 msgstr "பயன்முறை: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "கூறுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. நிறுவல் ரத்து செய்யப்பட்டது."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "கூறுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. எதுவும் நிறுவப்படவில்லை."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -244,10 +266,11 @@ msgstr "அன்று"
 msgid "Performance (Boost)"
 msgstr "செயல்திறன் (பூஸ்ட்)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"பரிந்துரைக்கப்பட்ட அனைத்து கூறுகளையும் நிறுவ Enter அழுத்தவும், அல்லது 'all' உள்ளிடவும்."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "பரிந்துரைக்கப்பட்ட அனைத்து கூறுகளையும் நிறுவ Enter அழுத்தவும், அல்லது 'all' "
+"அல்லது 'none' உள்ளிடவும்."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -274,7 +297,7 @@ msgstr ""
 "நீங்கள் பயன்படுத்தும் கூறுகளை மட்டும் தேர்ந்தெடுக்கவும். தேர்ந்தெடுக்கப்படாத சேவைகள் மற்றும் "
 "குறுக்குவழிகள் நிறுவப்படாது."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "தேவையற்ற சேவைகள் மற்றும் குறுக்குவழிகளைத் தவிர்க்க நீங்கள் பயன்படுத்துவதை மட்டும் "
@@ -297,11 +320,11 @@ msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr ""
 "Space ஒரு கூறைத் தேர்ந்தெடுக்கிறது. Enter உறுதிப்படுத்துகிறது. Esc ரத்துசெய்கிறது."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "உரை தேர்வு முறை."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "இடைமுக மொழி உங்கள் டெஸ்க்டாப் அமர்வைப் பின்பற்றுகிறது."
 
@@ -332,13 +355,26 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey டீமான் நிறுவப்பட்டு செயலில் உள்ளது."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "ஏன் இந்த டயலாக்?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE குறுக்குவழிகள் கட்டமைக்கப்பட்டுள்ளன."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "செல்லாத தேர்வு: %s. எண்கள் (1,2,3,4), கூறு பெயர்கள் அல்லது all உள்ளிடவும்."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "கூறுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. நிறுவல் ரத்து செய்யப்பட்டது."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "பரிந்துரைக்கப்பட்ட அனைத்து கூறுகளையும் நிறுவ Enter அழுத்தவும், அல்லது 'all' "
+#~ "உள்ளிடவும்."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "காட்சி, MyASUS மற்றும் பகிர் டெஸ்க்டாப் குறுக்குவழிகளைச் சேர்க்கவும்"

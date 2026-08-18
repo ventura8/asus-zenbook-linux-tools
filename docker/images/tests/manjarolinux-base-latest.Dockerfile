@@ -2,8 +2,10 @@ FROM manjarolinux/base:latest@sha256:bbf1f1d746f28e138eea610e140d2f28cbb5b7c5da2
 
 # Arch-family DE spin (ID=manjaro, ID_LIKE=arch). Pacman mirrors differ from
 # stock archlinux:base-devel; keep package names aligned with archlinux-latest.
-RUN pacman -Syu --noconfirm \
-    && pacman -S --noconfirm \
+COPY docker/images/tests/scripts/pacman-retry.sh /tmp/pacman-retry.sh
+RUN chmod +x /tmp/pacman-retry.sh \
+    && /tmp/pacman-retry.sh -Syu --noconfirm \
+    && /tmp/pacman-retry.sh -S --noconfirm \
         bash \
         python \
         python-pip \
@@ -33,16 +35,18 @@ RUN pacman -Syu --noconfirm \
 
 COPY docker/images/tests/scripts/install-poetry-deps.sh \
      docker/images/tests/scripts/create-asusci-user.sh \
-     docker/images/tests/scripts/install-de-family.sh /tmp/
+     docker/images/tests/scripts/install-de-family.sh \
+     docker/images/tests/scripts/pacman-retry.sh /tmp/
 COPY pyproject.toml poetry.lock /opt/asus-zenbook-deps/
-RUN chmod +x /tmp/install-poetry-deps.sh /tmp/create-asusci-user.sh /tmp/install-de-family.sh \
+RUN chmod +x /tmp/install-poetry-deps.sh /tmp/create-asusci-user.sh \
+        /tmp/install-de-family.sh /tmp/pacman-retry.sh \
     && PYTHON_BIN=python /tmp/install-poetry-deps.sh \
     && rm -f /tmp/install-poetry-deps.sh
 ENV PATH="/opt/asus-zenbook-deps/.venv/bin:/opt/poetry-venv/bin:${PATH}"
 
 ARG ASUS_CI_DE_FAMILY=
 RUN ASUS_CI_DE_FAMILY="${ASUS_CI_DE_FAMILY}" /tmp/install-de-family.sh \
-    && rm -f /tmp/install-de-family.sh
+    && rm -f /tmp/install-de-family.sh /tmp/pacman-retry.sh
 
 # Matrix smoke runs as the host UID (non-root) but must exercise real package
 # install/remove. Create a matching account and grant only that UID passwordless sudo.

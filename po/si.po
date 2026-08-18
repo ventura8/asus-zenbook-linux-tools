@@ -50,7 +50,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux සැකසුම %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux මෙවලම් භාවිතයට සූදානම්."
 
@@ -58,11 +58,11 @@ msgstr "ASUS ZenBook Linux මෙවලම් භාවිතයට සූදා
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook සැකසුම්"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "ASUS ZenBook දෘඩාංග විශේෂාංග විකල්ප සංරචක ලෙස ස්ථාපනය කර ඇත."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -79,7 +79,7 @@ msgstr "සියලුම සංදර්ශක (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "සියලුම සංදර්ශක (ප්‍රධාන + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "පවතින සංරචක:"
 
@@ -103,7 +103,7 @@ msgstr "කැමරා පෞද්ගලිකත්වය"
 msgid "Choose components"
 msgstr "සංරචක තෝරන්න"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "කුරුඳු කෙටිමං වින්‍යාස කර ඇත."
 
@@ -121,6 +121,26 @@ msgstr "%s සඳහා GNOME කෙටිමං වින්‍යාස කර
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "%s සඳහා KDE ප්ලාස්මා කෙටිමං වින්‍යාස කරන්න"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "%s සඳහා Cinnamon කෙටිමං වින්‍යාස කරන්න..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "%s සඳහා LXQt Global Keys කෙටිමං වින්‍යාස කරන්න..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "%s සඳහා MATE කෙටිමං වින්‍යාස කරන්න..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "%s සඳහා XFCE කෙටිමං වින්‍යාස කරන්න..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -130,7 +150,7 @@ msgstr "වත්මන් සංදර්ශක පිරිසැලසුම"
 msgid "Display mode"
 msgstr "සංදර්ශක මාදිලිය"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "කොමාවෙන් වෙන් කරන ලද සංරචක අංක හෝ නම් ඇතුළත් කරන්න."
 
@@ -150,7 +170,7 @@ msgstr "GNOME කෙටිමං වින්‍යාස කර ඇත."
 msgid "Hardware features for your Linux desktop"
 msgstr "ඔබේ ලිනක්ස් ඩෙස්ක්ටොප් සඳහා දෘඪාංග විශේෂාංග"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "ස්ක්‍රිප්ට් සහ සේවා ස්ථාපනය කරන්න"
 
@@ -158,11 +178,11 @@ msgstr "ස්ක්‍රිප්ට් සහ සේවා ස්ථාපන
 msgid "Install system dependencies"
 msgstr "පද්ධති පරායත්තතා ස්ථාපනය කරන්න"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "පරිශීලකයා විසින් ස්ථාපනය අවලංගු කරන ලදී."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "ස්ථාපනය සම්පූර්ණයි."
 
@@ -171,7 +191,7 @@ msgstr "ස්ථාපනය සම්පූර්ණයි."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux මෙවලම් ස්ථාපනය කරමින් %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -179,7 +199,7 @@ msgstr ""
 "ScreenPad දීප්තිය, Quiet/Balanced/Performance පංකාව, කැමරා රහස්‍යතාව සහ මොනිටර අතර "
 "කවුළු හුවමාරුව සඳහා WMI හොට්කී daemon ස්ථාපනය කරයි."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -187,7 +207,7 @@ msgstr ""
 "සහාය දක්වන ZenBook ශ්‍රව්‍යය ආරම්භයෙන් පසු සහ නින්දෙන් පසු යථාස්ථානගත වන ලෙස ස්පීකර් ඇම්ප්ලිෆයර් "
 "නිවැරදි කිරීම සහ suspend/resume hook ස්ථාපනය කරයි."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -195,21 +215,22 @@ msgstr ""
 "ඉහළ-වම් කෙළවර තට්ටු කිරීමේදී ඩෙස්ක්ටොප් තිර රූප මෙවලම (GNOME, Spectacle සහ සමාන) විවෘත "
 "වන ලෙස touchpad Share අභිනය listener ස්ථාපනය කරයි."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr "වලංගු නොවන තේරීම: %s. අංක (1,2,3,4), සංරචක නම් හෝ all ඇතුළත් කරන්න."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "වලංගු නොවන තේරීම: %s. අංක (1,2,3,4), සංරචක නම් හෝ all, හෝ none ඇතුළත් කරන්න."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "KDE ප්ලාස්මා කෙටිමං වින්‍යාස කර ඇත."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt ගෝලීය යතුරු වින්‍යාස කර ඇත."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "MATE කෙටිමං වින්‍යාස කර ඇත."
 
@@ -227,9 +248,9 @@ msgstr "ප්‍රධාන සංදර්ශකය පමණි"
 msgid "Mode: %s"
 msgstr "මාදිලිය: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "සංරචක තෝරාගෙන නොමැත. ස්ථාපනය අවලංගු කරන ලදී."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "සංරචක තෝරාගෙන නොමැත. කිසිවක් ස්ථාපනය කර නොමැත."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -245,9 +266,11 @@ msgstr "ක්‍රියාත්මකයි"
 msgid "Performance (Boost)"
 msgstr "කාර්ය සාධනය (උද්දීපනය)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr "නිර්දේශිත සියලු සංරචක ස්ථාපනය කිරීමට Enter ඔබන්න, නැතහොත් 'all' ඇතුළත් කරන්න."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "නිර්දේශිත සියලු සංරචක ස්ථාපනය කිරීමට Enter ඔබන්න, නැතහොත් 'all' හෝ 'none' "
+"ඇතුළත් කරන්න."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -273,7 +296,7 @@ msgid ""
 msgstr ""
 "ඔබ භාවිතා කරන සංරචක පමණක් තෝරන්න. තෝරා නොගත් සේවා සහ කෙටිමං ස්ථාපනය නොකරනු ඇත."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr "අනවශ්‍ය සේවා සහ කෙටිමං මඟහරවා ගැනීමට ඔබ භාවිතා කරන දේ පමණක් තෝරන්න."
 
@@ -293,11 +316,11 @@ msgstr "අත්හිටුවීම සහ නැවත ආරම්භ ක�
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space සංරචකයක් තෝරයි. Enter තහවුරු කරයි. Esc අවලංගු කරයි."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "පෙළ තේරීමේ මාදිලිය."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "අතුරු මුහුණත භාෂාව ඔබගේ ඩෙස්ක්ටොප් සැසිය අනුගමනය කරයි."
 
@@ -328,13 +351,24 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey ඩීමන් ස්ථාපනය කර සක්‍රීයයි."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "ඇයි මේ දෙබස?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "XFCE කෙටිමං වින්‍යාස කර ඇත."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr "වලංගු නොවන තේරීම: %s. අංක (1,2,3,4), සංරචක නම් හෝ all ඇතුළත් කරන්න."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "සංරචක තෝරාගෙන නොමැත. ස්ථාපනය අවලංගු කරන ලදී."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr "නිර්දේශිත සියලු සංරචක ස්ථාපනය කිරීමට Enter ඔබන්න, නැතහොත් 'all' ඇතුළත් කරන්න."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Display, MyASUS සහ Share ඩෙස්ක්ටොප් කෙටිමං එක් කරන්න"

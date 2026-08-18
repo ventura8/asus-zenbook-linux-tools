@@ -47,7 +47,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Setélan ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools tos siap dianggo."
 
@@ -55,11 +55,11 @@ msgstr "ASUS ZenBook Linux Tools tos siap dianggo."
 msgid "ASUS ZenBook Settings"
 msgstr "ASUS ZenBook Setélan"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr "Fitur hardware ASUS ZenBook dipasang salaku komponén pilihan."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -76,7 +76,7 @@ msgstr "Sadaya tampilan (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Sadaya tampilan (Utama + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "komponén sadia:"
 
@@ -100,7 +100,7 @@ msgstr "Privasi kaméra"
 msgid "Choose components"
 msgstr "Pilih komponén"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Potong kompas kayu manis dikonpigurasikeun."
 
@@ -118,6 +118,26 @@ msgstr "Konpigurasikeun potong kompas GNOME pikeun %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Konpigurasikeun potong kompas KDE Plasma pikeun %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Konpigurasikeun potong kompas Cinnamon pikeun %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Konpigurasikeun potong kompas LXQt Global Keys pikeun %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Konpigurasikeun potong kompas MATE pikeun %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Konpigurasikeun potong kompas XFCE pikeun %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -127,7 +147,7 @@ msgstr "perenah tampilan ayeuna"
 msgid "Display mode"
 msgstr "Modeu tampilan"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Asupkeun nomer komponén atawa ngaran, dipisahkeun ku koma."
 
@@ -147,7 +167,7 @@ msgstr "Potong kompas GNOME dikonpigurasi."
 msgid "Hardware features for your Linux desktop"
 msgstr "Fitur hardware pikeun desktop Linux anjeun"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Pasang skrip sareng jasa"
 
@@ -155,11 +175,11 @@ msgstr "Pasang skrip sareng jasa"
 msgid "Install system dependencies"
 msgstr "Pasang dependensi sistem"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Pamasangan dibatalkeun ku pangguna."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Pamasangan réngsé."
 
@@ -168,7 +188,7 @@ msgstr "Pamasangan réngsé."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Masang ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -176,7 +196,7 @@ msgstr ""
 "Ngainstal daemon hotkey WMI pikeun caang ScreenPad, kipas Quiet/Balanced/"
 "Performance, privasi kaméra, jeung silih tukeur jandéla antara monitor."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -184,7 +204,7 @@ msgstr ""
 "Ngainstal perbaikan amplifier spiker jeung hook suspend/resume supaya audio "
 "ZenBook anu dirojong pulih sanggeus boot jeung sanggeus saré."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -192,22 +212,23 @@ msgstr ""
 "Ngainstal listener gesture Share touchpad supaya toél sudut kénca luhur muka "
 "alat screenshot desktop anjeun (GNOME, Spectacle, jeung sasama)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Pilihan teu valid: %s. Lebetkeun angka (1,2,3,4), ngaran komponén, atawa all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Pilihan teu valid: %s. Lebetkeun angka (1,2,3,4), ngaran komponén, atawa "
+"all, atawa none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Potong kompas KDE Plasma dikonpigurasi."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "LXQt Global Keys ngonpigurasi."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "potong kompas MATE ngonpigurasi."
 
@@ -223,11 +244,11 @@ msgstr "tampilan utama wungkul"
 #: bin/asus-fan-toggle.sh:230
 #, sh-format
 msgid "Mode: %s"
-msgstr "Modéle: %s"
+msgstr "Modeu: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Taya komponén anu dipilih. Pamasangan dibatalkeun."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Taya komponén anu dipilih. Teu aya anu diinstal."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -243,11 +264,11 @@ msgstr "Dina"
 msgid "Performance (Boost)"
 msgstr "Prestasi (Ngaronjatkeun)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Pencét Enter pikeun ngainstal sakabéh komponén anu disarankeun, atawa tulis "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Pencét Enter pikeun ngainstal sakabéh komponén anu disarankeun, atawa tulis "
+"'all' atawa 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -274,7 +295,7 @@ msgstr ""
 "Pilih ukur komponén anu anjeun anggo. Ladenan sareng potong kompas anu "
 "henteu dipilih moal dipasang."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Pilih naon waé anu anjeun anggo pikeun ngahindarkeun jasa sareng potong "
@@ -297,11 +318,11 @@ msgstr ""
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space milih komponén. Enter mastikeun. Esc ngabolaykeun."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Modeu pilihan téks."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Basa panganteur nuturkeun sési desktop Anjeun."
 
@@ -333,13 +354,28 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "WMI Hotkey daemon dipasang tur aktip."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Naha dialog ieu?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "potong kompas XFCE ngonpigurasi."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Pilihan teu valid: %s. Lebetkeun angka (1,2,3,4), ngaran komponén, atawa "
+#~ "all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Taya komponén anu dipilih. Pamasangan dibatalkeun."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Pencét Enter pikeun ngainstal sakabéh komponén anu disarankeun, atawa "
+#~ "tulis 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Tambahkeun potong kompas tampilan, MyASUS, sareng Bagikeun desktop"

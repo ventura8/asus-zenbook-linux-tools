@@ -54,7 +54,7 @@ msgstr "ASUS ZenBook"
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Nastavenie ASUS ZenBook Linux %s"
 
-#: install.sh:283
+#: install.sh:295
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Nástroje ASUS ZenBook Linux Tools sú pripravené na použitie."
 
@@ -62,12 +62,12 @@ msgstr "Nástroje ASUS ZenBook Linux Tools sú pripravené na použitie."
 msgid "ASUS ZenBook Settings"
 msgstr "Nastavenia ASUS ZenBook"
 
-#: lib/install-selection.sh:159
+#: lib/install-selection.sh:163
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 "Hardvérové funkcie ASUS ZenBook sú nainštalované ako voliteľné komponenty."
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:175
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -84,7 +84,7 @@ msgstr "Všetky displeje (%s)"
 msgid "All displays (Main + ScreenPad)"
 msgstr "Všetky displeje (hlavný + ScreenPad)"
 
-#: lib/install-selection.sh:162
+#: lib/install-selection.sh:166
 msgid "Available components:"
 msgstr "Dostupné komponenty:"
 
@@ -108,7 +108,7 @@ msgstr "Súkromie fotoaparátu"
 msgid "Choose components"
 msgstr "Vyberte komponenty"
 
-#: lib/install-cinnamon.sh:281
+#: lib/install-cinnamon.sh:285
 msgid "Cinnamon shortcuts configured."
 msgstr "Skratky škorice sú nakonfigurované."
 
@@ -126,6 +126,26 @@ msgstr "Nakonfigurujte skratky GNOME pre %s"
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr "Konfigurácia skratiek KDE Plasma pre %s"
 
+#: lib/install-cinnamon.sh:268
+#, sh-format
+msgid "Configuring Cinnamon shortcuts for %s..."
+msgstr "Nakonfigurujte skratky Cinnamon pre %s..."
+
+#: lib/install-lxqt.sh:572
+#, sh-format
+msgid "Configuring LXQt Global Keys for %s..."
+msgstr "Nakonfigurujte skratky LXQt Global Keys pre %s..."
+
+#: lib/install-mate.sh:192
+#, sh-format
+msgid "Configuring MATE shortcuts for %s..."
+msgstr "Nakonfigurujte skratky MATE pre %s..."
+
+#: lib/install-xfce.sh:171
+#, sh-format
+msgid "Configuring XFCE shortcuts for %s..."
+msgstr "Nakonfigurujte skratky XFCE pre %s..."
+
 #: bin/asus_display_mode_profiles.py:225
 #, python-format
 msgid "Current display layout"
@@ -135,7 +155,7 @@ msgstr "Aktuálne rozloženie displeja"
 msgid "Display mode"
 msgstr "Režim zobrazenia"
 
-#: lib/install-selection.sh:184
+#: lib/install-selection.sh:188
 msgid "Enter component numbers or names, separated by commas."
 msgstr "Zadajte čísla alebo názvy komponentov oddelené čiarkami."
 
@@ -155,7 +175,7 @@ msgstr "Skratky GNOME sú nakonfigurované."
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardvérové funkcie pre váš desktop Linux"
 
-#: install.sh:277
+#: install.sh:289
 msgid "Install scripts and services"
 msgstr "Nainštalujte skripty a služby"
 
@@ -163,11 +183,11 @@ msgstr "Nainštalujte skripty a služby"
 msgid "Install system dependencies"
 msgstr "Nainštalujte systémové závislosti"
 
-#: lib/install-selection-tui.sh:150
+#: lib/install-selection-tui.sh:147
 msgid "Installation cancelled by user."
 msgstr "Inštalácia bola zrušená používateľom."
 
-#: install.sh:282
+#: install.sh:294
 msgid "Installation complete."
 msgstr "Inštalácia dokončená."
 
@@ -176,7 +196,7 @@ msgstr "Inštalácia dokončená."
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Inštalácia ASUS ZenBook Linux Tools %s."
 
-#: lib/install-selection.sh:165
+#: lib/install-selection.sh:169
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
@@ -184,7 +204,7 @@ msgstr ""
 "Nainštaluje démona klávesových skratiek WMI pre jas ScreenPad, ventilátor "
 "Quiet/Balanced/Performance, súkromie kamery a výmenu okien medzi monitormi."
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:173
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
@@ -192,7 +212,7 @@ msgstr ""
 "Nainštaluje opravu zosilňovača reproduktorov a háčik suspend/resume, aby "
 "podporovaný zvuk ZenBook obnovil po spustení a po spánku."
 
-#: lib/install-selection.sh:167
+#: lib/install-selection.sh:171
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
@@ -200,22 +220,23 @@ msgstr ""
 "Nainštaluje poslucháča gesta Share touchpadu, aby klepnutie v ľavom hornom "
 "rohu otvorilo nástroj snímky obrazovky plochy (GNOME, Spectacle a podobné)."
 
-#: lib/install-selection.sh:193
+#: lib/install-selection.sh:197
 #, sh-format
 msgid ""
-"Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
-msgstr ""
-"Neplatný výber: %s. Zadajte čísla (1,2,3,4), názvy komponentov alebo all."
+"Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
+"none."
+msgstr "Neplatný výber: %s. Zadajte čísla (1,2,3,4), názvy komponentov alebo all, "
+"alebo none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
 msgstr "Plazmové skratky KDE sú nakonfigurované."
 
-#: lib/install-lxqt.sh:582
+#: lib/install-lxqt.sh:586
 msgid "LXQt Global Keys configured."
 msgstr "Globálne kľúče LXQt sú nakonfigurované."
 
-#: lib/install-mate.sh:205
+#: lib/install-mate.sh:209
 msgid "MATE shortcuts configured."
 msgstr "Skratky MATE sú nakonfigurované."
 
@@ -233,9 +254,9 @@ msgstr "Len hlavný displej"
 msgid "Mode: %s"
 msgstr "Režim: %s"
 
-#: lib/install-selection-tui.sh:138
-msgid "No components were selected. Installation cancelled."
-msgstr "Neboli vybrané žiadne komponenty. Inštalácia zrušená."
+#: install.sh:268
+msgid "No components were selected. Nothing was installed."
+msgstr "Neboli vybrané žiadne komponenty. Nič nebolo nainštalované."
 
 #: bin/asus-screenpad-toggle.sh:64
 msgctxt "ScreenPad backlight state"
@@ -251,11 +272,11 @@ msgstr "Zapnuté"
 msgid "Performance (Boost)"
 msgstr "Výkon (zvýšenie)"
 
-#: lib/install-selection.sh:186
-msgid "Press Enter to install all recommended components, or enter 'all'."
-msgstr ""
-"Stlačte Enter na inštaláciu všetkých odporúčaných komponentov, alebo zadajte "
-"'all'."
+#: lib/install-selection.sh:190
+msgid ""
+"Press Enter to install all recommended components, or enter 'all' or 'none'."
+msgstr "Stlačte Enter na inštaláciu všetkých odporúčaných komponentov, alebo zadajte "
+"'all' alebo 'none'."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -282,7 +303,7 @@ msgstr ""
 "Vyberte len komponenty, ktoré používate. Nevybrané služby a skratky sa "
 "nenainštalujú."
 
-#: lib/install-selection.sh:160
+#: lib/install-selection.sh:164
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 "Vyberte len to, čo používate, aby ste sa vyhli zbytočným službám a skratkám."
@@ -303,11 +324,11 @@ msgstr "Oprava zvuku nainštalovaná s hákom pozastavenia a obnovenia."
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr "Space vyberie komponent. Enter potvrdí. Esc zruší."
 
-#: lib/install-selection.sh:182
+#: lib/install-selection.sh:186
 msgid "Text selection mode."
 msgstr "Režim výberu textu."
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:177
 msgid "The interface language follows your desktop session."
 msgstr "Jazyk rozhrania sa riadi reláciou vašej pracovnej plochy."
 
@@ -339,13 +360,27 @@ msgstr ""
 msgid "WMI Hotkey daemon installed and active."
 msgstr "Démon WMI Hotkey nainštalovaný a aktívny."
 
-#: lib/install-selection.sh:157
+#: lib/install-selection.sh:161
 msgid "Why this dialog?"
 msgstr "Prečo tento dialóg?"
 
-#: lib/install-xfce.sh:182
+#: lib/install-xfce.sh:186
 msgid "XFCE shortcuts configured."
 msgstr "Konfigurované skratky XFCE."
+
+#, sh-format
+#~ msgid ""
+#~ "Invalid selection: %s. Enter numbers (1,2,3,4), component names, or all."
+#~ msgstr ""
+#~ "Neplatný výber: %s. Zadajte čísla (1,2,3,4), názvy komponentov alebo all."
+
+#~ msgid "No components were selected. Installation cancelled."
+#~ msgstr "Neboli vybrané žiadne komponenty. Inštalácia zrušená."
+
+#~ msgid "Press Enter to install all recommended components, or enter 'all'."
+#~ msgstr ""
+#~ "Stlačte Enter na inštaláciu všetkých odporúčaných komponentov, alebo "
+#~ "zadajte 'all'."
 
 #~ msgid "Add Display, MyASUS, and Share desktop shortcuts"
 #~ msgstr "Pridajte na plochu skratky Display, MyASUS a Share"

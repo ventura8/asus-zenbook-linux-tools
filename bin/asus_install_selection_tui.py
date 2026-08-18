@@ -515,13 +515,13 @@ def write_selection(path: Path | None, tags: list[str]) -> None:
 
 def default_title() -> str:
     """Build the localized dialog title including VERSION."""
-    version = os.environ.get("ASUS_DISPLAY_VERSION", "").strip() or "v1.0.0"
+    version = os.environ.get("ASUS_DISPLAY_VERSION", "").strip() or "v1.0.1"
     return gettext_message("ASUS ZenBook Linux Setup %s") % version
 
 
 def default_message() -> str:
     """Build the localized multi-line dialog message body."""
-    version = os.environ.get("ASUS_DISPLAY_VERSION", "").strip() or "v1.0.0"
+    version = os.environ.get("ASUS_DISPLAY_VERSION", "").strip() or "v1.0.1"
     first = gettext_message("Installing ASUS ZenBook Linux Tools %s.") % version
     second = gettext_message(
         "Select only the components you use. Unselected services and shortcuts will not be installed.",

@@ -14,6 +14,7 @@ LINT_WAVE1_STEPS=(
     step_file_size_limits
     step_ruff
     step_yamllint
+    step_po_lint
     step_dockerfilelint
     step_toml_lint
     step_version_sync
@@ -79,6 +80,10 @@ find_yaml_files() {
 
 find_js_files() {
     _find_repo_files -name '*.js'
+}
+
+find_po_files() {
+    _find_repo_files -name '*.po'
 }
 
 start_step() {
@@ -171,6 +176,24 @@ step_pylint() {
         echo "  ✗ pylint not installed." >&2
         exit 1
     fi
+}
+
+step_po_lint() {
+    start_step "Checking gettext PO files..."
+    if ! command -v msgfmt >/dev/null 2>&1; then
+        echo "  ✗ msgfmt not installed." >&2
+        exit 1
+    fi
+    mapfile -t PO_FILES < <(find_po_files)
+    if [ "${#PO_FILES[@]}" -eq 0 ]; then
+        echo "  ✗ No gettext PO files found." >&2
+        exit 1
+    fi
+    local po
+    for po in "${PO_FILES[@]}"; do
+        msgfmt -c --check-format -o /dev/null "$po"
+    done
+    echo "  ✓ Gettext PO lint passed (${#PO_FILES[@]} catalogs)."
 }
 
 step_yamllint() {
