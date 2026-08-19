@@ -86,14 +86,14 @@ This runs the interactive component wizard. Reconfigure with
 `sudo dpkg-reconfigure asus-zenbook-linux-tools` or
 `sudo asus-zenbook-configure`. Tag releases upload via
 `.github/workflows/ppa-release.yml` (secrets `GPG_PRIVATE_KEY`,
-`GPG_PASSPHRASE`). Current notes: [v1.0.1](releases/v1.0.1.md).
+`GPG_PASSPHRASE`). Current notes: [v1.0.2](releases/v1.0.2.md).
 
 ## Headless / Automation Install
 
 Human README quick-starts stay interactive. For CI or non-TTY automation only:
 
 ```bash
-TAG=v1.0.1
+TAG=v1.0.2
 git clone --depth 1 --branch "$TAG" \
   https://github.com/ventura8/asus-zenbook-linux-tools.git &&
   cd asus-zenbook-linux-tools &&

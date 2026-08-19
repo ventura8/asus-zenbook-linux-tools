@@ -11,6 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import asus_install_selection_accent as accent
 import asus_install_selection_tui as tui
+import asus_install_selection_version as tui_version
 from asus_install_selection_accent import (
     DEFAULT_ACCENT_RGB,
     format_accent_rgb,
@@ -41,6 +42,8 @@ from asus_install_selection_tui import (
 )
 
 from tests.unit.bin.attr_helpers import call_attr
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 class TestInstallSelectionAccent(unittest.TestCase):
@@ -190,6 +193,10 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
 
     def test_defaults_parse_and_write_stdout(self) -> None:
         """default title/message, argparse, and stdout selection write."""
+        expected_version = f"v{(PROJECT_ROOT / 'VERSION').read_text(encoding='utf-8').strip()}"
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertIn(expected_version, default_title())
+            self.assertIn(expected_version, default_message())
         with patch.dict("os.environ", {"ASUS_DISPLAY_VERSION": "v9.9.9"}, clear=False):
             self.assertIn("v9.9.9", default_title())
             self.assertIn("v9.9.9", default_message())
@@ -309,6 +316,23 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
             patch("asus_install_selection_tui.curses.use_default_colors", side_effect=tui.curses.error("d")),
         ):
             call_attr(tui, "_start_color_safe")
+
+    def test_resolve_display_version_formats_env_override(self) -> None:
+        """ASUS_DISPLAY_VERSION without a v prefix is formatted for display."""
+        with patch.dict("os.environ", {"ASUS_DISPLAY_VERSION": "1.2.3"}, clear=False):
+            self.assertEqual(tui_version.resolve_display_version(), "v1.2.3")
+
+    def test_read_project_version_skips_invalid_utf8(self) -> None:
+        """Unreadable VERSION files fall through to the next candidate."""
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = Path(tmp) / "VERSION"
+            bad.write_bytes(b"\xff\xfe")
+            good = PROJECT_ROOT / "VERSION"
+            with patch.dict("os.environ", {"INSTALL_SOURCE_DIR": tmp}, clear=False):
+                self.assertEqual(
+                    tui_version.read_project_version(),
+                    good.read_text(encoding="utf-8").strip(),
+                )
 
 
 if __name__ == "__main__":

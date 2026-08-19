@@ -63,7 +63,7 @@ _WMI_BINS = [
     "asus_display_mode_profiles.py",
 ]
 # Touchpad listener binaries (see lib/install-components.sh deploy_touchpad_component).
-_TOUCHPAD_BINS = ["asus-touchpad-share.py", "asus_touchpad_share.py"]
+_TOUCHPAD_BINS = ["asus-touchpad-share.py", "asus_touchpad_share.py", "asus_touchpad_share_bounds.py"]
 _SOUND_BINS = ["asus-sound-fix.sh", "asus_hda_verb.py"]
 _SHARED_LIBS = [
     "asus-session.sh",
@@ -91,6 +91,7 @@ _BIN_LIBRARY_ONLY = frozenset(
         "asus_hotkey_daemon_threading.py",
         "asus_hotkey_daemon_window_move.py",
         "asus_hotkey_daemon_xrandr.py",
+        "asus_touchpad_share_bounds.py",
         "shared_imports.py",
     }
 )

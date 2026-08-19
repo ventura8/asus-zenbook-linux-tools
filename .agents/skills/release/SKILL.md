@@ -30,12 +30,18 @@ unless the user explicitly asks.
    resolute` summarizing the release (historical older entries stay).
 6. Update agent indexes (`AGENTS.md` current-version line, architecture skill
    tree, this skill) in the **same** change set.
-7. **Amend the release-branch tip** so the **commit title and description** match
-   the release (not a bare `vX.Y.Z` subject with an empty body). Prefer
-   `git commit --amend` when the tip is the release commit; rewrite both the
-   subject and the body from the release themes. Still **do not** amend, commit,
-   or force-push unless the user explicitly asks in this turn — skill
-   invocation alone is **not** authorization.
+7. **Amend the release-branch tip** (optional final step **only when the user
+   explicitly confirms amend in the same turn** and every condition in
+   [Amend only when all are true](#commit-amend-when-the-user-explicitly-confirms-amend)
+   is satisfied): stage every release file from steps 1–6, then
+   `git commit --amend` so the **commit title and detailed description** match
+   the release themes — not a bare `vX.Y.Z` subject with an empty body.
+   Rewrite both subject and body from `docs/releases/vX.Y.Z.md` bullets (why +
+   what shipped). Running this skill alone is **not** amend authorization. If
+   any amend precondition is not met, **stop without amending** and report
+   which condition failed. Do **not** amend unrelated commits, already-pushed
+   tips without confirmed `--force-with-lease`, or tag, push, or
+   `gh release create` unless the user explicitly asks in the same turn.
 
 ## Version from branch
 
@@ -66,8 +72,9 @@ After resolving `$version` from the branch:
 3. Point human install URLs at tag `v$version` (`README.md` checksum one-liner,
    `docs/INSTRUCTIONS.md` `TAG=`, release notes). Do **not** put
    `NONINTERACTIVE_CHOICE` in those human snippets.
-4. Bump TUI fallback pins in `bin/asus_install_selection_tui.py`
-   (`or "vX.Y.Z"`) so a missing `ASUS_DISPLAY_VERSION` is not a stale older tag.
+4. Ensure `bin/asus_install_selection_tui.py` reads the repo-root **`VERSION`**
+   file (or packaged `/usr/share/asus-zenbook-linux-tools/VERSION`) when
+   `ASUS_DISPLAY_VERSION` is unset — no hard-coded semver pin to bump each release.
 5. Reset `PPA_UPLOAD_REVISION` to `1` on a new `VERSION`.
 6. Add a **new top** `debian/changelog` native entry for `$version`.
 
@@ -117,34 +124,51 @@ End the GitHub description with:
 **Full Changelog**: [vPREV...vX.Y.Z](https://github.com/ventura8/asus-zenbook-linux-tools/compare/vPREV...vX.Y.Z)
 ```
 
-## Commit / amend (opt-in)
+## Commit amend (when the user explicitly confirms amend)
 
-Prepare the release files **without** rewriting HEAD until the user asks.
-Skill invocation alone is **not** authorization to commit or amend.
+After writing release docs and version pins, amend the release-branch tip **only
+when the user explicitly confirms amend in the same turn** so HEAD carries one
+cohesive release change set **and** a descriptive commit message.
 
-When the user asks to finish / amend the release commit:
+1. Record the initial `HEAD` commit and staged path set before editing.
+2. Stage **every file changed by steps 1–6**, including at minimum:
+   `docs/releases/vX.Y.Z.md`, `docs/releases/vX.Y.Z_github_description.md`,
+   `debian/changelog`, `VERSION`, `pyproject.toml`,
+   `.github/workflows/ppa-release.yml`, `README.md`, `docs/INSTRUCTIONS.md`,
+   `bin/asus_install_selection_tui.py` (when touched), `AGENTS.md`, architecture
+   skill-tree updates, and any skill edits from this run.
+3. Verify the complete staged set before amending:
 
-1. Stage release docs, `debian/changelog`, version pins, and this skill update.
-2. **`git commit --amend`** the release-branch tip (same change set) and **replace
-   both the title and the description** so they summarize the release themes —
-   not a lone `vX.Y.Z` subject with an empty body.
-3. Title pattern (1 line, imperative / theme-focused), e.g.
-   `v1.0.1: dynamic install progress and empty selection`.
-4. Description: short bullets aligned with `docs/releases/vX.Y.Z.md` (progress,
-   empty/`none`, DE i18n, PO lint, packaging/tests) — why and what shipped.
+   ```bash
+   git diff --cached --name-only
+   ```
 
-**Amend only when all are true:**
+   Confirm every expected release output from this run appears in that list.
+   Require `HEAD` to be unchanged from the recorded commit. Require the staged
+   path set to contain **exactly** the release files from this run—**stop**
+   before `git commit --amend` when any unexpected path is staged.
+4. **`git commit --amend`** — replace **both** the title and the body (never leave
+   a lone `vX.Y.Z` subject with an empty body).
+5. Title pattern (1 line, theme-focused), e.g.
+   `v1.0.2: adaptive touchpad Share bounds and false-activation fix`.
+6. Body: short bullets aligned with `docs/releases/vX.Y.Z.md` — product themes,
+   packaging/version bumps, tests/docs — why and what shipped.
 
-1. User explicitly confirmed amend (or “do it” / finish the release commit) in
-   this turn.
-2. `HEAD` is the release-branch tip and was created by this agent in this
-   conversation, **or** the user explicitly requested amend of that commit.
+**Amend only when all are true** (otherwise **stop without amending** and report
+which condition failed):
+
+1. User explicitly confirmed amend in the same turn (running this skill alone
+   does **not** authorize rewriting history).
+2. `HEAD` is still the release commit for this version (same branch tip being
+   released; unchanged since the recorded initial `HEAD`).
 3. The branch has **no upstream**, or the user also confirmed
-   `--force-with-lease` after a warning.
-4. Never `--no-verify`. Never force-push `main`/`master`.
+   `--force-with-lease` after a warning if the old tip was already pushed.
+4. The staged path set matches exactly the release files from this run (no
+   unrelated paths).
+5. Never `--no-verify`. Never force-push `main`/`master`.
 
-If the user declines, leave HEAD unchanged and report that they must
-commit/amend separately before tag / `gh release create`.
+Do **not** tag, push, or `gh release create` unless the user explicitly asks in
+the same turn.
 
 ## Checklist
 
@@ -159,5 +183,6 @@ Release progress:
 - [ ] docs/releases/vX.Y.Z.md written
 - [ ] docs/releases/vX.Y.Z_github_description.md written
 - [ ] AGENTS.md / architecture skill tree updated
-- [ ] Commit title + description amended to match release themes (after user ask)
+- [ ] Commit title + description amended to match release themes (only when user
+  explicitly confirmed amend)
 ```

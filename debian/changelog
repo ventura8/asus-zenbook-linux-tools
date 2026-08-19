@@ -1,3 +1,10 @@
+asus-zenbook-linux-tools (1.0.2) resolute; urgency=medium
+
+  * Adaptive touchpad Share bounds: stricter start+end gate and automatic learning.
+  * Split Share bounds helpers into asus_touchpad_share_bounds.py; deploy via manifest.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Wed, 19 Aug 2026 19:06:00 +0300
+
 asus-zenbook-linux-tools (1.0.1) resolute; urgency=medium
 
   * Dynamic installer progress totals and empty-selection no-op.

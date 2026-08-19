@@ -36,10 +36,10 @@ The package runs the same interactive component wizard as `install.sh`
 
 ```bash
 curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.1/install.sh.sha256 \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.2/install.sh.sha256 \
   -o install.sh.sha256 &&
   curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.1/install.sh \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.2/install.sh \
   -o install.sh &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh

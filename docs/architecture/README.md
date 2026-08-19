@@ -49,6 +49,7 @@
 │   ├── asus-screenpad-toggle.sh
 │   ├── asus-screenshot.sh
 │   ├── asus-sound-fix.sh
+│   ├── asus_touchpad_share_bounds.py
 │   └── asus-touchpad-share.py
 ├── gnome/
 │   └── asus-window-swap@ventura8.github.com/
@@ -314,9 +315,15 @@
 
 ### Touchpad Share Gesture Handler (`bin/asus-touchpad-share.py`)
 
-- Reads raw touch events from `"touchpad"` `evdev` nodes.
-- Identifies tap releases in the top-left 20% corner of touchpad
-  coordinates within 0.7 seconds.
+- Reads raw touch events from `"touchpad"` `evdev` nodes via
+  [`bin/asus_touchpad_share.py`](../../bin/asus_touchpad_share.py).
+- Learns and persists Share corner bounds in
+  [`bin/asus_touchpad_share_bounds.py`](../../bin/asus_touchpad_share_bounds.py).
+- Identifies single-finger tap releases only when both touch-down and
+  touch-up stay inside a conservative top-left Share corner within 0.7 seconds.
+- Learns tighter Share bounds automatically from successful presses by storing
+  recent normalized tap samples and recomputing conservative corner fractions
+  across restarts.
 - Invokes `asus-screenshot.sh` so Share matches the WMI screenshot path on
   GNOME, KDE, XFCE, LXQt, Cinnamon, and MATE.
 

@@ -6,7 +6,7 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.1`, displayed as `v1.0.1`). `pyproject.toml` `tool.poetry.version` must match;
+  (currently `1.0.2`, displayed as `v1.0.2`). `pyproject.toml` `tool.poetry.version` must match;
   `scripts/run-lints.sh` enforces this. Bump `VERSION` first, then sync poetry metadata.
   Cut notes with [`.agents/skills/release/SKILL.md`](.agents/skills/release/SKILL.md)
   (version from the current branch; reset `PPA_UPLOAD_REVISION` to `1` on a new `VERSION`).
@@ -1487,13 +1487,49 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   text reaches the helper process for diagnostics.
   `deploy_touchpad_component` uses strict systemd
   verification (`_install_unit` … strict) and reports active vs failed like WMI.
-  `asus_touchpad_share.py` preserves `curr_x`/`curr_y` on touch-down so corner
-  gestures keep the last ABS position. Touch lifecycle uses **`BTN_TOUCH` only**
+ `asus_touchpad_share.py` preserves `curr_x`/`curr_y` on touch-down so corner
+ gestures keep the last ABS position. Learned Share bounds live in
+ `asus_touchpad_share_bounds.py` (public `compute_bounds` / `record_successful_tap`,
+ `is_corner_gesture`; seed fractions, percentile recompute, JSON persistence).
+ Share accepts only when both touch-down
+ and touch-up stay inside the active corner bounds (not start-outside/end-inside
+ drifts). Touch lifecycle uses **`BTN_TOUCH` only**
   (not `BTN_TOOL_FINGER`) so finger-count transitions cannot complete a gesture.
   Track contacts with an `ABS_MT_SLOT` → tracking-id map (`ABS_MT_TRACKING_ID`);
   `-1` removes that slot’s id (do not arbitrary-pop). `get_abs_axis` catches
-  `KeyError` and `OSError` around `absinfo` so startup keeps default bounds.
-  Cancel the Share gesture as
+ `KeyError` and `OSError` around `absinfo` so startup keeps default bounds.
+ Share corner bounds seed from conservative fractions, then learn tighter
+ normalized fractions from successful taps; persist to
+ `/var/lib/asus-zenbook-linux-tools/touchpad-share-bounds.json` **only when**
+ `learned_x_fraction` / `learned_y_fraction` change (sample-only updates stay
+ in memory). Write failures log once per state path; in-memory learning continues
+ when the default directory is not writable. Malformed state
+ falls back to seeds, learning waits for enough samples, and learned fractions
+ are clamped so they never expand beyond the seed region.
+ Share state flow:
+
+ ```mermaid
+ flowchart TD
+     startup[ServiceStartup] --> loadState[LoadSavedState]
+     loadState --> validState{StateValid}
+     validState -->|yes| activeBounds[UseLearnedBounds]
+     validState -->|no| seedBounds[UseSeedBounds]
+     activeBounds --> readEvents[ReadTouchEvents]
+     seedBounds --> readEvents
+     readEvents --> accepted{GestureAccepted}
+     accepted -->|no| readEvents
+     accepted -->|yes| sampleTap[NormalizeTapSample]
+     sampleTap --> updateSamples[AppendBoundedSampleHistory]
+     updateSamples --> enoughSamples{EnoughSamples}
+     enoughSamples -->|no| readEvents
+     enoughSamples -->|yes| recompute[PercentileRecomputeAndClamp]
+     recompute --> fractionsChanged{FractionsChanged}
+     fractionsChanged -->|yes| saveState[AtomicSaveState]
+     fractionsChanged -->|no| readEvents
+     saveState --> readEvents
+ ```
+
+ Cancel the Share gesture as
   soon as a second contact appears so two-finger taps cannot call
   `trigger_screenshot`.
   `trigger_screenshot` launches
@@ -1588,6 +1624,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `NoNewPrivileges=yes`. Set `RuntimeDirectoryPreserve=yes` on both units so
   notification runtime state survives restarts alongside
   `RuntimeDirectory=asus-zenbook-notif`.
+
 - **Session bus root precedence**: Resolve D-Bus socket roots as
   `BUS_ROOT` → `DBUS_BUS_ROOT` → `RUN_USER_ROOT` → `/run/user` (GNOME/XFCE/KDE/LXQt
   install helpers, `_enable_ydotool_user_unit`, and restore paths). Product code

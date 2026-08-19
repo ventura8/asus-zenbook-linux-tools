@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ASUS ZenBook Touchpad Top-Left Corner Share Gesture Handler."""
+"""ASUS ZenBook Touchpad top-left Share gesture handler."""
 
 import logging
 import os
@@ -14,10 +14,11 @@ from evdev import ecodes
 
 try:
     from .asus_common import close_input_device, find_input_device_path, is_executable_file
+    from .asus_touchpad_share_bounds import compute_bounds, is_corner_gesture, record_successful_tap
 except ImportError:  # Script execution path: python3 bin/asus_touchpad_share.py
     from asus_common import close_input_device, find_input_device_path, is_executable_file
+    from asus_touchpad_share_bounds import compute_bounds, is_corner_gesture, record_successful_tap
 
-MAX_TAP_DURATION_S = 0.7
 SCREENSHOT_COOLDOWN_S = 1.5
 SCREENSHOT_HELPER_TIMEOUT_S = 5
 _logger = logging.getLogger(__name__)
@@ -26,23 +27,6 @@ _logger = logging.getLogger(__name__)
 def find_touchpad_device_path():
     """Locate primary touchpad device dynamically."""
     return find_input_device_path("touchpad")
-
-
-def get_abs_axis(device, mt_code, abs_code):
-    """Safely fetch max bounds without KeyError/OSError crashes."""
-    try:
-        info = device.absinfo(mt_code)
-        if info:
-            return info
-    except (KeyError, OSError):
-        pass
-    try:
-        info = device.absinfo(abs_code)
-        if info:
-            return info
-    except (KeyError, OSError):
-        pass
-    return None
 
 
 def _screenshot_helper_path():
@@ -109,24 +93,6 @@ def process_abs_event(event, is_touching, state):
     return start_x, start_y, curr_x, curr_y
 
 
-def _pick_check(primary, fallback):
-    """Return primary if set, else fallback."""
-    if primary != -1:
-        return primary
-    return fallback
-
-
-def is_corner_gesture(coords, bounds):
-    """Check if gesture is in top-left corner within duration limit."""
-    start_x, start_y, curr_x, curr_y, duration = coords
-    corner_x_max, corner_y_max = bounds
-    check_x = _pick_check(curr_x, start_x)
-    check_y = _pick_check(curr_y, start_y)
-    if check_x < 0 or check_y < 0:
-        return False
-    return check_x <= corner_x_max and check_y <= corner_y_max and duration < MAX_TAP_DURATION_S
-
-
 @dataclass(frozen=True)
 class PointerGesture:
     """Pointer position and touch timing for Share gesture detection."""
@@ -166,7 +132,7 @@ def _replace_multitouch(state, **kwargs):
     return replace(state, multitouch=replace(state.multitouch, **kwargs))
 
 
-def _handle_touch_release(state, bounds):
+def _handle_touch_release(state, share_bounds):
     """Evaluate released touch and fire screenshot if corner gesture matched."""
     now = time.monotonic()
     duration = now - state.pointer.t_start
@@ -179,14 +145,15 @@ def _handle_touch_release(state, bounds):
     )
     t_last = state.pointer.t_last
     if state.multitouch.multi_touch_cancelled:
-        return t_last
-    if is_corner_gesture(coords, bounds) and (now - t_last) > SCREENSHOT_COOLDOWN_S:
+        return t_last, share_bounds
+    if is_corner_gesture(coords, share_bounds.bounds) and (now - t_last) > SCREENSHOT_COOLDOWN_S:
         try:
             trigger_screenshot()
             t_last = now
+            share_bounds = record_successful_tap(share_bounds, coords)
         except (OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
             _logger.warning("Share gesture screenshot failed: %s", exc)
-    return t_last
+    return t_last, share_bounds
 
 
 def _is_touch_key(event):
@@ -228,49 +195,55 @@ def _apply_tracking_id(event, state):
     )
 
 
-def _handle_touch_key(event, state, bounds):
-    """Handle a BTN_TOUCH event; return updated state tuple."""
+def _handle_touch_key(event, state, share_bounds):
+    """Handle a BTN_TOUCH event; return updated state and Share bounds."""
     if event.value == 1:
         if state.pointer.is_touching:
-            return state
+            return state, share_bounds
         # Keep last ABS coordinates so a single-frame tap still has a position.
-        return GestureState(
-            pointer=PointerGesture(
-                is_touching=True,
-                t_start=time.monotonic(),
-                t_last=state.pointer.t_last,
-                start_x=state.pointer.curr_x,
-                start_y=state.pointer.curr_y,
-                curr_x=state.pointer.curr_x,
-                curr_y=state.pointer.curr_y,
+        return (
+            GestureState(
+                pointer=PointerGesture(
+                    is_touching=True,
+                    t_start=time.monotonic(),
+                    t_last=state.pointer.t_last,
+                    start_x=state.pointer.curr_x,
+                    start_y=state.pointer.curr_y,
+                    curr_x=state.pointer.curr_x,
+                    curr_y=state.pointer.curr_y,
+                ),
+                multitouch=MultiTouchGesture(
+                    mt_slot=state.multitouch.mt_slot,
+                    slot_tracking=state.multitouch.slot_tracking,
+                    active_tracking_ids=state.multitouch.active_tracking_ids,
+                    multi_touch_cancelled=False,
+                ),
             ),
-            multitouch=MultiTouchGesture(
-                mt_slot=state.multitouch.mt_slot,
-                slot_tracking=state.multitouch.slot_tracking,
-                active_tracking_ids=state.multitouch.active_tracking_ids,
-                multi_touch_cancelled=False,
-            ),
+            share_bounds,
         )
     if not event.value:
         t_last = state.pointer.t_last
         if state.pointer.is_touching:
-            t_last = _handle_touch_release(state, bounds)
-        return GestureState(
-            pointer=PointerGesture(
-                curr_x=state.pointer.curr_x,
-                curr_y=state.pointer.curr_y,
-                is_touching=False,
-                t_start=state.pointer.t_start,
-                t_last=t_last,
+            t_last, share_bounds = _handle_touch_release(state, share_bounds)
+        return (
+            GestureState(
+                pointer=PointerGesture(
+                    curr_x=state.pointer.curr_x,
+                    curr_y=state.pointer.curr_y,
+                    is_touching=False,
+                    t_start=state.pointer.t_start,
+                    t_last=t_last,
+                ),
+                multitouch=MultiTouchGesture(
+                    mt_slot=state.multitouch.mt_slot,
+                    slot_tracking=frozenset(),
+                    active_tracking_ids=frozenset(),
+                    multi_touch_cancelled=False,
+                ),
             ),
-            multitouch=MultiTouchGesture(
-                mt_slot=state.multitouch.mt_slot,
-                slot_tracking=frozenset(),
-                active_tracking_ids=frozenset(),
-                multi_touch_cancelled=False,
-            ),
+            share_bounds,
         )
-    return state
+    return state, share_bounds
 
 
 def _dispatch_abs_event(event, state):
@@ -298,21 +271,21 @@ def _dispatch_abs_event(event, state):
     )
 
 
-def _dispatch_event(event, state, bounds):
-    """Dispatch one event; return updated state tuple."""
+def _dispatch_event(event, state, share_bounds):
+    """Dispatch one event; return updated state tuple and Share bounds."""
     if event.type == ecodes.EV_ABS:
-        return _dispatch_abs_event(event, state)
+        return _dispatch_abs_event(event, state), share_bounds
     if _is_touch_key(event):
-        return _handle_touch_key(event, state, bounds)
-    return state
+        return _handle_touch_key(event, state, share_bounds)
+    return state, share_bounds
 
 
-def run_event_loop(dev, bounds):
+def run_event_loop(dev, share_bounds):
     """Run the touch event loop."""
     state = GestureState()
     try:
         for event in dev.read_loop():
-            state = _dispatch_event(event, state, bounds)
+            state, share_bounds = _dispatch_event(event, state, share_bounds)
     except OSError as exc:
         _logger.error("Touchpad read loop failed: %s", exc)
         raise
@@ -324,26 +297,6 @@ def _open_touchpad(device_path):
         return evdev.InputDevice(device_path)
     except (OSError, ValueError) as e:
         sys.exit(f"Failed to open touchpad device {device_path}: {e}")
-
-
-def _get_axis_range(abs_axis, default_min, default_max):
-    """Extract (min, max) bounds from an AbsInfo object or return defaults."""
-    if not abs_axis:
-        return default_min, default_max
-    return getattr(abs_axis, "min", default_min), getattr(abs_axis, "max", default_max)
-
-
-def _compute_bounds(dev):
-    """Return (corner_x_max, corner_y_max) as min + 20% of the touchpad range."""
-    abs_x = get_abs_axis(dev, ecodes.ABS_MT_POSITION_X, ecodes.ABS_X)
-    abs_y = get_abs_axis(dev, ecodes.ABS_MT_POSITION_Y, ecodes.ABS_Y)
-
-    min_x, max_x = _get_axis_range(abs_x, 0, 4000)
-    min_y, max_y = _get_axis_range(abs_y, 0, 3000)
-
-    corner_x = min_x + 0.20 * (max_x - min_x)
-    corner_y = min_y + 0.20 * (max_y - min_y)
-    return (corner_x, corner_y)
 
 
 def _release_input_resources(dev):
@@ -361,7 +314,7 @@ def main():
     dev = _open_touchpad(device_path)
     try:
         try:
-            run_event_loop(dev, _compute_bounds(dev))
+            run_event_loop(dev, compute_bounds(dev))
         except KeyboardInterrupt:
             pass
     finally:
