@@ -9,6 +9,7 @@ _asus_manifest_bin_basenames() {
         asus-hotkey-daemon.py \
         asus-touchpad-share.py \
         asus_touchpad_share.py \
+        asus_touchpad_share_bounds.py \
         asus_hotkey_daemon.py \
         asus_hotkey_daemon_impl.py \
         asus_hotkey_daemon_input.py \

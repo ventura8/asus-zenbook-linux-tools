@@ -432,7 +432,7 @@ _report_touchpad_unit_result() {
 deploy_touchpad_component() {
     local src_dir="$1"
     _copy_install_relpaths "$src_dir" "$BIN_DIR/" \
-        bin/asus-touchpad-share.py bin/asus_touchpad_share.py bin/asus_common.py \
+        bin/asus-touchpad-share.py bin/asus_touchpad_share.py bin/asus_touchpad_share_bounds.py bin/asus_common.py \
         shared_imports.py bin/asus-screenshot.sh || return 1
     if [ -n "${BIN_DIR:-}" ]; then
         chmod +x "$BIN_DIR/asus-touchpad-share.py" "$BIN_DIR/asus_touchpad_share.py" \

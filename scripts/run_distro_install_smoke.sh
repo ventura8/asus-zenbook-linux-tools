@@ -399,7 +399,7 @@ _assert_installed_wmi_assets() {
     bin="$dest/usr/local/bin"
     for rel in asus-hotkey-daemon.py asus-display-mode.sh asus-screenshot.sh \
         asus-control-center.sh \
-        asus-touchpad-share.py asus_touchpad_share.py; do
+        asus-touchpad-share.py asus_touchpad_share.py asus_touchpad_share_bounds.py; do
         if ! _have_bin_asset "$bin" "$rel"; then
             asset_gap=1
         fi

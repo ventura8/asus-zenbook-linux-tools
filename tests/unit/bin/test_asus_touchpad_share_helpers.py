@@ -15,6 +15,12 @@ if str(_BIN_DIR) not in sys.path:
     sys.path.insert(0, str(_BIN_DIR))
 
 touchpad = importlib.import_module("asus_touchpad_share")
+touchpad_bounds = importlib.import_module("asus_touchpad_share_bounds")
+
+
+def _share_bounds():
+    """Return a minimal ShareBounds fixture for helper tests."""
+    return touchpad_bounds.ShareBounds(bounds=(100.0, 100.0))
 
 
 class TestAsusTouchpadShareHelpers(unittest.TestCase):
@@ -67,7 +73,7 @@ class TestAsusTouchpadShareHelpers(unittest.TestCase):
 
     def test_is_corner_gesture_negative_coords(self):
         """Unset coordinates reject the corner gesture."""
-        self.assertFalse(touchpad.is_corner_gesture((-1, -1, -1, -1, 0.1), (100.0, 100.0)))
+        self.assertFalse(touchpad_bounds.is_corner_gesture((-1, -1, -1, -1, 0.1), (100.0, 100.0)))
 
     def test_apply_mt_slot_and_tracking_release(self):
         """ABS_MT_SLOT updates; tracking id -1 drops the active slot."""
@@ -98,9 +104,16 @@ class TestAsusTouchpadShareHelpers(unittest.TestCase):
         """Already-touching presses and value>1 events are no-ops."""
         state = touchpad.GestureState(pointer=touchpad.PointerGesture(is_touching=True, curr_x=1, curr_y=2))
         press = MagicMock(type=touchpad.ecodes.EV_KEY, code=touchpad.ecodes.BTN_TOUCH, value=1)
-        self.assertIs(call_attr(touchpad, "_handle_touch_key", press, state, (10.0, 10.0)), state)
+        share_bounds = _share_bounds()
+        self.assertEqual(
+            call_attr(touchpad, "_handle_touch_key", press, state, share_bounds),
+            (state, share_bounds),
+        )
         other = MagicMock(type=touchpad.ecodes.EV_KEY, code=touchpad.ecodes.BTN_TOUCH, value=2)
-        self.assertIs(call_attr(touchpad, "_handle_touch_key", other, state, (10.0, 10.0)), state)
+        self.assertEqual(
+            call_attr(touchpad, "_handle_touch_key", other, state, share_bounds),
+            (state, share_bounds),
+        )
 
     def test_handle_touch_release_swallows_screenshot_errors(self):
         """Share release logs and continues when trigger_screenshot fails."""
@@ -120,7 +133,7 @@ class TestAsusTouchpadShareHelpers(unittest.TestCase):
             patch("asus_touchpad_share.trigger_screenshot", side_effect=OSError("boom")),
             self.assertLogs("asus_touchpad_share", level="WARNING"),
         ):
-            call_attr(touchpad, "_handle_touch_release", state, (100.0, 100.0))
+            call_attr(touchpad, "_handle_touch_release", state, _share_bounds())
 
     @patch("asus_touchpad_share.time.monotonic", return_value=10.0)
     def test_run_event_loop_oserror(self, _mono):
@@ -128,7 +141,7 @@ class TestAsusTouchpadShareHelpers(unittest.TestCase):
         mock_dev = MagicMock()
         mock_dev.read_loop.side_effect = OSError("device gone")
         with self.assertLogs("asus_touchpad_share", level="ERROR"), self.assertRaises(OSError):
-            touchpad.run_event_loop(mock_dev, (100.0, 100.0))
+            touchpad.run_event_loop(mock_dev, _share_bounds())
 
     @patch("asus_touchpad_share.find_touchpad_device_path", return_value="/dev/input/event1")
     @patch("asus_touchpad_share.evdev.InputDevice")
