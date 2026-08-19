@@ -44,12 +44,12 @@ msgstr "ASUS ಸ್ಕ್ರೀನ್‌ಶಾಟ್"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux ಸೆಟಪ್ %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux ಪರಿಕರಗಳು ಬಳಸಲು ಸಿದ್ಧವಾಗಿದೆ."
 
@@ -98,7 +98,7 @@ msgstr "ಕ್ಯಾಮರಾ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದ�
 msgid "Camera privacy"
 msgstr "ಕ್ಯಾಮರಾ ಗೌಪ್ಯತೆ"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "ಘಟಕಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
 
@@ -165,11 +165,11 @@ msgstr "GNOME ASUS ವಿಂಡೋ ಸ್ವಾಪ್ ವಿಸ್ತರಣೆ�
 msgid "GNOME shortcuts configured."
 msgstr "GNOME ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "ನಿಮ್ಮ ಲಿನಕ್ಸ್ ಡೆಸ್ಕ್‌ಟಾಪ್‌ಗಾಗಿ ಹಾರ್ಡ್‌ವೇರ್ ವೈಶಿಷ್ಟ್ಯಗಳು"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು ಮತ್ತು ಸೇವೆಗಳನ್ನು ಸ್ಥಾಪಿಸಿ"
 
@@ -181,11 +181,11 @@ msgstr "ಸಿಸ್ಟಮ್ ಅವಲಂಬನೆಗಳನ್ನು ಸ್ಥ�
 msgid "Installation cancelled by user."
 msgstr "ಬಳಕೆದಾರರಿಂದ ಅನುಸ್ಥಾಪನೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ಅನುಸ್ಥಾಪನೆಯು ಪೂರ್ಣಗೊಂಡಿದೆ."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux ಪರಿಕರಗಳನ್ನು ಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ %s."
@@ -219,8 +219,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "ಅಮಾನ್ಯ ಆಯ್ಕೆ: %s. ಸಂಖ್ಯೆಗಳು (1,2,3,4), ಘಟಕ ಹೆಸರುಗಳು ಅಥವಾ all, ಅಥವಾ none "
-"ನಮೂದಿಸಿ."
+msgstr ""
+"ಅಮಾನ್ಯ ಆಯ್ಕೆ: %s. ಸಂಖ್ಯೆಗಳು (1,2,3,4), ಘಟಕ ಹೆಸರುಗಳು ಅಥವಾ all, ಅಥವಾ none ನಮೂದಿಸಿ."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
@@ -248,7 +248,7 @@ msgstr "ಮುಖ್ಯ ಪ್ರದರ್ಶನ ಮಾತ್ರ"
 msgid "Mode: %s"
 msgstr "ಮೋಡ್: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "ಯಾವುದೇ ಘಟಕಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ. ಏನೂ ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ."
 
@@ -269,8 +269,9 @@ msgstr "ಕಾರ್ಯಕ್ಷಮತೆ (ಬೂಸ್ಟ್)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "ಎಲ್ಲಾ ಶಿಫಾರಸು ಮಾಡಿದ ಘಟಕಗಳನ್ನು ಸ್ಥಾಪಿಸಲು Enter ಒತ್ತಿರಿ, ಅಥವಾ 'all' ಅಥವಾ "
-"'none' ನಮೂದಿಸಿ."
+msgstr ""
+"ಎಲ್ಲಾ ಶಿಫಾರಸು ಮಾಡಿದ ಘಟಕಗಳನ್ನು ಸ್ಥಾಪಿಸಲು Enter ಒತ್ತಿರಿ, ಅಥವಾ 'all' ಅಥವಾ 'none' "
+"ನಮೂದಿಸಿ."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -288,7 +289,7 @@ msgstr "ಸ್ಕ್ರೀನ್‌ಪ್ಯಾಡ್ ಹೊಳಪು"
 msgid "ScreenPad only"
 msgstr "ಸ್ಕ್ರೀನ್‌ಪ್ಯಾಡ್ ಮಾತ್ರ"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -17,8 +17,8 @@ unless the user explicitly asks.
 
 1. **Version from the current branch only** — parse `git branch --show-current`.
    Write that semver into **`VERSION`** (single source of truth, no `v` prefix).
-   Sync `pyproject.toml` `tool.poetry.version`. Do **not** invent a version from
-   tags or prior docs.
+   Run `scripts/sync_poetry_version.sh` so `pyproject.toml` `tool.poetry.version`
+   matches. Do **not** invent a version from tags or prior docs.
 2. **Look at ALL changes** — every file and theme that lands in this release,
    not a subset. Include commits since the merge base **and** uncommitted /
    staged work still on the tree.
@@ -67,8 +67,9 @@ Previous tag for compare links: latest `v*` tag older than this release
 After resolving `$version` from the branch:
 
 1. Write `$version` into **`VERSION`** (overwrite; first line only; no `v` prefix).
-2. Set `pyproject.toml` `[tool.poetry] version` to the same string (`scripts/run-lints.sh`
-   fails if they diverge).
+2. Set `pyproject.toml` `[tool.poetry] version` by running
+   `scripts/sync_poetry_version.sh` (writes from `VERSION`; `scripts/run-lints.sh`
+   `step_version_sync` invokes the same script and fails if they diverge).
 3. Point human install URLs at tag `v$version` (`README.md` checksum one-liner,
    `docs/INSTRUCTIONS.md` `TAG=`, release notes). Do **not** put
    `NONINTERACTIVE_CHOICE` in those human snippets.
@@ -175,13 +176,17 @@ the same turn.
 ```text
 Release progress:
 - [ ] Version parsed from current branch only
-- [ ] VERSION + pyproject.toml set to that version
+- [ ] VERSION + `scripts/sync_poetry_version.sh` (pyproject.toml synced)
 - [ ] PPA_UPLOAD_REVISION reset to 1 (new VERSION) or left as re-upload bump
 - [ ] debian/changelog top entry added
 - [ ] Human install URLs / INSTRUCTIONS TAG updated
 - [ ] ALL diffs vs merge-base + working tree reviewed
 - [ ] docs/releases/vX.Y.Z.md written
 - [ ] docs/releases/vX.Y.Z_github_description.md written
+- [ ] Release docs list GitHub Release artifacts (.deb, .rpm, Arch, AppImage, Flatpak, Snap, SHA256SUMS)
+- [ ] Install sections document `sha256sum -c SHA256SUMS` before local asset install (openSUSE:
+  `sudo zypper install --allow-unsigned-rpm ./asus-zenbook-linux-tools-*.rpm` after checksum
+  verification so dependencies resolve normally—not bare `rpm -Uvh` without deps)
 - [ ] AGENTS.md / architecture skill tree updated
 - [ ] Commit title + description amended to match release themes (only when user
   explicitly confirmed amend)

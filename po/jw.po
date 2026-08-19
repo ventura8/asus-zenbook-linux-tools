@@ -42,12 +42,12 @@ msgstr "Screenshot ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Panyiapan ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools siap digunakake."
 
@@ -96,7 +96,7 @@ msgstr "Kamera diaktifake"
 msgid "Camera privacy"
 msgstr "Privasi kamera"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Pilih komponen"
 
@@ -163,11 +163,11 @@ msgstr "Ekstensi GNOME ASUS Window Swap diinstal."
 msgid "GNOME shortcuts configured."
 msgstr "Trabasan GNOME dikonfigurasi."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Fitur hardware kanggo desktop Linux sampeyan"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Instal skrip lan layanan"
 
@@ -179,11 +179,11 @@ msgstr "Instal dependensi sistem"
 msgid "Installation cancelled by user."
 msgstr "Instalasi dibatalake dening pangguna."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Instalasi rampung."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Nginstal ASUS ZenBook Linux Tools %s."
@@ -217,7 +217,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Pilihan ora sah: %s. Lebokake angka (1,2,3,4), jeneng komponen, utawa all, "
+msgstr ""
+"Pilihan ora sah: %s. Lebokake angka (1,2,3,4), jeneng komponen, utawa all, "
 "utawa none."
 
 #: lib/install-kde.sh:309
@@ -246,7 +247,7 @@ msgstr "Mung tampilan utama"
 msgid "Mode: %s"
 msgstr "Modus: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Ora ana komponen sing dipilih. Ora ana sing diinstal."
 
@@ -267,7 +268,8 @@ msgstr "Kinerja (Ngundhakake)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Pencet Enter kanggo nginstal kabeh komponen sing disaranake, utawa tulis "
+msgstr ""
+"Pencet Enter kanggo nginstal kabeh komponen sing disaranake, utawa tulis "
 "'all' utawa 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -286,7 +288,7 @@ msgstr "padhange ScreenPad"
 msgid "ScreenPad only"
 msgstr "ScreenPad mung"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

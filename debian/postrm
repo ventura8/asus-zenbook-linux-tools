@@ -1,16 +1,57 @@
 #!/bin/bash
 set -e
 
+PKG_SHARE="/usr/share/asus-zenbook-linux-tools"
+
 _purge_state_dir() {
     rm -rf /var/lib/asus-zenbook-linux-tools
 }
 
-case "${1:-}" in
-    purge)
-        _purge_state_dir
-        ;;
-esac
+_remove_share_bytecode() {
+    # Install/configure can leave __pycache__ under the packaged share tree;
+    # those dirs are not owned by dpkg and block removing empty parents.
+    [ -d "$PKG_SHARE" ] || return 0
+    find "$PKG_SHARE" -type d -name '__pycache__' -prune -exec rm -rf {} +
+}
 
-#DEBHELPER#
+_remove_empty_share_dirs() {
+    [ -d "$PKG_SHARE" ] || return 0
+    find "$PKG_SHARE" -depth -type d -empty -delete || true
+}
 
-exit 0
+_cleanup_share_leftovers() {
+    _remove_share_bytecode
+    _remove_empty_share_dirs
+}
+
+_postrm_cleanup_for_action() {
+    # upgrade: drop bytecode only (new payload already unpacked).
+    # remove/purge: also remove empty share dirs so dpkg can finish cleanup.
+    case "${1:-}" in
+        upgrade)
+            _remove_share_bytecode
+            ;;
+        remove | purge)
+            _cleanup_share_leftovers
+            ;;
+    esac
+}
+
+_postrm_main() {
+    _postrm_cleanup_for_action "${1:-}"
+
+    case "${1:-}" in
+        purge)
+            _purge_state_dir
+            ;;
+    esac
+
+    #DEBHELPER#
+
+    exit 0
+}
+
+if [[ "${BASH_SOURCE[0]:-}" == "$0" || -z "${BASH_SOURCE[0]:-}" ]] \
+    && [[ "${ASUS_POSTRM_SOURCE_ONLY:-}" != "1" ]]; then
+    _postrm_main "$@"
+fi

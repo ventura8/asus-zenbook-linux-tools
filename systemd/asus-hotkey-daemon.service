@@ -8,6 +8,7 @@ Type=simple
 # Requires root: reads /dev/input (evdev), writes /dev/uinput, and spawns
 # helper scripts that write sysfs nodes owned by root (leds, asus-wmi).
 User=root
+Environment=PYTHONDONTWRITEBYTECODE=1
 ExecStart=/usr/local/bin/asus-hotkey-daemon.py
 Restart=always
 RestartSec=3

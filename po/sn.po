@@ -44,12 +44,12 @@ msgstr "Mufananidzo weASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Kugadziriswa kwe ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Zvishandiso yakagadzirira kushandisa."
 
@@ -98,7 +98,7 @@ msgstr "Kamera yakabatidzwa"
 msgid "Camera privacy"
 msgstr "Kuvanzika kwekamera"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Sarudza zvikamu"
 
@@ -165,11 +165,11 @@ msgstr "GNOME ASUS Window Swap yekuwedzera yakaiswa."
 msgid "GNOME shortcuts configured."
 msgstr "GNOME mapfupi akagadziridzwa."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardware maficha eLinux desktop yako"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Isa zvinyorwa uye masevhisi"
 
@@ -181,11 +181,11 @@ msgstr "Isa system dependencies"
 msgid "Installation cancelled by user."
 msgstr "Kuiswa kwakanzurwa nemushandisi."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Kuisa kwapera."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Kuisa ASUS ZenBook Linux Zvishandiso %s."
@@ -220,7 +220,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Sarudzo isiriyo: %s. Nyora nhamba (1,2,3,4), mazita ezvikamu, kana all, kana "
+msgstr ""
+"Sarudzo isiriyo: %s. Nyora nhamba (1,2,3,4), mazita ezvikamu, kana all, kana "
 "none, kana none."
 
 #: lib/install-kde.sh:309
@@ -249,7 +250,7 @@ msgstr "Main kuratidza chete"
 msgid "Mode: %s"
 msgstr "Maitiro: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Hapana zvikamu zvakasarudzwa. Hapana chakaiswa."
 
@@ -270,7 +271,8 @@ msgstr "Kuita (Boost)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Dzvanya Enter kuti uise zvikamu zvese zvinokurudzirwa, kana nyora 'all' kana "
+msgstr ""
+"Dzvanya Enter kuti uise zvikamu zvese zvinokurudzirwa, kana nyora 'all' kana "
 "'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -289,7 +291,7 @@ msgstr "ScreenPad kupenya"
 msgid "ScreenPad only"
 msgstr "ScreenPad chete"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

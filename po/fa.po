@@ -44,12 +44,12 @@ msgstr "اسکرین شات ایسوس"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "راه‌اندازی ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools آماده استفاده است."
 
@@ -98,7 +98,7 @@ msgstr "دوربین فعال شد"
 msgid "Camera privacy"
 msgstr "حریم خصوصی دوربین"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "اجزا را انتخاب کنید"
 
@@ -165,11 +165,11 @@ msgstr "برنامه افزودنی تعویض پنجره GNOME ASUS نصب شد
 msgid "GNOME shortcuts configured."
 msgstr "میانبرهای گنوم پیکربندی شدند."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "ویژگی های سخت افزاری برای دسکتاپ لینوکس شما"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "اسکریپت ها و سرویس ها را نصب کنید"
 
@@ -181,11 +181,11 @@ msgstr "وابستگی های سیستم را نصب کنید"
 msgid "Installation cancelled by user."
 msgstr "نصب توسط کاربر لغو شد."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "نصب کامل شد"
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "نصب ASUS ZenBook Linux Tools %s."
@@ -219,8 +219,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "انتخاب نامعتبر: %s. اعداد (1,2,3,4)، نام مؤلفه‌ها یا all, یا none را "
-"واردکنید."
+msgstr ""
+"انتخاب نامعتبر: %s. اعداد (1,2,3,4)، نام مؤلفه‌ها یا all, یا none را واردکنید."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
@@ -248,7 +248,7 @@ msgstr "فقط نمایشگر اصلی"
 msgid "Mode: %s"
 msgstr "حالت: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "هیچ جزء انتخاب نشد. چیزی نصب نشد."
 
@@ -269,8 +269,8 @@ msgstr "عملکرد (تقویت)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "برای نصب همه مؤلفه‌های توصیه‌شده Enter را بزنید یا 'all' یا 'none' را "
-"واردکنید."
+msgstr ""
+"برای نصب همه مؤلفه‌های توصیه‌شده Enter را بزنید یا 'all' یا 'none' را واردکنید."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -288,7 +288,7 @@ msgstr "روشنایی صفحه نمایش"
 msgid "ScreenPad only"
 msgstr "فقط اسکرین پد"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

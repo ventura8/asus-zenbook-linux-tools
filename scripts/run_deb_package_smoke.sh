@@ -29,12 +29,13 @@ _require_exact_one_glob() {
 _apt_install_local_deb() {
     # apt treats unprefixed dir/file.deb as release/package; require ./ or absolute.
     local deb_path="$1" install_path
+    shift
     if [[ "$deb_path" == /* || "$deb_path" == ./* ]]; then
         install_path="$deb_path"
     else
         install_path="./$deb_path"
     fi
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "$install_path"
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "$@" "$install_path"
 }
 
 _install_packaging_deps() {
@@ -127,18 +128,69 @@ _artifact_deb_path() {
     printf '%s\n' "$artifact"
 }
 
-_smoke_install_and_purge() {
+_smoke_rel_deb_path() {
+    local artifact_deb="$1" rel_path
+    rel_path="${artifact_deb#"$REPO_ROOT"/}"
+    if [ "$rel_path" = "$artifact_deb" ]; then
+        printf '%s\n' "$artifact_deb"
+        return 0
+    fi
+    printf '%s\n' "$rel_path"
+}
+
+_smoke_plant_share_bytecode() {
+    local cache="/usr/share/asus-zenbook-linux-tools/bin/__pycache__"
+    sudo mkdir -p "$cache"
+    echo 'planted' | sudo tee "$cache/asus_i18n.cpython-314.pyc" >/dev/null
+    [ -f "$cache/asus_i18n.cpython-314.pyc" ]
+}
+
+_smoke_assert_no_share_bytecode() {
+    local cache="/usr/share/asus-zenbook-linux-tools/bin/__pycache__"
+    if [ -e "$cache" ]; then
+        printf 'Expected no leftover %s after upgrade\n' "$cache" >&2
+        return 1
+    fi
+}
+
+_smoke_assert_share_gone() {
+    local share="/usr/share/asus-zenbook-linux-tools"
+    if [ -e "$share" ]; then
+        printf 'Expected %s removed after purge\n' "$share" >&2
+        ls -laR "$share" >&2 || true
+        return 1
+    fi
+}
+
+_smoke_purge_and_assert_clean() {
+    local purge_log
+    purge_log="$(mktemp)"
+    trap 'rm -f "'"$purge_log"'"' RETURN
+    sudo DEBIAN_FRONTEND=noninteractive apt-get purge -y "$PACKAGE_NAME" \
+        2>&1 | tee "$purge_log"
+    if grep -Fq 'not empty so not removed' "$purge_log"; then
+        printf 'dpkg left non-empty share dirs during purge\n' >&2
+        return 1
+    fi
+    _smoke_assert_share_gone
+}
+
+_smoke_install_upgrade_and_purge() {
     local artifact_deb rel_path
     artifact_deb=$(_artifact_deb_path) || return 1
     ls -la "$artifact_deb"
     # Prefer repo-relative path so local and CI logs match (./artifacts/…).
-    rel_path="${artifact_deb#"$REPO_ROOT"/}"
-    if [ "$rel_path" = "$artifact_deb" ]; then
-        rel_path="$artifact_deb"
-    fi
+    rel_path="$(_smoke_rel_deb_path "$artifact_deb")"
     _apt_install_local_deb "$rel_path"
     dpkg -s "$PACKAGE_NAME"
-    sudo DEBIAN_FRONTEND=noninteractive apt-get purge -y "$PACKAGE_NAME"
+    # Simulate TUI/configure bytecode left under the packaged share tree, then
+    # force a same-version reinstall (apt no-ops without --reinstall) so postrm
+    # upgrade clears leftovers before purge.
+    _smoke_plant_share_bytecode
+    _apt_install_local_deb "$rel_path" --reinstall
+    dpkg -s "$PACKAGE_NAME"
+    _smoke_assert_no_share_bytecode
+    _smoke_purge_and_assert_clean
 }
 
 main() {
@@ -155,7 +207,7 @@ main() {
     _install_packaging_deps
     _build_unsigned_deb
     _copy_parent_deb_to_artifacts
-    _smoke_install_and_purge
+    _smoke_install_upgrade_and_purge
     printf 'Debian package smoke passed (%s).\n' "$PACKAGE_NAME"
 }
 

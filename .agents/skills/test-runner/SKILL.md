@@ -35,6 +35,26 @@ Use this skill to execute unit tests and end-to-end test suites independently wh
   Compat smoke validates locale catalog deployment on all nine distros; full-DE
   cells probe real DE CLIs/schemas only.
 
+## New Files
+
+When adding product code or tests, include applicable tests in the same change set and run them
+before finishing.
+
+1. **New product modules** (`bin/`, `lib/`, `tools/`): add matching tests under `tests/unit/`
+   (mirror production layout). Product shell helpers also need kcov coverage when line-gated.
+1. **New test modules**: run the narrowest command that executes them, e.g.
+   `coverage run tools/dot_test_runner.py --start-dir tests/unit --top-level-dir . --failfast`
+   or target the new module with unittest discovery.
+1. **Coverage**: new product Python must not drop the ≥90% gate; new product shell must stay
+   within kcov line gates. Run targeted tests first, then broader suites when behavior crosses
+   modules.
+1. **New executable shell under `packaging/` and `scripts/`** (builders, smoke helpers): run
+   `bash -n` and `shellcheck -S warning`; add targeted smoke or shell unit tests when logic is
+   testable; run `./scripts/run_release_package_smoke.sh` (or the builder directly) when release
+   packaging behavior changes.
+1. Skip tests only for non-logic assets (icons, static packaging templates) — document in the PR
+   when the omission is intentional.
+
 ## Instructions
 
 1. **Live Output & Persistent Logs**:

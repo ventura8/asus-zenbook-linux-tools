@@ -1,3 +1,11 @@
+asus-zenbook-linux-tools (1.0.3) resolute; urgency=medium
+
+  * Multi-distro release packaging: shared stage-payload, RPM, Arch PKGBUILD,
+    AppImage/Flatpak/Snap installer bundles on GitHub Releases.
+  * CI package-smoke for Fedora RPM and Arch; tag workflow build-packages matrix.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Wed, 19 Aug 2026 21:30:00 +0300
+
 asus-zenbook-linux-tools (1.0.2) resolute; urgency=medium
 
   * Adaptive touchpad Share bounds: stricter start+end gate and automatic learning.

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "asus-zenbook-linux-tools"
-version = "1.0.2"
+version = "1.0.3"
 description = "ASUS ZenBook Linux support tools"
 authors = ["Sergiu Alexandrescu <alexandrescu.sergiu@gmail.com>"]
 package-mode = false

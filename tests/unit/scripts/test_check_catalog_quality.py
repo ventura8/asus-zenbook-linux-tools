@@ -1,30 +1,51 @@
-"""Unit tests for gettext catalog artifact detection."""
+"""Unit tests for gettext catalog completeness and artifact detection."""
 
 from __future__ import annotations
 
-import importlib.util
-import sys
+import subprocess
 import unittest
-from pathlib import Path
 
 from tests.unit.bin.attr_helpers import call_attr
+from tests.unit.scripts.script_module_loader import load_scripts_module
+
+_CATALOG = load_scripts_module(
+    "check_catalog_quality",
+    ("scripts", "i18n", "check_catalog_quality.py"),
+)
 
 
-def _load_catalog_quality():
-    """Load check_catalog_quality.py from scripts/i18n without packaging it."""
-    repo_root = Path(__file__).resolve().parents[3]
-    module_path = repo_root / "scripts" / "i18n" / "check_catalog_quality.py"
-    # seed_whisper_languages is imported as a sibling module.
-    sys.path.insert(0, str(module_path.parent))
-    spec = importlib.util.spec_from_file_location("check_catalog_quality", module_path)
-    assert spec is not None and spec.loader is not None
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
+class TestCatalogCompleteness(unittest.TestCase):
+    """Fail when any shipped catalog is empty, fuzzy, or English-copied."""
 
+    def test_empty_translation_is_rejected(self) -> None:
+        """Blank msgstr must fail the completeness gate."""
+        entry = _CATALOG.PoEntry(msgid="Camera privacy", msgstr={0: ""})
+        with self.assertRaises(ValueError) as raised:
+            call_attr(_CATALOG, "_validate_entry", entry, "de")
+        self.assertIn("empty translation", str(raised.exception))
 
-_CATALOG = _load_catalog_quality()
+    def test_fuzzy_entry_is_rejected(self) -> None:
+        """Fuzzy entries are not considered filled in."""
+        entry = _CATALOG.PoEntry(
+            msgid="Camera privacy",
+            msgstr={0: "Kameraprivatsphäre"},
+            flags={"fuzzy"},
+        )
+        with self.assertRaises(ValueError) as raised:
+            call_attr(_CATALOG, "_validate_entry", entry, "de")
+        self.assertIn("fuzzy entry", str(raised.exception))
+
+    def test_all_shipped_catalogs_are_complete(self) -> None:
+        """Live po/*.po catalogs must pass the same gate as heavy lint."""
+        try:
+            call_attr(_CATALOG, "check_catalogs")
+        except (
+            OSError,
+            RuntimeError,
+            subprocess.CalledProcessError,
+            ValueError,
+        ) as error:
+            self.fail(f"shipped catalogs are incomplete: {error}")
 
 
 class TestTranslationArtifactDetection(unittest.TestCase):

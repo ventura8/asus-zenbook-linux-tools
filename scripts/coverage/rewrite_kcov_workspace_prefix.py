@@ -10,12 +10,14 @@ _TEXT_SUFFIXES = {".json", ".xml", ".js", ".html", ".css"}
 
 
 def _should_scan(path: Path) -> bool:
+    """Return True when *path* is text metadata that may contain /workspace."""
     if path.suffix in _TEXT_SUFFIXES:
         return True
     return path.parent.name == "metadata"
 
 
 def _rewrite_file(path: Path, needle: bytes, replacement: bytes) -> bool:
+    """Replace *needle* with *replacement* in *path*; return True when changed."""
     data = path.read_bytes()
     if needle not in data:
         return False
@@ -44,6 +46,7 @@ def _usage() -> None:
 
 
 def main(argv: list[str]) -> int:
+    """CLI entry: rewrite exported kcov shard paths under argv[1] to argv[2]."""
     if len(argv) != 3:
         _usage()
         return 2

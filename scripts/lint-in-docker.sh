@@ -23,8 +23,8 @@ LOG_DIR="$REPO_ROOT/reports/distro-logs"
 LOG_FILE="$LOG_DIR/lint-docker-${LINT_WAVE_SLUG}.log"
 # Per-wave build log so cheap∥heavy parallel hosts do not clobber tee output.
 BUILD_LOG="$LOG_DIR/lint-python-3.13-slim-build-${LINT_WAVE_SLUG}.log"
-# Stable inode across checkouts (same pattern as shellcheck stub lock).
-LINT_BUILDX_LOCK="${LINT_BUILDX_LOCK:-/tmp/asus-zenbook-lint-buildx.lock}"
+# Repo-local mkdir lock (avoid predictable /tmp symlink traps under sudo --full).
+LINT_BUILDX_LOCK_ROOT="${LINT_BUILDX_LOCK_ROOT:-${DOCKER_BUILD_CACHE_DIR}/.locks}"
 mkdir -p "$LOG_DIR"
 
 _LINT_BUILD_PID=""
@@ -66,11 +66,40 @@ _lint_setup() {
     fi
 }
 
+_lint_release_build_lock() {
+    local lock_dir="$1"
+    [ -n "${lock_dir:-}" ] || return 0
+    rm -f "${lock_dir}/owner.pid" 2>/dev/null || true
+    rmdir "$lock_dir" 2>/dev/null || true
+}
+
+_lint_acquire_build_lock() {
+    local -n _lint_lock_dir_ref="$1"
+    local lock_root="" lock_dir="" deadline=$((SECONDS + ${DOCKER_BUILDX_LOCK_TIMEOUT_SECS:-1200}))
+    _lint_lock_dir_ref=""
+    lock_root="${LINT_BUILDX_LOCK_ROOT}"
+    mkdir -p "$lock_root" || return 1
+    # 755, not 700: shares this root with docker-utils.sh's lock (same path)
+    # and must stay traversable by an unprivileged $SUDO_USER concurrently
+    # running dh_clean's repo-wide find under `sudo --full` (see docker-utils.sh).
+    chmod 755 "$lock_root" 2>/dev/null || true
+    # Wave-independent: cheap∥heavy contend on one lock; docker_build also
+    # serializes via the shared lint-python-3.13-slim cache-key lock.
+    lock_dir="${lock_root}/lint-image"
+    _docker_wait_mkdir_lock "$lock_dir" "$deadline" || return 1
+    _docker_trap_add "_lint_release_build_lock '$lock_dir'" EXIT INT TERM
+    if ! echo "$$" > "${lock_dir}/owner.pid" 2>/dev/null; then
+        echo "Failed to record lint buildx lock owner: $lock_dir" >&2
+        _lint_release_build_lock "$lock_dir"
+        return 1
+    fi
+    _lint_lock_dir_ref="$lock_dir"
+}
+
 _build_lint_image() {
-    local build_status
-    # Cheap∥heavy waves share one local buildx cache dir; serialize builds.
-    exec {lint_build_lock_fd}>"$LINT_BUILDX_LOCK"
-    flock "$lint_build_lock_fd"
+    local build_status lint_lock_dir=""
+    # Cheap∥heavy share lint-image mkdir lock + lint-python-3.13-slim cache lock.
+    _lint_acquire_build_lock lint_lock_dir || return 1
     set +e
     # setsid: tracked PID is the process-group leader of docker build + tee.
     setsid bash -c '
@@ -93,8 +122,7 @@ _build_lint_image() {
     build_status=$?
     _LINT_BUILD_PID=""
     set -e
-    flock -u "$lint_build_lock_fd"
-    exec {lint_build_lock_fd}>&-
+    _lint_release_build_lock "$lint_lock_dir"
     return "$build_status"
 }
 

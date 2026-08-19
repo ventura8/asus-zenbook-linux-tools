@@ -56,12 +56,12 @@ msgstr "Skramm ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Kefluniadur ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Prest eo ASUS ZenBook Linux Tools da implijout."
 
@@ -110,7 +110,7 @@ msgstr "Gweredekaet ar c'hamera"
 msgid "Camera privacy"
 msgstr "Prevezded ar c'hamera"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Dibab elfennoù"
 
@@ -177,11 +177,11 @@ msgstr "GNOME ASUS Window Swap astenn staliet."
 msgid "GNOME shortcuts configured."
 msgstr "Berradennoù GNOME kefluniet."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Perzhioù dafar evit ho burev Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Staliañ skriptoù ha servijoù"
 
@@ -193,11 +193,11 @@ msgstr "Staliañ dalc'hadoù ar reizhiad"
 msgid "Installation cancelled by user."
 msgstr "Staliadur nullet gant an implijer."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Echu eo ar staliañ."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Staliañ ASUS ZenBook Linux Tools %s."
@@ -234,7 +234,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Diuzadenn didalvoud: %s. Skrivit niveroù (1,2,3,4), anvioù parzh pe all, pe "
+msgstr ""
+"Diuzadenn didalvoud: %s. Skrivit niveroù (1,2,3,4), anvioù parzh pe all, pe "
 "none, pe none."
 
 #: lib/install-kde.sh:309
@@ -263,7 +264,7 @@ msgstr "Diskouezadeg pennañ hepken"
 msgid "Mode: %s"
 msgstr "Mod : %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "N'eus bet dibabet elfenn ebet. Netra n'eus ket staliet."
 
@@ -284,7 +285,8 @@ msgstr "Perzhded (Kreñvaat)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Pouezit war Enter evit staliañ an holl barzhioù erbedet, pe skrivit 'all' pe "
+msgstr ""
+"Pouezit war Enter evit staliañ an holl barzhioù erbedet, pe skrivit 'all' pe "
 "'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -303,7 +305,7 @@ msgstr "Sklêrijenn ScreenPad"
 msgid "ScreenPad only"
 msgstr "ScreenPad hepken"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

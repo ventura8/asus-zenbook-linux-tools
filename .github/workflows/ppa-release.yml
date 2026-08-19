@@ -207,9 +207,61 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
+  build-packages:
+    runs-on: ${{ matrix.pkg == 'snap' && 'ubuntu-24.04' || 'ubuntu-26.04' }}
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        pkg:
+          - rpm-fedora-44
+          - rpm-rocky-10
+          - rpm-opensuse-tw
+          - arch
+          - appimage
+          - flatpak
+          - snap
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Verify install.sh checksum
+        run: sha256sum -c install.sh.sha256
+
+      - name: Install host build tools
+        run: |
+          set -euo pipefail
+          chmod +x scripts/prepare_release_package_host_deps.sh
+          ./scripts/prepare_release_package_host_deps.sh "${{ matrix.pkg }}"
+
+      - name: Build release package (${{ matrix.pkg }})
+        run: |
+          set -euo pipefail
+          mkdir -p reports/distro-logs artifacts
+          chmod +x scripts/build_release_package.sh
+          ./scripts/build_release_package.sh "${{ matrix.pkg }}" \
+            2>&1 | tee "reports/distro-logs/release-package-${{ matrix.pkg }}.log"
+
+      - name: Upload release package artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: release-pkg-${{ matrix.pkg }}
+          path: artifacts/
+          if-no-files-found: error
+
+      - name: Upload release package build log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: release-pkg-log-${{ matrix.pkg }}
+          path: reports/distro-logs/
+          if-no-files-found: warn
+
   github-release:
     runs-on: ubuntu-26.04
-    needs: upload-to-ppa
+    needs: [upload-to-ppa, build-packages]
     permissions:
       contents: write
     steps:
@@ -226,7 +278,14 @@ jobs:
           sudo apt-get install -y build-essential debhelper dpkg-dev gettext \
             python3-evdev python3-dbus python3-gi python3-yaml
 
-      - name: Build binary packages
+      - name: Download multi-format release artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          path: downloaded-artifacts
+          pattern: release-pkg-*
+          merge-multiple: true
+
+      - name: Build Debian binary package
         run: |
           set -euo pipefail
           mkdir -p reports/distro-logs
@@ -258,7 +317,58 @@ jobs:
             exit 1
           fi
           cp "${parent_debs[0]}" artifacts/
+          find downloaded-artifacts -type f \( -name '*.rpm' -o -name '*.pkg.tar.*' \
+            -o -name '*.AppImage' -o -name '*.flatpak' -o -name '*.snap' \) \
+            -exec cp -a {} artifacts/ \;
           ls -la artifacts/
+
+      - name: Verify release artifact set
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          debs=(artifacts/*.deb)
+          rpms=(artifacts/*.rpm)
+          arch_pkgs=(artifacts/*.pkg.tar.*)
+          appimages=(artifacts/*.AppImage)
+          flatpaks=(artifacts/*.flatpak)
+          snaps=(artifacts/*.snap)
+          shopt -u nullglob
+          for label in \
+            "deb:${#debs[@]}" \
+            "rpm:${#rpms[@]}" \
+            "arch:${#arch_pkgs[@]}" \
+            "appimage:${#appimages[@]}" \
+            "flatpak:${#flatpaks[@]}" \
+            "snap:${#snaps[@]}"; do
+            kind="${label%%:*}"
+            count="${label##*:}"
+            if [ "$kind" = "rpm" ]; then
+              if [ "$count" -ne 3 ]; then
+                echo "Expected exactly 3 RPM artifacts, found $count" >&2
+                exit 1
+              fi
+              continue
+            fi
+            if [ "$count" -lt 1 ]; then
+              echo "Missing release artifact kind: $kind (count=$count)" >&2
+              exit 1
+            fi
+          done
+
+      - name: Generate release SHA256SUMS manifest
+        run: |
+          set -euo pipefail
+          cd artifacts
+          shopt -s nullglob
+          files=( *.deb *.rpm *.pkg.tar.* *.AppImage *.flatpak *.snap )
+          shopt -u nullglob
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No release binaries to checksum" >&2
+            exit 1
+          fi
+          sha256sum "${files[@]}" > SHA256SUMS
+          sha256sum -c SHA256SUMS
+          ls -la SHA256SUMS
 
       - name: Upload GitHub release build logs
         if: always()
@@ -271,7 +381,14 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228  # v3.0.2
         with:
-          files: artifacts/*.deb
+          files: |
+            artifacts/SHA256SUMS
+            artifacts/*.deb
+            artifacts/*.rpm
+            artifacts/*.pkg.tar.*
+            artifacts/*.AppImage
+            artifacts/*.flatpak
+            artifacts/*.snap
           generate_release_notes: true
           draft: false
           prerelease: false

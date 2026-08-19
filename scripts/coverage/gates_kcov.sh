@@ -107,16 +107,49 @@ _run_kcov_coverage_pipeline() {
     _teardown_kcov_temp_root "$kcov_root" "$merged" "$cov_json"
 }
 
+_copy_kcov_runs_into_shard_dest() {
+    local kcov_root="$1" dest="$2"
+    mkdir -p "$dest/runs" || return 1
+    if [ -d "$kcov_root/runs" ]; then
+        cp -a "$kcov_root/runs"/. "$dest/runs/" || return 1
+    fi
+    return 0
+}
+
+_export_kcov_shard_payload() {
+    local kcov_root="$1" dest="$2"
+    _mkdir_coverage_shard_dest "$dest" "kcov" || return 1
+    _copy_kcov_runs_into_shard_dest "$kcov_root" "$dest" || return 1
+    # Stamp only on successful export so merge never trusts stale shard trees.
+    # Non-hidden name: GHA upload-artifact omits dotfiles unless include-hidden-files.
+    _write_coverage_shard_ok_stamp "$dest" "kcov"
+}
+
 _export_kcov_coverage_shard() {
     local kcov_root="$1" shard="${ASUS_COVERAGE_SHARD}" dest reports_root
+    _require_asus_coverage_shard_id "$shard" || return 1
     reports_root=$(resolve_reports_root) || return 1
     dest="$reports_root/coverage-shards/kcov-${shard}"
-    rm -rf "$dest"
-    mkdir -p "$dest/runs"
-    if [ -d "$kcov_root/runs" ]; then
-        cp -a "$kcov_root/runs"/. "$dest/runs/"
-    fi
+    _export_kcov_shard_payload "$kcov_root" "$dest" || return 1
     echo "  ✓ Exported kcov shard ${shard} runs to $dest"
+}
+
+_require_kcov_shard_ok_stamps() {
+    local reports_root="$1" shard dest
+    for shard in 1 2; do
+        dest="$reports_root/coverage-shards/kcov-${shard}"
+        if [ ! -f "$dest/shard_ok" ]; then
+            echo "  ✗ Missing kcov shard stamp: $dest/shard_ok" \
+                "(shard did not export successfully; refusing stale merge)" >&2
+            return 1
+        fi
+        if [ ! -d "$dest/runs" ] || \
+            [ -z "$(find "$dest/runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]; then
+            echo "  ✗ kcov shard kcov-${shard} has stamp but no run dirs" >&2
+            return 1
+        fi
+    done
+    return 0
 }
 
 _run_and_merge_kcov_scenarios() {
@@ -313,19 +346,34 @@ _finalize_merged_kcov_temp() {
     _finalize_kcov_coverage "$cov_json" "$min_percent" "$tmp"
 }
 
+_merge_kcov_shards_from_reports() {
+    local reports_root="$1" tmp="$2" merged="$3" min_percent="$4"
+    _require_kcov_shard_ok_stamps "$reports_root" || return 1
+    mkdir -p "$tmp/runs"
+    _collect_kcov_shard_runs "$reports_root" "$tmp/runs" || return 1
+    _finalize_merged_kcov_temp "$tmp" "$merged" "$min_percent"
+}
+
 merge_kcov_coverage_shards() {
     local reports_root tmp merged min_percent
     reports_root=$(resolve_reports_root) || return 1
     normalize_coverage_shard_artifacts || return 1
     tmp=$(mktemp -d)
     merged="$tmp/merged"
-    mkdir -p "$tmp/runs"
-    _collect_kcov_shard_runs "$reports_root" "$tmp/runs" || return 1
     min_percent="$(_normalize_kcov_min_percent)"
-    if ! _finalize_merged_kcov_temp "$tmp" "$merged" "$min_percent"; then
+    if ! _merge_kcov_shards_from_reports "$reports_root" "$tmp" "$merged" "$min_percent"; then
         rm -rf "$tmp"
         return 1
     fi
     rm -rf "$tmp"
     echo "  ✓ Merged kcov shards meet ≥${min_percent}% line coverage."
+}
+
+# Shared local/--full and GHA pre-merge gate: all four shard exports must be stamped.
+require_exported_coverage_shards() {
+    local reports_root
+    reports_root=$(resolve_reports_root) || return 1
+    _require_kcov_shard_ok_stamps "$reports_root" || return 1
+    _require_python_shard_ok_stamps "$reports_root" || return 1
+    echo "  ✓ All coverage shard exports present (kcov-1/2, python-1/2)."
 }

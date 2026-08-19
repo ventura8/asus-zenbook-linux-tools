@@ -1,0 +1,30 @@
+post_install() {
+  local common="/usr/share/asus-zenbook-linux-tools/packaging/scriptlets/configure-common.sh"
+  if [ -f "$common" ]; then
+    # shellcheck source=../scriptlets/configure-common.sh
+    . "$common"
+    _asus_configure_after_install ""
+  fi
+}
+
+post_upgrade() {
+  local common="/usr/share/asus-zenbook-linux-tools/packaging/scriptlets/configure-common.sh"
+  if [ -f "$common" ]; then
+    # shellcheck source=../scriptlets/configure-common.sh
+    . "$common"
+    _asus_configure_after_install "${1:-}"
+  fi
+}
+
+pre_remove() {
+  local common="/usr/share/asus-zenbook-linux-tools/packaging/scriptlets/configure-common.sh"
+  if [ -f "$common" ]; then
+    # shellcheck source=../scriptlets/configure-common.sh
+    . "$common"
+    _asus_run_packaged_uninstall || return 1
+  fi
+}
+
+post_remove() {
+  rm -rf /var/lib/asus-zenbook-linux-tools
+}

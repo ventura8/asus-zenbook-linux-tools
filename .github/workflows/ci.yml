@@ -61,10 +61,22 @@ jobs:
           path: reports/distro-logs/lint-docker-${{ matrix.wave }}.log
           if-no-files-found: warn
 
-  deb-package:
-    name: Debian package smoke
-    runs-on: ubuntu-26.04
-    timeout-minutes: 10
+  package-smoke:
+    name: Release package smoke (${{ matrix.pkg }})
+    runs-on: ${{ matrix.pkg == 'snap' && 'ubuntu-24.04' || 'ubuntu-26.04' }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        pkg:
+          - deb
+          - rpm-fedora-44
+          - rpm-rocky-10
+          - rpm-opensuse-tw
+          - arch
+          - appimage
+          - flatpak
+          - snap
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -72,29 +84,44 @@ jobs:
       - name: Verify install.sh checksum
         run: sha256sum -c install.sh.sha256
 
-      - name: Build, install, and purge unsigned .deb
+      - name: Debian package smoke
+        if: matrix.pkg == 'deb'
         run: |
           set -euo pipefail
-          mkdir -p reports/distro-logs artifacts
+          mkdir -p reports/distro-logs "artifacts/${{ matrix.pkg }}"
           chmod +x scripts/run_deb_package_smoke.sh
           # Same entrypoint as local `./scripts/build-and-test.sh --full`.
-          ./scripts/run_deb_package_smoke.sh 2>&1 | tee reports/distro-logs/deb-package.log
+          ASUS_DEB_ARTIFACTS_DIR="artifacts/${{ matrix.pkg }}" \
+            ./scripts/run_deb_package_smoke.sh \
+            2>&1 | tee "reports/distro-logs/package-smoke-${{ matrix.pkg }}.log"
 
-      - name: Upload Debian packaging log
+      - name: Release package smoke (${{ matrix.pkg }})
+        if: matrix.pkg != 'deb'
+        run: |
+          set -euo pipefail
+          mkdir -p "reports/distro-logs"
+          chmod +x scripts/run_release_package_smoke.sh \
+            scripts/build_release_package.sh \
+            scripts/prepare_release_package_host_deps.sh
+          export ASUS_RELEASE_INSTALL_SMOKE=1
+          ./scripts/run_release_package_smoke.sh "${{ matrix.pkg }}" \
+            2>&1 | tee "reports/distro-logs/package-smoke-${{ matrix.pkg }}.log"
+
+      - name: Upload package smoke log
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: deb-package-log
+          name: package-smoke-${{ matrix.pkg }}-log
           path: reports/distro-logs/
           if-no-files-found: warn
 
-      - name: Upload Debian package artifact
-        if: always()
+      - name: Upload built package artifact
+        if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: deb-package
-          path: artifacts/
-          if-no-files-found: warn
+          name: package-smoke-${{ matrix.pkg }}-artifact
+          path: artifacts/${{ matrix.pkg }}/
+          if-no-files-found: error
 
   # Matrix: 4 parallel cells on debian:trixie (mode+shard env; label is display-only).
   # Shards upload partial data; coverage-merge enforces the ≥90% gates.
@@ -150,8 +177,23 @@ jobs:
           path: reports/distro-logs/coverage-${{ matrix.mode }}-${{ matrix.shard }}.log
           if-no-files-found: warn
 
+      # Fail the cell when export skipped stamp write (same gate as local merge).
+      # Upload only on success so coverage-merge never sees incomplete shards.
+      - name: Verify coverage shard export stamp
+        run: |
+          set -euo pipefail
+          dest="reports/coverage-shards/${{ matrix.mode }}-${{ matrix.shard }}"
+          test -f "$dest/shard_ok"
+          if [ "${{ matrix.mode }}" = "kcov" ]; then
+            test -d "$dest/runs"
+            # -print -quit: avoid find|head SIGPIPE under pipefail.
+            test -n "$(find "$dest/runs" -mindepth 1 -maxdepth 1 -type d -print -quit)"
+          else
+            test -f "$dest/coverage.dat" || test -f "$dest/.coverage"
+          fi
+
       - name: Upload coverage shard data
-        if: always()
+        if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: coverage-shard-${{ matrix.mode }}-${{ matrix.shard }}
@@ -357,6 +399,8 @@ jobs:
   # Always-on ASUS_CI_DE_FAMILY variants (family-split like distro-tests-*).
   # F1: stub images only; install-de-family.sh runs in-container before smoke.
   # Soft-skips for unpackaged Rocky/Alma cinnamon/mate/lxqt cells.
+  # max-parallel: 20 is a per-matrix cap matching the account concurrent-job limit
+  # (not a total workflow concurrency limit across all jobs).
   distro-full-de-debian:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
     needs: [lint, coverage-merge]
@@ -364,7 +408,7 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 20
       matrix:
         image: [ubuntu:26.04, debian:trixie]
         de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
@@ -411,6 +455,8 @@ jobs:
           path: reports/distro-logs/
           if-no-files-found: warn
 
+  # max-parallel: 20 is a per-matrix cap matching the account concurrent-job limit
+  # (not a total workflow concurrency limit across all jobs).
   distro-full-de-rhel:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
     needs: [lint, coverage-merge]
@@ -418,7 +464,7 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 20
       matrix:
         image: [fedora:44, rocky:10, almalinux:10]
         de_family: [gnome, kde, xfce, lxqt, cinnamon, mate]
@@ -478,6 +524,8 @@ jobs:
           path: reports/distro-logs/
           if-no-files-found: warn
 
+  # max-parallel: 20 is a per-matrix cap matching the account concurrent-job limit
+  # (not a total workflow concurrency limit across all jobs).
   distro-full-de-suse-arch:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
     needs: [lint, coverage-merge]
@@ -485,7 +533,7 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 20
       matrix:
         image:
           - opensuse/tumbleweed

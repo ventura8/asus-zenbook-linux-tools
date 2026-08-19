@@ -2,8 +2,25 @@
 
 from __future__ import annotations
 
+import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
+from io import StringIO
 from pathlib import Path
+
+from scripts.check_file_size_limits import _should_prune_dir, main
+
+
+def _workflow_section(text: str, start_marker: str, end_marker: str) -> str:
+    """Return a workflow YAML slice; fail with a clear message when markers are absent."""
+    try:
+        start = text.index(start_marker)
+        end = text.index(end_marker, start)
+    except ValueError as exc:
+        raise AssertionError(
+            f"workflow section not found: {start_marker!r} .. {end_marker!r}"
+        ) from exc
+    return text[start:end]
 
 
 class TestPipelineCiParityPackaging(unittest.TestCase):
@@ -40,6 +57,41 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
         self.assertIn("./debian/tmp", run_lints)
         self.assertIn("./debian/.debhelper", run_lints)
         self.assertIn("./artifacts", run_lints)
+        self.assertIn("./.rpm-build*", run_lints)
+        self.assertIn("./packaging/arch/pkg", run_lints)
+        self.assertIn("./packaging/arch/src", run_lints)
+        self.assertIn("./packaging/appimage/AppDir", run_lints)
+        self.assertIn("./packaging/flatpak/builddir", run_lints)
+        self.assertIn("./.flatpak-builder", run_lints)
+        self.assertIn("-name '.rpm-build*' -prune", run_lints)
+
+    def test_file_size_limits_prunes_only_arch_staging_paths(self) -> None:
+        """Only packaging/arch/{pkg,src} are pruned; other src/pkg dirs stay scanned."""
+        self.assertTrue(_should_prune_dir("packaging/arch", "pkg"))
+        self.assertTrue(_should_prune_dir("packaging/arch", "src"))
+        self.assertFalse(_should_prune_dir("tools", "pkg"))
+        self.assertFalse(_should_prune_dir("tests", "src"))
+        self.assertFalse(_should_prune_dir("src", "nested"))
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            tools_pkg = root / "tools" / "pkg"
+            tools_src = root / "tools" / "src"
+            tools_pkg.mkdir(parents=True)
+            tools_src.mkdir(parents=True)
+            (tools_pkg / "big.sh").write_text("#!/bin/bash\n" + "echo hi\n" * 700, encoding="utf-8")
+            (tools_src / "big.sh").write_text("#!/bin/bash\n" + "echo hi\n" * 700, encoding="utf-8")
+            (root / "bin").mkdir()
+            (root / "bin" / "ok.sh").write_text("#!/bin/bash\necho ok\n", encoding="utf-8")
+
+            stdout_buf = StringIO()
+            stderr_buf = StringIO()
+            with redirect_stdout(stdout_buf), redirect_stderr(stderr_buf):
+                exit_code = main(root=root)
+            self.assertEqual(exit_code, 1)
+            output = stdout_buf.getvalue() + stderr_buf.getvalue()
+            self.assertIn("tools/pkg/big.sh", output)
+            self.assertIn("tools/src/big.sh", output)
 
     def test_eslint_uses_workspace_npm_ci_not_global_binary(self) -> None:
         """CI clean checkouts lack host node_modules; flat config needs npm ci."""
@@ -84,10 +136,10 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             self.assertNotRegex(text, r"(?m)^\s*alsa-utils-\*\s*\\?\s*$", msg=rel)
 
     def test_ci_deb_package_job_calls_shared_smoke_script(self) -> None:
-        """CI deb-package must not inline a divergent install path."""
+        """CI package-smoke deb cell must use the shared Debian smoke entrypoint."""
         ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
         self.assertIn("scripts/run_deb_package_smoke.sh", ci)
-        self.assertIn("deb-package:", ci)
+        self.assertIn("matrix.pkg == 'deb'", ci)
         self.assertNotIn('apt-get install -y "$ARTIFACT_DEB"', ci)
         self.assertNotIn("apt-get install -y \"$ARTIFACT_DEB\"", ci)
 
@@ -97,15 +149,12 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
         modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
             encoding="utf-8"
         )
+        self.assertIn("step_preflight_clean_build_trees", modes)
         self.assertIn("step_lint_and_deb_parallel", modes)
-        self.assertIn("step_coverage_parallel", modes)
-        self.assertIn("step_compat_family_matrices", modes)
-        self.assertIn(
-            "MODE_STEPS=(step_lint_and_deb_parallel step_coverage_parallel "
-            "step_compat_family_matrices)",
-            modes,
-        )
+        self.assertIn("step_post_lint_gates_parallel", modes)
+        self.assertIn("step_coverage_merge_host", modes)
         self.assertIn("scripts/run_deb_package_smoke.sh", modes)
+        self.assertIn("scripts/run_release_package_smoke.sh", modes)
         self.assertIn("build-and-test-modes.sh", bat)
 
     def test_deb_smoke_skips_host_unit_tests(self) -> None:
@@ -115,15 +164,18 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
         )
         self.assertIn("nocheck", script)
         self.assertIn("DEB_BUILD_OPTIONS", script)
+        self.assertIn("_smoke_install_upgrade_and_purge", script)
+        self.assertIn("_smoke_plant_share_bytecode", script)
+        self.assertIn("not empty so not removed", script)
+        self.assertIn("--reinstall", script)
         modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
             encoding="utf-8"
         )
         # Host --full must not invoke in-process unit/kcov/e2e steps.
-        self.assertIn(
-            "MODE_STEPS=(step_lint_and_deb_parallel step_coverage_parallel "
-            "step_compat_family_matrices)",
-            modes,
-        )
+        self.assertIn("step_post_lint_gates_parallel", modes)
+        self.assertIn("step_preflight_clean_build_trees", modes)
+        self.assertIn("step_lint_and_deb_parallel", modes)
+        self.assertIn("step_coverage_merge_host", modes)
         self.assertNotRegex(
             modes,
             r"full\)\s*\n\s*MODE_STEPS=\([^)]*step_unit_tests",
@@ -132,6 +184,82 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             modes,
             r"full\)\s*\n\s*MODE_STEPS=\([^)]*step_kcov_coverage",
         )
+
+    def test_release_package_kinds_are_shared_across_workflows(self) -> None:
+        """CI package-smoke and tag build-packages must build the same artifact set."""
+        kinds_script = (
+            self.repo_root / "scripts/release_package_kinds.sh"
+        ).read_text(encoding="utf-8")
+        expected = [
+            "rpm-fedora-44",
+            "rpm-rocky-10",
+            "rpm-opensuse-tw",
+            "arch",
+            "appimage",
+            "flatpak",
+            "snap",
+        ]
+        for kind in expected:
+            self.assertIn(kind, kinds_script, msg=kind)
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        ppa = (self.repo_root / ".github/workflows/ppa-release.yml").read_text(
+            encoding="utf-8"
+        )
+        smoke_block = _workflow_section(ci, "package-smoke:", "\n  coverage:")
+        build_block = _workflow_section(ppa, "build-packages:", "\n  github-release:")
+        for kind in expected:
+            self.assertIn(f"- {kind}", smoke_block, msg=f"ci package-smoke: {kind}")
+            self.assertIn(f"- {kind}", build_block, msg=f"ppa build-packages: {kind}")
+        builder = (
+            self.repo_root / "scripts/build_release_package.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("release_package_kinds.sh", builder)
+        self.assertIn("_release_pkg_validate_artifact", builder)
+        smoke = (
+            self.repo_root / "scripts/run_release_package_smoke.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("build_release_package.sh", smoke)
+        self.assertIn("RELEASE_PACKAGE_KINDS", smoke)
+
+    def test_ci_package_smoke_uses_shared_release_smoke_entrypoint(self) -> None:
+        """Each CI package-smoke cell must build, validate, and install via shared smoke."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("run_release_package_smoke.sh", ci)
+        self.assertIn("ASUS_RELEASE_INSTALL_SMOKE=1", ci)
+        self.assertNotIn("run_rpm_package_smoke.sh", ci)
+        self.assertIn(
+            "matrix.pkg == 'snap' && 'ubuntu-24.04' || 'ubuntu-26.04'",
+            ci,
+        )
+
+    def test_full_pipeline_runs_all_release_package_smoke_kinds(self) -> None:
+        """Local --full must smoke-test every release kind (native ∥ portable)."""
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("ASUS_RELEASE_PACKAGE_SMOKE_PARALLEL=1", modes)
+        self.assertIn("ASUS_RELEASE_INSTALL_SMOKE=1", modes)
+        self.assertIn("scripts/run_release_package_smoke.sh", modes)
+        self.assertIn("release-package-native-smoke", modes)
+        self.assertIn("release-package-portable-smoke", modes)
+        self.assertIn("rpm-fedora-44 rpm-rocky-10 rpm-opensuse-tw arch", modes)
+        self.assertIn("appimage flatpak snap", modes)
+        self.assertIn("step_post_lint_gates_parallel", modes)
+        self.assertIn("_start_coverage_matrix_shards", modes)
+        self.assertIn("_wait_bg_jobs_fail_fast", modes)
+        self.assertIn("_start_compat_family_workers", modes)
+        self.assertIn("_parallel_gate_pids", modes)
+        self.assertIn("_start_release_smoke_worker", modes)
+        self.assertIn("_parallel_gate_pids+=(\"$!\")", modes)
+
+    def test_local_buildx_cache_serializes_per_scope(self) -> None:
+        """Parallel coverage shards share debian:trixie cache; mkdir lock must serialize writes."""
+        utils = (self.repo_root / "scripts/docker-utils.sh").read_text(encoding="utf-8")
+        self.assertIn("_docker_buildx_local_lock_dir", utils)
+        self.assertIn("_docker_acquire_local_buildx_lock", utils)
+        self.assertIn("_docker_wait_mkdir_lock", utils)
+        self.assertIn('mkdir "$lock_dir"', utils)
+        self.assertIn("/.locks/", utils)
 
     def test_debian_build_depends_include_python3_gi(self) -> None:
         """Launchpad dh_auto_test needs python3-gi for GLib.Variant keybinding helpers."""
@@ -268,6 +396,8 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("step_coverage_parallel", modes)
+        self.assertIn("step_coverage_merge_host", modes)
+        self.assertIn("step_post_lint_gates_parallel", modes)
         self.assertIn("_run_coverage_merge_host", modes)
         self.assertIn("ASUS_COVERAGE_SHARD", modes)
         self.assertNotIn("_run_coverage_merge_docker", modes)
@@ -275,6 +405,42 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn('echo "debian:trixie"', matrix)
+        self.assertIn("ASUS_DOCKER_MATRIX_COMPAT_ONLY", matrix)
+        self.assertIn("ASUS_DOCKER_MATRIX_COVERAGE_GATE", matrix)
+        self.assertIn("ASUS_DOCKER_MATRIX_DE_FAMILY", matrix)
+
+    def test_ci_and_local_refuse_unstamped_coverage_shards(self) -> None:
+        """GHA and local --full must fail closed without shard_ok (no stale merge)."""
+        ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("Verify coverage shard export stamp", ci)
+        self.assertIn('test -f "$dest/shard_ok"', ci)
+        # Incomplete shards must not reach coverage-merge.
+        upload_block = ci.split("Upload coverage shard data", 1)[1].split(
+            "Upload kcov scenario logs", 1
+        )[0]
+        self.assertIn("if: success()", upload_block)
+        self.assertNotIn("if: always()", upload_block)
+        self.assertIn("if-no-files-found: error", upload_block)
+        gates_kcov = (self.repo_root / "scripts/coverage/gates_kcov.sh").read_text(
+            encoding="utf-8"
+        )
+        gates_py = (self.repo_root / "scripts/coverage/gates_python.sh").read_text(
+            encoding="utf-8"
+        )
+        gates_shell = (self.repo_root / "scripts/coverage/gates_shell.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("_write_coverage_shard_ok_stamp", gates_shell)
+        self.assertIn("_require_kcov_shard_ok_stamps", gates_kcov)
+        self.assertIn("_require_python_shard_ok_stamps", gates_py)
+        self.assertIn("require_exported_coverage_shards", gates_kcov)
+        modes = (self.repo_root / "scripts/build-and-test-modes.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("_wipe_coverage_shards_dir", modes)
+        self.assertIn("_chown_coverage_shards_dir_if_sudo", modes)
+        self.assertIn("require_exported_coverage_shards || exit 1", modes)
+        self.assertGreaterEqual(modes.count("require_exported_coverage_shards"), 2)
 
     def test_ci_lint_is_wave_matrix(self) -> None:
         """Lint is a GHA matrix with display labels; host never runs run-lints for --full."""
@@ -296,8 +462,12 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
         lint_docker = (self.repo_root / "scripts/lint-in-docker.sh").read_text(
             encoding="utf-8"
         )
-        self.assertIn("asus-zenbook-lint-buildx.lock", lint_docker)
+        self.assertIn("LINT_BUILDX_LOCK_ROOT", lint_docker)
+        self.assertIn(".locks", lint_docker)
+        self.assertIn("lint-image", lint_docker)
         self.assertIn("DOCKER_BUILDX_SKIP_PRUNE", modes)
+        self.assertIn("_with_buildx_skip_prune", modes)
+        self.assertIn("_run_post_lint_gates_workers", modes)
         self.assertIn("ASUS_LINT_WAVE", modes)
         self.assertNotIn("_run_lints_only_steps", modes)
         bat = (self.repo_root / "scripts/build-and-test.sh").read_text(encoding="utf-8")
@@ -313,6 +483,8 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
         self.assertIn("msgfmt -c --check-format", run_lints)
         wave1 = run_lints.split("LINT_WAVE1_STEPS=(", 1)[1].split(")", 1)[0]
         self.assertIn("step_po_lint", wave1)
+        self.assertIn("step_no_lint_suppressions", wave1)
+        self.assertIn("check_no_lint_suppressions.py", run_lints)
 
     def test_ci_distro_tests_are_family_split(self) -> None:
         """Compat lanes must use distro-tests-{debian,rhel,suse-arch} matrices."""
@@ -330,6 +502,7 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
         )
         self.assertIn("--distro-family", modes)
         self.assertIn("step_compat_family_matrices", modes)
+        self.assertIn("_wait_bg_jobs_fail_fast", modes)
 
     def test_ci_cancels_previous_run_on_push(self) -> None:
         """New push/PR sync must cancel any prior CI run, not queue behind it."""
@@ -349,13 +522,13 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
             r"(?m)^\s*cancel-in-progress:\s*false\s*$",
         )
 
-    def test_ci_full_de_max_parallel_is_eight(self) -> None:
-        """Full-DE matrix concurrency raised to cut wall-clock waves."""
+    def test_ci_full_de_max_parallel_is_twenty(self) -> None:
+        """Full-DE matrix uses all 20 OSS concurrent GitHub-hosted runners."""
         ci = (self.repo_root / ".github/workflows/ci.yml").read_text(encoding="utf-8")
         start = ci.index("distro-full-de-debian:")
         end = ci.index("nested-session:", start)
         block = ci[start:end]
-        self.assertIn("max-parallel: 8", block)
+        self.assertIn("max-parallel: 20", block)
 
     def test_kcov_scenarios_run_in_parallel_shards(self) -> None:
         """Default kcov suite must shard bin-sound / ui / install-lib in parallel."""

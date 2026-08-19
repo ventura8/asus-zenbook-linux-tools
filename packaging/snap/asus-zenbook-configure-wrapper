@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Snap installer wrapper requires root (sudo)." >&2
+    echo "Run: sudo asus-zenbook-linux-tools.asus-zenbook-configure" >&2
+    exit 1
+fi
+if [ -z "${SNAP:-}" ]; then
+    echo "Error: SNAP is unset; this wrapper must run under snapd." >&2
+    exit 1
+fi
+export INSTALL_SOURCE_DIR="${SNAP}/usr/share/asus-zenbook-linux-tools"
+exec "${SNAP}/usr/sbin/asus-zenbook-configure" "$@"

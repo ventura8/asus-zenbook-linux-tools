@@ -9,6 +9,12 @@ Use this skill to validate project code quality, formatting, unit tests, and end
 
 ## Instructions
 
+1. **New files**: Before finishing a change set that adds files, run applicable lint and tests on
+   those paths (see **New files must be linted and tested** in root `AGENTS.md` and the
+   `code-linter` / `test-runner` skills). Prefer targeted commands for a single new module; use
+   `--full` or the relevant matrix lane when packaging, coverage gates, or cross-distro behavior
+   changed.
+
 1. Run pipeline/lint/test commands with live CLI streaming and persistent log capture under `reports/distro-logs/`.
 
 - Before hand-editing lint failures, always run automatic formatters / delinters with safe autofix
@@ -50,17 +56,54 @@ Use this skill to validate project code quality, formatting, unit tests, and end
   distro compatibility bugs.
 
 1. Run `./scripts/build-and-test.sh --full` from the repository root.
-   `--full` must stay CI-parity: lint waves in Docker (cheap ∥ heavy) ∥
-   `scripts/run_deb_package_smoke.sh` with **`DEB_BUILD_OPTIONS=nocheck`** (no host
-   unit tests), then coverage matrix (4 labeled cells) on **debian:trixie**
-   plus **host** `coverage-merge` ≥90% gates (no Docker for merge), then
-   three `--distro-family` compat matrices in parallel.
+   `--full` must stay CI-parity with four host-orchestrated steps (~30 min warm cache):
+   (1) `step_preflight_clean_build_trees` — Docker-alpine wipe of stale `.rpm-build*` and
+   `packaging/arch/{pkg,src}` before lint; (2) lint waves in Docker (cheap ∥ heavy) ∥
+   `scripts/run_deb_package_smoke.sh` with **`DEB_BUILD_OPTIONS=nocheck`** (no host unit
+   tests; smoke covers install → plant share `__pycache__` → upgrade → purge and fails
+   on dpkg “not empty” leftovers); (3) `step_post_lint_gates_parallel` — release package smoke (native worker: four
+   RPM/Arch kinds ∥ portable worker: AppImage/Flatpak/Snap) ∥ coverage matrix (4 labeled cells
+   on **debian:trixie**) ∥ three `--distro-family` compat matrices; (4) host
+   `step_coverage_merge_host` ≥90% gates (merge only; no product tests).
    Do not drop the deb smoke from local `--full`.
    **Host orchestrates only** — never run `run-lints.sh`, `coverage run`, or
    unit/e2e on the pipeline machine; lints/tests execute only inside Docker.
    Exception: `coverage-merge` / `--coverage-merge-only` runs on the host
    (kcov + coverage.py merge of already-exported shard artifacts only).
-   Python shards must be merged with one `coverage combine --keep` of all
+   Background workers use **`setsid bash -c`** with **`set -euo pipefail`**, explicit
+   **`cd "$1"`**, positional args passed after the script name, and **`2>&1 | tee "$log"`**:
+
+   ```bash
+   setsid bash -c '
+       set -euo pipefail
+       cd "$1"
+       ./scripts/run_docker_matrix.sh --coverage-gate \
+           2>&1 | tee "$2"
+   ' bash "$REPO_ROOT" "$DISTRO_LOG_DIR/coverage-kcov-1.log" &
+   ```
+
+   `_wait_bg_status` waits on the **setsid leader PID**; pipefail ensures tee records
+   real command failures. Before coverage workers start, wipe
+   `reports/coverage-shards/` (and under `sudo`, chown that dir to `$SUDO_USER`)
+   and require each exported `kcov-N`/`python-N` dir to
+   contain a non-hidden `shard_ok` stamp at merge time (refuse stale shards).
+   After wave-2 workers succeed, call `require_exported_coverage_shards` before
+   the green banner (same gate as GHA `Verify coverage shard export stamp`).
+   CI uploads shard data only on `success()` after that stamp check.
+   Serial matrix logs for coverage cells are `coverage-gate-${MODE}-${SHARD}.log`.
+   Wave 2 uses `_wait_bg_jobs_fail_fast` so the first failing
+   release/coverage/compat lane kills sibling **process groups** (`setsid` workers +
+   `_kill_pgid_list` in `docker-utils.sh`); `run_docker_matrix.sh` parallel compat uses
+   the same `wait -n -p` pattern. Local lint cheap∥heavy share one
+   `${DOCKER_BUILD_CACHE_DIR}/.locks/lint-image` mkdir lock (plus the shared
+   `lint-python-3.13-slim` buildx cache lock). Local buildx cache exports serialize
+   per scope via `mkdir` locks under `${cache_base_dir}/.locks/<cache-key>` in
+   `docker-utils.sh` (parallel coverage-gate shards share `tests-debian_trixie`).
+   `_find_repo_files` in `scripts/run-lints.sh` must prune `.rpm-build*`,
+   `packaging/arch/pkg`, `packaging/arch/src`, `packaging/appimage/AppDir`,
+   `packaging/flatpak/{builddir,repo}`, `.flatpak-builder`, and
+   `packaging/snap/{parts,stage,prime}` (staged release payloads are not product
+   sources). Python shards must be merged with one `coverage combine --keep` of all
    `coverage.dat` files (never raw-`cp` the first shard — that skips
    `[tool.coverage.paths]` remapping of Docker `/workspace` paths).
    CI `lint` job names use `format+syntax` / `pylint+shellcheck` (env
@@ -93,7 +136,9 @@ Use this skill to validate project code quality, formatting, unit tests, and end
 - **Never** ignore, suppress, disable, or downgrade failures to make the pipeline pass.
   Forbidden: `# pylint: disable`, `# noqa`, `# type: ignore`, `# shellcheck disable`,
   `# ruff: noqa`, `per-file-ignores`, markdownlint disable wraps, lowering thresholds, skipping
-  tests, or claiming success while any gate still fails.
+  tests, or claiming success while any gate still fails. Cheap-wave
+  `step_no_lint_suppressions` (`scripts/check_no_lint_suppressions.py`) fails closed on
+  any of those tokens in scanned source/config — fix the code, do not add an allowlist.
 - Prefer real code/test/docs fixes that satisfy the existing gates.
 - **Kcov timeouts stay at ≤45s.** Never raise `KCOV_RUN_TIMEOUT_SECS` (or scenario budgets)
   above 45 seconds to paper over slow kcov runs. The runner clamps to 45s and uses
@@ -107,9 +152,12 @@ Use this skill to validate project code quality, formatting, unit tests, and end
 - Bash syntax check (`bash -n`)
 - File-size validation (`python3 scripts/check_file_size_limits.py`) — **600-line cap** on scoped
   production/test files (`bin/`, `lib/`, `tests/`, `tools/`, `scripts/`, `gnome/`, `docker/`, root
-  installers, and Debian maintainer scripts under `debian/`). Failures are fixed by
+  installers, and Debian maintainer scripts under `debian/`). Only `packaging/arch/{pkg,src}` are
+  pruned from the walk (other repo `pkg/` / `src/` dirs stay scanned). Failures are fixed by
   **splitting into smaller files**, never by removing
   comments, docstrings, or blank lines to trim the count.
+- Version sync (`scripts/sync_poetry_version.sh` via `step_version_sync`) — root `VERSION` is the
+  sole release number; pyproject.toml `tool.poetry.version` is synced output, not hand-edited.
 - Ruff linting (same filtered command set used by `scripts/build-and-test.sh`)
 - Gettext PO syntax (`msgfmt -c --check-format` on every `_find_repo_files` `*.po` in
   cheap-wave `step_po_lint`) plus template freshness and all 99 catalog checks
@@ -142,8 +190,8 @@ Use this skill to validate project code quality, formatting, unit tests, and end
   }
   mapfile -t UNIT_TEST_FILES < "$unit_list"
   rm -f "$unit_list"
-  pylint --max-line-length=140 "${PYTHON_FILES[@]}"
-  pylint --rcfile=tests/unit/.pylintrc --max-line-length=140 "${UNIT_TEST_FILES[@]}"
+  pylint --fail-under=10 --max-line-length=140 "${PYTHON_FILES[@]}"
+  pylint --fail-under=10 --rcfile=tests/unit/.pylintrc --max-line-length=140 "${UNIT_TEST_FILES[@]}"
   ```
 
 - Yamllint (`find_yaml_files` / `yamllint` on all repo `*.yml` / `*.yaml`, excluding generated dirs)
@@ -264,8 +312,16 @@ Full-DE XFCE builds pinned `xfconf` from source (`_install_xfconf_from_source`).
 - Requires **repository** secrets `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` (no
   Launchpad token; do not relocate them to environment secrets). The job may use
   GitHub Environment `ppa-release` for required-reviewer gating only.
-- CI also runs `deb-package` smoke (`dpkg-buildpackage -b -us -uc`) on push/PR.
+- CI also runs Debian package smoke (`dpkg-buildpackage -b -us -uc`) on push/PR via
+  the `package-smoke` matrix's `deb` cell. That smoke must exercise an upgrade path
+  (reinstall with planted share `__pycache__` via `apt-get install --reinstall`)
+  and fail closed if purge leaves
+  `/usr/share/asus-zenbook-linux-tools` or prints dpkg “not empty so not removed”.
 - Tag version must match the root `VERSION` file.
+- `github-release` attaches **seven package targets** (`.deb`, three `.rpm`, Arch,
+  AppImage, Flatpak, Snap) plus **`artifacts/SHA256SUMS`**; install docs require
+  `grep -F 'asset' SHA256SUMS | sha256sum -c -` before local asset install (openSUSE:
+  `zypper install --allow-unsigned-rpm` so dependencies resolve normally).
 - `ppa-release.yml` must glob `../*.changes` and fail unless **exactly one** match exists.
 - Native `debian/source/options` must `tar-ignore` local caches (`.cache`, `.venv`,
   `node_modules`, `reports`, …) so `-S` uploads stay small on dirty trees.
@@ -274,7 +330,7 @@ Full-DE XFCE builds pinned `xfconf` from source (`_install_xfconf_from_source`).
 
 1. Install checksum gate (mandatory with every `install.sh` change):
 
-- After checkout, CI runs `sha256sum -c install.sh.sha256` (`lint`, `deb-package`,
+- After checkout, CI runs `sha256sum -c install.sh.sha256` (`lint`, `package-smoke`,
   `coverage`, `distro-tests-*`, and PPA jobs).
 - **Whenever `install.sh` changes**, refresh `install.sh.sha256` in the same change set:
   `sha256sum install.sh > install.sh.sha256`. Do not leave a stale checksum.

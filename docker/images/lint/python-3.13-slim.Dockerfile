@@ -47,7 +47,7 @@ RUN apt-get update \
     && chmod +x /usr/local/bin/hadolint
 
 COPY docker/images/tests/scripts/install-poetry-deps.sh /tmp/
-COPY pyproject.toml poetry.lock /opt/asus-zenbook-deps/
+COPY VERSION pyproject.toml poetry.lock /opt/asus-zenbook-deps/
 RUN chmod +x /tmp/install-poetry-deps.sh \
     && PYTHON_BIN=python /tmp/install-poetry-deps.sh \
     && rm -f /tmp/install-poetry-deps.sh

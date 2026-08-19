@@ -91,6 +91,8 @@ Use this skill to validate systemd service files and sleep hooks before deployme
            asus-zenbook-notif 'RuntimeDirectory=asus-zenbook-notif'
        _assert_svc_directive "$staged" Service RuntimeDirectoryPreserve yes \
            'RuntimeDirectoryPreserve=yes'
+       _assert_svc_directive "$staged" Service Environment \
+           PYTHONDONTWRITEBYTECODE=1 'Environment=PYTHONDONTWRITEBYTECODE=1'
    done
    _assert_svc_directive "$TMP_SVC/asus-hotkey-daemon.service" Unit \
        StartLimitIntervalSec 60 'StartLimitIntervalSec=60'
@@ -131,7 +133,9 @@ Use this skill to validate systemd service files and sleep hooks before deployme
    window-swap). Keep `ProtectHome=read-only` with
    `RuntimeDirectory=asus-zenbook-notif`. Hotkey and touchpad units must set
    `RuntimeDirectoryPreserve=yes` so the shared runtime directory survives
-   unit stop/restart. Display-mode sticky OSD state must
+   restarts, and `Environment=PYTHONDONTWRITEBYTECODE=1` so imports do not leave
+   `__pycache__` beside installed modules (dpkg cannot remove those leftovers).
+   Display-mode sticky OSD state must
    also live under that RuntimeDirectory (`NOTIF_ID_ROOT`), never `/run/user`,
    or `.session` writes fail and the monitor dialog hard-cycles.
    After starting ydotoold, display-mode must poll for the socket before
