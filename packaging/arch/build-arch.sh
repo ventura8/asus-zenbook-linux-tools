@@ -7,7 +7,10 @@ ARCH_DIR="${REPO_ROOT}/packaging/arch"
 ARCH_CACHE_DIR="${REPO_ROOT}/.cache/asus-arch-package-build"
 
 _arch_build_lock_file() {
-    printf '%s\n' "${ARCH_CACHE_DIR}.lock"
+    # Lock must live *inside* ARCH_CACHE_DIR: that tree is chowned to the
+    # makepkg user before su. A sibling under .cache/ fails when .cache is
+    # root- or host-owned (CI bind mount → flock Permission denied).
+    printf '%s\n' "${ARCH_CACHE_DIR}/makepkg.lock"
 }
 
 _ensure_makepkg_user() {
@@ -25,8 +28,10 @@ _ensure_makepkg_user() {
 }
 
 _chown_arch_build_paths() {
-    local user="$1"
+    local user="$1" lock_file=""
+    lock_file="$(_arch_build_lock_file)"
     mkdir -p "$ARCH_CACHE_DIR"
+    : >"$lock_file"
     chown -R "${user}:${user}" "$ARCH_DIR" "$ARCH_CACHE_DIR"
 }
 

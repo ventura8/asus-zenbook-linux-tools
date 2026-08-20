@@ -185,6 +185,17 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             r"full\)\s*\n\s*MODE_STEPS=\([^)]*step_kcov_coverage",
         )
 
+    def test_arch_build_lock_lives_inside_chowned_cache_dir(self) -> None:
+        """Arch flock lock must be under ARCH_CACHE_DIR (writable after chown)."""
+        script = (self.repo_root / "packaging/arch/build-arch.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('ARCH_CACHE_DIR="${REPO_ROOT}/.cache/asus-arch-package-build"', script)
+        self.assertIn('"${ARCH_CACHE_DIR}/makepkg.lock"', script)
+        self.assertNotIn('"${ARCH_CACHE_DIR}.lock"', script)
+        self.assertIn("_chown_arch_build_paths", script)
+        self.assertIn('chown -R "${user}:${user}" "$ARCH_DIR" "$ARCH_CACHE_DIR"', script)
+
     def test_release_package_kinds_are_shared_across_workflows(self) -> None:
         """CI package-smoke and tag build-packages must build the same artifact set."""
         kinds_script = (

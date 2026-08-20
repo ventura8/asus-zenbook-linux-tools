@@ -124,6 +124,10 @@ Use this skill to validate project code quality, formatting, unit tests, and end
    `R0801` duplicate-code. Gettext freshness also requires
    `po/asus-zenbook-linux-tools.pot` to be
    **git-tracked** (a local-only/gitignored file is not enough).
+   Arch package smoke (`packaging/arch/build-arch.sh`) flock-locks under
+   `.cache/asus-arch-package-build/makepkg.lock` (inside the chowned cache dir);
+   do not use a sibling `.cache/*.lock` (Permission denied for the makepkg user
+   on a host-owned `.cache` bind mount).
 
 1. **Keep fixing until the pipeline succeeds.** Do not stop after the first failure report.
    Treat every lint/test/coverage/matrix failure as blocking work:

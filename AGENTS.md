@@ -46,7 +46,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   and `packaging/snap/{parts,stage,prime}` so ESLint/pylint/shellcheck never scan staged
   payload copies.
   Arch `makepkg` runs as a dedicated non-root user inside the Arch smoke container (root
-  `makepkg` is rejected).
+  `makepkg` is rejected). The flock lock lives under
+  `.cache/asus-arch-package-build/makepkg.lock` (inside the chowned cache dir) — a
+  sibling `.cache/*.lock` fails with Permission denied when `.cache` is root- or
+  host-owned on the CI bind mount.
 - UI language precedence is test-only `ASUS_TEST_MODE=1` + `ASUS_UI_LANG`, then session
   `LC_ALL` → `LC_MESSAGES` → `LANG` → `LANGUAGE`, then process env
   `LC_ALL` → `LC_MESSAGES` → `LANG` → `LANGUAGE`, then English msgids. Empty or whitespace-only
