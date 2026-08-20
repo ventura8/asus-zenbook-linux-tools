@@ -308,7 +308,9 @@ _remove_shared_install_files() {
     _asus_remove_manifest_share_files failed
     _asus_soft rmdir "${PREFIX:-}/usr/local/share/asus-zenbook-linux-tools/icons" 2>/dev/null
     _asus_soft rmdir "${PREFIX:-}/usr/local/share/asus-zenbook-linux-tools" 2>/dev/null
-    _asus_soft gtk-update-icon-cache -f -t "${PREFIX:-}/usr/local/share/icons/hicolor"
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        _asus_soft gtk-update-icon-cache -f -t "${PREFIX:-}/usr/local/share/icons/hicolor"
+    fi
     return "$failed"
 }
 

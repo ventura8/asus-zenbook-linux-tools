@@ -1,4 +1,5 @@
 name: asus-zenbook-linux-tools
+title: ASUS ZenBook Linux Tools
 adopt-info: payload
 base: core24
 summary: ASUS ZenBook hardware helpers installer
@@ -6,6 +7,11 @@ description: |
   Classic snap that runs the packaged configure wizard for ASUS ZenBook
   hardware features. Native .deb/.rpm packages are recommended for full
   systemd and udev integration.
+license: MIT
+contact: https://github.com/ventura8/asus-zenbook-linux-tools/issues
+issues: https://github.com/ventura8/asus-zenbook-linux-tools/issues
+source-code: https://github.com/ventura8/asus-zenbook-linux-tools
+website: https://github.com/ventura8/asus-zenbook-linux-tools
 grade: stable
 confinement: classic
 platforms:

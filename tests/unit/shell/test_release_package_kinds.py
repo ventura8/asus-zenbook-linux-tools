@@ -230,6 +230,45 @@ class TestReleasePackageBuilders(unittest.TestCase):
         self.assertNotIn("appimagetool-extract", appimage_build)
         self.assertIn("20251108/runtime-x86_64", appimage_build)
         self.assertIn("_verify_cached_sha256", appimage_build)
+        self.assertIn(
+            "org.github.ventura8.AsusZenBookLinuxTools.appdata.xml",
+            appimage_build,
+        )
+        self.assertIn("org.github.ventura8.AsusZenBookLinuxTools.desktop", appimage_build)
+        appdata = (
+            _REPO_ROOT
+            / "packaging/appimage/org.github.ventura8.AsusZenBookLinuxTools.metainfo.xml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("<id>org.github.ventura8.AsusZenBookLinuxTools</id>", appdata)
+        self.assertIn("<category>Settings</category>", appdata)
+        self.assertIn('date="', appdata)
+        desktop = (_REPO_ROOT / "packaging/appimage/asus-zenbook-linux-tools.desktop").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("Categories=Settings;", desktop)
+        self.assertNotIn("System;Settings;", desktop)
+
+    def test_rpm_spec_avoids_duplicate_share_dir_and_has_changelog(self) -> None:
+        """RPM %files must not double-list share dir; %changelog needs a dated entry."""
+        spec = (_REPO_ROOT / "packaging/rpm/asus-zenbook-linux-tools.spec").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn("%dir /usr/share/asus-zenbook-linux-tools", spec)
+        self.assertIn("/usr/share/asus-zenbook-linux-tools/", spec)
+        self.assertRegex(spec, r"%changelog\s*\n\*\s+\w+")
+
+    def test_snapcraft_declares_required_store_metadata(self) -> None:
+        """Snapcraft metadata lint fields must be present for package smoke."""
+        snap = (_REPO_ROOT / "packaging/snap/snapcraft.yaml").read_text(encoding="utf-8")
+        for field in (
+            "title:",
+            "license:",
+            "contact:",
+            "issues:",
+            "source-code:",
+            "website:",
+        ):
+            self.assertIn(field, snap, msg=field)
 
     def test_stage_payload_installs_sbin_file_without_mkdir(self) -> None:
         """Shared staging must install configure via install -D without mkdir sbin."""
@@ -254,7 +293,19 @@ class TestReleasePackageBuilders(unittest.TestCase):
         metainfo = (
             _REPO_ROOT / "packaging/flatpak/org.github.ventura8.AsusZenBookLinuxTools.metainfo.xml"
         ).read_text(encoding="utf-8")
-        self.assertIn("asus-zenbook-linux-tools", metainfo)
+        self.assertIn("org.github.ventura8.AsusZenBookLinuxTools", metainfo)
+        self.assertIn('date="', metainfo)
+        desktop = (
+            _REPO_ROOT / "packaging/flatpak/org.github.ventura8.AsusZenBookLinuxTools.desktop"
+        ).read_text(encoding="utf-8")
+        self.assertIn("Icon=org.github.ventura8.AsusZenBookLinuxTools", desktop)
+        manifest = (
+            _REPO_ROOT / "packaging/flatpak/org.github.ventura8.AsusZenBookLinuxTools.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "org.github.ventura8.AsusZenBookLinuxTools.svg",
+            manifest,
+        )
 
     def test_rpm_build_script_logs_matches_on_stderr(self) -> None:
         """RPM builder diagnostics must not pollute stdout capture paths."""

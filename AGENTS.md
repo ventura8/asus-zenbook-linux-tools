@@ -139,9 +139,16 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `/usr/sbin/asus-zenbook-configure`. [`debian/rules`](debian/rules) calls it;
   RPM/Arch/AppImage/Flatpak/Snap builders call the same script. Scriptlet parity
   lives in [`packaging/scriptlets/configure-common.sh`](packaging/scriptlets/configure-common.sh)
-  (RPM `%post`/`%preun`/`%postun`, Arch `.install`). AppImage/Flatpak/Snap are
+  (RPM `%post`/`%preun`/`%postun`, Arch `.install`).   AppImage/Flatpak/Snap are
   **installer-only** portable bundles (still require root for systemd/udev); native
-  packages remain recommended. **Arch staging:** [`packaging/stage-payload.sh`](packaging/stage-payload.sh)
+  packages remain recommended. Flatpak desktop `Icon=` / exported scalable icon /
+  metainfo stock icon must match the app id
+  (`org.github.ventura8.AsusZenBookLinuxTools`); AppImage installs
+  `usr/share/metainfo/<app-id>.appdata.xml` (appimagetool's expected name) so
+  AppStream validation succeeds. RPM `%files` lists `/usr/share/asus-zenbook-linux-tools/`
+  once (no redundant `%dir`) and keeps a dated `%changelog` entry. Snapcraft
+  declares `title`/`license`/`contact`/`issues`/`source-code`/`website`.
+  **Arch staging:** [`packaging/stage-payload.sh`](packaging/stage-payload.sh)
   must not `mkdir` `/usr/sbin` (owned by Arch `filesystem`); install only
   `/usr/sbin/asus-zenbook-configure` via `install -Dm755`. **Flatpak host handoff:**
   `--filesystem=host` exposes the host at `/run/host`; the Flatpak wrapper sets

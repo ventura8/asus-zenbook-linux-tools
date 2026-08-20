@@ -5,7 +5,7 @@
   <summary>Portable installer for ASUS ZenBook hardware helpers</summary>
   <description>
     <p>
-      Experimental Flatpak bundle that runs the packaged configure wizard.
+      Experimental AppImage that runs the packaged configure wizard.
       Native .deb/.rpm packages are recommended for systemd and udev integration.
     </p>
   </description>
@@ -16,7 +16,7 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <launchable type="desktop-id">org.github.ventura8.AsusZenBookLinuxTools.desktop</launchable>
-  <icon type="stock">org.github.ventura8.AsusZenBookLinuxTools</icon>
+  <icon type="stock">asus-zenbook-linux-tools</icon>
   <categories>
     <category>Settings</category>
   </categories>

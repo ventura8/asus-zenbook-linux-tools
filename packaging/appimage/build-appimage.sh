@@ -89,10 +89,17 @@ exec "${HERE}/usr/sbin/asus-zenbook-configure" "$@"
 EOF
 chmod +x "${APP_DIR}/AppRun"
 
-cp "${REPO_ROOT}/packaging/appimage/asus-zenbook-linux-tools.desktop" "${APP_DIR}/"
+cp "${REPO_ROOT}/packaging/appimage/org.github.ventura8.AsusZenBookLinuxTools.desktop" \
+    "${APP_DIR}/org.github.ventura8.AsusZenBookLinuxTools.desktop"
 cp "${REPO_ROOT}/assets/icons/asus-screenpad-toggle-symbolic.svg" \
     "${APP_DIR}/asus-zenbook-linux-tools.svg"
 ln -sf asus-zenbook-linux-tools.svg "${APP_DIR}/.DirIcon"
+mkdir -p "${APP_DIR}/usr/share/applications" "${APP_DIR}/usr/share/metainfo"
+cp "${REPO_ROOT}/packaging/appimage/org.github.ventura8.AsusZenBookLinuxTools.desktop" \
+    "${APP_DIR}/usr/share/applications/org.github.ventura8.AsusZenBookLinuxTools.desktop"
+# appimagetool looks specifically for <desktop-basename>.appdata.xml
+cp "${REPO_ROOT}/packaging/appimage/org.github.ventura8.AsusZenBookLinuxTools.metainfo.xml" \
+    "${APP_DIR}/usr/share/metainfo/org.github.ventura8.AsusZenBookLinuxTools.appdata.xml"
 
 appimagetool_appimage="$(_ensure_appimagetool)"
 runtime_file="$(_ensure_appimage_runtime)"

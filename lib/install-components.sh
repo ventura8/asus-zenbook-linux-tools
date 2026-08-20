@@ -402,7 +402,9 @@ deploy_wmi_component() {
     local src_dir="$1" icon_share="${PREFIX:-}/usr/local/share"
     _deploy_wmi_binaries "$src_dir" || return 1
     _deploy_wmi_static_assets "$src_dir" || return 1
-    _asus_soft gtk-update-icon-cache -f -t "$icon_share/icons/hicolor"
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        _asus_soft gtk-update-icon-cache -f -t "$icon_share/icons/hicolor"
+    fi
 
     _enable_ydotoold_if_available
 

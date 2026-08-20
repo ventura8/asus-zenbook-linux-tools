@@ -60,7 +60,6 @@ rm -rf %{buildroot}
 %{_gitroot}/packaging/stage-payload.sh %{buildroot}
 
 %files
-%dir /usr/share/asus-zenbook-linux-tools
 /usr/share/asus-zenbook-linux-tools/
 /usr/sbin/asus-zenbook-configure
 /usr/share/locale/*/LC_MESSAGES/asus-zenbook-linux-tools.mo
@@ -87,3 +86,5 @@ if [ "$1" -eq 0 ]; then
 fi
 
 %changelog
+* Wed Aug 19 2026 ventura8 <alexandrescu.sergiu@gmail.com> - 1.0.3-1
+- Initial multi-distro RPM packaging for ASUS ZenBook Linux Tools v1.0.3.
