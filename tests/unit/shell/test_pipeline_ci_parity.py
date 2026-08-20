@@ -395,7 +395,24 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
         # Raw cp of the first shard skips /workspace path remapping on host merge.
         self.assertNotIn('cp -a "$shard_file" "$dest"', gates_py)
         self.assertNotIn("ASUS_COVERAGE_MODE: merge", ci)
-        self.assertIn("needs: [lint, coverage-merge]", ci)
+        # Distro/Full-DE must not wait on coverage-merge (cascade-skip hides failures).
+        self.assertNotIn("needs: [lint, coverage-merge]", ci)
+        self.assertIn(
+            'contains(fromJSON(\'["success", "failure"]\'), needs.coverage.result)',
+            ci,
+        )
+        for job_key in (
+            "distro-tests-debian:",
+            "distro-tests-rhel:",
+            "distro-tests-suse-arch:",
+            "distro-full-de-debian:",
+            "distro-full-de-rhel:",
+            "distro-full-de-suse-arch:",
+        ):
+            idx = ci.index(f"\n  {job_key}\n")
+            chunk = ci[idx : idx + 400]
+            self.assertIn("needs: [lint]", chunk, msg=job_key)
+            self.assertNotIn("coverage-merge", chunk.split("steps:")[0], msg=job_key)
         self.assertNotIn("\n  coverage-kcov:\n", ci)
         self.assertNotIn("\n  coverage-python:\n", ci)
         self.assertNotIn("coverage-gate:", ci)

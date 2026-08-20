@@ -281,6 +281,11 @@ class TestReleasePackageBuilders(unittest.TestCase):
         pkgbuild = (_REPO_ROOT / "packaging/arch/PKGBUILD").read_text(encoding="utf-8")
         self.assertIn('rmdir "${pkgdir}/usr/sbin"', pkgbuild)
         self.assertIn("/usr/bin/asus-zenbook-configure", pkgbuild)
+        common = (
+            _REPO_ROOT / "packaging/scriptlets/configure-common.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("_asus_resolve_configure_bin", common)
+        self.assertIn("/usr/bin/asus-zenbook-configure", common)
 
     def test_flatpak_wrapper_exports_host_install_handoff(self) -> None:
         """Flatpak configure wrapper must target /run/host for host deployment."""
@@ -306,6 +311,8 @@ class TestReleasePackageBuilders(unittest.TestCase):
             "org.github.ventura8.AsusZenBookLinuxTools.svg",
             manifest,
         )
+        self.assertIn("--system-talk-name=org.freedesktop.systemd1", manifest)
+        self.assertNotIn("--talk-name=org.freedesktop.systemd1", manifest)
 
     def test_rpm_build_script_logs_matches_on_stderr(self) -> None:
         """RPM builder diagnostics must not pollute stdout capture paths."""

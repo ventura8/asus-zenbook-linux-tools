@@ -214,9 +214,21 @@ jobs:
   coverage-merge:
     name: Coverage merge (≥90% gates)
     needs: coverage
+    # Run after coverage cells execute (pass or fail). A shard failure must
+    # surface as merge failure — not a skipped merge that cascades to skip
+    # unrelated jobs. Skip only when coverage itself never ran (e.g. lint fail).
+    if: >-
+      always() && !cancelled() &&
+      contains(fromJSON('["success", "failure"]'), needs.coverage.result)
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
+      - name: Require successful coverage shards
+        if: needs.coverage.result != 'success'
+        run: |
+          echo "coverage job result=${{ needs.coverage.result }}; merge requires all shards" >&2
+          exit 1
+
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
@@ -254,9 +266,12 @@ jobs:
           if-no-files-found: warn
 
   # Package-family matrices (same nine lanes as DISTRO_FAMILY_* in run_docker_matrix.sh).
+  # Compat / Full-DE need lint only (same as nested proofs and local --full
+  # wave-2 parallelism). Do NOT gate on coverage-merge: a coverage shard
+  # failure would cascade-skip these jobs and hide real Full-DE/Distro status.
   distro-tests-debian:
     name: Distro Tests (${{ matrix.image }})
-    needs: [lint, coverage-merge]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 45
     strategy:
@@ -302,7 +317,7 @@ jobs:
 
   distro-tests-rhel:
     name: Distro Tests (${{ matrix.image }})
-    needs: [lint, coverage-merge]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 45
     strategy:
@@ -348,7 +363,7 @@ jobs:
 
   distro-tests-suse-arch:
     name: Distro Tests (${{ matrix.image }})
-    needs: [lint, coverage-merge]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 45
     strategy:
@@ -398,12 +413,12 @@ jobs:
 
   # Always-on ASUS_CI_DE_FAMILY variants (family-split like distro-tests-*).
   # F1: stub images only; install-de-family.sh runs in-container before smoke.
-  # Soft-skips for unpackaged Rocky/Alma cinnamon/mate/lxqt cells.
+  # Rocky/Alma cinnamon/mate/lxqt are matrix-excluded (unpackaged), not soft-skips.
   # max-parallel: 20 is a per-matrix cap matching the account concurrent-job limit
   # (not a total workflow concurrency limit across all jobs).
   distro-full-de-debian:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
-    needs: [lint, coverage-merge]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 90
     strategy:
@@ -459,7 +474,7 @@ jobs:
   # (not a total workflow concurrency limit across all jobs).
   distro-full-de-rhel:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
-    needs: [lint, coverage-merge]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 90
     strategy:
@@ -528,7 +543,7 @@ jobs:
   # (not a total workflow concurrency limit across all jobs).
   distro-full-de-suse-arch:
     name: Full-DE (${{ matrix.image }} / ${{ matrix.de_family }})
-    needs: [lint, coverage-merge]
+    needs: [lint]
     runs-on: ubuntu-26.04
     timeout-minutes: 90
     strategy:

@@ -2,8 +2,21 @@
 # Shared post-install configure helpers for RPM and Arch package scriptlets.
 set -e
 
+# Deb/RPM stage under /usr/sbin; Arch PKGBUILD relocates to /usr/bin (filesystem
+# owns /usr/sbin). Resolve at runtime so scriptlets stay shared.
 CONFIGURE_BIN="/usr/sbin/asus-zenbook-configure"
 STATE_DIR="/var/lib/asus-zenbook-linux-tools"
+
+_asus_resolve_configure_bin() {
+    if [ -x "$CONFIGURE_BIN" ]; then
+        return 0
+    fi
+    if [ -x /usr/bin/asus-zenbook-configure ]; then
+        CONFIGURE_BIN=/usr/bin/asus-zenbook-configure
+        return 0
+    fi
+    return 1
+}
 
 _asus_is_noninteractive_frontend() {
     case "${DEBIAN_FRONTEND:-}${RPM_INSTALL_PREFIX:-}" in
@@ -46,8 +59,8 @@ _asus_daemon_reload_if_live() {
 }
 
 _asus_run_interactive_configure() {
-    if [ ! -x "$CONFIGURE_BIN" ]; then
-        echo "Missing configure helper: $CONFIGURE_BIN" >&2
+    if ! _asus_resolve_configure_bin; then
+        echo "Missing configure helper: /usr/sbin|/usr/bin/asus-zenbook-configure" >&2
         return 1
     fi
     SKIP_PKG_INSTALL=1 "$CONFIGURE_BIN"

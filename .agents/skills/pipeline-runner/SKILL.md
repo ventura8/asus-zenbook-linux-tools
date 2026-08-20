@@ -133,6 +133,14 @@ Use this skill to validate project code quality, formatting, unit tests, and end
    Treat every lint/test/coverage/matrix failure as blocking work:
 
 - Diagnose the failure from the live output / `reports/distro-logs/` log.
+- **Also scan package-smoke logs for actionable errors/warnings** even when the
+  process exit is 0: search `reports/distro-logs/full-pipeline.log`,
+  `release-package-smoke-*.log`, `package-smoke-*.log`, and related tees for
+  `Error:` / `ERROR` / `WARNING:` / `Validation failed` / AppStream / Flatpak icon /
+  RPM `File listed twice` / Snapcraft metadata / dpkg “not empty”. Fix packaging or
+  product code for those hits before declaring success. Skip only clear environmental
+  noise (CDN mirror flakes that retry, headless missing-user restore skips, pacman
+  “up to date -- reinstalling”, container tmpfiles uninitialized `/etc`).
 - Apply autofix tools first, then hand-fix the remaining root cause.
 - Re-run the full pipeline (or the failed stage when iterating locally, then re-run `--full`
   before declaring success).

@@ -8,7 +8,8 @@ finish-args:
   # Full host filesystem: configure wizard deploys systemd units, udev rules, and
   # payload under /usr/local, /etc, and /var/lib on the host (not inside /app).
   - --filesystem=host
-  - --talk-name=org.freedesktop.systemd1
+  # systemctl daemon-reload / unit ops use the system bus (not session).
+  - --system-talk-name=org.freedesktop.systemd1
 modules:
   - name: asus-zenbook-linux-tools
     buildsystem: simple

@@ -150,10 +150,16 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   declares `title`/`license`/`contact`/`issues`/`source-code`/`website`.
   **Arch staging:** [`packaging/stage-payload.sh`](packaging/stage-payload.sh)
   must not `mkdir` `/usr/sbin` (owned by Arch `filesystem`); install only
-  `/usr/sbin/asus-zenbook-configure` via `install -Dm755`. **Flatpak host handoff:**
+  `/usr/sbin/asus-zenbook-configure` via `install -Dm755`. Arch `PKGBUILD`
+  relocates that helper to `/usr/bin` and removes empty `$pkgdir/usr/sbin`;
+  shared [`packaging/scriptlets/configure-common.sh`](packaging/scriptlets/configure-common.sh)
+  resolves `/usr/sbin` then `/usr/bin` so RPM/Arch scriptlets stay aligned.
+  **Flatpak host handoff:**
   `--filesystem=host` exposes the host at `/run/host`; the Flatpak wrapper sets
   `ASUS_HOST_ROOT=/run/host`, `ASUS_PORTABLE_HOST_INSTALL=1`, and `PREFIX=/run/host`
-  so configure deploys to the host (not `/app` or sandbox `/usr/local`). Staged
+  so configure deploys to the host (not `/app` or sandbox `/usr/local`). Flatpak
+  finish-args use `--system-talk-name=org.freedesktop.systemd1` (system bus —
+  not session `--talk-name`) for host `systemctl` daemon-reload/unit ops. Staged
   `DESTDIR`/`PREFIX` smoke skips udev/group unless `ASUS_PORTABLE_HOST_INSTALL=1`
   (`_asus_is_staged_install` in `lib/install-shared.sh`). **Snap CI:** `package-smoke` /
   tag `build-packages` snap cells run on **ubuntu-24.04** with
@@ -665,8 +671,12 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   runs via `runuser -u "$SUDO_USER" -- python3 -m coverage`. Upload python
   shards with `include-hidden-files: true` (or non-hidden
   `coverage.dat`). Local `--full` mirrors host merge after the four
-  Docker shard containers. Distro jobs need `coverage-merge` (and
-  `lint`). Lint is a GHA matrix job `lint` with display labels
+  Docker shard containers. Distro Tests / Full-DE need `lint` only (same as
+  nested proofs and local wave-2 parallelism). Do not gate them on
+  `coverage-merge` — a coverage shard failure would cascade-skip those jobs and
+  hide real Full-DE/Distro status. `coverage-merge` still runs after coverage
+  cells execute (pass or fail) so a shard failure surfaces as merge failure,
+  not a skipped merge. Lint is a GHA matrix job `lint` with display labels
   `format+syntax` / `pylint+shellcheck` (env `ASUS_LINT_WAVE=cheap|heavy`);
   local `--full` runs both lint-in-docker wave containers in parallel
   with deb smoke.
@@ -979,6 +989,18 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   ```
 
 - Distro lane runs must write per-lane logs under `reports/distro-logs/` with stable, descriptive filenames.
+- **Package smoke log scan (mandatory with pipeline skill / `--full`)**: After Debian /
+  release package smoke (`scripts/run_deb_package_smoke.sh`,
+  `scripts/run_release_package_smoke.sh`, CI `package-smoke`), scan the teed logs under
+  `reports/distro-logs/` (`full-pipeline.log`, `release-package-smoke-*.log`,
+  `package-smoke-*.log`, `arch-package-smoke.log`, …) for `Error:` / `ERROR` /
+  `WARNING:` / `Validation failed` / packaging tool warnings (AppStream, Flatpak icon
+  export, RPM `File listed twice`, Snapcraft metadata lint, dpkg “not empty”, …).
+  Treat actionable packaging/product warnings as blocking — fix the packaging or
+  product code in the same change set; do not declare the pipeline green while those
+  remain. Ignore only clearly environmental noise (mirror CDN flakes that retry,
+  headless “missing user id” restore skips, pacman “up to date -- reinstalling”,
+  container tmpfiles `/etc` uninitialized messages).
 
 ## Always Update Agent Docs
 
