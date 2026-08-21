@@ -42,12 +42,12 @@ msgstr "ASUS स्क्रीनशॉट"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux विन्यासः %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools उपयोगाय सज्जम् अस्ति ।"
 
@@ -96,7 +96,7 @@ msgstr "कॅमेरा सक्षमः"
 msgid "Camera privacy"
 msgstr "कॅमेरा गोपनीयता"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "घटकान् चिनोतु"
 
@@ -163,11 +163,11 @@ msgstr "GNOME ASUS विण्डो स्वैप विस्तारः �
 msgid "GNOME shortcuts configured."
 msgstr "GNOME शॉर्टकट् विन्यस्तम् ।"
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "भवतः Linux डेस्कटॉप् कृते हार्डवेयर-विशेषताः"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "स्क्रिप्ट्-सेवाः च संस्थापयन्तु"
 
@@ -179,11 +179,11 @@ msgstr "प्रणालीनिर्भरताः संस्थाप�
 msgid "Installation cancelled by user."
 msgstr "उपयोक्तृद्वारा संस्थापनं रद्दं कृतम्।"
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "स्थापना सम्पन्न।"
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux Tools संस्थापनम् %s."
@@ -217,8 +217,7 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "अमान्यं चयनम्: %s। सङ्ख्याः (1,2,3,4), अवयवनामानि अथवा all, वा none "
-"प्रविशतु।"
+msgstr "अमान्यं चयनम्: %s। सङ्ख्याः (1,2,3,4), अवयवनामानि अथवा all, वा none प्रविशतु।"
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
@@ -246,7 +245,7 @@ msgstr "केवलं मुख्यप्रदर्शनम्"
 msgid "Mode: %s"
 msgstr "मोडः %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "न कोऽपि घटकः चयनितः । किमपि संस्थापितं नास्ति।"
 
@@ -267,8 +266,7 @@ msgstr "प्रदर्शनम् (Boost)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "सर्वान् अनुशंसितान् अवयवान् संस्थापयितुं Enter नुदतु, अथवा 'all' वा 'none' "
-"लिखतु।"
+msgstr "सर्वान् अनुशंसितान् अवयवान् संस्थापयितुं Enter नुदतु, अथवा 'all' वा 'none' लिखतु।"
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -286,7 +284,7 @@ msgstr "स्क्रीनपैड चमक"
 msgid "ScreenPad only"
 msgstr "केवलं स्क्रीनपैड"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

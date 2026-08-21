@@ -42,12 +42,12 @@ msgstr "រូបថតអេក្រង់ ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ការរៀបចំ ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ឧបករណ៍ ASUS ZenBook Linux រួចរាល់ក្នុងការប្រើប្រាស់។"
 
@@ -96,7 +96,7 @@ msgstr "បានបើកកាមេរ៉ា"
 msgid "Camera privacy"
 msgstr "ឯកជនភាពកាមេរ៉ា"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "ជ្រើសរើសសមាសធាតុ"
 
@@ -163,11 +163,11 @@ msgstr "GNOME ASUS Window Swap ត្រូវបានតំឡើង។"
 msgid "GNOME shortcuts configured."
 msgstr "ផ្លូវកាត់ GNOME ត្រូវបានកំណត់រចនាសម្ព័ន្ធ។"
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "លក្ខណៈពិសេសផ្នែករឹងសម្រាប់កុំព្យូទ័រលើតុ Linux របស់អ្នក។"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "ដំឡើងស្គ្រីប និងសេវាកម្ម"
 
@@ -179,11 +179,11 @@ msgstr "ដំឡើងភាពអាស្រ័យនៃប្រព័ន្
 msgid "Installation cancelled by user."
 msgstr "ការដំឡើងត្រូវបានលុបចោលដោយអ្នកប្រើប្រាស់។"
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ការដំឡើងបានបញ្ចប់។"
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ការដំឡើង ASUS ZenBook Linux Tools %s ។"
@@ -245,7 +245,7 @@ msgstr "ការបង្ហាញសំខាន់តែប៉ុណ្ណោ
 msgid "Mode: %s"
 msgstr "របៀប៖ %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "មិនមានសមាសធាតុត្រូវបានជ្រើសរើសទេ។ គ្មានអ្វីត្រូវបានដំឡើងទេ។"
 
@@ -284,7 +284,7 @@ msgstr "ពន្លឺអេក្រង់"
 msgid "ScreenPad only"
 msgstr "បន្ទះអេក្រង់តែប៉ុណ្ណោះ"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -32,14 +32,54 @@ The package runs the same interactive component wizard as `install.sh`
 (WMI, TOUCHPAD, SOUND, DESKTOP). Re-run later with
 `sudo dpkg-reconfigure asus-zenbook-linux-tools` or `sudo asus-zenbook-configure`.
 
+### GitHub Release packages (Fedora, Rocky, openSUSE, Arch)
+
+Each `v*` tag attaches native packages and a **`SHA256SUMS`** manifest to the
+[GitHub Release](https://github.com/ventura8/asus-zenbook-linux-tools/releases).
+Download the asset for your distro **and** `SHA256SUMS` from the same release,
+verify the checksum for that asset, then install.
+
+> [!NOTE]
+> `SHA256SUMS` is **same-origin integrity** only: the manifest and release assets come from the
+> same GitHub tag. It is not an independently trusted detached signature or public-key release
+> authentication. Bare `sha256sum -c SHA256SUMS` needs every listed asset on disk.
+
+```bash
+grep -F 'your-asset-filename' SHA256SUMS | sha256sum -c -
+
+# Fedora / Rocky / Alma / RHEL family
+sudo dnf install ./asus-zenbook-linux-tools-*.rpm
+
+# openSUSE (checksum-verified RPM; zypper resolves dependencies)
+sudo zypper install --allow-unsigned-rpm ./asus-zenbook-linux-tools-*.rpm
+
+# Arch / Manjaro
+sudo pacman -U ./asus-zenbook-linux-tools-*.pkg.tar.zst
+
+# AppImage (after sha256sum -c)
+sudo ./asus-zenbook-linux-tools-*-x86_64.AppImage
+
+# Flatpak (system scope matches sudo run)
+sudo flatpak install --system ./asus-zenbook-linux-tools-*.flatpak
+sudo flatpak run org.github.ventura8.AsusZenBookLinuxTools
+
+# Snap (classic local install requires --dangerous only after checksum verification)
+sudo snap install --dangerous ./asus-zenbook-linux-tools_*.snap
+```
+
+Portable **installer bundles** (AppImage, Flatpak, Snap) are also attached for
+experiments; they run `asus-zenbook-configure` with the bundled payload and still
+require root for systemd/udev deployment. The Flatpak bundle deploys to the host
+via `/run/host` (`--filesystem=host`); native packages are recommended.
+
 ### One-Liner (any supported distro)
 
 ```bash
 curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.2/install.sh.sha256 \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.3/install.sh.sha256 \
   -o install.sh.sha256 &&
   curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.2/install.sh \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.3/install.sh \
   -o install.sh &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh

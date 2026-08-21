@@ -44,12 +44,12 @@ msgstr "ASUS સ્ક્રીનશોટ"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux સેટઅપ %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux ટૂલ્સ ઉપયોગ માટે તૈયાર છે."
 
@@ -98,7 +98,7 @@ msgstr "કેમેરા સક્ષમ"
 msgid "Camera privacy"
 msgstr "કેમેરા ગોપનીયતા"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "ઘટકો પસંદ કરો"
 
@@ -165,11 +165,11 @@ msgstr "જીનોમ ASUS વિન્ડો સ્વેપ એક્સ્�
 msgid "GNOME shortcuts configured."
 msgstr "જીનોમ શૉર્ટકટ્સ ગોઠવેલ છે."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "તમારા Linux ડેસ્કટોપ માટે હાર્ડવેર સુવિધાઓ"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "સ્ક્રિપ્ટો અને સેવાઓ ઇન્સ્ટોલ કરો"
 
@@ -181,11 +181,11 @@ msgstr "સિસ્ટમ નિર્ભરતા સ્થાપિત કર
 msgid "Installation cancelled by user."
 msgstr "વપરાશકર્તા દ્વારા ઇન્સ્ટોલેશન રદ કરવામાં આવ્યું."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ઇન્સ્ટોલેશન પૂર્ણ."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux ટૂલ્સ %s ઇન્સ્ટોલ કરી રહ્યાં છીએ."
@@ -219,7 +219,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "અમાન્ય પસંદગી: %s. નંબરો (1,2,3,4), ઘટક નામો અથવા all, અથવા none દાખલ કરો."
+msgstr ""
+"અમાન્ય પસંદગી: %s. નંબરો (1,2,3,4), ઘટક નામો અથવા all, અથવા none દાખલ કરો."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
@@ -247,7 +248,7 @@ msgstr "માત્ર મુખ્ય પ્રદર્શન"
 msgid "Mode: %s"
 msgstr "મોડ: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "કોઈ ઘટકો પસંદ કર્યા ન હતા. કંઈપણ ઇન્સ્ટોલ થયું નહીં."
 
@@ -268,7 +269,8 @@ msgstr "પ્રદર્શન (બૂસ્ટ)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "બધા ભલામણ કરેલ ઘટકો ઇન્સ્ટૉલ કરવા Enter દબાવો, અથવા 'all' અથવા 'none' લખો."
+msgstr ""
+"બધા ભલામણ કરેલ ઘટકો ઇન્સ્ટૉલ કરવા Enter દબાવો, અથવા 'all' અથવા 'none' લખો."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -286,7 +288,7 @@ msgstr "સ્ક્રીનપેડની તેજ"
 msgid "ScreenPad only"
 msgstr "માત્ર સ્ક્રીનપેડ"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

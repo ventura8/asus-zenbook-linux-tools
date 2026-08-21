@@ -50,12 +50,12 @@ msgstr "ASUS ekrānuzņēmums"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux iestatīšana %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools ir gatavs lietošanai."
 
@@ -104,7 +104,7 @@ msgstr "Kamera ir iespējota"
 msgid "Camera privacy"
 msgstr "Kameras privātums"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Izvēlieties komponentus"
 
@@ -171,11 +171,11 @@ msgstr "Instalēts GNOME ASUS logu maiņas paplašinājums."
 msgid "GNOME shortcuts configured."
 msgstr "Konfigurēti GNOME saīsnes."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Aparatūras līdzekļi jūsu Linux darbvirsmai"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Instalējiet skriptus un pakalpojumus"
 
@@ -187,11 +187,11 @@ msgstr "Instalējiet sistēmas atkarības"
 msgid "Installation cancelled by user."
 msgstr "Lietotājs atcēla instalēšanu."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Uzstādīšana pabeigta."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux rīku instalēšana %s."
@@ -226,7 +226,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Nederīga atlase: %s. Ievadiet numurus (1,2,3,4), komponentu nosaukumus vai "
+msgstr ""
+"Nederīga atlase: %s. Ievadiet numurus (1,2,3,4), komponentu nosaukumus vai "
 "all, vai none."
 
 #: lib/install-kde.sh:309
@@ -255,7 +256,7 @@ msgstr "Tikai galvenais displejs"
 msgid "Mode: %s"
 msgstr "Režīms: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Nav atlasīts neviens komponents. Nekas netika instalēts."
 
@@ -276,7 +277,8 @@ msgstr "Veiktspēja (palielinājums)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Nospiediet Enter, lai instalētu visus ieteiktos komponentus, vai ievadiet "
+msgstr ""
+"Nospiediet Enter, lai instalētu visus ieteiktos komponentus, vai ievadiet "
 "'all' vai 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -295,7 +297,7 @@ msgstr "ScreenPad spilgtums"
 msgid "ScreenPad only"
 msgstr "Tikai ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

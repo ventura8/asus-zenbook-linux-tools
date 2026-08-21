@@ -44,12 +44,12 @@ msgstr "ASUS Ekran Görüntüsü"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux kurulumu %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Araçları kullanıma hazır."
 
@@ -99,7 +99,7 @@ msgstr "Kamera etkin"
 msgid "Camera privacy"
 msgstr "Kamera gizliliği"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Bileşenleri seçin"
 
@@ -166,11 +166,11 @@ msgstr "GNOME ASUS Window Swap uzantısı kuruldu."
 msgid "GNOME shortcuts configured."
 msgstr "GNOME kısayolları yapılandırıldı."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Linux masaüstünüz için donanım özellikleri"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Komut dosyalarını ve hizmetleri yükleyin"
 
@@ -182,11 +182,11 @@ msgstr "Sistem bağımlılıklarını yükleyin"
 msgid "Installation cancelled by user."
 msgstr "Kurulum kullanıcı tarafından iptal edildi."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Kurulum tamamlandı."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux Araçlarını Yükleme %s."
@@ -220,7 +220,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Geçersiz seçim: %s. Sayılar (1,2,3,4), bileşen adları veya all, veya none, "
+msgstr ""
+"Geçersiz seçim: %s. Sayılar (1,2,3,4), bileşen adları veya all, veya none, "
 "veya nonegirin."
 
 #: lib/install-kde.sh:309
@@ -249,7 +250,7 @@ msgstr "Yalnızca ana ekran"
 msgid "Mode: %s"
 msgstr "Mod: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Hiçbir bileşen seçilmedi. Hiçbir şey yüklenmedi."
 
@@ -270,7 +271,8 @@ msgstr "Performans (Artırma)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Tüm önerilen bileşenleri kurmak için Enter tuşuna basın veya 'all' veya "
+msgstr ""
+"Tüm önerilen bileşenleri kurmak için Enter tuşuna basın veya 'all' veya "
 "'none' yazın."
 
 #: bin/asus-fan-toggle.sh:95
@@ -289,7 +291,7 @@ msgstr "ScreenPad parlaklığı"
 msgid "ScreenPad only"
 msgstr "Yalnızca ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

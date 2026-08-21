@@ -53,12 +53,12 @@ msgstr "Sgrinlun ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Gosodiad ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Mae ASUS ZenBook Linux Tools yn barod i'w ddefnyddio."
 
@@ -108,7 +108,7 @@ msgstr "Camera wedi'i alluogi"
 msgid "Camera privacy"
 msgstr "Preifatrwydd camera"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Dewiswch gydrannau"
 
@@ -175,11 +175,11 @@ msgstr "Estyniad Cyfnewid Ffenestr GNOME ASUS wedi'i osod."
 msgid "GNOME shortcuts configured."
 msgstr "Llwybrau byr GNOME wedi'u ffurfweddu."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Nodweddion caledwedd ar gyfer eich bwrdd gwaith Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Gosod sgriptiau a gwasanaethau"
 
@@ -191,11 +191,11 @@ msgstr "Gosod dibyniaethau system"
 msgid "Installation cancelled by user."
 msgstr "Gosodiad wedi'i ganslo gan y defnyddiwr."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Gosod wedi'i gwblhau."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Gosod Offer ASUS ZenBook Linux %s."
@@ -230,7 +230,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Dewis annilys: %s. Rhowch rifau (1,2,3,4), enwau cydrannau, neu all, neu "
+msgstr ""
+"Dewis annilys: %s. Rhowch rifau (1,2,3,4), enwau cydrannau, neu all, neu "
 "none, neu none."
 
 #: lib/install-kde.sh:309
@@ -259,7 +260,7 @@ msgstr "Prif arddangosfa yn unig"
 msgid "Mode: %s"
 msgstr "Modd: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Ni ddewiswyd unrhyw gydrannau. Ni osodwyd dim."
 
@@ -280,7 +281,8 @@ msgstr "Perfformiad (Hwb)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Pwyswch Enter i osod yr holl gydrannau a argymhellir, neu rhowch 'all' neu "
+msgstr ""
+"Pwyswch Enter i osod yr holl gydrannau a argymhellir, neu rhowch 'all' neu "
 "'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -299,7 +301,7 @@ msgstr "Disgleirdeb ScreenPad"
 msgid "ScreenPad only"
 msgstr "ScreenPad yn unig"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -42,12 +42,12 @@ msgstr "Намудори ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Танзими ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Асбобҳои ASUS ZenBook Linux барои истифода омодаанд."
 
@@ -98,7 +98,7 @@ msgstr "Камера фаъол аст"
 msgid "Camera privacy"
 msgstr "Махфияти камера"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Компонентҳоро интихоб кунед"
 
@@ -165,11 +165,11 @@ msgstr "GNOME ASUS Window Swap васеъкунӣ насб карда шудаа
 msgid "GNOME shortcuts configured."
 msgstr "Миёнабурҳои GNOME танзим карда шудаанд."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Хусусиятҳои сахтафзор барои мизи кории Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Скриптҳо ва хидматҳоро насб кунед"
 
@@ -181,11 +181,11 @@ msgstr "Вобастагии системаро насб кунед"
 msgid "Installation cancelled by user."
 msgstr "Насбкунӣ аз ҷониби корбар бекор карда шуд."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Насбкунӣ анҷом ёфт."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Насб кардани асбобҳои ASUS ZenBook Linux %s."
@@ -221,7 +221,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Интихоби нодуруст: %s. Рақамҳо (1,2,3,4), номҳои қисмҳо ё all, ё none "
+msgstr ""
+"Интихоби нодуруст: %s. Рақамҳо (1,2,3,4), номҳои қисмҳо ё all, ё none "
 "-роворид кунед."
 
 #: lib/install-kde.sh:309
@@ -250,7 +251,7 @@ msgstr "Танҳо намоиши асосӣ"
 msgid "Mode: %s"
 msgstr "Режим: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Ягон ҷузъ интихоб нашудааст. Чизе насб нашуд."
 
@@ -271,7 +272,8 @@ msgstr "Иҷрои (афзоиш)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Барои насб кардани ҳамаи қисмҳои тавсияшуда Enter-ро пахш кунед ё 'all' ё "
+msgstr ""
+"Барои насб кардани ҳамаи қисмҳои тавсияшуда Enter-ро пахш кунед ё 'all' ё "
 "'none' -ро ворид кунед."
 
 #: bin/asus-fan-toggle.sh:95
@@ -290,7 +292,7 @@ msgstr "Равшании ScreenPad"
 msgid "ScreenPad only"
 msgstr "Танҳо ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

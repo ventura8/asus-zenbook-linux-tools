@@ -1,0 +1,41 @@
+name: asus-zenbook-linux-tools
+title: ASUS ZenBook Linux Tools
+adopt-info: payload
+base: core24
+summary: ASUS ZenBook hardware helpers installer
+description: |
+  Classic snap that runs the packaged configure wizard for ASUS ZenBook
+  hardware features. Native .deb/.rpm packages are recommended for full
+  systemd and udev integration.
+license: MIT
+contact: https://github.com/ventura8/asus-zenbook-linux-tools/issues
+issues: https://github.com/ventura8/asus-zenbook-linux-tools/issues
+source-code: https://github.com/ventura8/asus-zenbook-linux-tools
+website: https://github.com/ventura8/asus-zenbook-linux-tools
+grade: stable
+confinement: classic
+platforms:
+  amd64:
+
+apps:
+  asus-zenbook-configure:
+    command: bin/asus-zenbook-configure-wrapper
+
+parts:
+  payload:
+    plugin: nil
+    source: .
+    build-packages:
+      - gettext
+    override-pull: |
+      set -euo pipefail
+      craftctl default
+      version=$(tr -d '[:space:]' < "${CRAFT_PART_SRC}/VERSION")
+      craftctl set version="$version"
+    override-build: |
+      set -euo pipefail
+      cd "$CRAFT_PART_SRC"
+      chmod +x packaging/stage-payload.sh packaging/asus-zenbook-configure packaging/snap/asus-zenbook-configure-wrapper
+      ./packaging/stage-payload.sh "$CRAFT_PART_INSTALL"
+      install -Dm755 packaging/snap/asus-zenbook-configure-wrapper \
+        "$CRAFT_PART_INSTALL/bin/asus-zenbook-configure-wrapper"

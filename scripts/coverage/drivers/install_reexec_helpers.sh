@@ -136,6 +136,20 @@ _run_bootstrap_exercises() {
     mkdir -p "$prefix_dir/usr/local/bin" \
         "$prefix_dir/usr/local/lib/asus-zenbook-linux-tools" \
         "$prefix_dir/etc/systemd/system"
+    # Same-shell calls (not _exercise) so kcov attributes the CCN-split helpers.
+    PREFIX="" BIN_DIR="" LIB_DIR="" SYS_DIR="" HOOK_DIR=""
+    unset ASUS_HOST_ROOT DESTDIR
+    _soft_expect 0 _bootstrap_set_install_prefix_paths
+    _soft_expect 0 test "$BIN_DIR" = "/usr/local/bin"
+    ASUS_HOST_ROOT="$prefix_dir" _soft_expect 0 _bootstrap_set_install_prefix_paths
+    _soft_expect 0 test "$BIN_DIR" = "$prefix_dir/usr/local/bin"
+    unset ASUS_HOST_ROOT
+    DESTDIR="$prefix_dir" _soft_expect 0 _bootstrap_set_install_prefix_paths
+    _soft_expect 0 test "$LIB_DIR" = \
+        "$prefix_dir/usr/local/lib/asus-zenbook-linux-tools"
+    unset DESTDIR
+    _soft_expect 0 _bootstrap_resolve_installer_script_dir
+    _soft_expect 0 test -n "$SCRIPT_DIR"
     _soft_expect 0 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         INSTALL_SOURCE_DIR="$REPO_ROOT" INSTALL_TEMP_SCRIPT="$tmp_script" \
         _bootstrap_installer_after_reexec >/dev/null

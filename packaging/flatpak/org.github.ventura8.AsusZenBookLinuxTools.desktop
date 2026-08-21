@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ASUS ZenBook Linux Tools
+Comment=Configure ASUS ZenBook hardware helpers for Linux
+Exec=asus-zenbook-configure-wrapper
+Icon=org.github.ventura8.AsusZenBookLinuxTools
+Categories=Settings;
+Terminal=true

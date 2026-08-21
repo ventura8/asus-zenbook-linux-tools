@@ -11,7 +11,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import shared_imports
-from tests.unit.bin.attr_helpers import call_attr
+from tests.unit.bin.attr_helpers import call_attr, get_attr
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 BIN_DIR = PROJECT_ROOT / "bin"
@@ -149,6 +149,10 @@ class TestAsusTouchpadShare(unittest.TestCase):
         """Test _get_axis_range returns defaults when axis metadata is absent."""
         self.assertEqual(call_attr(touchpad_bounds, "_get_axis_range", None, 0, 4000), (0, 4000))
 
+
+class TestAsusTouchpadShareBounds(unittest.TestCase):
+    """Unit tests for touchpad Share corner bound learning and persistence."""
+
     def test_compute_bounds_uses_axis_min_max(self):
         """Test compute_bounds builds ShareBounds from configured axis ranges."""
         mock_dev = MagicMock()
@@ -234,13 +238,13 @@ class TestAsusTouchpadShare(unittest.TestCase):
             samples=((0.05, 0.06),),
             state_path="/root/no/such/touchpad-share-bounds.json",
         )
-        touchpad_bounds._persist_warned_paths.discard(share_bounds.state_path)
+        get_attr(touchpad_bounds, "_persist_warned_paths").discard(share_bounds.state_path)
         with (
             patch("builtins.open", side_effect=OSError("read-only")),
             self.assertLogs("asus_touchpad_share_bounds", level="WARNING") as captured,
         ):
-                call_attr(touchpad_bounds, "_save_learned_bounds", share_bounds)
-                call_attr(touchpad_bounds, "_save_learned_bounds", share_bounds)
+            call_attr(touchpad_bounds, "_save_learned_bounds", share_bounds)
+            call_attr(touchpad_bounds, "_save_learned_bounds", share_bounds)
         self.assertEqual(len(captured.output), 1)
 
     def test_load_learned_bounds_discards_invalid_state(self):

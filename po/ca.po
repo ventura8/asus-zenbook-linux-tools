@@ -48,12 +48,12 @@ msgstr "Captura de pantalla d'ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Configuració d'ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools està llest per utilitzar."
 
@@ -104,7 +104,7 @@ msgstr "Càmera activada"
 msgid "Camera privacy"
 msgstr "Privadesa de la càmera"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Trieu components"
 
@@ -171,11 +171,11 @@ msgstr "S'ha instal·lat l'extensió GNOME ASUS Window Swap."
 msgid "GNOME shortcuts configured."
 msgstr "Dreceres de GNOME configurades."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Funcions de maquinari per al vostre escriptori Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Instal·leu scripts i serveis"
 
@@ -187,11 +187,11 @@ msgstr "Instal·lar dependències del sistema"
 msgid "Installation cancelled by user."
 msgstr "Instal·lació cancel·lada per l'usuari."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Instal·lació completa."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Instal·lació de les eines ASUS ZenBook Linux %s."
@@ -228,7 +228,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Selecció no vàlida: %s. Introduïu números (1,2,3,4), noms de components o "
+msgstr ""
+"Selecció no vàlida: %s. Introduïu números (1,2,3,4), noms de components o "
 "all, o none."
 
 #: lib/install-kde.sh:309
@@ -257,7 +258,7 @@ msgstr "Només la pantalla principal"
 msgid "Mode: %s"
 msgstr "Mode: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "No s'ha seleccionat cap component. No s'ha instal·lat res."
 
@@ -278,7 +279,8 @@ msgstr "Rendiment (augment)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Premeu Enter per instal·lar tots els components recomanats, o introduïu "
+msgstr ""
+"Premeu Enter per instal·lar tots els components recomanats, o introduïu "
 "'all' o 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -297,7 +299,7 @@ msgstr "Brillantor del ScreenPad"
 msgid "ScreenPad only"
 msgstr "Només ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

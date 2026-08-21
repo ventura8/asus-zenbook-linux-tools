@@ -13,6 +13,9 @@ DEPS_DIR="${DEPS_DIR:-/opt/asus-zenbook-deps}"
 export PATH="/opt/poetry-venv/bin:${PATH}"
 export POETRY_VIRTUALENVS_IN_PROJECT=true
 cd "$DEPS_DIR"
+if [ -f VERSION ]; then
+    poetry version "$(tr -d '[:space:]' < VERSION)"
+fi
 poetry install --with dev --no-interaction --no-root
 # set -u safe: HOME may be unset in minimal Docker RUN environments.
 if [ -n "${HOME:-}" ]; then

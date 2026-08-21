@@ -42,12 +42,12 @@ msgstr "Ảnh chụp màn hình ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Cài đặt ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Công cụ ASUS ZenBook Linux đã sẵn sàng để sử dụng."
 
@@ -98,7 +98,7 @@ msgstr "Đã bật máy ảnh"
 msgid "Camera privacy"
 msgstr "Quyền riêng tư của máy ảnh"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Chọn thành phần"
 
@@ -165,11 +165,11 @@ msgstr "Đã cài đặt tiện ích mở rộng Hoán đổi cửa sổ ASUS Gn
 msgid "GNOME shortcuts configured."
 msgstr "Các phím tắt Gnome được định cấu hình."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Các tính năng phần cứng cho máy tính để bàn Linux của bạn"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Cài đặt tập lệnh và dịch vụ"
 
@@ -181,11 +181,11 @@ msgstr "Cài đặt phụ thuộc hệ thống"
 msgid "Installation cancelled by user."
 msgstr "Người dùng đã hủy cài đặt."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Cài đặt hoàn tất."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Cài đặt Công cụ ASUS ZenBook Linux %s."
@@ -219,7 +219,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Lựa chọn không hợp lệ: %s. Nhập số (1,2,3,4), tên thành phần hoặc all, hoặc "
+msgstr ""
+"Lựa chọn không hợp lệ: %s. Nhập số (1,2,3,4), tên thành phần hoặc all, hoặc "
 "none, hoặc none."
 
 #: lib/install-kde.sh:309
@@ -248,7 +249,7 @@ msgstr "Chỉ hiển thị chính"
 msgid "Mode: %s"
 msgstr "Chế độ: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Không có thành phần nào được chọn. Không có gì được cài đặt."
 
@@ -269,7 +270,8 @@ msgstr "Hiệu suất (Tăng cường)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Nhấn Enter để cài đặt tất cả thành phần được đề xuất, hoặc nhập 'all' hoặc "
+msgstr ""
+"Nhấn Enter để cài đặt tất cả thành phần được đề xuất, hoặc nhập 'all' hoặc "
 "'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -288,7 +290,7 @@ msgstr "Độ sáng của ScreenPad"
 msgid "ScreenPad only"
 msgstr "Chỉ ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

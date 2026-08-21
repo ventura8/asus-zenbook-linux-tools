@@ -10,8 +10,8 @@ DOCKER_BUILD_CACHE_DIR="${DOCKER_BUILD_CACHE_DIR:-$REPO_ROOT/.cache/docker-build
 MATRIX_RUN_ID="${MATRIX_RUN_ID:-$(date +%s)-$$}"
 DRY_RUN=0
 PARALLEL=1
-COMPAT_ONLY=0
-RUN_COVERAGE_GATE=0
+COMPAT_ONLY="${ASUS_DOCKER_MATRIX_COMPAT_ONLY:-0}"
+RUN_COVERAGE_GATE="${ASUS_DOCKER_MATRIX_COVERAGE_GATE:-0}"
 SELECTED_DISTROS=()
 ACTIVE_CONTAINERS=()
 ACTIVE_PIDS=()
@@ -40,7 +40,7 @@ DISTROS=(
     "${DISTRO_FAMILY_RHEL[@]}"
     "${DISTRO_FAMILY_SUSE_ARCH[@]}"
 )
-DE_FAMILY="${ASUS_CI_DE_FAMILY:-}"
+DE_FAMILY="${ASUS_DOCKER_MATRIX_DE_FAMILY:-${ASUS_CI_DE_FAMILY:-}}"
 case "$DE_FAMILY" in
     ""|gnome|kde|xfce|lxqt|cinnamon|mate) ;;
     *)
@@ -84,10 +84,7 @@ _kill_active_pids() {
 }
 
 _kill_pid_if_running() {
-    local pid="$1"
-    if kill -0 "$pid" 2>/dev/null; then
-        kill "$pid" 2>/dev/null || true
-    fi
+    _kill_pgid_if_running "$1"
 }
 
 _remove_active_containers() {
@@ -262,20 +259,32 @@ _matrix_setup_env_exports() {
     fi
 }
 
+_matrix_report_distro_slug() {
+    local distro_slug="$1"
+    if [[ "$distro_slug" == "coverage-gate" && -n "${ASUS_COVERAGE_MODE:-}" ]]; then
+        printf '%s-%s-%s\n' "$distro_slug" "$ASUS_COVERAGE_MODE" \
+            "${ASUS_COVERAGE_SHARD:-all}"
+        return 0
+    fi
+    printf '%s\n' "$distro_slug"
+}
+
 build_setup_script() {
     local distro_slug="$1"
     local mode="$2"
     local tests_mode skip_python_coverage_reports=0
     local de_family_export="" full_de_export="" runtime_de_block=""
+    local report_slug=""
     tests_mode="$(_matrix_setup_tests_mode "$mode")" || return 1
     if [[ "${mode}" == "compat-only" ]]; then
         skip_python_coverage_reports=1
     fi
+    report_slug="$(_matrix_report_distro_slug "$distro_slug")"
     _matrix_setup_env_exports de_family_export full_de_export runtime_de_block
     cat <<EOF
 set -euo pipefail
 export PATH="/opt/asus-zenbook-deps/.venv/bin:\${PATH}"
-export REPORT_DISTRO_SLUG="${distro_slug}"
+export REPORT_DISTRO_SLUG="${report_slug}"
 export REQUIRE_KCOV=1
 export SKIP_PYTHON_COVERAGE_REPORTS=${skip_python_coverage_reports}
 export ASUS_COVERAGE_MODE="${ASUS_COVERAGE_MODE:-all}"
@@ -403,149 +412,10 @@ run_target() {
     run_docker "$image"
 }
 
-_print_distro_log() {
-    local name="$1" log="$2"
-    printf '\n%s\n' "══════════════════════════════════════"
-    printf '  FAILURE LOG: %s\n' "$name"
-    printf '%s\n\n' "══════════════════════════════════════"
-    cat "$log"
-}
 
-_print_failure_details() {
-    local -n __names="$1" __logs="$2" __failing_indices="$3"
-    local idx
-    for idx in "${__failing_indices[@]}"; do
-        _print_distro_log "${__names[$idx]}" "${__logs[$idx]}"
-    done
-}
+# shellcheck source=scripts/docker_matrix_exec.sh
+source "$REPO_ROOT/scripts/docker_matrix_exec.sh"
 
-_collect_parallel_results() {
-    local -n _pids="$1" _names="$2" _logs="$3"
-    local idx code failures=0
-    local failing_indices=()
-    for idx in "${!_pids[@]}"; do
-        code=0
-        wait "${_pids[$idx]}" || code=$?
-        if [[ "$code" -eq 0 ]]; then
-            printf '  ✓ Passed: %s\n' "${_names[$idx]}"
-        else
-            printf '  ✗ Failed: %s  →  %s\n' "${_names[$idx]}" "${_logs[$idx]}" >&2
-            failures=1
-            failing_indices+=("$idx")
-        fi
-    done
-    _print_failure_details _names _logs failing_indices
-    return "$failures"
-}
-
-_run_targets_dry() {
-    local image
-    for image in "$@"; do
-        run_target "$image"
-    done
-}
-
-_restore_buildx_skip_prune() {
-    local had_skip_prune="$1" saved_skip_prune="$2"
-    if [ "$had_skip_prune" = 1 ]; then
-        DOCKER_BUILDX_SKIP_PRUNE="$saved_skip_prune"
-    else
-        unset DOCKER_BUILDX_SKIP_PRUNE
-    fi
-}
-
-run_targets_parallel() {
-    # In dry-run mode, just run sequentially so output isn't redirected.
-    if [[ "$DRY_RUN" == "1" ]]; then
-        _run_targets_dry "$@"
-        return
-    fi
-    # Parallel buildx jobs can race with local cache pruning/removal.
-    local had_skip_prune=0 saved_skip_prune=""
-    if [ "${DOCKER_BUILDX_SKIP_PRUNE+x}" = "x" ]; then
-        had_skip_prune=1
-        saved_skip_prune="$DOCKER_BUILDX_SKIP_PRUNE"
-    fi
-    export DOCKER_BUILDX_SKIP_PRUNE=1
-    local log_dir="$REPO_ROOT/reports/distro-logs"
-    mkdir -p "$log_dir"
-    local pids=() names=() logs=()
-    local image slug log container_name
-    for image in "$@"; do
-        slug="${image//[:\/]/-}"
-        log="$log_dir/${slug}.log"
-        logs+=("$log")
-        container_name=$(container_name_for_distro "$image")
-        register_active_container "$container_name"
-        printf '  ▶ Launching: %s  →  reports/distro-logs/%s.log\n' "$image" "$slug"
-        (
-            trap - EXIT INT TERM
-            run_target "$image" 2>&1 | tee "$log"
-        ) &
-        pids+=("$!")
-        register_active_pid "$!"
-        names+=("$image")
-    done
-    printf '\nWaiting for all distros...\n'
-    local failures=0
-    _collect_parallel_results pids names logs || failures=$?
-    _restore_buildx_skip_prune "$had_skip_prune" "$saved_skip_prune"
-    _docker_prune_buildx_local_cache "$DOCKER_BUILD_CACHE_DIR" "$DOCKER_BUILD_CACHE_DIR"
-    return "$failures"
-}
-
-_print_target_distros() {
-    local image distro_name
-    echo "Target distros:"
-    for image in "$@"; do
-        # Path first (handles registry:port/...), then digest/tag — not %%:* first.
-        distro_name="${image##*/}"
-        distro_name="${distro_name%%@*}"
-        distro_name="${distro_name%%:*}"
-        echo "- $distro_name -> $image"
-    done
-}
-
-_run_one_serial_target() {
-    local image="$1" log="$2" code=0
-    if [[ "$DRY_RUN" == "1" ]]; then
-        run_target "$image" || code=$?
-    else
-        run_target "$image" 2>&1 | tee "$log" || code=${PIPESTATUS[0]:-1}
-    fi
-    return "$code"
-}
-
-_report_serial_target() {
-    local image="$1" log="$2" code="$3"
-    if [[ "$code" -ne 0 ]]; then
-        printf '  ✗ Failed: %s  →  %s\n' "$image" "$log" >&2
-        return 1
-    fi
-    printf '  ✓ Passed: %s\n' "$image"
-}
-
-_run_serial_targets() {
-    local image log_dir="$REPO_ROOT/reports/distro-logs"
-    local slug log failures=0 code
-    mkdir -p "$log_dir"
-    for image in "$@"; do
-        slug="${image//[:\/]/-}"
-        log="$log_dir/${slug}.log"
-        code=0
-        _run_one_serial_target "$image" "$log" || code=$?
-        _report_serial_target "$image" "$log" "$code" || failures=1
-    done
-    return "$failures"
-}
-
-_run_all_targets() {
-    if [[ "$PARALLEL" -eq 1 && $# -gt 1 ]]; then
-        run_targets_parallel "$@"
-        return $?
-    fi
-    _run_serial_targets "$@"
-}
 
 main() {
     setup_signal_traps

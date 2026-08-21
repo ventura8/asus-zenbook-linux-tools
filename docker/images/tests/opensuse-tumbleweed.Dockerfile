@@ -1,4 +1,4 @@
-FROM opensuse/tumbleweed@sha256:6e40218854d0ef063cfbd0a05898c04d8cb7e4ec823f40cfe19f0c60ddb317e0
+FROM opensuse/tumbleweed@sha256:ba9f806363116cb7633f10ca7dbe645d286915e9b898fe24b94615c2184b6911
 
 RUN zypper --non-interactive refresh \
     && zypper --non-interactive install -y \
@@ -36,7 +36,7 @@ RUN zypper --non-interactive refresh \
 COPY docker/images/tests/scripts/install-poetry-deps.sh \
      docker/images/tests/scripts/create-asusci-user.sh \
      docker/images/tests/scripts/install-de-family.sh /tmp/
-COPY pyproject.toml poetry.lock /opt/asus-zenbook-deps/
+COPY VERSION pyproject.toml poetry.lock /opt/asus-zenbook-deps/
 RUN chmod +x /tmp/install-poetry-deps.sh /tmp/create-asusci-user.sh /tmp/install-de-family.sh \
     && PYTHON_BIN=python3.13 /tmp/install-poetry-deps.sh \
     && rm -f /tmp/install-poetry-deps.sh

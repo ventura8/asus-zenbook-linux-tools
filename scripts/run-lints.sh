@@ -7,11 +7,13 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 _soft() { "$@" || return 0; }
 
 cd "$REPO_ROOT"
+export PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 
 STEP_INDEX=0
 LINT_WAVE1_STEPS=(
     step_bash_syntax
     step_file_size_limits
+    step_no_lint_suppressions
     step_ruff
     step_yamllint
     step_po_lint
@@ -50,6 +52,7 @@ SHELL_SCRIPT_TARGETS=()
 _find_repo_files() {
     # Prune dpkg-buildpackage install trees / artifacts so pylint never scores the
     # staged payload copy under debian/asus-zenbook-linux-tools as duplicate-code.
+    # Also prune release-smoke RPM/Arch staging trees (.rpm-build*, packaging/arch/pkg).
     find . \
         -path './.git' -prune -o \
         -path './.venv*' -prune -o \
@@ -60,6 +63,17 @@ _find_repo_files() {
         -path './.tools' -prune -o \
         -path './reports' -prune -o \
         -path './artifacts' -prune -o \
+        -path './.rpm-build*' -prune -o \
+        -path './.flatpak-builder' -prune -o \
+        -path './packaging/arch/pkg' -prune -o \
+        -path './packaging/arch/src' -prune -o \
+        -path './packaging/appimage/AppDir' -prune -o \
+        -path './packaging/flatpak/builddir' -prune -o \
+        -path './packaging/flatpak/repo' -prune -o \
+        -path './packaging/snap/parts' -prune -o \
+        -path './packaging/snap/stage' -prune -o \
+        -path './packaging/snap/prime' -prune -o \
+        -name '.rpm-build*' -prune -o \
         -path './debian/asus-zenbook-linux-tools' -prune -o \
         -path './debian/tmp' -prune -o \
         -path './debian/.debhelper' -prune -o \
@@ -140,6 +154,11 @@ step_file_size_limits() {
     echo "  ✓ File-size limits passed."
 }
 
+step_no_lint_suppressions() {
+    start_step "Checking for forbidden lint suppressions..."
+    python3 scripts/check_no_lint_suppressions.py
+}
+
 step_ruff() {
     start_step "Running Python Ruff Check..."
     if command -v ruff &>/dev/null; then
@@ -169,9 +188,10 @@ step_pylint() {
             echo "  ✗ No unit test Python files found for Pylint." >&2
             exit 1
         fi
-        pylint --max-line-length=140 "${PYTHON_FILES[@]}"
-        pylint --rcfile="$REPO_ROOT/tests/unit/.pylintrc" --max-line-length=140 "${UNIT_TEST_FILES[@]}"
-        echo "  ✓ Pylint check passed."
+        pylint --fail-under=10 --max-line-length=140 "${PYTHON_FILES[@]}"
+        pylint --fail-under=10 --rcfile="$REPO_ROOT/tests/unit/.pylintrc" \
+            --max-line-length=140 "${UNIT_TEST_FILES[@]}"
+        echo "  ✓ Pylint check passed (10.00/10)."
     else
         echo "  ✗ pylint not installed." >&2
         exit 1
@@ -251,39 +271,7 @@ PYEOF
 
 step_version_sync() {
     start_step "Checking VERSION is the single source of truth..."
-    python3 - <<'PYEOF'
-from pathlib import Path
-import sys
-import tomllib
-
-version_path = Path("VERSION")
-if not version_path.is_file():
-    print("  ✗ Missing VERSION file (single source of truth).", file=sys.stderr)
-    sys.exit(1)
-
-file_version = version_path.read_text(encoding="utf-8").strip()
-if not file_version:
-    print("  ✗ VERSION file is empty.", file=sys.stderr)
-    sys.exit(1)
-
-with Path("pyproject.toml").open("rb") as handle:
-    data = tomllib.load(handle)
-try:
-    poetry_version = data["tool"]["poetry"]["version"]
-except KeyError:
-    print("  ✗ pyproject.toml missing tool.poetry.version.", file=sys.stderr)
-    sys.exit(1)
-
-if file_version != poetry_version:
-    print(
-        f"  ✗ VERSION ({file_version}) does not match "
-        f"pyproject.toml tool.poetry.version ({poetry_version}).",
-        file=sys.stderr,
-    )
-    sys.exit(1)
-
-print(f"  ✓ Version sync passed ({file_version}).")
-PYEOF
+    scripts/sync_poetry_version.sh
 }
 
 step_i18n_catalogs() {

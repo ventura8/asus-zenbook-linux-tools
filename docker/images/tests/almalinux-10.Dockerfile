@@ -65,7 +65,7 @@ RUN chmod +x /tmp/el10-kcov-libcurl.sh \
 COPY docker/images/tests/scripts/install-poetry-deps.sh \
      docker/images/tests/scripts/create-asusci-user.sh \
      docker/images/tests/scripts/install-de-family.sh /tmp/
-COPY pyproject.toml poetry.lock /opt/asus-zenbook-deps/
+COPY VERSION pyproject.toml poetry.lock /opt/asus-zenbook-deps/
 RUN chmod +x /tmp/install-poetry-deps.sh /tmp/create-asusci-user.sh /tmp/install-de-family.sh \
     && PYTHON_BIN=python3.13 /tmp/install-poetry-deps.sh \
     && /opt/asus-zenbook-deps/.venv/bin/pip install --no-cache-dir --root-user-action=ignore \

@@ -42,12 +42,12 @@ msgstr "Captura scrinii ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Configuratio ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Instrumenti Linux ad usum parata est."
 
@@ -96,7 +96,7 @@ msgstr "Camera activa"
 msgid "Camera privacy"
 msgstr "Camera secretum"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Elige components"
 
@@ -163,11 +163,11 @@ msgstr "GNOME ASUS Fenestra Swap extensio inauguratus."
 msgid "GNOME shortcuts configured."
 msgstr "GNOME shortcuts felis."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardware features pro Linux desktop tuum"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Install scripta et officia"
 
@@ -179,11 +179,11 @@ msgstr "Install ratio clientelae"
 msgid "Installation cancelled by user."
 msgstr "Installation abolita usuario."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Institutionem integram."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux Tools %s installatur."
@@ -219,7 +219,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Electio invalida: %s. Inscribe numeros (1,2,3,4), nomina partium, vel all, "
+msgstr ""
+"Electio invalida: %s. Inscribe numeros (1,2,3,4), nomina partium, vel all, "
 "vel none."
 
 #: lib/install-kde.sh:309
@@ -248,7 +249,7 @@ msgstr "Praecipua ostentationem solum"
 msgid "Mode: %s"
 msgstr "Modus: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Nullae partes selectae sunt. Nihil installatum est."
 
@@ -269,7 +270,8 @@ msgstr "Euismod (Boost)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Preme Enter ut omnes partes commendatas installes, vel inscribe 'all' vel "
+msgstr ""
+"Preme Enter ut omnes partes commendatas installes, vel inscribe 'all' vel "
 "'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -288,7 +290,7 @@ msgstr "ScreenPad claritas"
 msgid "ScreenPad only"
 msgstr "ScreenPad solum"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

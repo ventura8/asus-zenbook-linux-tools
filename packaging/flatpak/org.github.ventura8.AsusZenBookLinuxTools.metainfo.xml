@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.github.ventura8.AsusZenBookLinuxTools</id>
+  <name>ASUS ZenBook Linux Tools</name>
+  <summary>Portable installer for ASUS ZenBook hardware helpers</summary>
+  <description>
+    <p>
+      Experimental Flatpak bundle that runs the packaged configure wizard.
+      Native .deb/.rpm packages are recommended for systemd and udev integration.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/ventura8/asus-zenbook-linux-tools</url>
+  <developer id="org.github.ventura8">
+    <name>ventura8</name>
+  </developer>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <launchable type="desktop-id">org.github.ventura8.AsusZenBookLinuxTools.desktop</launchable>
+  <icon type="stock">org.github.ventura8.AsusZenBookLinuxTools</icon>
+  <categories>
+    <category>Settings</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0.3" date="2026-08-19"/>
+  </releases>
+</component>

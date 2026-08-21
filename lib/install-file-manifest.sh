@@ -151,6 +151,14 @@ _asus_remove_manifest_bin_files() {
     done < <(_asus_manifest_bin_basenames)
 }
 
+_asus_remove_bin_bytecode() {
+    # Daemon/TUI imports can leave __pycache__ beside installed modules.
+    if [ -z "${BIN_DIR:-}" ] || [ ! -d "$BIN_DIR" ]; then
+        return 0
+    fi
+    find "$BIN_DIR" -type d -name '__pycache__' -prune -exec rm -rf {} +
+}
+
 _asus_remove_manifest_lib_files() {
     local -n _failed_ref="$1"
     local name

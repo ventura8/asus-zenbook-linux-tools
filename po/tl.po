@@ -47,12 +47,12 @@ msgstr "Screenshot ng ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Pag-setup ng ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Handa nang gamitin ang ASUS ZenBook Linux Tools."
 
@@ -103,7 +103,7 @@ msgstr "Pinagana ang camera"
 msgid "Camera privacy"
 msgstr "Pagkapribado ng camera"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Pumili ng mga bahagi"
 
@@ -171,11 +171,11 @@ msgstr "Naka-install ang GNOME ASUS Window Swap extension."
 msgid "GNOME shortcuts configured."
 msgstr "Na-configure ang mga shortcut ng GNOME."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Mga feature ng hardware para sa iyong Linux desktop"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Mag-install ng mga script at serbisyo"
 
@@ -187,11 +187,11 @@ msgstr "I-install ang mga dependency ng system"
 msgid "Installation cancelled by user."
 msgstr "Kinansela ng user ang pag-install."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Kumpleto na ang pag-install."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Pag-install ng ASUS ZenBook Linux Tools %s."
@@ -227,7 +227,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Hindi wastong pagpili: %s. Maglagay ng mga numero (1,2,3,4), pangalan "
+msgstr ""
+"Hindi wastong pagpili: %s. Maglagay ng mga numero (1,2,3,4), pangalan "
 "ngcomponent, o all, o none."
 
 #: lib/install-kde.sh:309
@@ -256,7 +257,7 @@ msgstr "Pangunahing display lamang"
 msgid "Mode: %s"
 msgstr "Mode: #%s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Walang napiling mga bahagi. Walang nai-install."
 
@@ -277,7 +278,8 @@ msgstr "Pagganap (Boost)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Pindutin ang Enter para i-install ang lahat ng inirerekomendang component, o "
+msgstr ""
+"Pindutin ang Enter para i-install ang lahat ng inirerekomendang component, o "
 "ilagay ang 'all' o 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -296,7 +298,7 @@ msgstr "Liwanag ng ScreenPad"
 msgid "ScreenPad only"
 msgstr "ScreenPad lang"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

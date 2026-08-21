@@ -44,12 +44,12 @@ msgstr "ASUS Ekran suraty"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux sazlamasy %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Gurallary ulanmaga taýýar."
 
@@ -99,7 +99,7 @@ msgstr "Kamera açyk"
 msgid "Camera privacy"
 msgstr "Kameranyň gizlinligi"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Komponentleri saýlaň"
 
@@ -166,11 +166,11 @@ msgstr "GNOME ASUS Window Swap giňeltmesi guruldy."
 msgid "GNOME shortcuts configured."
 msgstr "GNOME gysga ýollary düzüldi."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Linux iş stolyňyz üçin enjam aýratynlyklary"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Ripazgylary we hyzmatlary guruň"
 
@@ -182,11 +182,11 @@ msgstr "Ulgam baglylyklaryny guruň"
 msgid "Installation cancelled by user."
 msgstr "Gurnama ulanyjy tarapyndan ýatyryldy."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Gurmak tamamlandy"
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux gurallaryny gurmak %s."
@@ -221,7 +221,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Nädogry saýlaw: %s. Sanlar (1,2,3,4), komponent atlary ýa-da all, ýa-da "
+msgstr ""
+"Nädogry saýlaw: %s. Sanlar (1,2,3,4), komponent atlary ýa-da all, ýa-da "
 "none, ýa-da nonegiriziň."
 
 #: lib/install-kde.sh:309
@@ -250,7 +251,7 @@ msgstr "Diňe esasy displeý"
 msgid "Mode: %s"
 msgstr "Reodeim: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Hiç hili komponent saýlanmady. Hiç zat gurnalmady."
 
@@ -271,7 +272,8 @@ msgstr "Çykyş (güýçlendirmek)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Ähli maslahat berilýän komponentleri ornaşdyrmak üçin Enter basyň ýa-da "
+msgstr ""
+"Ähli maslahat berilýän komponentleri ornaşdyrmak üçin Enter basyň ýa-da "
 "'all' ýa-da 'none' ýazyň."
 
 #: bin/asus-fan-toggle.sh:95
@@ -290,7 +292,7 @@ msgstr "ScreenPad ýagtylygy"
 msgid "ScreenPad only"
 msgstr "Diňe ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -49,12 +49,12 @@ msgstr "Snímek obrazovky ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Nastavení ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Nástroje ASUS ZenBook Linux jsou připraveny k použití."
 
@@ -104,7 +104,7 @@ msgstr "Kamera povolena"
 msgid "Camera privacy"
 msgstr "Soukromí fotoaparátu"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Vyberte komponenty"
 
@@ -171,11 +171,11 @@ msgstr "Bylo nainstalováno rozšíření ASUS Window Swap GNOME."
 msgid "GNOME shortcuts configured."
 msgstr "Nakonfigurovány zkratky GNOME."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Hardwarové funkce pro váš desktop Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Nainstalujte skripty a služby"
 
@@ -187,11 +187,11 @@ msgstr "Nainstalujte systémové závislosti"
 msgid "Installation cancelled by user."
 msgstr "Instalace zrušena uživatelem."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Instalace dokončena."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Instalace ASUS ZenBook Linux Tools %s."
@@ -225,7 +225,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Neplatný výběr: %s. Zadejte čísla (1,2,3,4), názvy komponent nebo all, nebo "
+msgstr ""
+"Neplatný výběr: %s. Zadejte čísla (1,2,3,4), názvy komponent nebo all, nebo "
 "none, nebo none."
 
 #: lib/install-kde.sh:309
@@ -254,7 +255,7 @@ msgstr "Pouze hlavní displej"
 msgid "Mode: %s"
 msgstr "Režim: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Nebyly vybrány žádné komponenty. Nic nebylo nainstalováno."
 
@@ -275,7 +276,8 @@ msgstr "Výkon (zvýšení)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Stiskněte Enter pro instalaci všech doporučených komponent, nebo zadejte "
+msgstr ""
+"Stiskněte Enter pro instalaci všech doporučených komponent, nebo zadejte "
 "'all' nebo 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -294,7 +296,7 @@ msgstr "Jas obrazovky ScreenPad"
 msgid "ScreenPad only"
 msgstr "Pouze ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

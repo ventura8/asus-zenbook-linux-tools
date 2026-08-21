@@ -182,7 +182,11 @@ run_python_coverage_gate() {
 
 _product_python_additional_relpaths() {
     # Root/script product modules outside bin/ and tools/ (do not widen to all scripts/).
-    printf '%s\n' shared_imports.py scripts/check_file_size_limits.py sitecustomize.py
+    printf '%s\n' shared_imports.py \
+        scripts/check_file_size_limits.py \
+        scripts/check_no_lint_suppressions.py \
+        scripts/repo_scan_common.py \
+        sitecustomize.py
 }
 
 _list_product_python_files() {
@@ -228,20 +232,48 @@ _report_python_coverage_violations() {
     fi
 }
 
-_export_python_coverage_shard_file() {
-    local shard="${ASUS_COVERAGE_SHARD:-}" reports_root dest src
-    [ -n "$shard" ] || return 0
-    reports_root=$(resolve_reports_root) || return 1
-    dest="$reports_root/coverage-shards/python-${shard}"
-    mkdir -p "$dest"
-    src="${COVERAGE_FILE:-.coverage}"
+_copy_python_coverage_dat_to_shard() {
+    local src="$1" dest="$2" shard="$3"
     if [ ! -f "$src" ]; then
         echo "  ✗ Missing coverage data file for python shard ${shard}: $src" >&2
         return 1
     fi
     # Non-hidden name so GHA upload-artifact includes it without special flags.
     cp -a "$src" "$dest/coverage.dat"
+}
+
+_export_python_shard_payload() {
+    local dest="$1" shard="$2"
+    _mkdir_coverage_shard_dest "$dest" "python" || return 1
+    _copy_python_coverage_dat_to_shard "${COVERAGE_FILE:-.coverage}" "$dest" "$shard" \
+        || return 1
+    _write_coverage_shard_ok_stamp "$dest" "python"
+}
+
+_export_python_coverage_shard_file() {
+    local shard="${ASUS_COVERAGE_SHARD:-}" reports_root dest
+    [ -n "$shard" ] || return 0
+    reports_root=$(resolve_reports_root) || return 1
+    dest="$reports_root/coverage-shards/python-${shard}"
+    _export_python_shard_payload "$dest" "$shard" || return 1
     echo "  ✓ Exported python coverage shard ${shard} to $dest"
+}
+
+_require_python_shard_ok_stamps() {
+    local reports_root="$1" shard dest
+    for shard in 1 2; do
+        dest="$reports_root/coverage-shards/python-${shard}"
+        if [ ! -f "$dest/shard_ok" ]; then
+            echo "  ✗ Missing python shard stamp: $dest/shard_ok" \
+                "(shard did not export successfully; refusing stale merge)" >&2
+            return 1
+        fi
+        if [ ! -f "$dest/coverage.dat" ] && [ ! -f "$dest/.coverage" ]; then
+            echo "  ✗ python shard python-${shard} has stamp but no coverage data" >&2
+            return 1
+        fi
+    done
+    return 0
 }
 
 _python_coverage_shard_data_files() {
@@ -276,18 +308,24 @@ _combine_python_coverage_shards() {
     _coverage_cli combine --keep --data-file="$dest" "${shard_files[@]}"
 }
 
+_merge_python_shards_from_reports() {
+    local reports_root="$1" combined="$2" include_pattern
+    _require_python_shard_ok_stamps "$reports_root" || return 1
+    _combine_python_coverage_shards "$reports_root" "$combined" || return 1
+    export COVERAGE_FILE="$combined"
+    include_pattern="$(_python_coverage_include_pattern)"
+    run_python_coverage_gate "$include_pattern"
+}
+
 merge_python_coverage_shards() {
-    local reports_root combined include_pattern
+    local reports_root combined
     reports_root=$(resolve_reports_root) || return 1
     normalize_coverage_shard_artifacts || return 1
     combined="$reports_root/coverage-shards/.coverage.merged"
-    if ! _combine_python_coverage_shards "$reports_root" "$combined"; then
+    if ! _merge_python_shards_from_reports "$reports_root" "$combined"; then
         echo "  ✗ Failed to combine python coverage shards" \
             "under $reports_root/coverage-shards" >&2
         return 1
     fi
-    export COVERAGE_FILE="$combined"
-    include_pattern="$(_python_coverage_include_pattern)"
-    run_python_coverage_gate "$include_pattern" || return 1
     echo "  ✓ Merged python shards meet ≥90% coverage."
 }

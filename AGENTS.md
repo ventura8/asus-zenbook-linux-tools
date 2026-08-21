@@ -6,9 +6,12 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.2`, displayed as `v1.0.2`). `pyproject.toml` `tool.poetry.version` must match;
-  `scripts/run-lints.sh` enforces this. Bump `VERSION` first, then sync poetry metadata.
-  Cut notes with [`.agents/skills/release/SKILL.md`](.agents/skills/release/SKILL.md)
+  (currently `1.0.3`, displayed as `v1.0.3`). After bumping `VERSION`, run
+  `scripts/sync_poetry_version.sh` (also invoked from `step_version_sync` and
+  `install-poetry-deps.sh`) so `pyproject.toml` `tool.poetry.version` matches; do not hand-edit
+  the poetry version. PKGBUILD, RPM `%version`, and Snap `adopt-info` read `VERSION` at build time
+  (no `sed` on tracked packaging files). Cut notes with
+  [`.agents/skills/release/SKILL.md`](.agents/skills/release/SKILL.md)
   (version from the current branch; reset `PPA_UPLOAD_REVISION` to `1` on a new `VERSION`).
 
 ## UI Localization
@@ -23,11 +26,37 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   **git-tracked** (not merely present on disk) and byte-identical to a regenerate —
   so a local gitignored copy cannot hide a CI checkout failure. Local
   `./scripts/build-and-test.sh --full` also runs `scripts/run_deb_package_smoke.sh`
-  (same script as the CI `deb-package` job) between lint-in-docker and the Docker
-  coverage/compat matrix.
+  (same script as the CI `package-smoke` matrix's `deb` cell) and release package smoke via
+  `scripts/run_release_package_smoke.sh` (the other seven kinds with install/remove smoke; CI
+  `package-smoke` matrix covers each kind (deb + seven); local `--full` runs native four in parallel plus
+  portable three with host deps). Local `--full` is four host steps:
+  `step_preflight_clean_build_trees` (Docker-alpine wipe of stale `.rpm-build*` /
+  `packaging/arch/{pkg,src}`, AppImage `AppDir`, Flatpak `builddir`/`repo` /
+  `.flatpak-builder`, and Snap `parts`/`stage`/`prime`), `step_lint_and_deb_parallel`, then
+  `step_post_lint_gates_parallel` (release smoke + four coverage shards + three compat
+  families concurrently), then host `step_coverage_merge_host` ≥90% gates. Target wall-clock
+  ~30 minutes with warm buildx cache. Local `--full` keeps `ASUS_RELEASE_PACKAGE_SMOKE_PARALLEL=1`
+  (four native kinds in parallel; portable AppImage/Flatpak/Snap run in a sibling worker).
+  Each kind uses its own artifact dir under
+  `artifacts/${kind}/`, isolated RPM tops `.rpm-build-${kind}`, and Docker `alpine` cleanup
+  (`_release_docker_rm` / `_release_wipe_dir_contents`) so root-owned container outputs do
+  not block host `rm -rf` or leave stale cross-distro RPMs. `_find_repo_files` in
+  `scripts/run-lints.sh` also prunes `.rpm-build*`, `packaging/arch/{pkg,src}`,
+  `packaging/appimage/AppDir`, `packaging/flatpak/{builddir,repo}`, `.flatpak-builder`,
+  and `packaging/snap/{parts,stage,prime}` so ESLint/pylint/shellcheck never scan staged
+  payload copies.
+  Arch `makepkg` runs as a dedicated non-root user inside the Arch smoke container (root
+  `makepkg` is rejected). The flock lock lives under
+  `.cache/asus-arch-package-build/makepkg.lock` (inside the chowned cache dir) — a
+  sibling `.cache/*.lock` fails with Permission denied when `.cache` is root- or
+  host-owned on the CI bind mount.
 - UI language precedence is test-only `ASUS_TEST_MODE=1` + `ASUS_UI_LANG`, then session
-  `LC_MESSAGES` → `LANG` → `LANGUAGE`, then English msgids. Never set `LC_ALL` for UI lookup and
-  never document `ASUS_UI_LANG` as an end-user setting.
+  `LC_ALL` → `LC_MESSAGES` → `LANG` → `LANGUAGE`, then process env
+  `LC_ALL` → `LC_MESSAGES` → `LANG` → `LANGUAGE`, then English msgids. Empty or whitespace-only
+  locale env vars are treated as unset. Bare language codes derive a UTF-8 `LC_MESSAGES` via
+  `locale -a` / env scan when available (else `C.UTF-8`); catalog language still comes from
+  `LANGUAGE`. Never **export** `LC_ALL` to gettext subprocesses (only `LANGUAGE` +
+  `LC_MESSAGES`) and never document `ASUS_UI_LANG` as an end-user setting.
 - **Always update translations for all languages when a translated string changes**:
   Any add, edit, or remove of a gettext msgid (shell `_asus_gettext` /
   `_asus_gettextf` / `ngettext` / `pgettext`, or Python equivalents) must update
@@ -38,6 +67,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   change the marked source string → `scripts/i18n/extract_pot.sh` →
   `scripts/i18n/sync_pos.sh` (or equivalent msgmerge) → fill/update msgstr in all
   languages → `scripts/i18n/check_catalog_quality.py` and `msgfmt -c` (lint driver).
+  Completeness is also gated by unit tests in
+  `tests/unit/scripts/test_check_catalog_quality.py` (`check_catalogs()` on live
+  `po/*.po` plus empty/fuzzy `_validate_entry` cases) — not lint alone.
 - Catalog updates must preserve printf placeholders, use `ngettext` for counts and `pgettext`
   for ambiguous labels, keep protocol tokens (`WMI`, `TOUCHPAD`, `SOUND`, `DESKTOP`) and
   product names stable, and contain no fuzzy or empty non-English UI entries. Reject
@@ -61,10 +93,16 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Tag push `v*` runs [`.github/workflows/ppa-release.yml`](.github/workflows/ppa-release.yml):
   GPG-sign a native source package and `dput "$PPA_NAME"` to
   `ppa:ventura8/asus-zenbook-linux-tools` (**resolute only**; built-in `ppa:` target,
-  no custom `~/.dput.cf`), then attach `.deb`
-  artifacts to the GitHub Release. No Launchpad API token — anonymous FTP + GPG only.
-  The `upload-to-ppa` job sets `permissions: { contents: read }` (least privilege)
-  and runs in the protected GitHub Environment `ppa-release` (required reviewers,
+  no custom `~/.dput.cf`), then attach **multi-format release artifacts** to the
+  GitHub Release (`.deb`, Fedora/Rocky/openSUSE `.rpm`, Arch `.pkg.tar.zst`,
+  AppImage, Flatpak bundle, classic Snap, plus **`SHA256SUMS`** manifest). Install docs
+  require `grep -F 'asset' SHA256SUMS | sha256sum -c -` before installing a downloaded
+  release asset; openSUSE RPMs use `zypper install --allow-unsigned-rpm` after checksum
+  verification. No Launchpad API token — anonymous FTP + GPG only.
+  The `build-packages` matrix job builds non-Debian artifacts in parallel with PPA upload.
+  The `upload-to-ppa` and `build-packages` jobs set `permissions: { contents: read }`
+  (least privilege) and `upload-to-ppa` runs in the protected GitHub Environment `ppa-release`
+  (required reviewers,
   self-approval disabled). Both `upload-to-ppa` and `github-release` use
   `runs-on: ubuntu-26.04`. Workflow-level `concurrency` uses
   `group: ppa-release` with `cancel-in-progress: false`. Signing uses **repository** secrets
@@ -90,11 +128,48 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   artifacts (same as `upload-to-ppa`); its apt install step also uses
   `set -euo pipefail`. After unsigned `-b` build, assert exactly one
   `../${PACKAGE_NAME}_*.deb` before copying into `artifacts/` (same exact-one glob
-  rule as CI `deb-package`). Smoke removes leftover parent/artifact debs for that
+  rule as CI `package-smoke`'s `deb` cell). Smoke removes leftover parent/artifact debs for that
   package name before build so an older `1.0.0` next to a new `1.0.1` cannot fail
-  the glob. CI `deb-package` uses a `_require_exact_one_glob` helper that **returns**
+  the glob. CI `package-smoke`'s `deb` cell uses a `_require_exact_one_glob` helper that **returns**
   nonzero (does not `exit 1` from the function); callers check status and abort the
   step.
+- **Shared native payload staging**: [`packaging/stage-payload.sh`](packaging/stage-payload.sh)
+  is the single source of truth for copying product files into
+  `/usr/share/asus-zenbook-linux-tools/` plus locale `.mo` catalogs and
+  `/usr/sbin/asus-zenbook-configure`. [`debian/rules`](debian/rules) calls it;
+  RPM/Arch/AppImage/Flatpak/Snap builders call the same script. Scriptlet parity
+  lives in [`packaging/scriptlets/configure-common.sh`](packaging/scriptlets/configure-common.sh)
+  (RPM `%post`/`%preun`/`%postun`, Arch `.install`).   AppImage/Flatpak/Snap are
+  **installer-only** portable bundles (still require root for systemd/udev); native
+  packages remain recommended. Flatpak desktop `Icon=` / exported scalable icon /
+  metainfo stock icon must match the app id
+  (`org.github.ventura8.AsusZenBookLinuxTools`); AppImage installs
+  `usr/share/metainfo/<app-id>.appdata.xml` (appimagetool's expected name) so
+  AppStream validation succeeds. RPM `%files` lists `/usr/share/asus-zenbook-linux-tools/`
+  once (no redundant `%dir`) and keeps a dated `%changelog` entry. Snapcraft
+  declares `title`/`license`/`contact`/`issues`/`source-code`/`website`.
+  **Arch staging:** [`packaging/stage-payload.sh`](packaging/stage-payload.sh)
+  must not `mkdir` `/usr/sbin` (owned by Arch `filesystem`); install only
+  `/usr/sbin/asus-zenbook-configure` via `install -Dm755`. Arch `PKGBUILD`
+  relocates that helper to `/usr/bin` and removes empty `$pkgdir/usr/sbin`;
+  shared [`packaging/scriptlets/configure-common.sh`](packaging/scriptlets/configure-common.sh)
+  resolves `/usr/sbin` then `/usr/bin` so RPM/Arch scriptlets stay aligned.
+  **Flatpak host handoff:**
+  `--filesystem=host` exposes the host at `/run/host`; the Flatpak wrapper sets
+  `ASUS_HOST_ROOT=/run/host`, `ASUS_PORTABLE_HOST_INSTALL=1`, and `PREFIX=/run/host`
+  so configure deploys to the host (not `/app` or sandbox `/usr/local`). Flatpak
+  finish-args use `--system-talk-name=org.freedesktop.systemd1` (system bus —
+  not session `--talk-name`) for host `systemctl` daemon-reload/unit ops. Staged
+  `DESTDIR`/`PREFIX` smoke skips udev/group unless `ASUS_PORTABLE_HOST_INSTALL=1`
+  (`_asus_is_staged_install` in `lib/install-shared.sh`). **Snap CI:** `package-smoke` /
+  tag `build-packages` snap cells run on **ubuntu-24.04** with
+  `snapcraft pack --destructive-mode` (core24 rejects destructive builds on 26.04);
+  Ubuntu 26.04+ local hosts fall back to `--use-lxd`. **RPM package-smoke:** copy RPMs with
+  `cp "$rpm_path" "$artifacts_dir/"` (basename-only); openSUSE smoke uses
+  `zypper install --allow-unsigned-rpm` with deps preinstalled; container uninstall
+  treats systemctl transport failures (`System has not been booted with systemd`,
+  `Failed to connect to bus`) as non-fatal in `uninstall.sh` (stop/disable/verify
+  and `daemon-reload`).
 - Packaging lives under [`debian/`](debian/). Payload is installed to
   `/usr/share/asus-zenbook-linux-tools/`; `postinst` hardcodes
   `/usr/sbin/asus-zenbook-configure` and runs it with `SKIP_PKG_INSTALL=1`
@@ -109,7 +184,18 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   exit 0. `postinst`, `prerm`, and `postrm` use `set -e` only (not nounset /
   `pipefail`) so generated `#DEBHELPER#` snippets stay safe; interactive
   configure failure returns nonzero with a reconfigure hint.
-  `postrm` removes `/var/lib/asus-zenbook-linux-tools` only (no env override).
+  `postrm` removes `/var/lib/asus-zenbook-linux-tools` on purge and, on
+  `remove`/`purge`/`upgrade`, deletes leftover `__pycache__` under
+  `/usr/share/asus-zenbook-linux-tools` (`remove`/`purge` also drop empty share
+  dirs). Bytecode is not dpkg-owned and otherwise triggers
+  “directory … not empty so not removed”. Packaged configure and the
+  hotkey/touchpad units set `PYTHONDONTWRITEBYTECODE=1`; uninstall strips
+  `__pycache__` under `$BIN_DIR` via `_asus_remove_bin_bytecode` and records
+  failure when that find/`rm` cleanup does not complete. Deb smoke
+  (`scripts/run_deb_package_smoke.sh`) install → plant share `__pycache__` →
+  `apt-get install --reinstall` (same version; plain reinstall is a no-op) →
+  purge, and fails closed on leftover share paths or the
+  dpkg “not empty” warning.
   Source `debian/control` sets `Rules-Requires-Root: no`, `Standards-Version: 4.7.2`,
   keeps
   `debhelper-compat` in `Build-Depends`, and lists `python3` /
@@ -122,7 +208,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Wizard deploy still lands under `/usr/local` like `install.sh`.
   Reconfigure via `dpkg-reconfigure` or `asus-zenbook-configure`.
 - CI also builds an unsigned `.deb` smoke in [`ci.yml`](.github/workflows/ci.yml)
-  (`deb-package` job and local `./scripts/build-and-test.sh --full` both call
+  (`package-smoke`'s `deb` matrix cell and local `./scripts/build-and-test.sh --full` both call
   `scripts/run_deb_package_smoke.sh`: apt installs `python3-yaml` / `python3-gi` /
   gettext with the other Build-Depends, runs `dpkg-checkbuilddeps` before
   `dpkg-buildpackage -b -us -uc`
@@ -136,7 +222,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   noninteractive `apt-get install -y` of a `./`-or-absolute local `.deb` path
   (apt treats an unprefixed `dir/file.deb` as `release/package`), `dpkg -s`
   verify, and `apt-get purge` before upload). No TTY → postinst skips the
-  interactive wizard. `lint` (cheap∥heavy matrix), `deb-package`, `coverage`,
+  interactive wizard. `lint` (cheap∥heavy matrix), `package-smoke`, `coverage`,
   and `distro-tests-*` each verify `install.sh.sha256` immediately after
   checkout. PPA `upload-to-ppa` / `github-release` apt paths likewise install
   `python3-yaml` / `python3-gi` / gettext and run `dpkg-checkbuilddeps` before
@@ -177,11 +263,45 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 
 ## Code Style & Testing Enforcement
 
-- **No Suppressions Allowed**: Never use inline `# pylint: disable`, `# noqa`, `# type: ignore`, `# shellcheck disable`,
-  `eslint-disable`, or linter flags to suppress issues. All code must pass cleanly.
-  Hyphenated CLI entrypoint names required by systemd (`asus-hotkey-daemon.py`, `asus-touchpad-share.py`)
-  must be **symlinks** to underscore-valid Python modules so `N999` does not apply. Do **not** suppress
-  `N999` with line/`file` `# noqa`, `# ruff: noqa`, `[tool.ruff.lint.per-file-ignores]`, or global `ignore`.
+- **New files must be linted and tested**: When adding or creating files as part of a change
+  set, run the applicable linters and tests before finishing — do not leave new paths unvalidated.
+  Treat lint failures or missing tests on new product code the same as incomplete work (like a
+  stale `install.sh.sha256` or outdated agent docs). Match existing layout (`tests/unit/` mirrors
+  production structure; kcov scenarios for new product shell). Use
+  [`.agents/skills/code-linter/SKILL.md`](.agents/skills/code-linter/SKILL.md) and
+  [`.agents/skills/test-runner/SKILL.md`](.agents/skills/test-runner/SKILL.md), or targeted
+  commands when the full pipeline is too heavy:
+  - **Product Python** (`bin/`, `tools/`, `scripts/*.py`): `ruff` + `pylint`; add unit tests under
+    `tests/unit/` when behavior is testable.
+  - **Product shell** (pruned-repo `*.sh` including `bin/`, `lib/`, `scripts/`, `packaging/`
+    builders, installers): `shellcheck` + `bash -n`; add kcov scenarios or unit shell tests when
+    behavior is testable.
+  - **GNOME JS** (`gnome/**/*.js`): `eslint`.
+  - **Docs / workflows** (`*.md`, `.github/**/*.yml`, `*.yaml`): `markdownlint` / `yamllint`.
+  - **Gettext catalogs** (`po/*.po`): `msgfmt -c` and catalog-quality checks when msgids change.
+  - **Config-only / assets / packaging stubs**: lint when a gate applies; tests only when the file
+    introduces testable logic (otherwise document why tests are not applicable).
+  After edits, prefer `ReadLints` on touched paths and run the narrowest test/lint command that
+  covers the new file before declaring the task done.
+- **No Suppressions Allowed**: Never silence linters, type checkers, or quality
+  gates. Forbidden in product, **tests/** (unit + e2e), packaging, CI, and tooling
+  source — there is no test exemption:
+  `# pylint: disable` / `disable-next`, `# noqa`, `# ruff: noqa`, `# type: ignore`,
+  `# shellcheck disable`, `eslint-disable` (+ `-line` / `-next-line`),
+  `markdownlint-disable` (only as an HTML comment directive after `<!--`; naming
+  the token in policy prose is fine), `yamllint disable`, `# hadolint ignore`,
+  `pragma: no cover`, `# nosec`, `# flake8: noqa`, `[tool.ruff.lint.per-file-ignores]`,
+  pylint `disable=` lists, ESLint rule `"off"`, and markdownlint MD013 exemptions
+  (`code_blocks` / `tables: false`). Path ignores for build caches (eslint `ignores`
+  for `node_modules` / `.cache`) are not suppressions. Cheap-wave
+  `step_no_lint_suppressions` (`scripts/check_no_lint_suppressions.py`) fails closed
+  on any hit in scanned trees (including `tests/`) — fix the underlying issue; do not
+  add an exception. Unit tests in `test_check_no_lint_suppressions.py` assert the live
+  `tests/` tree and whole repo stay clean.
+  Hyphenated CLI entrypoint names required by systemd (`asus-hotkey-daemon.py`,
+  `asus-touchpad-share.py`) must be **symlinks** to underscore-valid Python modules
+  so `N999` does not apply. Do **not** suppress `N999` with line/file `# noqa`,
+  `# ruff: noqa`, `per-file-ignores`, or global `ignore`.
 - **Failure Handling**: Do not hide, suppress, or downgrade real failures. If a component cannot be installed successfully,
   report the actual error and fail the install instead of claiming success.
 - **Linting Integrity**: Never ignore or suppress lints, warnings, or test failures. Fix the underlying issue and keep the
@@ -195,7 +315,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Examples: `ruff check --fix` (and `ruff format` when formatting is in scope), `markdownlint --fix` when available,
   and any other project-supported autofix. Do not skip autofix and rewrite cleanable issues by hand.
 - **Strict Linting Requirements**:
-  - Python: Clean `ruff` and `pylint` (10.00/10 rating required).
+  - Python: Clean `ruff` and `pylint` (10.00/10 rating required; `step_pylint`
+    passes `--fail-under=10` so a 9.98 score fails the gate).
   - Cyclomatic Complexity: `radon cc` **A-rank** maximum (all blocks must score ≤ 5).
   - Shell Scripts: `bash -n` syntax validation and `shellcheck` compliance.
     `scripts/run-lints.sh` runs `shellcheck -S warning` (fail on warning/error; info
@@ -205,9 +326,13 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     scenario entrypoints (`scripts/coverage/kcov-scenarios.sh`, `kcov-install-scenarios.sh`,
     `kcov-screenpad-scenarios.sh`) and CI image helpers under `docker/images/tests/scripts/`.
     `_find_repo_files` must also prune `debian/asus-zenbook-linux-tools`, `debian/tmp`,
-    `debian/.debhelper`, and `artifacts` so a leftover `dpkg-buildpackage` payload copy
-    cannot make pylint `R0801` duplicate-code fail the lint gate. `run_deb_package_smoke.sh`
-    cleans that tree before build and on EXIT for the same reason.
+    `debian/.debhelper`, `artifacts`, `.rpm-build*`, `packaging/arch/pkg`,
+    `packaging/arch/src`, `packaging/appimage/AppDir`, `packaging/flatpak/builddir`,
+    `packaging/flatpak/repo`, `.flatpak-builder`, and `packaging/snap/{parts,stage,prime}`
+    so a leftover package-build payload copy cannot make pylint
+    `R0801` duplicate-code or ESLint `global` fail the lint gate. `run_deb_package_smoke.sh`
+    cleans the debian tree before build and on EXIT; `--full` runs
+    `step_preflight_clean_build_trees` for RPM/Arch/portable staging trees for the same reason.
   - JavaScript: Clean `eslint` on `gnome/**/*.js` (flat config `eslint.config.mjs`; no inline
     `eslint-disable`). GNOME Shell globals such as `global` are declared in the config.
     `scripts/run-lints.sh` `step_eslint` must `npm ci` into the workspace when
@@ -223,7 +348,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     runs `msgfmt -c --check-format` on each catalog (fail closed if `msgfmt` is missing or
     no `.po` files are found). Heavy-wave `step_i18n_catalogs` still runs
     `extract_pot.sh --check`, `seed_whisper_languages.py --check`, and
-    `check_catalog_quality.py`.
+    `check_catalog_quality.py`. Python unit coverage also runs
+    `tests/unit/scripts/test_check_catalog_quality.py`, which calls `check_catalogs()`
+    so incomplete catalogs fail the unit suite without relying on lint alone.
   - Markdown: `markdownlint` compliance (≤140 char lines, proper blank lines).
     Prefer readable wraps that break after trailing `&&` or `|` (or with `\`) so each
     physical line stays ≤140. Do **not** suppress MD013 and do **not** disable MD013 for
@@ -251,7 +378,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `install.sh.sha256` in the **same change set** before finishing:
   `sha256sum install.sh > install.sh.sha256`, then confirm with `sha256sum -c install.sh.sha256`.
   Do not ship an `install.sh` edit without the matching checksum file. CI (`lint`,
-  `deb-package`, `coverage`, `distro-tests-*`) and PPA `upload-to-ppa` / `github-release`
+  `package-smoke`, `coverage`, `distro-tests-*`) and PPA `upload-to-ppa` / `github-release`
   verify `install.sh.sha256` immediately after checkout — a stale hash fails the pipeline.
   Piped installs also verify the captured script against this file.
 - **Code Coverage**: Minimum **90%** test coverage enforced on product Python via `coverage.py`
@@ -265,7 +392,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `_list_product_python_files` (find of `bin/` + `tools/` `*.py`, plus hardcodes
   `shared_imports.py`, `scripts/check_file_size_limits.py`, and `sitecustomize.py`) so new
   modules are gated without updating a separate glob string (do not widen to all
-  `scripts/**/*.py`). Python coverage percent/missing-file gates share
+  `scripts/**/*.py`). Hardcoded extras also include
+  `scripts/check_no_lint_suppressions.py` and `scripts/repo_scan_common.py`.
+  Python coverage percent/missing-file gates share
   `scripts/coverage/product_relpath.py` `to_product_rel` (imported via `PYTHONPATH` from
   `_coverage_scripts_dir`); do not duplicate that normalizer in the gate heredocs.
   Match `bin/`, `tools/`, or `scripts/` only at a path segment boundary
@@ -421,7 +550,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Run local CI-parity checks with `./scripts/build-and-test.sh` (`--full` =
   lint-in-docker ∥ Debian `.deb` smoke via `scripts/run_deb_package_smoke.sh` +
   Docker coverage/compat matrices — same gates as CI `lint` (cheap∥heavy) /
-  `deb-package` / `coverage` (kcov∥python) / `distro-tests-*` family jobs).
+  `package-smoke`'s `deb` cell / `coverage` (kcov∥python) / `distro-tests-*` family jobs).
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
@@ -477,7 +606,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - **Always-on full-DE family jobs** (`ci.yml` `distro-full-de-{debian,rhel,suse-arch}`):
   same push/PR pipeline; matrices are family-split (same nine distros ×
   `gnome|kde|xfce|lxqt|cinnamon|mate` with Rocky/Alma cinnamon/mate/lxqt excludes —
-  **48 cells**, `max-parallel: 8` per family job). **F1 runtime DE:**
+  **48 cells**, `max-parallel: 20` per family job — OSS org limit for hosted runners).
+  **F1 runtime DE:**
   matrix builds the same stub/CLI images as `distro-tests-*` (empty bake-time
   `ASUS_CI_DE_FAMILY`); `install-de-family.sh` runs in-container via `sudo -n`
   before smoke when `ASUS_CI_FULL_DE=1` (up to 3 retries on CDN flakes; unsupported
@@ -518,19 +648,61 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   all `coverage.dat` shards (never raw-`cp` the first shard — that skips
   `[tool.coverage.paths]` remapping of Docker `/workspace` → checkout),
   then `./scripts/build-and-test.sh --coverage-merge-only`
-  enforces ≥90%. Under `sudo --full`, python coverage runs via
-  `runuser -u "$SUDO_USER" -- python3 -m coverage`. Upload python
+  enforces ≥90%.   Successful shard export writes a non-hidden `shard_ok`
+  stamp under each `kcov-N`/`python-N` dir; merge **fails closed** without
+  both kcov and both python stamps (do not merge stale Aug-dated runs after
+  a failed worker that still printed Passed). Local `--full` wipes
+  `reports/coverage-shards/` before starting coverage workers and, under
+  `sudo`, **chowns** that directory to `$SUDO_USER` so container `--user`
+  can create shard dirs (root-owned 755 is not other-writable). Export
+  fails closed if mkdir or stamp write fails. After wave-2 workers succeed,
+  local `require_exported_coverage_shards` must pass before the green banner
+  (same stamp gate as host merge). CI coverage cells verify `shard_ok` (+ runs
+  or `coverage.dat`) before upload and upload shard data only on `success()`
+  so `coverage-merge` never sees incomplete artifacts. Serial
+  coverage-gate logs are `coverage-gate-${MODE}-${SHARD}.log` so parallel
+  cells do not truncate each other. `_run_one_serial_target` (in
+  `scripts/docker_matrix_exec.sh`) captures `run_target | tee` via one
+  `PIPESTATUS[@]` snapshot (reading `[0]` then `[1]` under `set -u` unbound-
+  errors) and fails closed if the log contains
+  `kcov scenario suite failed` while the process exit was 0. Kcov scenarios
+  retry **once** on exit 137 (OOM/SIGKILL under parallel load); exit 124
+  (true timeout) stays a hard failure. Under `sudo --full`, python coverage
+  runs via `runuser -u "$SUDO_USER" -- python3 -m coverage`. Upload python
   shards with `include-hidden-files: true` (or non-hidden
   `coverage.dat`). Local `--full` mirrors host merge after the four
-  Docker shard containers. Distro jobs need `coverage-merge` (and
-  `lint`). Lint is a GHA matrix job `lint` with display labels
+  Docker shard containers. Distro Tests / Full-DE need `lint` only (same as
+  nested proofs and local wave-2 parallelism). Do not gate them on
+  `coverage-merge` — a coverage shard failure would cascade-skip those jobs and
+  hide real Full-DE/Distro status. `coverage-merge` still runs after coverage
+  cells execute (pass or fail) so a shard failure surfaces as merge failure,
+  not a skipped merge. Lint is a GHA matrix job `lint` with display labels
   `format+syntax` / `pylint+shellcheck` (env `ASUS_LINT_WAVE=cheap|heavy`);
   local `--full` runs both lint-in-docker wave containers in parallel
   with deb smoke.
   Parallel local waves serialize the shared lint image build with
-  `flock` on `/tmp/asus-zenbook-lint-buildx.lock` (and set
+  `mkdir` locks under `${DOCKER_BUILD_CACHE_DIR}/.locks/lint-image` (and set
   `DOCKER_BUILDX_SKIP_PRUNE=1`) so cheap∥heavy do not race the local
   `.cache/docker-buildx/lint-python-3.13-slim` export.
+  `step_post_lint_gates_parallel` likewise wraps release ∥ coverage ∥ three
+  compat families with `_with_buildx_skip_prune` (then one post-gate prune) so
+  a finishing coverage/debian lane cannot `rm -rf` another family's buildx
+  cache mid-export (`index.json.lock: no such file`).
+  `docker_build_with_buildx_or_build` in `scripts/docker-utils.sh` likewise
+  acquires `${cache_base_dir}/.locks/<cache-key>` via atomic `mkdir` for local
+  backend exports so parallel coverage-gate shards (shared `tests-debian_trixie`
+  scope) cannot corrupt buildx ingest blobs (repo-local locks avoid predictable
+  `/tmp` symlink traps when `--full` runs under sudo). Lock owners write
+  `owner.pid` **before** registering EXIT cleanup; missing-pid reap grace defaults
+  to **30s** (`DOCKER_BUILDX_LOCK_GRACE_SECS`) so waiters cannot rmdir a live lock
+  under parallel load. `_docker_prepare_lock_root`
+  probes writability and **fails closed** when a prior `sudo` left `.locks`
+  root-owned (instead of spinning until the lock timeout). Local `--full` wave 2 uses
+  `_wait_bg_jobs_fail_fast` (and `run_docker_matrix.sh` parallel compat uses
+  `wait -n -p` + `_kill_pgid_list` delegating to `_kill_pgid_list` in
+  `docker-utils.sh`) so the first failing release/coverage/compat lane terminates
+  sibling **process groups** (`setsid` workers + `kill -TERM -- "-$pid"`) instead
+  of running every matrix to completion.
   CI workflow concurrency uses `group: ${{ github.workflow }}` with
   `cancel-in-progress: true` so a new push/PR sync **cancels** any prior CI run
   (does not queue behind it). PPA release keeps `cancel-in-progress: false`.
@@ -601,6 +773,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `--distro` requires a non-option image token (missing or `--…` next arg is an error and
   does not consume a following flag as the image name). CLI/mode parsing lives in
   `scripts/docker_matrix_args.sh` (sourced by `run_docker_matrix.sh` after `docker-utils.sh`).
+  Serial/parallel target runners live in `scripts/docker_matrix_exec.sh`
+  (sourced after `run_target` is defined).
 - SteamOS maps to the Arch package family via exact `ID=steamos` and
   `ID_LIKE=arch` detection tests; there is no dedicated SteamOS CI image.
   Ubuntu flavours (Xubuntu/Kubuntu/Lubuntu) share the Debian/apt path.
@@ -815,6 +989,18 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   ```
 
 - Distro lane runs must write per-lane logs under `reports/distro-logs/` with stable, descriptive filenames.
+- **Package smoke log scan (mandatory with pipeline skill / `--full`)**: After Debian /
+  release package smoke (`scripts/run_deb_package_smoke.sh`,
+  `scripts/run_release_package_smoke.sh`, CI `package-smoke`), scan the teed logs under
+  `reports/distro-logs/` (`full-pipeline.log`, `release-package-smoke-*.log`,
+  `package-smoke-*.log`, `arch-package-smoke.log`, …) for `Error:` / `ERROR` /
+  `WARNING:` / `Validation failed` / packaging tool warnings (AppStream, Flatpak icon
+  export, RPM `File listed twice`, Snapcraft metadata lint, dpkg “not empty”, …).
+  Treat actionable packaging/product warnings as blocking — fix the packaging or
+  product code in the same change set; do not declare the pipeline green while those
+  remain. Ignore only clearly environmental noise (mirror CDN flakes that retry,
+  headless “missing user id” restore skips, pacman “up to date -- reinstalling”,
+  container tmpfiles `/etc` uninitialized messages).
 
 ## Always Update Agent Docs
 
@@ -832,7 +1018,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - **What to capture**: New invariants, failure modes, sysfs/D-Bus/systemd quirks, preferred
   commands, and “do / don’t” lessons learned from the fix or feature—not a changelog dump.
 - **Same PR / same commit set**: Treat outdated agent docs as incomplete work, same as missing
-  tests or stale README/architecture notes.
+  tests, unlinted new files, or stale README/architecture notes.
 
 ## Hardware Helper Invariants
 

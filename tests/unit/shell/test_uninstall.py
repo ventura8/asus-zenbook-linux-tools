@@ -247,6 +247,34 @@ class TestUninstallScriptUnit(unittest.TestCase):
         self.assertIn("daemon-reload after file removal failed; continuing", proc.stderr)
         self.assertIn("uninstall completed with errors", proc.stderr)
 
+    def test_uninstall_ignores_systemctl_transport_errors_in_containers(self):
+        """RPM/Docker smoke must uninstall when systemd is not PID 1."""
+        environment = self._build_uninstall_env()
+        self._systemctl_path().write_text(
+            "#!/bin/sh\n"
+            "echo \"System has not been booted with systemd as init system (PID 1). Can't operate.\" >&2\n"
+            'echo "Failed to connect to system scope bus via local transport: Host is down" >&2\n'
+            "exit 1\n",
+            encoding="utf-8",
+        )
+        self._systemctl_path().chmod(0o755)
+
+        proc = run_shell_script(self.SCRIPT_PATH, env=environment, timeout=20)
+
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        self.assertNotIn("uninstall completed with errors", proc.stderr)
+
+    def test_uninstall_succeeds_when_systemctl_missing(self):
+        """openSUSE/RPM smoke containers without systemctl must still uninstall."""
+        environment = self._build_uninstall_env()
+        # Override with a non-resolvable path: the real host PATH (e.g. /usr/bin)
+        # may still have systemctl, so removing SYSTEMCTL_CMD alone is not enough.
+        environment["SYSTEMCTL_CMD"] = "/nonexistent/systemctl-not-installed"
+        environment["PATH"] = "/usr/bin:/bin"
+        proc = run_shell_script(self.SCRIPT_PATH, env=environment, timeout=20)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        self.assertNotIn("systemctl command not available", proc.stderr)
+
     def test_destdir_uninstall_defaults_skip_pkg_remove(self):
         """DESTDIR staged uninstall must not invoke package removal when SKIP_PKG_REMOVE is unset."""
         environment = self._build_uninstall_env()

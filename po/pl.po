@@ -52,12 +52,12 @@ msgstr "Zrzut ekranu ASUS-a"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Konfiguracja ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Narzędzia ASUS ZenBook Linux Tools są gotowe do użycia."
 
@@ -107,7 +107,7 @@ msgstr "Kamera włączona"
 msgid "Camera privacy"
 msgstr "Prywatność aparatu"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Wybierz komponenty"
 
@@ -174,11 +174,11 @@ msgstr "Zainstalowane rozszerzenie GNOME ASUS Window Swap."
 msgid "GNOME shortcuts configured."
 msgstr "Skonfigurowano skróty GNOME."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Funkcje sprzętowe dla Twojego komputera z systemem Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Zainstaluj skrypty i usługi"
 
@@ -190,11 +190,11 @@ msgstr "Zainstaluj zależności systemowe"
 msgid "Installation cancelled by user."
 msgstr "Instalacja anulowana przez użytkownika."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Instalacja zakończona."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Instalowanie narzędzi ASUS ZenBook Linux %s."
@@ -229,7 +229,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Nieprawidłowy wybór: %s. Wpisz numery (1,2,3,4), nazwy komponentów lub all, "
+msgstr ""
+"Nieprawidłowy wybór: %s. Wpisz numery (1,2,3,4), nazwy komponentów lub all, "
 "lub none."
 
 #: lib/install-kde.sh:309
@@ -258,7 +259,7 @@ msgstr "Tylko wyświetlacz główny"
 msgid "Mode: %s"
 msgstr "Tryb: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Nie wybrano żadnych komponentów. Nic nie zostało zainstalowane."
 
@@ -279,7 +280,8 @@ msgstr "Wydajność (wzmocnienie)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Naciśnij Enter, aby zainstalować wszystkie zalecane komponenty, albo wpisz "
+msgstr ""
+"Naciśnij Enter, aby zainstalować wszystkie zalecane komponenty, albo wpisz "
 "'all' lub 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -298,7 +300,7 @@ msgstr "Jasność ScreenPada"
 msgid "ScreenPad only"
 msgstr "Tylko ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

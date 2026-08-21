@@ -238,14 +238,34 @@ EOF
 }
 
 _run_uinput_locale_ydotool_exercises() {
-    local mock saved_prefix saved_path saved_state uid user
+    local mock saved_prefix saved_path saved_state saved_destdir saved_destdir_was_set \
+        saved_destdir_was_exported uid user
     uid="$(id -u)"
     user="$(id -un)"
     mock=$(mktemp -d)
-    trap 'rm -rf "$mock"; PREFIX="$saved_prefix"; PATH="$saved_path"; STATE_DIR="$saved_state"; trap - RETURN' RETURN
+    trap 'rm -rf "$mock"; PREFIX="$saved_prefix"; PATH="$saved_path"; STATE_DIR="$saved_state"; \
+        if [ "$saved_destdir_was_set" = 1 ]; then \
+            DESTDIR="$saved_destdir"; \
+            if [ "$saved_destdir_was_exported" = 1 ]; then export DESTDIR; fi; \
+        else \
+            unset DESTDIR; \
+        fi; \
+        trap - RETURN' RETURN
     saved_prefix="${PREFIX:-}"
     saved_path="$PATH"
     saved_state="${STATE_DIR:-}"
+    if [ -n "${DESTDIR+x}" ]; then
+        saved_destdir="$DESTDIR"
+        saved_destdir_was_set=1
+        saved_destdir_was_exported=0
+        case "$(declare -p DESTDIR 2>/dev/null)" in
+            "declare -x "*) saved_destdir_was_exported=1 ;;
+        esac
+    else
+        saved_destdir=""
+        saved_destdir_was_set=0
+        saved_destdir_was_exported=0
+    fi
     cat > "$mock/getent" <<EOF
 #!/bin/sh
 if [ "\$1" = "group" ] && [ "\$2" = "asus-uinput" ]; then
@@ -365,9 +385,22 @@ EOF
     : "${_DESKTOP_CONFIGURE_FN_BY_FAMILY[lxqt]}"
     : "${_DESKTOP_CONFIGURE_FN_BY_FAMILY[cinnamon]}"
     : "${_DESKTOP_CONFIGURE_FN_BY_FAMILY[mate]}"
-    # uinput group/udev paths require empty PREFIX (not the staged DESTDIR prefix).
+    # uinput group/udev paths require a non-staged install: _asus_is_staged_install
+    # treats a nonempty DESTDIR as staged regardless of PREFIX, and the caller
+    # (kcov-install-scenarios.sh) always passes a nonempty DESTDIR, so it must be
+    # unset here (not just PREFIX) to reach the real getent/groupadd/udevadm branches.
+    unset DESTDIR
     PREFIX=""
     export PREFIX
+    printf '#!/bin/sh\nexit 0\n' > "$mock/ydotool"
+    chmod +x "$mock/ydotool"
+    # _reload_uinput_udev_rule real branch (not staged, udevadm present).
+    _exercise _reload_uinput_udev_rule >/dev/null
+    # _install_uinput_udev_rule full success path (writable PREFIX so mkdir/cp
+    # succeed and it reaches _reload_uinput_udev_rule + its own return 0).
+    _exercise PREFIX="$mock/hostprefix" _install_uinput_udev_rule "$REPO_ROOT" >/dev/null
+    # _enable_ydotoold_if_available past its `command -v ydotool` guard.
+    _exercise PREFIX="$mock/hostprefix" _enable_ydotoold_if_available >/dev/null
     # groupadd failure when group is absent.
     cat > "$mock/getent" <<'EOF'
 #!/bin/sh

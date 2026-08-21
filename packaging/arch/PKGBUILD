@@ -1,0 +1,39 @@
+# Maintainer: ventura8 <alexandrescu.sergiu@gmail.com>
+pkgname=asus-zenbook-linux-tools
+pkgver=$(tr -d '[:space:]' < "${startdir}/../../VERSION")
+pkgrel=1
+pkgdesc="ASUS ZenBook hardware helpers for Linux"
+arch=(any)
+url="https://github.com/ventura8/asus-zenbook-linux-tools"
+license=(MIT)
+depends=(
+  python
+  python-evdev
+  python-dbus
+  python-gobject
+  gettext
+  alsa-utils
+)
+optdepends=(
+  'ydotool: Wayland display toggle injection'
+  'alsa-tools: system hda-verb helper'
+  'xdotool: X11 fallback helpers'
+  'wmctrl: KDE/XFCE window move fallback'
+  'power-profiles-daemon: fan profile integration'
+)
+makedepends=(gettext)
+install=asus-zenbook-linux-tools.install
+source=()
+options=(!strip !debug)
+
+package() {
+  local repo_root="${startdir}/../.."
+  "${repo_root}/packaging/stage-payload.sh" "${pkgdir}"
+  # filesystem owns /usr/sbin on Arch — ship the configure helper under /usr/bin only.
+  if [ -f "${pkgdir}/usr/sbin/asus-zenbook-configure" ]; then
+    install -Dm755 "${pkgdir}/usr/sbin/asus-zenbook-configure" \
+      "${pkgdir}/usr/bin/asus-zenbook-configure"
+    rm -f "${pkgdir}/usr/sbin/asus-zenbook-configure"
+    rmdir "${pkgdir}/usr/sbin" 2>/dev/null || true
+  fi
+}

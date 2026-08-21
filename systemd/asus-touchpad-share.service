@@ -9,6 +9,7 @@ Type=simple
 # uses runuser for session D-Bus / ydotool. Match hotkey-daemon hardening:
 # NoNewPrivileges and ProtectSystem=full/strict break runuser (pam_keyinit).
 User=root
+Environment=PYTHONDONTWRITEBYTECODE=1
 ExecStart=/usr/local/bin/asus-touchpad-share.py
 Restart=always
 RestartSec=3

@@ -68,9 +68,39 @@ _run_i18n_locale_paths() {
     _i18n_expect_env 0 PATH="$mock:$iso" ASUS_PROC_ENVIRON_ROOT="$proc_root" \
         I18N_LEADER_PID="$$" _asus_first_session_ui_language "$(id -un)" >/dev/null
     _i18n_expect_env 0 ASUS_TEST_MODE=1 ASUS_UI_LANG=ro _asus_resolve_ui_locale >/dev/null
-    _i18n_expect_env 0 ASUS_TEST_MODE=0 LC_MESSAGES=de_DE.UTF-8 _asus_resolve_ui_locale >/dev/null
+    resolved="$(ASUS_TEST_MODE=0 LC_MESSAGES=de_DE.UTF-8 _asus_resolve_ui_locale)"
+    _soft_expect 0 test "$resolved" = "de_DE.UTF-8"
+    resolved="$(ASUS_TEST_MODE=0 LC_MESSAGES='' LANG=de_DE.UTF-8 LANGUAGE='' _asus_resolve_ui_locale)"
+    _soft_expect 0 test "$resolved" = "de_DE.UTF-8"
     _i18n_expect_env 0 ASUS_TEST_MODE=1 ASUS_UI_LANG=bad_locale _asus_gettext_env >/dev/null
     _i18n_expect_env 0 ASUS_TEST_MODE=1 ASUS_UI_LANG=ro_RO.UTF-8 _asus_gettext_env >/dev/null
+    _run_i18n_utf8_locale_paths
+}
+
+_run_i18n_utf8_locale_paths() {
+    # _asus_locale_charset_part_valid: empty charset/modifier suffix rejected,
+    # non-empty modifier suffix accepted.
+    _soft_expect 1 _asus_locale_charset_part_valid "de_DE."
+    _soft_expect 1 _asus_locale_charset_part_valid "de_DE@"
+    _soft_expect 0 _asus_locale_charset_part_valid "en_US@euro"
+    # Same-shell hits for _asus_locale_is_utf8_for_language (split for CCN).
+    _soft_expect 0 _asus_locale_is_utf8_for_language "de_DE.UTF-8" de
+    _soft_expect 0 _asus_locale_is_utf8_for_language "ro_RO.utf8" ro
+    _soft_expect 1 _asus_locale_is_utf8_for_language "de_DE.ISO-8859-1" de
+    _soft_expect 1 _asus_locale_is_utf8_for_language "fr_FR.UTF-8" de
+    # _asus_env_utf8_locale_for_language: non-UTF-8 env candidate is rejected
+    # (falls through to locale -a / C.UTF-8), UTF-8 candidate is returned.
+    resolved="$(LC_ALL=ro_RO.ISO-8859-2 _asus_utf8_locale_for_language ro)"
+    _soft_expect 0 test "$resolved" != "ro_RO.ISO-8859-2"
+    resolved="$(LC_ALL=de_DE.UTF-8 _asus_utf8_locale_for_language de)"
+    _soft_expect 0 test "$resolved" = "de_DE.UTF-8"
+    # _asus_locale_a_utf8_for_language: match from `locale -a` output.
+    resolved="$(LC_ALL='' LC_MESSAGES='' LANG='' _asus_utf8_locale_for_language c)"
+    _soft_expect 0 test -n "$resolved"
+    # _asus_lc_messages_for_gettext: bare language falls through to
+    # _asus_utf8_locale_for_language.
+    resolved="$(_asus_lc_messages_for_gettext de de)"
+    _soft_expect 0 test -n "$resolved"
 }
 
 _run_i18n_gettext_paths() {

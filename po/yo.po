@@ -42,12 +42,12 @@ msgstr "Asus Sikirinifoto"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Iṣeto ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Awọn irinṣẹ Linux Asus ZenBook ti ṣetan lati lo."
 
@@ -96,7 +96,7 @@ msgstr "Kamẹra ṣiṣẹ"
 msgid "Camera privacy"
 msgstr "Aṣiri kamẹra"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Yan irinše"
 
@@ -163,11 +163,11 @@ msgstr "GNOME ASUS Window Swap itẹsiwaju ti fi sori ẹrọ."
 msgid "GNOME shortcuts configured."
 msgstr "Awọn ọna abuja GNOME tunto."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Awọn ẹya ara ẹrọ fun tabili Linux rẹ"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Fi awọn iwe afọwọkọ ati awọn iṣẹ sori ẹrọ"
 
@@ -179,11 +179,11 @@ msgstr "Fi awọn igbẹkẹle eto sori ẹrọ"
 msgid "Installation cancelled by user."
 msgstr "Ti fagilee fifi sori ẹrọ nipasẹ olumulo."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Fifi sori ẹrọ ti pari."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Fifi ASUS ZenBook Linux Awọn irinṣẹ %s."
@@ -217,7 +217,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Yiyan ti ko tọ: %s. Tẹ awọn nọmba (1,2,3,4), orukọ apa, tabi all, tàbí none."
+msgstr ""
+"Yiyan ti ko tọ: %s. Tẹ awọn nọmba (1,2,3,4), orukọ apa, tabi all, tàbí none."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
@@ -245,7 +246,7 @@ msgstr "Ifihan akọkọ nikan"
 msgid "Mode: %s"
 msgstr "Ipo: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Ko si awọn paati ti a yan. Ko si nkan ti a fi sori ẹrọ."
 
@@ -266,7 +267,8 @@ msgstr "Iṣe (Imudara)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Tẹ Enter lati fi gbogbo awọn apa ti a ṣe iṣeduro sori ẹrọ, tabi tẹ 'all' "
+msgstr ""
+"Tẹ Enter lati fi gbogbo awọn apa ti a ṣe iṣeduro sori ẹrọ, tabi tẹ 'all' "
 "tàbí 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -285,7 +287,7 @@ msgstr "Imọlẹ iboju iboju"
 msgid "ScreenPad only"
 msgstr "ScreenPad nikan"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -36,7 +36,7 @@ COPY docker/images/tests/scripts/install-poetry-deps.sh \
      docker/images/tests/scripts/create-asusci-user.sh \
      docker/images/tests/scripts/install-de-family.sh \
      docker/images/tests/scripts/pacman-retry.sh /tmp/
-COPY pyproject.toml poetry.lock /opt/asus-zenbook-deps/
+COPY VERSION pyproject.toml poetry.lock /opt/asus-zenbook-deps/
 RUN chmod +x /tmp/install-poetry-deps.sh /tmp/create-asusci-user.sh \
         /tmp/install-de-family.sh /tmp/pacman-retry.sh \
     && PYTHON_BIN=python /tmp/install-poetry-deps.sh \

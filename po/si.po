@@ -45,12 +45,12 @@ msgstr "ASUS තිර රුව"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux සැකසුම %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux මෙවලම් භාවිතයට සූදානම්."
 
@@ -99,7 +99,7 @@ msgstr "කැමරාව සබල කර ඇත"
 msgid "Camera privacy"
 msgstr "කැමරා පෞද්ගලිකත්වය"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "සංරචක තෝරන්න"
 
@@ -166,11 +166,11 @@ msgstr "GNOME ASUS Window Swap දිගුව ස්ථාපනය කර ඇ�
 msgid "GNOME shortcuts configured."
 msgstr "GNOME කෙටිමං වින්‍යාස කර ඇත."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "ඔබේ ලිනක්ස් ඩෙස්ක්ටොප් සඳහා දෘඪාංග විශේෂාංග"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "ස්ක්‍රිප්ට් සහ සේවා ස්ථාපනය කරන්න"
 
@@ -182,11 +182,11 @@ msgstr "පද්ධති පරායත්තතා ස්ථාපනය ක
 msgid "Installation cancelled by user."
 msgstr "පරිශීලකයා විසින් ස්ථාපනය අවලංගු කරන ලදී."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ස්ථාපනය සම්පූර්ණයි."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux මෙවලම් ස්ථාපනය කරමින් %s."
@@ -248,7 +248,7 @@ msgstr "ප්‍රධාන සංදර්ශකය පමණි"
 msgid "Mode: %s"
 msgstr "මාදිලිය: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "සංරචක තෝරාගෙන නොමැත. කිසිවක් ස්ථාපනය කර නොමැත."
 
@@ -269,8 +269,8 @@ msgstr "කාර්ය සාධනය (උද්දීපනය)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "නිර්දේශිත සියලු සංරචක ස්ථාපනය කිරීමට Enter ඔබන්න, නැතහොත් 'all' හෝ 'none' "
-"ඇතුළත් කරන්න."
+msgstr ""
+"නිර්දේශිත සියලු සංරචක ස්ථාපනය කිරීමට Enter ඔබන්න, නැතහොත් 'all' හෝ 'none' ඇතුළත් කරන්න."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -288,7 +288,7 @@ msgstr "ScreenPad දීප්තිය"
 msgid "ScreenPad only"
 msgstr "ScreenPad පමණි"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

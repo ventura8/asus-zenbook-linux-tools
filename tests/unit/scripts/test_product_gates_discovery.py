@@ -50,6 +50,10 @@ class ProductGatesDiscoveryTests(unittest.TestCase):
         (root / "shared_imports.py").write_text("x = 1\n", encoding="utf-8")
         (root / "sitecustomize.py").write_text("x = 1\n", encoding="utf-8")
         (root / "scripts" / "check_file_size_limits.py").write_text("x = 1\n", encoding="utf-8")
+        (root / "scripts" / "check_no_lint_suppressions.py").write_text(
+            "x = 1\n", encoding="utf-8"
+        )
+        (root / "scripts" / "repo_scan_common.py").write_text("x = 1\n", encoding="utf-8")
         (root / "install.sh").write_text("#!/bin/sh\n", encoding="utf-8")
         (root / "uninstall.sh").write_text("#!/bin/sh\n", encoding="utf-8")
 
@@ -67,6 +71,8 @@ class ProductGatesDiscoveryTests(unittest.TestCase):
             self.assertIn("tools/new_tool.py", listed)
             self.assertIn("shared_imports.py", listed)
             self.assertIn("scripts/check_file_size_limits.py", listed)
+            self.assertIn("scripts/check_no_lint_suppressions.py", listed)
+            self.assertIn("scripts/repo_scan_common.py", listed)
             self.assertIn("sitecustomize.py", listed)
             self.assertNotIn("bin/asus-hotkey-daemon.py", listed)
 

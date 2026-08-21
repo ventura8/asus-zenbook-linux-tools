@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Flatpak installer wrapper requires root (sudo)." >&2
+    echo "Run: sudo flatpak run org.github.ventura8.AsusZenBookLinuxTools" >&2
+    exit 1
+fi
+export INSTALL_SOURCE_DIR="/app/usr/share/asus-zenbook-linux-tools"
+export ASUS_PORTABLE_HOST_INSTALL=1
+if [ -d /run/host/etc ]; then
+    export ASUS_HOST_ROOT=/run/host
+    export PREFIX=/run/host
+fi
+exec /app/usr/sbin/asus-zenbook-configure "$@"

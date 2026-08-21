@@ -44,12 +44,12 @@ msgstr "ASUS სკრინშოტი"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux-ის კონფიგურაცია %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools მზად არის გამოსაყენებლად."
 
@@ -100,7 +100,7 @@ msgstr "კამერა ჩართულია"
 msgid "Camera privacy"
 msgstr "კამერის კონფიდენციალურობა"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "აირჩიეთ კომპონენტები"
 
@@ -167,11 +167,11 @@ msgstr "GNOME ASUS Window Swap გაფართოება დაინსტ
 msgid "GNOME shortcuts configured."
 msgstr "GNOME მალსახმობები კონფიგურირებულია."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "ტექნიკის ფუნქციები თქვენი Linux დესკტოპისთვის"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "დააინსტალირეთ სკრიპტები და სერვისები"
 
@@ -183,11 +183,11 @@ msgstr "დააინსტალირეთ სისტემის და�
 msgid "Installation cancelled by user."
 msgstr "ინსტალაცია გაუქმებულია მომხმარებლის მიერ."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ინსტალაცია დასრულებულია."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux Tools-ის ინსტალაცია %s."
@@ -223,7 +223,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "არასწორი არჩევანი: %s. შეიყვანეთ რიცხვები (1,2,3,4), კომპონენტების სახელები, "
+msgstr ""
+"არასწორი არჩევანი: %s. შეიყვანეთ რიცხვები (1,2,3,4), კომპონენტების სახელები, "
 "all, ან none."
 
 #: lib/install-kde.sh:309
@@ -252,7 +253,7 @@ msgstr "მხოლოდ მთავარი ჩვენება"
 msgid "Mode: %s"
 msgstr "რეჟიმი: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "არცერთი კომპონენტი არ იყო შერჩეული. არაფერი დაინსტალირდა."
 
@@ -273,7 +274,8 @@ msgstr "შესრულება (გაძლიერება)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "დააჭირეთ Enter-ს ყველა რეკომენდებული კომპონენტის დასაყენებლად, ან შეიყვანეთ "
+msgstr ""
+"დააჭირეთ Enter-ს ყველა რეკომენდებული კომპონენტის დასაყენებლად, ან შეიყვანეთ "
 "'all' ან 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -292,7 +294,7 @@ msgstr "ეკრანის სიკაშკაშე"
 msgid "ScreenPad only"
 msgstr "მხოლოდ ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "
