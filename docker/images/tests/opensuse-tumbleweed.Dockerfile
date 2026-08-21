@@ -1,4 +1,4 @@
-FROM opensuse/tumbleweed@sha256:6e40218854d0ef063cfbd0a05898c04d8cb7e4ec823f40cfe19f0c60ddb317e0
+FROM opensuse/tumbleweed@sha256:ba9f806363116cb7633f10ca7dbe645d286915e9b898fe24b94615c2184b6911
 
 RUN zypper --non-interactive refresh \
     && zypper --non-interactive install -y \
