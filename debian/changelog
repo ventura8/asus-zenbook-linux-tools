@@ -1,3 +1,14 @@
+asus-zenbook-linux-tools (1.0.4) resolute; urgency=medium
+
+  * Comprehensive multi-desktop E2E test coverage across GNOME, KDE Plasma,
+    XFCE, LXQt, Cinnamon, and MATE.
+  * Real CLI verification for control center, display modes, screenshots,
+    hotkey daemons, screenpad brightness, and sound fix.
+  * Preserved exit code on packaged prerm uninstall teardown and enhanced
+    desktop shortcut backup state restoration.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Fri, 21 Aug 2026 16:30:00 +0300
+
 asus-zenbook-linux-tools (1.0.3) resolute; urgency=medium
 
   * Multi-distro release packaging: shared stage-payload, RPM, Arch PKGBUILD,

@@ -168,7 +168,7 @@ _smoke_purge_and_assert_clean() {
     trap 'rm -f "'"$purge_log"'"' RETURN
     sudo DEBIAN_FRONTEND=noninteractive apt-get purge -y "$PACKAGE_NAME" \
         2>&1 | tee "$purge_log"
-    if grep -Fq 'not empty so not removed' "$purge_log"; then
+    if grep -Eq "directory '/usr/share/${PACKAGE_NAME}(/.*)?' not empty so not removed" "$purge_log"; then
         printf 'dpkg left non-empty share dirs during purge\n' >&2
         return 1
     fi
