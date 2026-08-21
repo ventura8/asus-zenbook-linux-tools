@@ -86,5 +86,8 @@ if [ "$1" -eq 0 ]; then
 fi
 
 %changelog
+* Fri Aug 21 2026 ventura8 <alexandrescu.sergiu@gmail.com> - 1.0.4-1
+- Multi-desktop E2E test verification and package teardown hardening.
+
 * Wed Aug 19 2026 ventura8 <alexandrescu.sergiu@gmail.com> - 1.0.3-1
 - Initial multi-distro RPM packaging for ASUS ZenBook Linux Tools v1.0.3.

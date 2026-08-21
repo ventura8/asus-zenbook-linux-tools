@@ -242,6 +242,8 @@ def build_install_mock_env(tmp: str) -> tuple[dict, Path, Path]:
         SYSTEMCTL_CMD="true",
         INSTALL_ASSUME_UNIT_ACTIVE="1",
         DBUS_BUS_ROOT=str(root / "bus-root"),
+        RUN_USER_ROOT=str(root / "bus-root"),
+        BUS_ROOT=str(root / "bus-root"),
         PATH=f"{mock_bin}:{os.environ.get('PATH', '')}",
         USER=MOCK_USERNAME,
     )

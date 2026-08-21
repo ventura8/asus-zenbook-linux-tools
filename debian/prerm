@@ -1,15 +1,21 @@
 #!/bin/bash
 set -e
 
-UNINSTALL_SH="/usr/share/asus-zenbook-linux-tools/uninstall.sh"
+PKG_SHARE="${PKG_SHARE:-/usr/share/asus-zenbook-linux-tools}"
+UNINSTALL_SH="${UNINSTALL_SH:-${PKG_SHARE}/uninstall.sh}"
 
 _should_teardown() {
     case "${1:-}" in
-        remove)
+        remove | deconfigure)
             return 0
             ;;
     esac
     return 1
+}
+
+_remove_share_bytecode() {
+    [ -d "$PKG_SHARE" ] || return 0
+    find "$PKG_SHARE" -type d -name '__pycache__' -prune -exec rm -rf {} +
 }
 
 _run_packaged_uninstall() {
@@ -18,13 +24,21 @@ _run_packaged_uninstall() {
         return 1
     fi
     # Keep apt-managed Depends; only tear down deployed /usr/local runtime.
-    SKIP_PKG_REMOVE=1 bash "$UNINSTALL_SH"
+    local uninstall_status=0 cleanup_status=0
+    SKIP_PKG_REMOVE=1 PYTHONDONTWRITEBYTECODE=1 bash "$UNINSTALL_SH" || uninstall_status=$?
+    _remove_share_bytecode || cleanup_status=$?
+    if [ "$uninstall_status" -ne 0 ]; then
+        return "$uninstall_status"
+    fi
+    return "$cleanup_status"
 }
 
 if _should_teardown "${1:-}"; then
-    if ! _run_packaged_uninstall; then
+    status=0
+    _run_packaged_uninstall || status=$?
+    if [ "$status" -ne 0 ]; then
         echo "Error: packaged uninstall teardown failed; aborting package removal." >&2
-        exit 1
+        exit "$status"
     fi
 fi
 
