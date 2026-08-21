@@ -34,35 +34,8 @@ else
 endif
 
 override_dh_auto_install:
-	mkdir -p "$(PKG_SHARE)/bin" "$(PKG_SHARE)/lib" "$(PKG_SHARE)/systemd" \
-		"$(PKG_SBIN)" "$(PKG_BIN)" "$(PKG_APPLICATIONS)" "$(PKG_ICONS)"
-	# Product binaries (preserve daemon symlinks; skip caches)
-	find bin -maxdepth 1 -type f ! -name '__init__.py' -exec cp -a {} "$(PKG_SHARE)/bin/" \;
-	find bin -maxdepth 1 -type l -exec cp -a {} "$(PKG_SHARE)/bin/" \;
-	set -e; shopt -s nullglob; \
-	for f in lib/*.sh; do cp -a "$$f" "$(PKG_SHARE)/lib/"; done; \
-	for f in systemd/*.service; do cp -a "$$f" "$(PKG_SHARE)/systemd/"; done
-	cp -a shared_imports.py VERSION install.sh uninstall.sh "$(PKG_SHARE)/"
-	if [ -d gnome ]; then cp -a gnome "$(PKG_SHARE)/"; fi
-	if [ -d udev ]; then cp -a udev "$(PKG_SHARE)/"; fi
-	mkdir -p "$(PKG_SHARE)/assets/icons" "$(PKG_SHARE)/assets/applications"
-	set -e; shopt -s nullglob; \
-	for f in assets/icons/asus-*-symbolic.svg; do \
-		cp -a "$$f" "$(PKG_SHARE)/assets/icons/"; \
-	done
-	set -e; shopt -s nullglob; \
-	for f in po/*.po; do \
-		lang="$${f##*/}"; lang="$${lang%.po}"; \
-		out="$(PKG_LOCALE)/$$lang/LC_MESSAGES"; \
-		mkdir -p "$$out"; \
-		msgfmt -c -o "$$out/asus-zenbook-linux-tools.mo" "$$f"; \
-	done; \
-	if [ -f "$(PKG_LOCALE)/jw/LC_MESSAGES/asus-zenbook-linux-tools.mo" ]; then \
-		mkdir -p "$(PKG_LOCALE)/jv/LC_MESSAGES"; \
-		cp -a "$(PKG_LOCALE)/jw/LC_MESSAGES/asus-zenbook-linux-tools.mo" \
-			"$(PKG_LOCALE)/jv/LC_MESSAGES/asus-zenbook-linux-tools.mo"; \
-	fi
-	install -m 0755 debian/asus-zenbook-configure "$(PKG_SBIN)/asus-zenbook-configure"
+	mkdir -p "$(PKG_APPLICATIONS)" "$(PKG_ICONS)"
+	"$(CURDIR)/packaging/stage-payload.sh" "$(CURDIR)/debian/asus-zenbook-linux-tools"
 
 override_dh_dwz:
 	@echo "Skipping dh_dwz (no native ELF payload)."

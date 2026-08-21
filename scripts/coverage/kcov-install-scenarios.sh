@@ -166,16 +166,31 @@ EOF
     _kcov_expect_run_env "0" "$kcov_root" uninstall_absent_units \
         "${fast_env[@]}" PATH="$tmp:$PATH" DESTDIR="$tmp/dest_absent" DBUS_BUS_ROOT="$tmp/bus_root" \
         SYSTEMCTL_CMD="$tmp/systemctl-absent" ./uninstall.sh
-    # Hard systemctl failure results in uninstall exit status 1.
+    # Hard systemctl failure (not a transport/D-Bus-unavailable error, which is
+    # non-fatal by design) results in uninstall exit status 1.
     cat <<'EOF' > "$tmp/systemctl-hardfail"
 #!/bin/sh
-echo "Failed to connect to bus" >&2
+echo "Interactive authentication required." >&2
 exit 1
 EOF
     chmod +x "$tmp/systemctl-hardfail"
     _kcov_expect_run_env "1" "$kcov_root" uninstall_systemctl_hardfail \
         "${fast_env[@]}" PATH="$tmp:$PATH" DESTDIR="$tmp/dest_hf" DBUS_BUS_ROOT="$tmp/bus_root" \
         SYSTEMCTL_CMD="$tmp/systemctl-hardfail" ./uninstall.sh
+    # D-Bus/systemd transport unavailable (container without live systemd) must
+    # not fail the uninstall — covered separately from the hard-failure case above.
+    cat <<'EOF' > "$tmp/systemctl-transport-unavailable"
+#!/bin/sh
+if [ "$1" = "daemon-reload" ]; then
+    exit 0
+fi
+echo "Failed to connect to bus: No such file or directory" >&2
+exit 1
+EOF
+    chmod +x "$tmp/systemctl-transport-unavailable"
+    _kcov_expect_run_env "0" "$kcov_root" uninstall_systemctl_transport_unavailable \
+        "${fast_env[@]}" PATH="$tmp:$PATH" DESTDIR="$tmp/dest_transport" DBUS_BUS_ROOT="$tmp/bus_root" \
+        SYSTEMCTL_CMD="$tmp/systemctl-transport-unavailable" ./uninstall.sh
     # Recorded dependency removal path (SKIP_PKG_REMOVE unset).
     mkdir -p "$tmp/dest_deps/var/lib/asus-zenbook-linux-tools"
     printf '%s\n' python3-evdev ydotool > "$tmp/dest_deps/var/lib/asus-zenbook-linux-tools/installed-packages"

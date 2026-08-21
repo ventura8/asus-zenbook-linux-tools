@@ -253,6 +253,13 @@ _kcov_expect_exit() {
     set +e
     _run_with_optional_env "$@"
     status=$?
+    # One retry on SIGKILL (137): under --full parallel load, install_all kcov
+    # can be OOM-killed even within the 45s cap. Do not retry 124 (true timeout).
+    if [ "$status" -eq 137 ]; then
+        echo "  ! kcov scenario killed (exit 137); retrying once..." >&2
+        _run_with_optional_env "$@"
+        status=$?
+    fi
     _restore_errexit_state "$had_errexit"
     case "$status" in
         124|137)

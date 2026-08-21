@@ -44,12 +44,12 @@ msgstr "ASUS स्क्रीनशॉट"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux सेटअप %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ज़ेनबुक लिनक्स टूल्स उपयोग के लिए तैयार है।"
 
@@ -98,7 +98,7 @@ msgstr "कैमरा सक्षम"
 msgid "Camera privacy"
 msgstr "कैमरा गोपनीयता"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "घटक चुनें"
 
@@ -165,11 +165,11 @@ msgstr "GNOME ASUS विंडो स्वैप एक्सटेंशन �
 msgid "GNOME shortcuts configured."
 msgstr "GNOME शॉर्टकट कॉन्फ़िगर किए गए."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "आपके लिनक्स डेस्कटॉप के लिए हार्डवेयर सुविधाएँ"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "स्क्रिप्ट और सेवाएँ स्थापित करें"
 
@@ -181,11 +181,11 @@ msgstr "सिस्टम निर्भरताएँ स्थापित 
 msgid "Installation cancelled by user."
 msgstr "उपयोगकर्ता द्वारा इंस्टॉलेशन रद्द कर दिया गया."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "स्थापना पूर्ण."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ज़ेनबुक लिनक्स टूल्स इंस्टॉल करना %s।"
@@ -247,7 +247,7 @@ msgstr "केवल मुख्य प्रदर्शन"
 msgid "Mode: %s"
 msgstr "मोड: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "कोई घटक चयनित नहीं किया गया. कुछ भी स्थापित नहीं किया गया।"
 
@@ -268,8 +268,7 @@ msgstr "प्रदर्शन (बूस्ट)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "सभी अनुशंसित घटक स्थापित करने के लिए Enter दबाएँ, या 'all' या 'none' "
-"दर्जकरें।"
+msgstr "सभी अनुशंसित घटक स्थापित करने के लिए Enter दबाएँ, या 'all' या 'none' दर्जकरें।"
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -287,7 +286,7 @@ msgstr "स्क्रीनपैड चमक"
 msgid "ScreenPad only"
 msgstr "केवल स्क्रीनपैड"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

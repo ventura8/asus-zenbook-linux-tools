@@ -52,12 +52,12 @@ msgstr "Знімок екрана ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Налаштування ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools готовий до використання."
 
@@ -106,7 +106,7 @@ msgstr "Камера включена"
 msgid "Camera privacy"
 msgstr "Конфіденційність камери"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Виберіть компоненти"
 
@@ -173,11 +173,11 @@ msgstr "Встановлено розширення GNOME ASUS Window Swap."
 msgid "GNOME shortcuts configured."
 msgstr "Ярлики GNOME налаштовано."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Апаратні функції для робочого столу Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Встановіть скрипти та сервіси"
 
@@ -189,11 +189,11 @@ msgstr "Встановити системні залежності"
 msgid "Installation cancelled by user."
 msgstr "Встановлення скасовано користувачем."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Встановлення завершено."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Встановлення ASUS ZenBook Linux Tools %s."
@@ -228,7 +228,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Недійсний вибір: %s. Введіть номери (1,2,3,4), назви компонентів або all, "
+msgstr ""
+"Недійсний вибір: %s. Введіть номери (1,2,3,4), назви компонентів або all, "
 "або none."
 
 #: lib/install-kde.sh:309
@@ -257,7 +258,7 @@ msgstr "Лише основний дисплей"
 msgid "Mode: %s"
 msgstr "Режим: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Компоненти не вибрано. Нічого не було встановлено."
 
@@ -278,7 +279,8 @@ msgstr "Продуктивність (Boost)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Натисніть Enter, щоб установити всі рекомендовані компоненти, або введіть "
+msgstr ""
+"Натисніть Enter, щоб установити всі рекомендовані компоненти, або введіть "
 "'all' або 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -297,7 +299,7 @@ msgstr "Яскравість ScreenPad"
 msgid "ScreenPad only"
 msgstr "Лише ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

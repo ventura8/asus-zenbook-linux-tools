@@ -44,12 +44,12 @@ msgstr "ASUS স্ক্রিনশট"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux সেটআপ %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux টুল ব্যবহারের জন্য প্রস্তুত।"
 
@@ -98,7 +98,7 @@ msgstr "ক্যামেরা সক্ষম"
 msgid "Camera privacy"
 msgstr "ক্যামেরা গোপনীয়তা"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "উপাদান নির্বাচন করুন"
 
@@ -165,11 +165,11 @@ msgstr "GNOME ASUS উইন্ডো সোয়াপ এক্সটেন�
 msgid "GNOME shortcuts configured."
 msgstr "জিনোম শর্টকাট কনফিগার করা হয়েছে।"
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "আপনার লিনাক্স ডেস্কটপের জন্য হার্ডওয়্যার বৈশিষ্ট্য"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "স্ক্রিপ্ট এবং পরিষেবা ইনস্টল করুন"
 
@@ -181,11 +181,11 @@ msgstr "সিস্টেম নির্ভরতা ইনস্টল কর
 msgid "Installation cancelled by user."
 msgstr "ব্যবহারকারী দ্বারা ইনস্টলেশন বাতিল করা হয়েছে."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ইনস্টলেশন সম্পূর্ণ।"
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux টুল ইনস্টল করা হচ্ছে %s।"
@@ -247,7 +247,7 @@ msgstr "শুধুমাত্র প্রধান প্রদর্শন"
 msgid "Mode: %s"
 msgstr "মোড: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "কোন উপাদান নির্বাচন করা হয়নি। কিছুই ইনস্টল করা হয়নি।"
 
@@ -286,7 +286,7 @@ msgstr "স্ক্রিনপ্যাড উজ্জ্বলতা"
 msgid "ScreenPad only"
 msgstr "শুধুমাত্র স্ক্রিনপ্যাড"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

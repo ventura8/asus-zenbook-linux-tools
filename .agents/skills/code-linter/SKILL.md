@@ -7,7 +7,31 @@ description: Run ruff, pylint, yamllint, markdownlint, eslint, shellcheck, and g
 
 Use this skill to lint all Python scripts, shell scripts, GNOME extension JavaScript,
 Markdown files, YAML workflows, and gettext PO catalogs without using suppression comments
-or inline ignores.
+or inline ignores. Root `AGENTS.md` **No Suppressions Allowed** is mandatory: never add
+`noqa` / pylint-disable / type-ignore / shellcheck-disable / eslint-disable / etc. Cheap
+wave `step_no_lint_suppressions` fails the lint gate on any hit (product **and**
+`tests/` — no test exemption; live-repo unit tests lock that invariant).
+
+## New Files
+
+When adding files as part of a change set, lint them before finishing — new paths are not exempt
+from repository gates.
+
+1. Identify the file type and run the matching linter(s) (see **Strict Linting Requirements** in
+   root `AGENTS.md`).
+1. Prefer `ReadLints` on touched paths after edits; for new files, run the relevant tool directly
+   when IDE diagnostics are unavailable (e.g. new shell scripts → `bash -n` + `shellcheck`, new
+   Python → `ruff check` + `pylint`).
+1. Run `./scripts/run-lints.sh` (or the targeted cheap/heavy wave that covers the file type)
+   before declaring lint work complete for every change; use `--full` for broader CI-parity work.
+1. Run the repository's applicable **tests** for every changed path (targeted unit tests,
+   kcov scenarios, shell unit tests under `tests/unit/shell/`, release smoke when packaging
+   builders change). Use canonical wrappers: `coverage run tools/dot_test_runner.py …`,
+   `./scripts/run_release_package_smoke.sh`, `./scripts/build-and-test.sh` with narrow flags
+   when full CI parity is not required.
+1. Run applicable **pipeline** commands before declaring work finished (e.g.
+   `./scripts/build-and-test.sh --full` or the stage that covers your change set). Commands
+   must stream live CLI output and persist logs under `reports/distro-logs/` (tee pattern).
 
 ## Instructions
 
@@ -155,9 +179,9 @@ or inline ignores.
        -type f -name '*.py' -print0
    {
        ruff check "${PYTHON_FILES[@]}"
-       # Product/tools Python uses the default pylint config.
-       pylint --max-line-length=140 "${PRODUCT_PYTHON_FILES[@]}"
-       pylint --rcfile=tests/unit/.pylintrc --max-line-length=140 "${UNIT_TEST_FILES[@]}"
+       pylint --fail-under=10 --max-line-length=140 "${PRODUCT_PYTHON_FILES[@]}"
+       pylint --fail-under=10 --rcfile=tests/unit/.pylintrc --max-line-length=140 \
+         "${UNIT_TEST_FILES[@]}"
        VIOLATIONS=$(radon cc "${PYTHON_FILES[@]}" -n B -s)
        if [ -n "$VIOLATIONS" ]; then
           echo "$VIOLATIONS"
@@ -281,12 +305,15 @@ or inline ignores.
    `step_po_lint` runs `msgfmt -c --check-format` on every discovered `*.po`. Heavy-wave
    `step_i18n_catalogs` runs `extract_pot.sh --check`, `seed_whisper_languages.py --check`,
    and `scripts/i18n/check_catalog_quality.py` (which also `msgfmt`/`msgcmp`s each catalog).
-   Fix fuzzy entries, placeholders, plurals, empty translations, or canary failures at
-   the source. `PO-Revision-Date` must be a real stamp (never `YEAR-MO-DA HO:MI+ZONE`);
-   the seeder replaces that placeholder with `PO_REVISION_DATE`. Never bypass
-   catalog checks or hand-edit generated `.mo` files. Shell `xgettext` must pass
-   `--keyword=` (clear defaults) before project keywords so a bare `gettext`
-   package name in `for pkg in … gettext alsa-tools …` is not scraped as a msgid.
+   Completeness is also asserted by
+   `tests/unit/scripts/test_check_catalog_quality.py` (`check_catalogs()` on shipped
+   catalogs plus empty/fuzzy `_validate_entry` cases). Fix fuzzy entries, placeholders,
+   plurals, empty translations, or canary failures at the source. `PO-Revision-Date`
+   must be a real stamp (never `YEAR-MO-DA HO:MI+ZONE`); the seeder replaces that
+   placeholder with `PO_REVISION_DATE`. Never bypass catalog checks or hand-edit
+   generated `.mo` files. Shell `xgettext` must pass `--keyword=` (clear defaults)
+   before project keywords so a bare `gettext` package name in
+   `for pkg in … gettext alsa-tools …` is not scraped as a msgid.
 
 1. **File-size gate (600 lines)** — step `[2/16]` runs `python3 scripts/check_file_size_limits.py`:
 

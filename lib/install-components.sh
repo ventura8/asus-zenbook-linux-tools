@@ -160,7 +160,7 @@ _resolve_uinput_rule_source() {
 }
 
 _ensure_uinput_group() {
-    [ -z "${PREFIX:-}" ] || return 0
+    _asus_is_staged_install && return 0
     if ! getent group asus-uinput >/dev/null 2>&1; then
         if ! groupadd -r asus-uinput 2>/dev/null; then
             echo "  ! Warning: could not create group asus-uinput." >&2
@@ -170,7 +170,7 @@ _ensure_uinput_group() {
 }
 
 _reload_uinput_udev_rule() {
-    if [ -z "${PREFIX:-}" ] && command -v udevadm >/dev/null 2>&1; then
+    if ! _asus_is_staged_install && command -v udevadm >/dev/null 2>&1; then
         _asus_soft udevadm control --reload-rules
         _asus_soft udevadm trigger --subsystem-match=misc --name-match=uinput
     fi
@@ -200,7 +200,7 @@ _install_uinput_udev_rule() {
 _uinput_user_can_be_added() {
     local target_user="$1"
     [ -n "$target_user" ] || return 0
-    [ -z "${PREFIX:-}" ] || return 0
+    _asus_is_staged_install && return 0
     getent group asus-uinput >/dev/null 2>&1 || return 0
     return 1
 }
@@ -402,7 +402,9 @@ deploy_wmi_component() {
     local src_dir="$1" icon_share="${PREFIX:-}/usr/local/share"
     _deploy_wmi_binaries "$src_dir" || return 1
     _deploy_wmi_static_assets "$src_dir" || return 1
-    _asus_soft gtk-update-icon-cache -f -t "$icon_share/icons/hicolor"
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        _asus_soft gtk-update-icon-cache -f -t "$icon_share/icons/hicolor"
+    fi
 
     _enable_ydotoold_if_available
 

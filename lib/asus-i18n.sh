@@ -55,16 +55,148 @@ _asus_session_ui_value() {
     asus_session_env_value "$key" "$target_user"
 }
 
+_asus_trim_whitespace() {
+    local value="$1"
+    value="${value#"${value%%[![:space:]]*}"}"
+    value="${value%"${value##*[![:space:]]}"}"
+    printf '%s\n' "$value"
+}
+
+_asus_env_value_if_nonempty() {
+    local name="$1" value
+    value="${!name-}"
+    value=$(_asus_trim_whitespace "$value")
+    [ -n "$value" ] || return 1
+    printf '%s\n' "$value"
+}
+
 _asus_first_session_ui_language() {
     local target_user="${1:-}" key value
-    for key in LC_MESSAGES LANG LANGUAGE; do
-        if value=$(_asus_session_ui_value "$key" "$target_user" 2>/dev/null) &&
-            [ -n "$value" ]; then
+    for key in LC_ALL LC_MESSAGES LANG LANGUAGE; do
+        if value=$(_asus_session_ui_value "$key" "$target_user" 2>/dev/null); then
+            value=$(_asus_trim_whitespace "$value")
+            [ -n "$value" ] || continue
             printf '%s\n' "$value"
             return 0
         fi
     done
     return 1
+}
+
+_asus_first_nonempty_process_locale() {
+    local key value
+    for key in LC_ALL LC_MESSAGES LANG LANGUAGE; do
+        if value=$(_asus_env_value_if_nonempty "$key" 2>/dev/null); then
+            printf '%s\n' "$value"
+            return 0
+        fi
+    done
+    printf '%s\n' "en"
+}
+
+_asus_language_prefix_from_locale() {
+    local locale="$1"
+    locale="${locale%%.*}"
+    locale="${locale%%@*}"
+    locale="${locale%%_*}"
+    printf '%s\n' "$(printf '%s' "$locale" | tr '[:upper:]' '[:lower:]')"
+}
+
+_asus_locale_charset_part_valid() {
+    local locale="$1" suffix=""
+    case "$locale" in
+        *.)
+            return 1
+            ;;
+        *@)
+            return 1
+            ;;
+        *.*)
+            suffix="${locale#*.}"
+            suffix="${suffix%%@*}"
+            [ -n "$suffix" ]
+            return $?
+            ;;
+        *@*)
+            suffix="${locale#*@}"
+            [ -n "$suffix" ]
+            return $?
+            ;;
+    esac
+    return 0
+}
+
+_asus_locale_is_utf8_for_language() {
+    local value="$1" want="$2" prefix=""
+    _asus_locale_charset_part_valid "$value" || return 1
+    case "$value" in
+        *.UTF-8 | *.utf8) ;;
+        *) return 1 ;;
+    esac
+    prefix=$(_asus_language_prefix_from_locale "$value")
+    [ "$prefix" = "$want" ]
+}
+
+_asus_env_utf8_locale_for_language() {
+    local want="$1" key value
+    for key in LC_ALL LC_MESSAGES LANG; do
+        if value=$(_asus_env_value_if_nonempty "$key" 2>/dev/null); then
+            if _asus_locale_is_utf8_for_language "$value" "$want"; then
+                printf '%s\n' "$value"
+                return 0
+            fi
+        fi
+    done
+    return 1
+}
+
+_asus_locale_a_utf8_for_language() {
+    local want="$1" line="" prefix=""
+    command -v locale >/dev/null 2>&1 || return 1
+    while IFS= read -r line; do
+        case "$line" in
+            *.UTF-8 | *.utf8) ;;
+            *) continue ;;
+        esac
+        prefix=$(_asus_language_prefix_from_locale "$line")
+        [ "$prefix" = "$want" ] || continue
+        printf '%s\n' "$line"
+        return 0
+    done < <(locale -a 2>/dev/null)
+    return 1
+}
+
+_asus_utf8_locale_for_language() {
+    local language="$1" candidate=""
+    if candidate=$(_asus_env_utf8_locale_for_language "$language" 2>/dev/null); then
+        printf '%s\n' "$candidate"
+        return 0
+    fi
+    if candidate=$(_asus_locale_a_utf8_for_language "$language" 2>/dev/null); then
+        printf '%s\n' "$candidate"
+        return 0
+    fi
+    printf '%s\n' "C.UTF-8"
+}
+
+_asus_lc_messages_for_gettext() {
+    local locale="$1" language="$2"
+    locale=$(_asus_trim_whitespace "$locale")
+    if [ -z "$locale" ]; then
+        printf '%s\n' "C.UTF-8"
+        return 0
+    fi
+    if ! _asus_locale_charset_part_valid "$locale"; then
+        printf '%s\n' "C.UTF-8"
+        return 0
+    fi
+    case "$locale" in
+        *.* | *@*)
+            printf '%s\n' "$locale"
+            return 0
+            ;;
+    esac
+    _asus_utf8_locale_for_language "$language"
 }
 
 _asus_resolve_ui_locale() {
@@ -77,8 +209,7 @@ _asus_resolve_ui_locale() {
         printf '%s\n' "$value"
         return 0
     fi
-    value="${LC_MESSAGES:-${LANG:-${LANGUAGE:-en}}}"
-    printf '%s\n' "$value"
+    _asus_first_nonempty_process_locale
 }
 
 _asus_gettext_env() {
@@ -86,11 +217,7 @@ _asus_gettext_env() {
     locale=$(_asus_resolve_ui_locale "$target_user")
     language=$(_asus_normalize_ui_language "$locale" 2>/dev/null || true)
     [ -n "$language" ] || language="en"
-    locale_for_lookup="$locale"
-    case "$locale_for_lookup" in
-        *.*|*@*) ;;
-        *) locale_for_lookup="${language}_${language}.UTF-8" ;;
-    esac
+    locale_for_lookup=$(_asus_lc_messages_for_gettext "$locale" "$language")
     printf '%s\n%s\n' "$language" "$locale_for_lookup"
 }
 

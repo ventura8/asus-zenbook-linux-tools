@@ -11,6 +11,8 @@ import os
 import sys
 from pathlib import Path
 
+from scripts.repo_scan_common import DEBIAN_SHELL_FILES, SKIP_DIR_NAMES
+
 DEFAULT_MAX_LINES = 600
 DEFAULT_SCOPE = ("bin", "lib", "tests", "tools", "scripts", "gnome", "docker")
 SCANNED_FILE_EXTENSIONS = (
@@ -26,25 +28,10 @@ SCANNED_FILE_EXTENSIONS = (
     ".cfg",
 )
 ROOT_LEVEL_FILES = ("install.sh", "uninstall.sh", "shared_imports.py", "sitecustomize.py")
-DEBIAN_SHELL_FILES = (
-    "debian/postinst",
-    "debian/prerm",
-    "debian/postrm",
-    "debian/asus-zenbook-configure",
-)
-SKIP_DIR_NAMES = frozenset(
+ARCH_STAGING_REL_DIRS = frozenset(
     {
-        ".git",
-        "node_modules",
-        ".ruff_cache",
-        ".pytest_cache",
-        "reports",
-        ".tools",
-        "__pycache__",
-        ".tmp-tests",
-        ".mypy_cache",
-        ".tox",
-        "htmlcov",
+        "packaging/arch/pkg",
+        "packaging/arch/src",
     }
 )
 
@@ -127,7 +114,7 @@ def iter_repo_files(root: Path) -> list[tuple[Path, Path]]:
         if not scope_path.exists():
             continue
         found_scope = True
-        entries.extend(_iter_scope_file_entries(scope_path))
+        entries.extend(_iter_scope_file_entries(scope_path, root))
     named: list[Path] = []
     if _collect_root_and_debian_files(root, named):
         found_scope = True
@@ -137,22 +124,32 @@ def iter_repo_files(root: Path) -> list[tuple[Path, Path]]:
     return _dedupe_resolved_paths(entries)
 
 
-def _should_prune_dirname(name: str) -> bool:
+def _should_prune_dir(relative_posix: str, name: str) -> bool:
     """Return True when a directory should be skipped while walking."""
-    return name in SKIP_DIR_NAMES or name.startswith(".venv")
+    child = f"{relative_posix}/{name}" if relative_posix else name
+    if child in ARCH_STAGING_REL_DIRS:
+        return True
+    if name in SKIP_DIR_NAMES:
+        return True
+    if name.startswith(".venv"):
+        return True
+    return name.startswith(".rpm-build")
 
 
-def _prune_walk_dirs(dirnames: list[str]) -> None:
+def _prune_walk_dirs(relative_posix: str, dirnames: list[str]) -> None:
     """Mutate dirnames in-place to drop pruned walk directories."""
-    dirnames[:] = [name for name in dirnames if not _should_prune_dirname(name)]
+    dirnames[:] = [
+        name for name in dirnames if not _should_prune_dir(relative_posix, name)
+    ]
 
 
-def _iter_scope_file_entries(scope_path: Path) -> list[tuple[Path, Path]]:
+def _iter_scope_file_entries(scope_path: Path, root: Path) -> list[tuple[Path, Path]]:
     """Return (original, resolved) scanned files within one repository scope path."""
     files: list[tuple[Path, Path]] = []
     for dirpath, dirnames, filenames in os.walk(scope_path, topdown=True):
         parent = Path(dirpath)
-        _prune_walk_dirs(dirnames)
+        rel_parent = parent.relative_to(root).as_posix()
+        _prune_walk_dirs(rel_parent, dirnames)
         for name in filenames:
             candidate = parent / name
             resolved = _resolve_scanned_file(candidate)

@@ -1,5 +1,43 @@
 #!/usr/bin/env bash
 
+_write_coverage_shard_ok_stamp() {
+    local dest="$1" kind="$2" tmp=""
+    tmp=$(mktemp -p "$dest" shard_ok.XXXXXX) || {
+        echo "  ✗ Failed to create ${kind} shard stamp temp under $dest" >&2
+        return 1
+    }
+    if ! date -u +%Y-%m-%dT%H:%M:%SZ >"$tmp"; then
+        rm -f "$tmp"
+        echo "  ✗ Failed to write ${kind} shard stamp: $dest/shard_ok" >&2
+        return 1
+    fi
+    if ! mv -f "$tmp" "$dest/shard_ok"; then
+        rm -f "$tmp"
+        echo "  ✗ Failed to finalize ${kind} shard stamp: $dest/shard_ok" >&2
+        return 1
+    fi
+    [ -f "$dest/shard_ok" ]
+}
+
+_require_asus_coverage_shard_id() {
+    case "${1:-}" in
+        1|2) return 0 ;;
+        *)
+            echo "  ✗ Unsupported ASUS_COVERAGE_SHARD='${1:-}' (use 1|2)" >&2
+            return 1
+            ;;
+    esac
+}
+
+_mkdir_coverage_shard_dest() {
+    local dest="$1" kind="$2"
+    rm -rf "$dest"
+    mkdir -p "$dest" || {
+        echo "  ✗ Failed to create ${kind} shard dir: $dest" >&2
+        return 1
+    }
+}
+
 _pipefail_state() {
     # Echo 1 when pipefail is currently on, else 0.
     if [[ -o pipefail ]]; then

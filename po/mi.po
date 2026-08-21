@@ -42,12 +42,12 @@ msgstr "ASUS Whakaahuamata"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Tautuhinga ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Kua reri nga Utauta ASUS ZenBook Linux ki te whakamahi."
 
@@ -97,7 +97,7 @@ msgstr "Kua whakahohea te kamera"
 msgid "Camera privacy"
 msgstr "Kaamera tūmataiti"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Whiriwhiria nga waahanga"
 
@@ -164,11 +164,11 @@ msgstr "Kua whakauruhia te toronga Whakawhiti Matapihi ASUS GNOME."
 msgid "GNOME shortcuts configured."
 msgstr "Kua whirihorahia nga pokatata GNOME."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Nga waahanga taputapu mo to papamahi Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Tāuta hōtuhi me ngā ratonga"
 
@@ -180,11 +180,11 @@ msgstr "Tāutahia ngā whakawhirinakitanga pūnaha"
 msgid "Installation cancelled by user."
 msgstr "Kua whakakorehia e te kaiwhakamahi te whakaurunga."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Kua oti te whakaurunga."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Te whakauru i nga Utauta ASUS ZenBook Linux %s."
@@ -221,7 +221,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Kōwhiringa muhu: %s. Tāuru nama (1,2,3,4), ingoa wāhanga, pe all, rānei "
+msgstr ""
+"Kōwhiringa muhu: %s. Tāuru nama (1,2,3,4), ingoa wāhanga, pe all, rānei "
 "none, rānei none."
 
 #: lib/install-kde.sh:309
@@ -250,7 +251,7 @@ msgstr "Whakaaturanga matua anake"
 msgid "Mode: %s"
 msgstr "Aratau: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Kaore he waahanga i tohua. Kāore i whakauruhia he mea."
 
@@ -271,7 +272,8 @@ msgstr "Mahinga (Whakanui)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Pēhia a Enter ki te tāuta i ngā wāhanga katoa e tūtohutia ana, pe tāuruhia "
+msgstr ""
+"Pēhia a Enter ki te tāuta i ngā wāhanga katoa e tūtohutia ana, pe tāuruhia "
 "'all' rānei 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -290,7 +292,7 @@ msgstr "Tirohanga Papa Mata"
 msgid "ScreenPad only"
 msgstr "Papamata anake"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -278,6 +278,79 @@ _docker_buildx_resolve_cache_args() {
     return 0
 }
 
+_docker_buildx_local_lock_dir() {
+    local cache_base_dir="$1"
+    local cache_key="$2"
+    printf '%s/.locks/%s\n' "$cache_base_dir" "$cache_key"
+}
+
+_docker_release_local_buildx_lock() {
+    local lock_dir="$1"
+    [ -n "${lock_dir:-}" ] || return 0
+    rm -f "${lock_dir}/owner.pid" 2>/dev/null || true
+    rmdir "$lock_dir" 2>/dev/null || true
+}
+
+# Prepend cmd to any existing handler for each sig (own cleanup always runs
+# first, even when the prior handler calls exit before returning).
+_docker_trap_add() {
+    local cmd="$1" sig="" existing="" combined=""
+    shift
+    for sig in "$@"; do
+        existing="$(trap -p "$sig" 2>/dev/null)"
+        if [ -n "$existing" ]; then
+            existing="$(printf '%s\n' "$existing" | sed -E "s/^trap -- '(.*)' (SIG)?${sig}\$/\\1/")"
+            printf -v combined '%s; %s' "$cmd" "$existing"
+        else
+            combined="$cmd"
+        fi
+        trap -- "$combined" "$sig"
+    done
+}
+
+_docker_lock_dir_age_secs() {
+    local lock_dir="$1" mtime=""
+    mtime="$(stat -c '%Y' "$lock_dir" 2>/dev/null || true)"
+    if [[ "$mtime" =~ ^[0-9]+$ ]]; then
+        printf '%s\n' "$(( $(date +%s) - mtime ))"
+        return 0
+    fi
+    printf '0\n'
+}
+
+_docker_reap_lock_missing_owner_pid() {
+    local lock_dir="$1" age_secs=0
+    age_secs="$(_docker_lock_dir_age_secs "$lock_dir")"
+    # Grace must cover mkdir→owner.pid under parallel load (coverage×4 + compat
+    # share tests-debian_trixie). Too-short grace lets waiters rmdir a live lock.
+    if [ "$age_secs" -lt "${DOCKER_BUILDX_LOCK_GRACE_SECS:-30}" ]; then
+        return 0
+    fi
+    rmdir "$lock_dir" 2>/dev/null || true
+}
+
+_docker_reap_lock_dead_owner() {
+    local lock_dir="$1" owner_pid=""
+    owner_pid="$(cat "${lock_dir}/owner.pid" 2>/dev/null || true)"
+    if [[ "$owner_pid" =~ ^[0-9]+$ ]] && kill -0 "$owner_pid" 2>/dev/null; then
+        return 0
+    fi
+    rm -f "${lock_dir}/owner.pid" 2>/dev/null || true
+    rmdir "$lock_dir" 2>/dev/null || true
+}
+
+# Remove lock_dir when its recorded owner PID is gone, or when owner.pid is
+# missing after a short grace (covers the mkdir→pid write window).
+_docker_reap_stale_buildx_lock() {
+    local lock_dir="$1"
+    [ -d "$lock_dir" ] || return 0
+    if [ ! -f "${lock_dir}/owner.pid" ]; then
+        _docker_reap_lock_missing_owner_pid "$lock_dir"
+        return 0
+    fi
+    _docker_reap_lock_dead_owner "$lock_dir"
+}
+
 _docker_buildx_build_with_cache() {
     local docker_bin="$1" dockerfile_path="$2" image_tag="$3" repo_root="$4"
     local cache_base_dir="$5" cache_path="$6"
@@ -315,19 +388,184 @@ _docker_legacy_build() {
         "$repo_root"
 }
 
+_docker_wait_mkdir_lock() {
+    local lock_dir="$1" deadline="$2"
+    while ! mkdir "$lock_dir" 2>/dev/null; do
+        _docker_reap_stale_buildx_lock "$lock_dir"
+        if [ "$SECONDS" -ge "$deadline" ]; then
+            echo "Timed out waiting for buildx lock: $lock_dir" >&2
+            return 1
+        fi
+        sleep 0.25
+    done
+}
+
+_docker_record_lock_owner() {
+    local lock_dir="$1"
+    # Write owner.pid before registering EXIT cleanup so waiters never see an
+    # empty lock dir and reap it under DOCKER_BUILDX_LOCK_GRACE_SECS.
+    if ! printf '%s\n' "$$" >"${lock_dir}/owner.pid" 2>/dev/null; then
+        echo "Failed to record buildx lock owner: $lock_dir" >&2
+        rmdir "$lock_dir" 2>/dev/null || true
+        return 1
+    fi
+    _docker_trap_add "_docker_release_local_buildx_lock '$lock_dir'" EXIT INT TERM
+}
+
+_docker_prepare_lock_root() {
+    local lock_root="$1" probe=""
+    if ! mkdir -p "$lock_root"; then
+        echo "Failed to create buildx lock root: $lock_root" >&2
+        return 1
+    fi
+    # 755, not 700: under `sudo --full`, this root-created dir sits inside the
+    # repo tree that debian/rules clean's dh_clean sweep also walks as the
+    # unprivileged $SUDO_USER (via runuser); 700 makes that traversal fail
+    # with "Permission denied" and aborts the deb-package build. Only this
+    # script creates entries here, so world-writable access isn't needed.
+    chmod 755 "$lock_root" 2>/dev/null || true
+    # Fail closed when a prior sudo run left .locks root-owned: mkdir lock
+    # wait would otherwise spin until DOCKER_BUILDX_LOCK_TIMEOUT_SECS.
+    probe="${lock_root}/.write-probe.$$"
+    if ! mkdir "$probe" 2>/dev/null; then
+        echo "Buildx lock root is not writable: $lock_root" \
+            "(fix ownership, e.g. chown -R \"\$(id -u):\$(id -g)\" \"$lock_root\")" >&2
+        return 1
+    fi
+    rmdir "$probe" 2>/dev/null || true
+}
+
+_docker_acquire_local_buildx_lock() {
+    local cache_key="$1"
+    local cache_base_dir="$2"
+    local -n _lock_dir_ref="$3"
+    local lock_root="" _acquired_lock_dir="" deadline=$((SECONDS + ${DOCKER_BUILDX_LOCK_TIMEOUT_SECS:-1200}))
+    _lock_dir_ref=""
+    [ "$(_docker_buildx_cache_backend)" = "local" ] || return 0
+    lock_root="${cache_base_dir}/.locks"
+    _docker_prepare_lock_root "$lock_root" || return 1
+    _acquired_lock_dir="$(_docker_buildx_local_lock_dir "$cache_base_dir" "$cache_key")"
+    _docker_wait_mkdir_lock "$_acquired_lock_dir" "$deadline" || return 1
+    # owner.pid is written before EXIT trap registration (see _docker_record_lock_owner).
+    _docker_record_lock_owner "$_acquired_lock_dir" || return 1
+    _lock_dir_ref="$_acquired_lock_dir"
+}
+
+_docker_run_image_build() {
+    local docker_bin="$1" dockerfile_path="$2" image_tag="$3" repo_root="$4"
+    local cache_base_dir="$5" cache_path="$6"
+    shift 6
+    if "$docker_bin" buildx version >/dev/null 2>&1; then
+        _docker_buildx_build_with_cache "$docker_bin" "$dockerfile_path" "$image_tag" \
+            "$repo_root" "$cache_base_dir" "$cache_path" "$@"
+        return $?
+    fi
+    _docker_legacy_build "$docker_bin" "$dockerfile_path" "$image_tag" \
+        "$repo_root" "$cache_base_dir" "$cache_path" "$@"
+}
+
+_docker_prepare_build_context() {
+    # $2 is the caller's array name (e.g. build_args). Pass that name through to
+    # _docker_ci_build_args — do not introduce a local nameref alias of the same
+    # name or bash creates a circular nameref.
+    local cache_base_dir="$1"
+    local build_args_name="$2"
+    _docker_require_bash_nameref || return 1
+    _docker_require_nonempty_cache_base "$cache_base_dir" "Docker buildx cache path" || return 1
+    _docker_ci_build_args "$build_args_name" || return 1
+}
+
 docker_build_with_buildx_or_build() {
     local docker_bin="$1" dockerfile_path="$2" image_tag="$3" repo_root="$4" cache_base_dir="$5" cache_key="$6"
     local cache_path="$cache_base_dir/$cache_key"
     local -a build_args
-    _docker_require_bash_nameref || return 1
-    _docker_require_nonempty_cache_base "$cache_base_dir" "Docker buildx cache path" || return 1
-    _docker_ci_build_args build_args || return 1
+    local lock_dir="" build_status=0
+    _docker_prepare_build_context "$cache_base_dir" build_args || return 1
+    _docker_acquire_local_buildx_lock "$cache_key" "$cache_base_dir" lock_dir || return 1
+    _docker_run_image_build "$docker_bin" "$dockerfile_path" "$image_tag" \
+        "$repo_root" "$cache_base_dir" "$cache_path" "${build_args[@]}" \
+        || build_status=$?
+    _docker_release_local_buildx_lock "$lock_dir"
+    return "$build_status"
+}
 
-    if "$docker_bin" buildx version >/dev/null 2>&1; then
-        _docker_buildx_build_with_cache "$docker_bin" "$dockerfile_path" "$image_tag" \
-            "$repo_root" "$cache_base_dir" "$cache_path" "${build_args[@]}"
-        return $?
+_kill_pgid_if_running() {
+    local pid="$1"
+    if kill -0 "$pid" 2>/dev/null; then
+        kill -TERM -- "-$pid" 2>/dev/null || kill "$pid" 2>/dev/null || true
     fi
-    _docker_legacy_build "$docker_bin" "$dockerfile_path" "$image_tag" \
-        "$repo_root" "$cache_base_dir" "$cache_path" "${build_args[@]}"
+}
+
+_kill_pgid_any_alive() {
+    local pid=""
+    for pid in "$@"; do
+        kill -0 "$pid" 2>/dev/null && return 0
+    done
+    return 1
+}
+
+_kill_pgid_wait_exit() {
+    local deadline=$((SECONDS + 5))
+    while [ "$SECONDS" -lt "$deadline" ]; do
+        _kill_pgid_any_alive "$@" || return 0
+        sleep 0.2
+    done
+}
+
+_kill_pgid_force() {
+    local pid=""
+    for pid in "$@"; do
+        if kill -0 "$pid" 2>/dev/null; then
+            kill -KILL -- "-$pid" 2>/dev/null || kill -KILL "$pid" 2>/dev/null || true
+        fi
+    done
+}
+
+_kill_pgid_reap() {
+    local pid=""
+    for pid in "$@"; do
+        wait "$pid" 2>/dev/null || true
+    done
+}
+
+_kill_pgid_list() {
+    local pid=""
+    for pid in "$@"; do
+        _kill_pgid_if_running "$pid"
+    done
+    _kill_pgid_wait_exit "$@"
+    _kill_pgid_force "$@"
+    _kill_pgid_reap "$@"
+}
+
+_parallel_array_drop_index() {
+    local -n _arr_ref="$1"
+    unset "_arr_ref[$2]"
+    _arr_ref=("${_arr_ref[@]}")
+}
+
+_parallel_report_done_job() {
+    local done_pid="$1" code="$2"
+    local -n _pids_ref="$3" _names_ref="$4" _logs_ref="$5"
+    local on_fail_fn="${6:-}"
+    local i=0
+    for i in "${!_pids_ref[@]}"; do
+        if [ "${_pids_ref[$i]}" != "$done_pid" ]; then
+            continue
+        fi
+        if [ "$code" -eq 0 ]; then
+            printf '  ✓ Passed: %s\n' "${_names_ref[$i]}"
+        else
+            printf '  ✗ Failed: %s  →  %s\n' "${_names_ref[$i]}" "${_logs_ref[$i]}" >&2
+            if [ -n "$on_fail_fn" ]; then
+                "$on_fail_fn" "${_names_ref[$i]}" "${_logs_ref[$i]}"
+            fi
+            return 1
+        fi
+        _parallel_array_drop_index _pids_ref "$i"
+        _parallel_array_drop_index _names_ref "$i"
+        _parallel_array_drop_index _logs_ref "$i"
+        return 0
+    done
+    return 2
 }

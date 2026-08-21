@@ -2,29 +2,19 @@
 
 from __future__ import annotations
 
-import importlib.util
-import sys
 import unittest
-from pathlib import Path
 
 from tests.unit.bin.attr_helpers import call_attr
+from tests.unit.scripts.script_module_loader import load_scripts_module
 
-
-def _load_i18n_module(name: str):
-    """Load a scripts/i18n module without packaging it."""
-    repo_root = Path(__file__).resolve().parents[3]
-    module_path = repo_root / "scripts" / "i18n" / f"{name}.py"
-    sys.path.insert(0, str(module_path.parent))
-    spec = importlib.util.spec_from_file_location(name, module_path)
-    assert spec is not None and spec.loader is not None
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
-
-
-_SPACING = _load_i18n_module("patch_install_selection_spacing")
-_PATCHER = _load_i18n_module("patch_install_selection_strings")
+_SPACING = load_scripts_module(
+    "patch_install_selection_spacing",
+    ("scripts", "i18n", "patch_install_selection_spacing.py"),
+)
+_PATCHER = load_scripts_module(
+    "patch_install_selection_strings",
+    ("scripts", "i18n", "patch_install_selection_strings.py"),
+)
 
 AMHARIC_OBSOLETE = "ምንም ክፍሎች አልተመረጡም። መጫኑ ተሰርዟል።"
 ARABIC_GLUED = "اختيار غير صالح: %s. أدخل أرقامًا (1,2,3,4) أو أسماء مكوّنات أو all, أوnone."

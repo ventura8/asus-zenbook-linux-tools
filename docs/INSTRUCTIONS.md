@@ -86,14 +86,50 @@ This runs the interactive component wizard. Reconfigure with
 `sudo dpkg-reconfigure asus-zenbook-linux-tools` or
 `sudo asus-zenbook-configure`. Tag releases upload via
 `.github/workflows/ppa-release.yml` (secrets `GPG_PRIVATE_KEY`,
-`GPG_PASSPHRASE`). Current notes: [v1.0.2](releases/v1.0.2.md).
+`GPG_PASSPHRASE`). The same workflow also builds RPM, Arch, AppImage, Flatpak,
+and Snap artifacts and attaches them to the GitHub Release (native `.deb` plus
+multi-distro packages). Current notes: [v1.0.3](releases/v1.0.3.md).
+
+## GitHub Release native packages
+
+Download release assets and **`SHA256SUMS`** from the same GitHub Release tag.
+Verify the downloaded asset before installation (replace the filename):
+
+```bash
+grep -F 'your-asset-filename' SHA256SUMS | sha256sum -c -
+
+# Fedora / Rocky / Alma
+sudo dnf install ./asus-zenbook-linux-tools-*.rpm
+
+# openSUSE (checksum-verified RPM; zypper resolves dependencies)
+sudo zypper install --allow-unsigned-rpm ./asus-zenbook-linux-tools-*.rpm
+
+# Arch / Manjaro
+sudo pacman -U ./asus-zenbook-linux-tools-*.pkg.tar.zst
+
+# AppImage
+sudo ./asus-zenbook-linux-tools-*-x86_64.AppImage
+
+# Flatpak (system scope matches sudo run)
+sudo flatpak install --system ./asus-zenbook-linux-tools-*.flatpak
+sudo flatpak run org.github.ventura8.AsusZenBookLinuxTools
+
+# Snap (--dangerous required for local classic snaps; only after checksum verification)
+sudo snap install --dangerous ./asus-zenbook-linux-tools_*.snap
+```
+
+Reconfigure after install: `sudo asus-zenbook-configure`.
+
+Portable AppImage / Flatpak / Snap bundles on the release page are
+**installer-only** (they invoke the configure wizard with a bundled payload).
+Use native packages for full systemd and udev integration.
 
 ## Headless / Automation Install
 
 Human README quick-starts stay interactive. For CI or non-TTY automation only:
 
 ```bash
-TAG=v1.0.2
+TAG=v1.0.3
 git clone --depth 1 --branch "$TAG" \
   https://github.com/ventura8/asus-zenbook-linux-tools.git &&
   cd asus-zenbook-linux-tools &&

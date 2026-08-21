@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ASUS ZenBook Linux Tools
+Comment=Configure ASUS ZenBook hardware helpers for Linux
+Exec=AppRun
+Icon=asus-zenbook-linux-tools
+Categories=Settings;
+Terminal=true

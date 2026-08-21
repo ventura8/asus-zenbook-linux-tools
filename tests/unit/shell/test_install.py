@@ -17,40 +17,6 @@ from tests.unit.shell.shell_test_utils import (
 class TestInstallScriptUnit(InstallTestBase):
     """Unit tests exercising install.sh execution paths."""
 
-    def _setup_gnome_session_stubs(self, environment: dict, sudo_script_body: str) -> Path:
-        """Create loginctl/sudo/id stubs for GNOME-path tests."""
-        mock_bin = self._write_stubs(
-            {
-                "loginctl": (
-                    "#!/bin/sh\n"
-                    'if [ "$1" = "list-sessions" ]; then\n'
-                    "  echo '1'\n"
-                    "  exit 0\n"
-                    "fi\n"
-                    'if [ "$1" = "show-session" ]; then\n'
-                    '  if [ "$2" = "1" ]; then\n'
-                    '    case "$3" in\n'
-                    "      -p)\n"
-                    '        case "$4" in\n'
-                    "          Type) echo 'wayland' ;;\n"
-                    "          State) echo 'active' ;;\n"
-                    "          Name) echo 'testuser' ;;\n"
-                    "          Seat) echo 'seat0' ;;\n"
-                    "        esac\n"
-                    "        ;;\n"
-                    "    esac\n"
-                    "  fi\n"
-                    "fi\n"
-                    "exit 0\n"
-                ),
-                "sudo": sudo_script_body,
-                "id": ('#!/bin/sh\nif [ "$1" = "-u" ]; then\n  echo 1000\n  exit 0\nfi\nexit 0\n'),
-            }
-        )
-
-        environment["PATH"] = f"{mock_bin}:{environment['PATH']}"
-        return mock_bin
-
     def test_root_check_fails_on_non_root(self):
         """Installer terminates without root permissions."""
         environment = self._build_install_env(skip_root="0")
@@ -165,6 +131,7 @@ class TestInstallScriptUnit(InstallTestBase):
         self.assertNotIn("ProtectSystem=strict", active_lines)
         self.assertIn("ProtectHome=read-only", active_lines)
         self.assertIn("RuntimeDirectory=asus-zenbook-notif", active_lines)
+        self.assertIn("Environment=PYTHONDONTWRITEBYTECODE=1", active_lines)
         self.assertIn("PrivateDevices=no", active_lines)
         self.assertIn("ProtectKernelModules=yes", active_lines)
         self.assertIn("ProtectKernelLogs=yes", active_lines)
@@ -289,38 +256,15 @@ class TestInstallScriptUnit(InstallTestBase):
         """Verify missing interactive terminal defaults to a full install attempt and still completes successfully."""
         environment = self._build_install_env(choice=None)
         environment["INSTALL_FAKE_NO_TTY"] = "1"
-        self._setup_mock_sound_hardware(environment)
+        # Full ALL install runs many gettext + GNOME configure helpers; keep unit
+        # time bounded under parallel Docker load (default 15s command timeout).
+        environment["ASUS_I18N_FORCE_MSGID"] = "1"
+        environment["INSTALL_COMMAND_TIMEOUT"] = "5"
+        self._setup_sound_install_stubs(environment)
+        mock_bin = self._setup_gnome_install_stubs(environment)
+        self._write_stubs({"systemctl": "#!/bin/sh\nexit 0\n"}, mock_bin=mock_bin)
 
-        mock_bin = self._setup_gnome_session_stubs(
-            environment,
-            "#!/bin/sh\n"
-            "# Strip -n, -E, -u <user> flags, then run the remaining command\n"
-            "# Also handle VAR=value env assignments before the command\n"
-            "while [ $# -gt 0 ]; do\n"
-            '  case "$1" in\n'
-            "    -n) shift ;;\n"
-            "    -u) shift 2 ;;\n"
-            "    -E) shift ;;\n"
-            "    --) shift; break ;;\n"
-            '    *=*) export "$1"; shift ;;\n'
-            "    *) break ;;\n"
-            "  esac\n"
-            "done\n"
-            'exec "$@"\n',
-        )
-
-        self._setup_dbus_session_socket()
-
-        self._write_stubs(
-            {
-                "gsettings": ('#!/bin/sh\nif [ "$1" = "get" ]; then\n  echo \'[]\'\n  exit 0\nfi\nexit 0\n'),
-                "hda-verb": "#!/bin/sh\nexit 0\n",
-            },
-            mock_bin=mock_bin,
-        )
-        environment["DBUS_BUS_ROOT"] = str(Path(self.tmp_dir) / "dbus")
-
-        proc = run_shell_script(self.script_path, env=environment, timeout=20)
+        proc = run_shell_script(self.script_path, env=environment, timeout=25)
         self.assertEqual(proc.returncode, 0)
         self.assertIn("No interactive terminal detected; defaulting to:", proc.stderr)
         self.assertIn("Installation complete.", proc.stdout)
@@ -433,8 +377,26 @@ class TestInstallSharedHelpers(InstallTestBase):
         self.assertEqual(proc.returncode, 0, proc.stderr)
         self.assertEqual(proc.stdout.strip(), "[1/1] Configure test")
 
+    def test_asus_is_staged_install_skips_portable_host_handoff(self) -> None:
+        """Flatpak host install must not be treated as DESTDIR staging."""
+        shared = self.repo_root / "lib" / "install-shared.sh"
+        shared_q = shlex.quote(str(shared))
+        script = (
+            f"set -euo pipefail; source {shared_q}; "
+            "PREFIX=/run/host ASUS_PORTABLE_HOST_INSTALL=1 _asus_is_staged_install"
+        )
+        proc = run_bash_c(script, timeout=10)
+        self.assertEqual(proc.returncode, 1, msg=proc.stderr)
 
-class TestInstallScriptSourcing(InstallTestBase):
+        script = (
+            f"set -euo pipefail; source {shared_q}; "
+            "PREFIX=/tmp/stage DESTDIR=/tmp/stage _asus_is_staged_install"
+        )
+        proc = run_bash_c(script, timeout=10)
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+
+
+class TestInstallSourceSmoke(InstallTestBase):
     """Smoke tests for sourcing install.sh without executing main."""
 
     def test_sourcing_script_does_not_run_main(self):

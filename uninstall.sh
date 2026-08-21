@@ -143,6 +143,9 @@ _run_systemctl_unit_action() {
     if _is_absent_unit_error "$err_text"; then
         return 0
     fi
+    if _is_systemctl_transport_unavailable "$err_text"; then
+        return 0
+    fi
     [ -z "$err_text" ] && err_text="(no stderr output)"
     echo "Warning: systemctl $action failed for $unit: $err_text" >&2
     return 1
@@ -164,6 +167,9 @@ _is_inactive_is_active_status() {
 
 _report_service_inactive_status() {
     local unit="$1" status="$2" err_text="$3"
+    if _is_systemctl_transport_unavailable "$err_text"; then
+        return 0
+    fi
     if [ "$status" -eq 0 ]; then
         echo "Warning: service remained active after stop: $unit" >&2
         return 1
@@ -182,9 +188,25 @@ _report_service_inactive_status() {
     return 1
 }
 
+_is_systemctl_transport_unavailable() {
+    local message="$1"
+    printf '%s\n' "$message" | grep -Eqi \
+        'System has not been booted with systemd|Failed to connect to bus|Failed to get D-Bus connection'
+}
+
+_systemctl_is_usable() {
+    command -v "$SYSTEMCTL" >/dev/null 2>&1 || { [ -n "$SYSTEMCTL" ] && [ -x "$SYSTEMCTL" ]; }
+}
+
 _run_systemctl_daemon_reload() {
+    if ! _systemctl_is_usable; then
+        return 0
+    fi
     local err_text=""
     if _run_systemctl_capture err_text "$SYSTEMCTL" daemon-reload; then
+        return 0
+    fi
+    if _is_systemctl_transport_unavailable "$err_text"; then
         return 0
     fi
     [ -z "$err_text" ] && err_text="(no stderr output)"
@@ -249,8 +271,11 @@ stop_and_disable_services() {
         asus-sound-fix.service
     )
 
+    if ! _systemctl_is_usable; then
+        return 0
+    fi
+
     echo "Stopping and disabling systemd services..."
-    _require_systemctl || return 1
 
     _stop_units "${units[@]}" || status=1
     _verify_units_inactive "${units[@]}" || status=1
@@ -262,6 +287,7 @@ stop_and_disable_services() {
 _remove_manifest_installed_files() {
     local failed=0
     _asus_remove_manifest_bin_files failed
+    _asus_remove_bin_bytecode || failed=1
     _asus_remove_manifest_lib_files failed
     _asus_remove_legacy_lib_install_helpers failed
     _asus_remove_manifest_sys_files failed
@@ -282,7 +308,9 @@ _remove_shared_install_files() {
     _asus_remove_manifest_share_files failed
     _asus_soft rmdir "${PREFIX:-}/usr/local/share/asus-zenbook-linux-tools/icons" 2>/dev/null
     _asus_soft rmdir "${PREFIX:-}/usr/local/share/asus-zenbook-linux-tools" 2>/dev/null
-    _asus_soft gtk-update-icon-cache -f -t "${PREFIX:-}/usr/local/share/icons/hicolor"
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        _asus_soft gtk-update-icon-cache -f -t "${PREFIX:-}/usr/local/share/icons/hicolor"
+    fi
     return "$failed"
 }
 

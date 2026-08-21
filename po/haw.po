@@ -44,12 +44,12 @@ msgstr "Kiʻi kiʻi ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Hoʻonohonoho ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "Ua mākaukau nā mea hana ASUS ZenBook Linux e hoʻohana."
 
@@ -99,7 +99,7 @@ msgstr "Hoʻohana ʻia ka pahupaʻikiʻi"
 msgid "Camera privacy"
 msgstr "Palekana pahupaʻikiʻi"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "E koho i nā ʻāpana"
 
@@ -166,11 +166,11 @@ msgstr "Hoʻokomo ʻia ka hoʻonui ʻia ʻo GNOME ASUS Window Swap."
 msgid "GNOME shortcuts configured."
 msgstr "Hoʻonohonoho ʻia nā pōkole GNOME."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Nā hiʻohiʻona paʻa no kāu papapihi Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "E hoʻouka i nā palapala a me nā lawelawe"
 
@@ -182,11 +182,11 @@ msgstr "E hoʻouka i nā mea hilinaʻi ʻōnaehana"
 msgid "Installation cancelled by user."
 msgstr "Hoʻopau ʻia ke kau ʻana e ka mea hoʻohana."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Paʻa ka hoʻokomo ʻana."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Ke hoʻokomo nei i nā mea hana ASUS ZenBook Linux %s."
@@ -223,7 +223,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Koho hewa: %s. E hoʻokomo i nā helu (1,2,3,4), nā inoa ʻāpana, a i ʻole all, "
+msgstr ""
+"Koho hewa: %s. E hoʻokomo i nā helu (1,2,3,4), nā inoa ʻāpana, a i ʻole all, "
 "a i ʻole none."
 
 #: lib/install-kde.sh:309
@@ -252,7 +253,7 @@ msgstr "Hōʻike nui wale nō"
 msgid "Mode: %s"
 msgstr "Ke ano: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "ʻAʻohe mea i koho ʻia. ʻAʻole i hoʻokomo ʻia kekahi mea."
 
@@ -273,7 +274,8 @@ msgstr "Hana (Hoʻonui)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "E kaomi iā Enter e hoʻokomo i nā ʻāpana āpau i manaʻo ʻia, a i ʻole "
+msgstr ""
+"E kaomi iā Enter e hoʻokomo i nā ʻāpana āpau i manaʻo ʻia, a i ʻole "
 "ekikokiko iā 'all' a i ʻole 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -292,7 +294,7 @@ msgstr "Olinolino pale pale"
 msgid "ScreenPad only"
 msgstr "ScreenPad wale nō"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

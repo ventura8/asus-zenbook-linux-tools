@@ -27,6 +27,16 @@ _require_effective_root() {
     fi
 }
 
+_asus_is_staged_install() {
+    if [ "${ASUS_PORTABLE_HOST_INSTALL:-0}" = "1" ]; then
+        return 1
+    fi
+    if [ -n "${DESTDIR:-}" ] || [ -n "${PREFIX:-}" ]; then
+        return 0
+    fi
+    return 1
+}
+
 _install_resolve_session_bus_root() {
     if [ -n "${BUS_ROOT:-}" ]; then
         printf '%s\n' "$BUS_ROOT"

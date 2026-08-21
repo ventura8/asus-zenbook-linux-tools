@@ -42,12 +42,12 @@ msgstr "ASUS 스크린샷"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux 설정 %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux 도구를 사용할 준비가 되었습니다."
 
@@ -96,7 +96,7 @@ msgstr "카메라 활성화됨"
 msgid "Camera privacy"
 msgstr "카메라 개인 정보 보호"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "구성 요소 선택"
 
@@ -163,11 +163,11 @@ msgstr "GNOME ASUS Window Swap 확장이 설치되었습니다."
 msgid "GNOME shortcuts configured."
 msgstr "그놈 단축키가 구성되었습니다."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Linux 데스크탑을 위한 하드웨어 기능"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "스크립트 및 서비스 설치"
 
@@ -179,11 +179,11 @@ msgstr "시스템 종속성 설치"
 msgid "Installation cancelled by user."
 msgstr "사용자가 설치를 취소했습니다."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "설치가 완료되었습니다."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux 도구 설치 %s."
@@ -217,7 +217,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "잘못된 선택: %s. 숫자(1,2,3,4), 구성 요소 이름, all 또는 none을 입력하세요."
+msgstr ""
+"잘못된 선택: %s. 숫자(1,2,3,4), 구성 요소 이름, all 또는 none을 입력하세요."
 
 #: lib/install-kde.sh:309
 msgid "KDE Plasma shortcuts configured."
@@ -245,7 +246,7 @@ msgstr "메인 디스플레이만"
 msgid "Mode: %s"
 msgstr "모드: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "선택한 구성 요소가 없습니다. 아무 것도 설치되지 않았습니다."
 
@@ -266,7 +267,9 @@ msgstr "성능(부스트)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Enter를 눌러 모든 권장 구성 요소를 설치하거나 'all' 또는 'none' 을 입력하세요."
+msgstr ""
+"Enter를 눌러 모든 권장 구성 요소를 설치하거나 'all' 또는 'none' 을 입력하세"
+"요."
 
 #: bin/asus-fan-toggle.sh:95
 msgid "Quiet (Silent)"
@@ -284,7 +287,7 @@ msgstr "스크린패드 밝기"
 msgid "ScreenPad only"
 msgstr "ScreenPad 전용"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

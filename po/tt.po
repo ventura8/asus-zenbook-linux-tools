@@ -42,12 +42,12 @@ msgstr "ASUS Скриншот"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux көйләве %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux кораллары кулланырга әзер."
 
@@ -97,7 +97,7 @@ msgstr "Камера кушылган"
 msgid "Camera privacy"
 msgstr "Камера хосусыйлыгы"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Компонентларны сайлагыз"
 
@@ -164,11 +164,11 @@ msgstr "GNOME ASUS тәрәзә своп киңәйтү урнаштырылга
 msgid "GNOME shortcuts configured."
 msgstr "GNOME кыска юллары конфигурацияләнгән."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Linux өстәле өчен җиһаз үзенчәлекләре"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Сценарийлар һәм хезмәтләр урнаштырыгыз"
 
@@ -180,11 +180,11 @@ msgstr "Система бәйләнешләрен урнаштырыгыз"
 msgid "Installation cancelled by user."
 msgstr "Урнаштыру кулланучы тарафыннан юкка чыгарылды."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Урнаштыру тәмамланды."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ASUS ZenBook Linux коралларын урнаштыру %s."
@@ -219,7 +219,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Яраксыз сайлау: %s. Саннар (1,2,3,4), компонент исемнәре яки all, яки none "
+msgstr ""
+"Яраксыз сайлау: %s. Саннар (1,2,3,4), компонент исемнәре яки all, яки none "
 "кертегез."
 
 #: lib/install-kde.sh:309
@@ -248,7 +249,7 @@ msgstr "Төп дисплей гына"
 msgid "Mode: %s"
 msgstr "Тәртип: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Компонентлар сайланмады. Берни дә урнаштырылмады."
 
@@ -269,7 +270,8 @@ msgstr "Спектакль (көчәйтү)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Барлык тәкъдим ителгән компонентларны урнаштыру өчен Enter басыгыз яки 'all' "
+msgstr ""
+"Барлык тәкъдим ителгән компонентларны урнаштыру өчен Enter басыгыз яки 'all' "
 "яки 'none' языгыз."
 
 #: bin/asus-fan-toggle.sh:95
@@ -288,7 +290,7 @@ msgstr "ScreenPad яктылыгы"
 msgid "ScreenPad only"
 msgstr "ScreenPad гына"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

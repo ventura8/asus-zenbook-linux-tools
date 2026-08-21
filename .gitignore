@@ -40,12 +40,30 @@ sign-code.sh
 /*.changes
 /*.dsc
 /*.tar.*
+/.rpm-build*/
+/packaging/arch/pkg/
+/packaging/arch/src/
+/packaging/arch/*.pkg.tar.*
+/packaging/appimage/*.AppImage
+/packaging/appimage/AppDir/
+/packaging/flatpak/builddir/
+/packaging/flatpak/repo/
+/packaging/flatpak/*.flatpak
+/packaging/snap/*.snap
+/packaging/snap/parts/
+/packaging/snap/stage/
+/packaging/snap/prime/
+# snap build now runs from repo root via the top-level "snap" symlink.
+/*.snap
+/stage/
+/prime/
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
 #   before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+!packaging/**/*.spec
 
 # Installer logs
 pip-log.txt

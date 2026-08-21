@@ -172,8 +172,12 @@ _load_install_helper_libraries() {
     source "$INSTALL_MANIFEST_LIB"
 }
 
-_bootstrap_installer_after_reexec() {
-    PREFIX="${DESTDIR:-}"
+_bootstrap_set_install_prefix_paths() {
+    if [ -n "${ASUS_HOST_ROOT:-}" ]; then
+        PREFIX="${ASUS_HOST_ROOT}"
+    else
+        PREFIX="${DESTDIR:-}"
+    fi
     BIN_DIR="${PREFIX}/usr/local/bin"
     LIB_DIR="${PREFIX}/usr/local/lib/asus-zenbook-linux-tools"
     SYS_DIR="${PREFIX}/etc/systemd/system"
@@ -183,15 +187,24 @@ _bootstrap_installer_after_reexec() {
     SYSTEMCTL="${SYSTEMCTL_CMD:-systemctl}"
     SUDO_CMD="${SUDO_CMD:-sudo}"
     STRICT_COMPONENTS="${INSTALL_STRICT_COMPONENTS:-0}"
+}
 
+_bootstrap_resolve_installer_script_dir() {
     if [ -n "${BASH_SOURCE[0]-}" ]; then
         SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    elif _install_source_dir_is_valid; then
-        SCRIPT_DIR="$INSTALL_SOURCE_DIR"
-    else
-        echo "Error: Unable to resolve installer source directory (set INSTALL_SOURCE_DIR for piped installs)." >&2
-        exit 1
+        return 0
     fi
+    if _install_source_dir_is_valid; then
+        SCRIPT_DIR="$INSTALL_SOURCE_DIR"
+        return 0
+    fi
+    echo "Error: Unable to resolve installer source directory (set INSTALL_SOURCE_DIR for piped installs)." >&2
+    exit 1
+}
+
+_bootstrap_installer_after_reexec() {
+    _bootstrap_set_install_prefix_paths
+    _bootstrap_resolve_installer_script_dir
     INSTALL_OS_DETECTION_LIB="$(_resolve_startup_library install-os-detection.sh)"
     INSTALL_GNOME_LIB="$(_resolve_startup_library install-gnome.sh)"
     INSTALL_KDE_LIB="$(_resolve_startup_library install-kde.sh)"

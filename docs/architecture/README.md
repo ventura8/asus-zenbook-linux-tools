@@ -27,6 +27,14 @@
 │   └── workflows/
 │       ├── ci.yml
 │       └── ppa-release.yml
+├── packaging/
+│   ├── stage-payload.sh
+│   ├── asus-zenbook-configure
+│   ├── rpm/
+│   ├── arch/
+│   ├── appimage/
+│   ├── flatpak/
+│   └── snap/
 ├── debian/
 │   ├── changelog
 │   ├── control
@@ -443,8 +451,27 @@
   `/usr/local/lib/asus-zenbook-linux-tools` for parity with `install.sh`.
 - Tag-triggered [`.github/workflows/ppa-release.yml`](../../.github/workflows/ppa-release.yml)
   uploads a signed source package to `ppa:ventura8/asus-zenbook-linux-tools`
-  for **resolute** only (Python ≥ 3.13). CI `deb-package` and PPA build jobs tee
+  for **resolute** only (Python ≥ 3.13). CI `package-smoke`'s `deb` cell and PPA build jobs tee
   apt dependency installs to `reports/distro-logs/` for post-mortem review.
+
+### Multi-distro release packaging (`packaging/`)
+
+- [`packaging/stage-payload.sh`](../../packaging/stage-payload.sh) stages the shared
+  payload (bin/lib/systemd/gnome/udev/assets, gettext `.mo`, configure helper).
+- **RPM**: [`packaging/rpm/asus-zenbook-linux-tools.spec`](../../packaging/rpm/asus-zenbook-linux-tools.spec)
+  with Fedora/EL/openSUSE conditional `Requires`; built in tag workflow via Docker
+  (`fedora:44`, `rocky:10`, `opensuse/tumbleweed`).
+- **Arch**: [`packaging/arch/PKGBUILD`](../../packaging/arch/PKGBUILD) +
+  [`asus-zenbook-linux-tools.install`](../../packaging/arch/asus-zenbook-linux-tools.install).
+- **Portable installers** (experimental): AppImage, Flatpak, Snap under
+  `packaging/appimage/`, `packaging/flatpak/`, `packaging/snap/` — invoke
+  `asus-zenbook-configure` with bundled payload; not a substitute for native packages.
+- CI: `package-smoke` matrix builds all seven release formats via
+  [`scripts/build_release_package.sh`](../../scripts/build_release_package.sh)
+  (shared kinds in [`scripts/release_package_kinds.sh`](../../scripts/release_package_kinds.sh));
+  local `--full` runs Docker RPM, Arch, AppImage, Flatpak, and Snap smoke through
+  [`scripts/run_release_package_smoke.sh`](../../scripts/run_release_package_smoke.sh)
+  (native and portable workers in parallel).
 
 ### Shell Complexity & Quality Assurance (`tools/shell_complexity.py`)
 

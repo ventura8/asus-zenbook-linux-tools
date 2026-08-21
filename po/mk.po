@@ -46,12 +46,12 @@ msgstr "Слика од екранот на ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Поставување ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools е подготвен за употреба."
 
@@ -102,7 +102,7 @@ msgstr "Камерата е овозможена"
 msgid "Camera privacy"
 msgstr "Приватност на камерата"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Изберете компоненти"
 
@@ -169,11 +169,11 @@ msgstr "Инсталирана е екстензијата за размена �
 msgid "GNOME shortcuts configured."
 msgstr "Кратенките на GNOME се конфигурирани."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Хардверски карактеристики за вашиот десктоп Линукс"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Инсталирајте скрипти и услуги"
 
@@ -185,11 +185,11 @@ msgstr "Инсталирајте системски зависности"
 msgid "Installation cancelled by user."
 msgstr "Инсталацијата е откажана од корисникот."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Инсталирањето е завршено."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Инсталирање на ASUS ZenBook Linux Tools %s."
@@ -224,7 +224,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Неважечки избор: %s. Внесете броеви (1,2,3,4), имиња на компоненти или all, "
+msgstr ""
+"Неважечки избор: %s. Внесете броеви (1,2,3,4), имиња на компоненти или all, "
 "или none."
 
 #: lib/install-kde.sh:309
@@ -253,7 +254,7 @@ msgstr "Само главен дисплеј"
 msgid "Mode: %s"
 msgstr "Режим: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Не беа избрани компоненти. Ништо не беше инсталирано."
 
@@ -274,7 +275,8 @@ msgstr "Перформанси (засилување)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Притиснете Enter за да ги инсталирате сите препорачани компоненти иливнесете "
+msgstr ""
+"Притиснете Enter за да ги инсталирате сите препорачани компоненти иливнесете "
 "'all' или 'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -293,7 +295,7 @@ msgstr "Осветленост на екранот"
 msgid "ScreenPad only"
 msgstr "Само ScreenPad"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

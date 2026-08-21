@@ -42,12 +42,12 @@ msgstr "ASUS གློག་བརྙན་པར་རིས།"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ASUS ZenBook Linux སྒྲིག་འགོད %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux ལག་ཆ་བེད་སྤྱོད་གཏོང་རྒྱུར་གྲ་སྒྲིག་ཡོད།"
 
@@ -96,7 +96,7 @@ msgstr "པར་ཆས་བཀོལ་སྤྱོད་བྱས།"
 msgid "Camera privacy"
 msgstr "པར་ཆས་ཀྱི་གསང་བ།"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "གྲུབ་ཆ་འདེམས།"
 
@@ -163,11 +163,11 @@ msgstr "GNOME ASUS སྒེའུ་ཁུང་བརྗེ་རེས་ར�
 msgid "GNOME shortcuts configured."
 msgstr "GNOMEམགྱོགས་ཐབས་སྒྲིག་བཀོད་བྱས།"
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "ཁྱེད་རང་གི་ལི་ནགསི་ཡིག་ཆའི་སྒྲིག་ཆས་ཀྱི་ཁྱད་ཆོས།"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "ཡིག་གཟུགས་དང་ཞབས་ཞུ་སྒྲིག་འཇུག་བྱེད་པ།"
 
@@ -179,11 +179,11 @@ msgstr "མ་ལག་རྟེན་གཞི་འཛུགས་པ།"
 msgid "Installation cancelled by user."
 msgstr "བཀོལ་སྤྱོད་པས་སྒྲིག་འཇུག་མེད་པར་བཟོས།"
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "སྒྲིག་འཇུག་མཇུག་སྒྲིལ་ཡོད།"
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ཨེ་ཨེས་ཨུས་ཟེན་བུཀ་ལི་ནགསི་ལག་ཆ་སྒྲིག་འཇུག་བྱེད་བཞིན་ཡོད། %s"
@@ -245,7 +245,7 @@ msgstr "གཙོ་བོའི་འགྲེམས་སྟོན་ཁོ་
 msgid "Mode: %s"
 msgstr "ཐབས་ལམ། %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "ཆ་ཤས་གང་ཡང་འདེམས་སྒྲུག་བྱས་མེད། གཞིགས་འཇུག་བྱ་མེད།"
 
@@ -284,7 +284,7 @@ msgstr "གློག་བརྙན་གྱི་འོད་མདངས།"
 msgid "ScreenPad only"
 msgstr "གློག་ཀླད་ཁོ་ན།"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -44,12 +44,12 @@ msgstr "Pikantsary tamin'ny asus"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "Fametrahana ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools dia vonona hampiasaina."
 
@@ -99,7 +99,7 @@ msgstr "Nalefa ny fakan-tsary"
 msgid "Camera privacy"
 msgstr "Fiarovana manokan'ny fakantsary"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "Mifidiana singa"
 
@@ -166,11 +166,11 @@ msgstr "GNOME ASUS Window Swap fanitarana napetraka."
 msgid "GNOME shortcuts configured."
 msgstr "Namboarina ny hitsin-dàlana GNOME."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "Fitaovana fitaovana ho an'ny biraonao Linux"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "Mametraka script sy serivisy"
 
@@ -182,11 +182,11 @@ msgstr "Mametraka fiankinan'ny rafitra"
 msgid "Installation cancelled by user."
 msgstr "Nofoanan'ny mpampiasa ny fametrahana."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "Vita ny fametrahana."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "Fametrahana ASUS ZenBook Linux Tools %s."
@@ -222,7 +222,8 @@ msgstr ""
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
-msgstr "Safidy tsy mety: %s. Ampidiro isa (1,2,3,4), anaran'ny singa, na all, na "
+msgstr ""
+"Safidy tsy mety: %s. Ampidiro isa (1,2,3,4), anaran'ny singa, na all, na "
 "none, na none."
 
 #: lib/install-kde.sh:309
@@ -251,7 +252,7 @@ msgstr "Fampisehoana lehibe ihany"
 msgid "Mode: %s"
 msgstr "Fomba: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "Tsy nisy singa voafantina. Tsy nisy nampidirina."
 
@@ -272,7 +273,8 @@ msgstr "Fahombiazana (Fampiakarana)"
 #: lib/install-selection.sh:190
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
-msgstr "Tsindrio Enter hametrahana ny singa rehetra atolotra, na manorata 'all' na "
+msgstr ""
+"Tsindrio Enter hametrahana ny singa rehetra atolotra, na manorata 'all' na "
 "'none'."
 
 #: bin/asus-fan-toggle.sh:95
@@ -291,7 +293,7 @@ msgstr "Famirapiratry ny ScreenPad"
 msgid "ScreenPad only"
 msgstr "ScreenPad ihany"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

@@ -42,12 +42,12 @@ msgstr "ພາບໜ້າຈໍ ASUS"
 msgid "ASUS ZenBook"
 msgstr "ASUS ZenBook"
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:100
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr "ການຕັ້ງຄ່າ ASUS ZenBook Linux %s"
 
-#: install.sh:295
+#: install.sh:308
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr "ASUS ZenBook Linux Tools ພ້ອມທີ່ຈະໃຊ້ແລ້ວ."
 
@@ -96,7 +96,7 @@ msgstr "ເປີດກ້ອງແລ້ວ"
 msgid "Camera privacy"
 msgstr "ຄວາມເປັນສ່ວນຕົວກ້ອງຖ່າຍຮູບ"
 
-#: install.sh:262
+#: install.sh:275
 msgid "Choose components"
 msgstr "ເລືອກອົງປະກອບ"
 
@@ -163,11 +163,11 @@ msgstr "ຕິດຕັ້ງສ່ວນຂະຫຍາຍ GNOME ASUS Window Sw
 msgid "GNOME shortcuts configured."
 msgstr "ຕັ້ງຄ່າທາງລັດ GNOME ແລ້ວ."
 
-#: lib/install-shared.sh:101
+#: lib/install-shared.sh:111
 msgid "Hardware features for your Linux desktop"
 msgstr "ຄຸນສົມບັດຮາດແວສຳລັບເດັສທັອບ Linux ຂອງທ່ານ"
 
-#: install.sh:289
+#: install.sh:302
 msgid "Install scripts and services"
 msgstr "ຕິດຕັ້ງສະຄຣິບ ແລະການບໍລິການ"
 
@@ -179,11 +179,11 @@ msgstr "ຕິດຕັ້ງການຂຶ້ນກັບລະບົບ"
 msgid "Installation cancelled by user."
 msgstr "ການຕິດຕັ້ງຖືກຍົກເລີກໂດຍຜູ້ໃຊ້."
 
-#: install.sh:294
+#: install.sh:307
 msgid "Installation complete."
 msgstr "ການຕິດຕັ້ງສໍາເລັດ."
 
-#: bin/asus_install_selection_tui.py:525
+#: bin/asus_install_selection_tui.py:526
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr "ການຕິດຕັ້ງ ASUS ZenBook Linux Tools %s."
@@ -245,7 +245,7 @@ msgstr "ຈໍສະແດງຜົນຕົ້ນຕໍເທົ່ານັ້
 msgid "Mode: %s"
 msgstr "ໂໝດ: %s"
 
-#: install.sh:268
+#: install.sh:281
 msgid "No components were selected. Nothing was installed."
 msgstr "ບໍ່ມີອົງປະກອບໃດຖືກເລືອກ. ບໍ່ມີຫຍັງຖືກຕິດຕັ້ງ."
 
@@ -284,7 +284,7 @@ msgstr "ຄວາມສະຫວ່າງຂອງ ScreenPad"
 msgid "ScreenPad only"
 msgstr "ScreenPad ເທົ່ານັ້ນ"
 
-#: bin/asus_install_selection_tui.py:527
+#: bin/asus_install_selection_tui.py:528
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "
