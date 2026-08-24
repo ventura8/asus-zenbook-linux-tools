@@ -67,8 +67,9 @@ export PATH="${HOME}/.local/bin:${PATH}"
 pipx install poetry==2.4.1
 poetry install --with dev
 
-npm install --prefix="${HOME}/.local" markdownlint-cli@0.49.1 eslint@9.39.5
-# Or use the repo pin for GNOME extension JS linting:
+npm install --prefix="${HOME}/.local" markdownlint-cli@0.49.1 eslint@10.9.0
+# Or use the repo pin for GNOME extension JS linting (requires Node
+# ^20.19.0 || ^22.13.0 || >=24 for ESLint 10):
 # npm ci
 ```
 
@@ -88,7 +89,7 @@ This runs the interactive component wizard. Reconfigure with
 `.github/workflows/ppa-release.yml` (secrets `GPG_PRIVATE_KEY`,
 `GPG_PASSPHRASE`). The same workflow also builds RPM, Arch, AppImage, Flatpak,
 and Snap artifacts and attaches them to the GitHub Release (native `.deb` plus
-multi-distro packages). Current notes: [v1.0.4](releases/v1.0.4.md).
+multi-distro packages). Current notes: [v1.0.5](releases/v1.0.5.md).
 
 ## GitHub Release native packages
 
@@ -129,7 +130,7 @@ Use native packages for full systemd and udev integration.
 Human README quick-starts stay interactive. For CI or non-TTY automation only:
 
 ```bash
-TAG=v1.0.4
+TAG=v1.0.5
 git clone --depth 1 --branch "$TAG" \
   https://github.com/ventura8/asus-zenbook-linux-tools.git &&
   cd asus-zenbook-linux-tools &&

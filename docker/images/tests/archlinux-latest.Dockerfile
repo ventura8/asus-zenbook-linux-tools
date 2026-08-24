@@ -1,4 +1,4 @@
-FROM archlinux:base-devel@sha256:ee205c220399524a683cf495d411691b921baed8ab47cdc6d732efa782fae484
+FROM archlinux:base-devel@sha256:714acd1eef9ae997d95691b1c5220ada0076185b77857c1813f02de0fa83cf7b
 
 COPY docker/images/tests/scripts/archlinux-mirrorlist /etc/pacman.d/mirrorlist
 COPY docker/images/tests/scripts/pacman-retry.sh /tmp/pacman-retry.sh

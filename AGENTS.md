@@ -6,7 +6,7 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.4`, displayed as `v1.0.4`). After bumping `VERSION`, run
+  (currently `1.0.5`, displayed as `v1.0.5`). After bumping `VERSION`, run
   `scripts/sync_poetry_version.sh` (also invoked from `step_version_sync` and
   `install-poetry-deps.sh`) so `pyproject.toml` `tool.poetry.version` matches; do not hand-edit
   the poetry version. PKGBUILD, RPM `%version`, and Snap `adopt-info` read `VERSION` at build time
@@ -1219,8 +1219,27 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   install/restore alone; `restore_lxqt_shortcuts` owns safe `config_dir`
   deletion like XFCE. `Meta%2BP` also binds `asus-display-mode.sh` (runtime
   Display Toggle still prefers ydotool/xdotool Super+P; `XF86Display` covers the
-  hardware Display key). Keep `install-lxqt.sh` ≤600 lines (split helpers if
-  needed; never delete comments to shrink). Cinnamon uses
+  hardware Display key). **Security invariant**: `_lxqt_ensure_conf_dir` /
+  `_lxqt_atomic_write_conf` must never `mkdir`/`chmod`/write the user's
+  `~/.config` tree directly as root — they go through `_lxqt_mkdir_chmod_0700`
+  / `_lxqt_atomic_write_conf_guard` + `_lxqt_write_tmp_and_swap`, which always
+  dispatch mutations via `_install_run_as_user` (same privilege-drop pattern as
+  GNOME extension installs); every path is also symlink-checked via
+  `_lxqt_reject_symlink` (walks parent components) before use, both as root
+  and as the non-root fallback. `_lxqt_snapshot_conf` must fail closed when
+  the conf exists but cannot be read (timeout/permission) — only a truly
+  missing path yields an empty snapshot; never treat a failed read as
+  “absent” (that would backup `.absent` and rewrite the conf with only our
+  sections). As root it reads via `_lxqt_snapshot_read_as_user` (never a
+  direct root `cat` of `$conf`). Kcov `lxqt_helpers` must exercise that root
+  branch with the `id -u` stub (`_run_lxqt_root_snapshot_paths`: readable,
+  missing, present-but-unreadable, and `restore_absent` abort on snapshot
+  fail) — non-root snapshot hits alone leave `lib/install-lxqt.sh` under the
+  ≥90% gate. Any new installer code touching a session
+  user's home directory must follow the same drop-privileges-then-reject-
+  symlinks pattern to avoid reintroducing the v1.0.5 LPE fix. Keep
+  `install-lxqt.sh` ≤600 lines (split helpers like `install-lxqt-sections.sh`
+  if needed; never delete comments to shrink). Cinnamon uses
   `org.cinnamon.desktop.keybindings` custom-list + relocatable custom slots and
   clears `video-outputs` before binding `XF86Display` / `<Super>F12` /
   `<Super><Shift>s`. MATE uses relocatable

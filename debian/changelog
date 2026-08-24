@@ -1,3 +1,14 @@
+asus-zenbook-linux-tools (1.0.5) resolute; urgency=medium
+
+  * Hardened LXQt configure to drop root privileges before touching the
+    session user's ~/.config tree, closing a symlink-following privilege
+    escalation (root previously chmod/chown'd through a user-controlled
+    symlink under $HOME).
+  * Added explicit symlink rejection on the LXQt config directory and
+    globalkeyshortcuts.conf paths as defense-in-depth.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Mon, 24 Aug 2026 12:30:00 +0300
+
 asus-zenbook-linux-tools (1.0.4) resolute; urgency=medium
 
   * Comprehensive multi-desktop E2E test coverage across GNOME, KDE Plasma,

@@ -65,6 +65,17 @@ _run_lxqt_restore_paths() {
     restore_lxqt_shortcuts "$user" "$state_uid"
 }
 
+_lxqt_snapshot_or_fail() {
+    # Print snapshot path, or record a kcov scenario failure and return 1.
+    # Callers that discard status still fail the suite via KCOV_SCENARIO_FAIL_FILE.
+    local user="$1" conf="$2" why="$3" snap
+    snap=$(_lxqt_snapshot_conf "$user" "$conf") || {
+        _kcov_record_scenario_failure lxqt "$why"
+        return 1
+    }
+    printf '%s\n' "$snap"
+}
+
 _run_lxqt_state_branch_paths() {
     local user="$1" conf="$2" scratch blocked max_file mv_conf
     scratch="$STATE_DIR/lxqt-branch-paths"
@@ -90,12 +101,140 @@ _run_lxqt_state_branch_paths() {
     mv_conf="$scratch/mv-conf"
     mkdir -p "$mv_conf/$(basename "$mv_conf").tmp"
     _soft_expect 1 _lxqt_atomic_write_conf "$user" "$mv_conf" "$conf"
+    local snap
+    snap=$(_lxqt_snapshot_or_fail "$user" "$conf" \
+        "state: _lxqt_snapshot_conf failed for readable conf") || return 1
+    # Missing conf → empty snapshot; present-but-unreadable (dir) → fail closed.
+    local miss_snap
+    miss_snap=$(_lxqt_snapshot_or_fail "$user" \
+        "$scratch/absent-globalkeyshortcuts.conf" \
+        "state: _lxqt_snapshot_conf failed for missing conf") || return 1
+    _lxqt_rm_tmp "$miss_snap"
+    mkdir -p "$scratch/unreadable-conf-as-dir"
+    _soft_expect 1 _lxqt_snapshot_conf "$user" "$scratch/unreadable-conf-as-dir"
     _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         LXQT_MKTEMP_COUNT_FILE="$scratch/mktemp-count" LXQT_MKTEMP_FAIL_CALL=2 \
-        _lxqt_apply_all_bindings "$user" "$conf" "$scratch/no-backups"
+        _lxqt_apply_all_bindings "$user" "$conf" "$snap" "$scratch/no-backups"
     _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         LXQT_MKTEMP_COUNT_FILE="$scratch/mktemp-count-three" LXQT_MKTEMP_FAIL_CALL=3 \
-        _lxqt_apply_all_bindings "$user" "$conf" "$scratch/no-backups"
+        _lxqt_apply_all_bindings "$user" "$conf" "$snap" "$scratch/no-backups"
+    _lxqt_rm_tmp "$snap"
+}
+
+_write_lxqt_root_id_stub() {
+    local root_mock="$1"
+    cat > "$root_mock/id" <<'EOF'
+#!/bin/sh
+if [ "$1" = "-u" ] && [ "$#" -eq 1 ]; then
+  printf '0\n'
+  exit 0
+fi
+exec /usr/bin/id "$@"
+EOF
+    chmod +x "$root_mock/id"
+}
+
+_run_lxqt_root_ensure_conf_dir_paths() {
+    local user="$1" scratch="$2"
+    local root_home="$scratch/root-home"
+    mkdir -p "$root_home"
+    _soft_expect 0 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
+        LXQT_HOME_OVERRIDE="$root_home" _lxqt_ensure_conf_dir "$user"
+    [ -d "$root_home/.config/lxqt" ] || \
+        _kcov_record_scenario_failure lxqt "root _lxqt_ensure_conf_dir did not create conf dir"
+
+    local root_home_sym real_target
+    root_home_sym="$scratch/root-home-sym"
+    real_target="$scratch/etc-stand-in"
+    mkdir -p "$root_home_sym" "$real_target"
+    chmod 0755 "$real_target"
+    ln -s "$real_target" "$root_home_sym/.config"
+    _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
+        LXQT_HOME_OVERRIDE="$root_home_sym" _lxqt_ensure_conf_dir "$user"
+    [ "$(stat -c '%a' "$real_target")" = "755" ] || \
+        _kcov_record_scenario_failure lxqt \
+            "root _lxqt_ensure_conf_dir modified perms through a symlinked .config"
+
+    local root_home_sym2 real_target2
+    root_home_sym2="$scratch/root-home-sym2"
+    real_target2="$scratch/etc-stand-in-2"
+    mkdir -p "$root_home_sym2/.config" "$real_target2"
+    ln -s "$real_target2" "$root_home_sym2/.config/lxqt"
+    _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
+        LXQT_HOME_OVERRIDE="$root_home_sym2" _lxqt_ensure_conf_dir "$user"
+}
+
+_lxqt_root_conf_tmp_leftover() {
+    local scratch="$1"
+    find "$scratch" -maxdepth 1 -name 'sym.conf.??????' -print -quit 2>/dev/null | grep -q .
+}
+
+_run_lxqt_root_atomic_write_paths() {
+    local user="$1" conf="$2" scratch="$3"
+    local root_conf="$scratch/root.conf"
+    _soft_expect 0 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
+        _lxqt_atomic_write_conf "$user" "$root_conf" "$conf"
+    [ -s "$root_conf" ] || \
+        _kcov_record_scenario_failure lxqt "root _lxqt_atomic_write_conf produced no output"
+
+    local root_conf_sym real_conf_target
+    real_conf_target="$scratch/real.conf"
+    : > "$real_conf_target"
+    root_conf_sym="$scratch/sym.conf"
+    ln -s "$real_conf_target" "$root_conf_sym"
+    _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
+        _lxqt_atomic_write_conf "$user" "$root_conf_sym" "$conf"
+    [ -s "$real_conf_target" ] && \
+        _kcov_record_scenario_failure lxqt \
+            "root _lxqt_atomic_write_conf wrote through a symlinked conf target"
+    _lxqt_root_conf_tmp_leftover "$scratch" && \
+        _kcov_record_scenario_failure lxqt \
+            "root _lxqt_atomic_write_conf left a stray tmp file on rejection"
+    return 0
+}
+
+_run_lxqt_root_snapshot_paths() {
+    # With the id -u stub, _lxqt_snapshot_conf takes the root branch and
+    # reads via _lxqt_snapshot_read_as_user (not the non-root cat path).
+    local user="$1" conf="$2" scratch="$3"
+    local snap miss_snap
+    snap=$(_lxqt_snapshot_or_fail "$user" "$conf" \
+        "root: _lxqt_snapshot_conf failed for readable conf") || return 1
+    _lxqt_rm_tmp "$snap"
+    miss_snap=$(_lxqt_snapshot_or_fail "$user" "$scratch/absent-as-user.conf" \
+        "root: _lxqt_snapshot_conf failed for missing conf") || return 1
+    _lxqt_rm_tmp "$miss_snap"
+    mkdir -p "$scratch/unreadable-as-user-dir"
+    _soft_expect 1 _lxqt_snapshot_conf "$user" "$scratch/unreadable-as-user-dir"
+    # Snapshot fail must abort restore_absent (cleanup work temp).
+    _soft_expect 1 _lxqt_restore_absent "$user" \
+        "$scratch/unreadable-as-user-dir" "XF86Display.1"
+}
+
+_run_lxqt_root_branch_paths() {
+    # Exercise the security-critical root ("$(id -u)" -eq 0) branches of
+    # _lxqt_ensure_conf_dir / _lxqt_atomic_write_conf / _lxqt_snapshot_conf:
+    # fake root via an `id` stub. _install_run_as_user still takes its
+    # same-user fast path (no real privilege drop needed) since $(id -un)
+    # already equals $user, so the embedded bash -c symlink checks run for
+    # real under kcov instrumentation.
+    local user="$1" conf="$2" scratch root_mock saved_path
+    scratch="$STATE_DIR/lxqt-root-branch-paths"
+    /bin/rm -rf "$scratch"
+    mkdir -p "$scratch"
+    root_mock=$(mktemp -d)
+    _write_lxqt_root_id_stub "$root_mock"
+    saved_path="$PATH"
+    PATH="$root_mock:$PATH"
+    export PATH
+
+    _run_lxqt_root_ensure_conf_dir_paths "$user" "$scratch"
+    _run_lxqt_root_atomic_write_paths "$user" "$conf" "$scratch"
+    _run_lxqt_root_snapshot_paths "$user" "$conf" "$scratch"
+
+    PATH="$saved_path"
+    export PATH
+    /bin/rm -rf "$root_mock"
 }
 
 _run_lxqt_context_failure_paths() {
@@ -169,7 +308,8 @@ _driver_source_required "$REPO_ROOT/lib/install-lxqt.sh" lxqt_helpers quiet
 mock=$(mktemp -d)
 iso=$(mktemp -d)
 _link_iso_tools "$iso"
-    _link_iso_additional_tools "$iso" id mktemp mv basename getent cut cat awk
+    _link_iso_additional_tools "$iso" id mktemp mv basename getent cut cat awk \
+        ln stat find grep tee
 # Override getent so HOME resolves under the temp tree (not the real home).
 cat > "$mock/getent" <<EOF
 #!/bin/sh
@@ -192,6 +332,7 @@ export PATH SUDO_CMD BUS_ROOT STATE_DIR PREFIX
 _soft_expect 0 configure_lxqt_component
 conf="${home_dir}/.config/lxqt/globalkeyshortcuts.conf"
 _run_lxqt_state_branch_paths "$user" "$conf"
+_run_lxqt_root_branch_paths "$user" "$conf"
 _run_lxqt_context_failure_paths "$user" "$conf"
 _seed_lxqt_restore_state "$STATE_DIR/$uid"
 _soft_expect 0 _run_lxqt_restore_paths "$user" "$STATE_DIR/$uid"

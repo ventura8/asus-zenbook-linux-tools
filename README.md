@@ -76,10 +76,10 @@ via `/run/host` (`--filesystem=host`); native packages are recommended.
 
 ```bash
 curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.4/install.sh.sha256 \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.5/install.sh.sha256 \
   -o install.sh.sha256 &&
   curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.4/install.sh \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.5/install.sh \
   -o install.sh &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh
