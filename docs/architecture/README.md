@@ -143,7 +143,7 @@
   **Alt is not used**: ASUS maps brightness to F4/F5, so Alt+Fn+brightness
   collides with GNOME Alt+F4 on the typing keyboard.
 - Boot restore: `asus-hotkey-daemon.service` runs
-  `ExecStartPre=-asus-screenpad-brightness.sh restore` (ordered
+  `ExecStartPre=-/usr/local/bin/asus-screenpad-brightness.sh restore` (ordered
   `After=systemd-backlight@backlight:asus_screenpad.service`, which saves the
   already-off panel as `0` at shutdown and clamps it to a dim floor at boot).
   `restore` prefers the session user's persisted level when a user resolves,

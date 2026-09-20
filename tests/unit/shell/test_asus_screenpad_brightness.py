@@ -191,6 +191,28 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
             self.assertEqual(proc.returncode, 0)
             self.assertEqual(read_node_content(node), "150")
 
+    def test_restore_skips_oversized_value_for_older_valid_one(self):
+        """A persisted value beyond the shell integer range is corrupt: skipped, not written."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "255\n", "255")
+            state_root = Path(tmpdir) / "state"
+            valid = state_root / "1000"
+            huge = state_root / "1001"
+            valid.mkdir(parents=True)
+            huge.mkdir(parents=True)
+            (valid / "screenpad_brightness").write_text("60\n", encoding="utf-8")
+            (huge / "screenpad_brightness").write_text("99999999999999999999\n", encoding="utf-8")
+            os.utime(valid / "screenpad_brightness", (1_000_000, 1_000_000))
+            os.utime(huge / "screenpad_brightness", (2_000_000, 2_000_000))
+            proc = run_shell_script(
+                SCRIPT,
+                args=["restore"],
+                env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+            )
+            self.assertEqual(proc.returncode, 0)
+            self.assertNotIn("integer expected", proc.stderr)
+            self.assertEqual(read_node_content(node), "60")
+
     def test_restore_clamps_to_max(self):
         """restore never writes above the node's max_brightness."""
         with tempfile.TemporaryDirectory() as tmpdir:

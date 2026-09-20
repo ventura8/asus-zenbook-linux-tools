@@ -61,10 +61,12 @@ _load_screenpad_brightness() {
 
 _valid_screenpad_brightness_from_file() {
     # Print the positive integer stored in a readable state file, else fail.
+    # Bounded to 9 digits: anything longer is corrupt (max_brightness is far
+    # smaller) and would overflow the `[ -lt ]` comparisons in the clamp.
     local file="$1" value
     [ -f "$file" ] && [ -r "$file" ] || return 1
     value=$(cat "$file" 2>/dev/null) || return 1
-    [[ "$value" =~ ^[1-9][0-9]*$ ]] || return 1
+    [[ "$value" =~ ^[1-9][0-9]{0,8}$ ]] || return 1
     printf '%s\n' "$value"
 }
 
