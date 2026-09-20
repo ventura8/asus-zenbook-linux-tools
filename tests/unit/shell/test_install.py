@@ -137,6 +137,7 @@ class TestInstallScriptUnit(InstallTestBase):
         self.assertIn("ProtectKernelLogs=yes", active_lines)
         self.assertIn("RestrictNamespaces=yes", active_lines)
         self.assertNotIn("systemd-udev-settle", service_text)
+        self.assertIn("ExecStartPre=-/usr/local/bin/asus-screenpad-brightness.sh restore", active_lines)
 
     def test_wmi_component_reports_service_start_failure(self):
         """Verify a failed WMI service startup is surfaced as a component failure instead of a success."""

@@ -142,6 +142,13 @@
   panel. ~80 ms cross-source dedupe for WMI+Video Bus; helper debounce ~80 ms.
   **Alt is not used**: ASUS maps brightness to F4/F5, so Alt+Fn+brightness
   collides with GNOME Alt+F4 on the typing keyboard.
+- Boot restore: `asus-hotkey-daemon.service` runs
+  `ExecStartPre=-asus-screenpad-brightness.sh restore` (ordered
+  `After=systemd-backlight@backlight:asus_screenpad.service`, which saves the
+  already-off panel as `0` at shutdown and clamps it to a dim floor at boot).
+  `restore` prefers the session user's persisted level, else the newest
+  `$STATE_DIR/*/screenpad_brightness` (no session user exists yet at boot), clamps
+  to `max_brightness`, writes silently (no OSD), and exits 0 with nothing saved.
 - Feedback after a successful ScreenPad write: GNOME extension `ShowOsd`
   (`--dest org.gnome.Shell`, path `/org/gnome/Shell/Extensions/AsusWindowSwap`;
   OSD targets the ScreenPad monitor — `DP-3` / ScreenPad geometry — not the

@@ -59,6 +59,35 @@ _load_screenpad_brightness() {
     printf '%s\n' "$value"
 }
 
+_newest_screenpad_brightness_state_file() {
+    # Newest per-user state file (boot has no session user to resolve yet).
+    local root="${STATE_DIR:-/var/lib/asus-zenbook-linux-tools}" f best="" best_mtime=0 mtime
+    for f in "$root"/*/screenpad_brightness; do
+        [ -f "$f" ] || continue
+        mtime=$(stat -c %Y "$f" 2>/dev/null) || continue
+        [[ "$mtime" =~ ^[0-9]+$ ]] || continue
+        if [ -z "$best" ] || [ "$mtime" -gt "$best_mtime" ]; then
+            best="$f"
+            best_mtime="$mtime"
+        fi
+    done
+    [ -n "$best" ] || return 1
+    printf '%s\n' "$best"
+}
+
+_load_screenpad_brightness_any_user() {
+    # Session user's persisted level first; otherwise the most recently saved one.
+    local state_file value
+    if value=$(_load_screenpad_brightness 2>/dev/null); then
+        printf '%s\n' "$value"
+        return 0
+    fi
+    state_file=$(_newest_screenpad_brightness_state_file) || return 1
+    value=$(_soft cat "$state_file")
+    [[ "$value" =~ ^[1-9][0-9]*$ ]] || return 1
+    printf '%s\n' "$value"
+}
+
 _screenpad_symbolic_icon_name() {
     local state="$1"
     if [ "$state" = "on" ]; then

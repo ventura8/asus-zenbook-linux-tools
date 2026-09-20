@@ -1,3 +1,15 @@
+asus-zenbook-linux-tools (1.0.6) resolute; urgency=medium
+
+  * ScreenPad brightness now survives reboot: the hotkey daemon unit runs
+    asus-screenpad-brightness.sh restore (ExecStartPre) ordered after
+    systemd-backlight@, which saved the powered-off panel as 0 and clamped it
+    to a dim floor at boot. Restore prefers the session user's persisted level
+    and falls back to the newest per-user state file when no session exists.
+  * Dev tooling bumps: coverage 7.16.1, pylint 4.0.8, ruff 0.16.8,
+    eslint 10.11.0.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Sun, 20 Sep 2026 22:30:00 +0300
+
 asus-zenbook-linux-tools (1.0.5) resolute; urgency=medium
 
   * Hardened LXQt configure to drop root privileges before touching the
