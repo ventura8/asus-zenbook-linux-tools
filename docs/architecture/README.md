@@ -146,8 +146,11 @@
   `ExecStartPre=-asus-screenpad-brightness.sh restore` (ordered
   `After=systemd-backlight@backlight:asus_screenpad.service`, which saves the
   already-off panel as `0` at shutdown and clamps it to a dim floor at boot).
-  `restore` prefers the session user's persisted level, else the newest
-  `$STATE_DIR/*/screenpad_brightness` (no session user exists yet at boot), clamps
+  `restore` prefers the session user's persisted level when a user resolves,
+  else the newest readable, well-formed `$STATE_DIR/*/screenpad_brightness`
+  (no session user exists yet at boot; the UID-0 fallback path is skipped so a
+  stale root file cannot shadow per-user state; malformed candidates are
+  skipped in favour of older valid ones), clamps
   to `max_brightness`, writes silently (no OSD), and exits 0 with nothing saved.
 - Feedback after a successful ScreenPad write: GNOME extension `ShowOsd`
   (`--dest org.gnome.Shell`, path `/org/gnome/Shell/Extensions/AsusWindowSwap`;

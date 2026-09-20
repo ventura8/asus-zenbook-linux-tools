@@ -66,6 +66,9 @@ _run_screenpad_read_clamp_paths() {
 _run_screenpad_write_notify_paths() {
     _soft_expect 0 _save_screenpad_brightness 100
     _soft_expect 0 _load_screenpad_brightness >/dev/null
+    _soft_expect 0 _load_screenpad_brightness_any_user >/dev/null
+    _soft_expect 0 _newest_valid_screenpad_brightness >/dev/null
+    _soft_expect 1 _valid_screenpad_brightness_from_file "$STATE_DIR/missing" >/dev/null
     _soft_expect 0 _screenpad_write_verified "$ASUS_SCREENPAD_NODE" 64
     _soft_expect 0 _write_screenpad_brightness "$ASUS_SCREENPAD_NODE" 80
     _soft_expect 0 _screenpad_level_fraction 0 0 >/dev/null
