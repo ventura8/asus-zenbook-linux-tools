@@ -76,10 +76,10 @@ via `/run/host` (`--filesystem=host`); native packages are recommended.
 
 ```bash
 curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.5/install.sh.sha256 \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.6/install.sh.sha256 \
   -o install.sh.sha256 &&
   curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.5/install.sh \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.6/install.sh \
   -o install.sh &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh
@@ -155,6 +155,11 @@ Hooks into `Asus WMI hotkeys` (and related input) with ~300 ms helper debounce
   ShowOSD) → replace-in-place notify (XFCE and other). Requires writable
   `asus_screenpad` / `asus::screenpad`; without
   it the chord is not swallowed. Steps clamp to a floor of 1 (Off stays on toggle).
+  The level persists across reboots: every write is saved under
+  `/var/lib/asus-zenbook-linux-tools/<uid>/screenpad_brightness` and the hotkey
+  daemon unit re-applies it at boot (`asus-screenpad-brightness.sh restore`,
+  ordered after `systemd-backlight@`, which otherwise saves the powered-off
+  ScreenPad as `0` and clamps it to a dim floor).
 * **Installer Feedback:** WMI hotkey daemon startup failures are reported
   explicitly so a broken install is never marked successful.
 * **Fan Mode Cycle:** Prefers `powerprofilesctl` (power-profiles-daemon) so CPU

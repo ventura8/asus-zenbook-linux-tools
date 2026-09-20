@@ -17,7 +17,7 @@ env:
   MAINTAINER_EMAIL: "alexandrescu.sergiu@gmail.com"
   # Increment when re-uploading the same VERSION (Launchpad rejects duplicate
   # source versions). Reset to 1 when VERSION itself bumps.
-  PPA_UPLOAD_REVISION: "1"
+  PPA_UPLOAD_REVISION: "3"
 
 permissions:
   contents: read
@@ -378,9 +378,30 @@ jobs:
           path: reports/distro-logs/
           if-no-files-found: warn
 
+      - name: Resolve release notes from docs/releases
+        id: release_notes
+        run: |
+          set -euo pipefail
+          VERSION="${{ needs.upload-to-ppa.outputs.version }}"
+          notes="docs/releases/v${VERSION}_github_description.md"
+          if [ ! -f "$notes" ]; then
+            echo "Missing GitHub release description: $notes" >&2
+            exit 1
+          fi
+          # H1 is the release title; the body is everything after it.
+          title="$(sed -n '1s/^# //p' "$notes")"
+          if [ -z "$title" ]; then
+            echo "First line of $notes must be an H1 release title" >&2
+            exit 1
+          fi
+          tail -n +2 "$notes" | sed '1{/^$/d}' > release-body.md
+          echo "title=$title" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228  # v3.0.2
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64  # v3.0.3
         with:
+          name: ${{ steps.release_notes.outputs.title }}
+          body_path: release-body.md
           files: |
             artifacts/SHA256SUMS
             artifacts/*.deb
@@ -389,6 +410,6 @@ jobs:
             artifacts/*.AppImage
             artifacts/*.flatpak
             artifacts/*.snap
-          generate_release_notes: true
+          generate_release_notes: false
           draft: false
           prerelease: false

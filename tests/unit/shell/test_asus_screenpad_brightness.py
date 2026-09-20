@@ -10,6 +10,7 @@ from tests.unit.shell.shell_test_utils import (
     bin_script,
     bind_unix_socket,
     create_writable_node,
+    fake_loginctl_no_sessions,
     read_node_content,
     run_shell_script,
     screenpad_env,
@@ -17,6 +18,11 @@ from tests.unit.shell.shell_test_utils import (
 )
 
 SCRIPT = bin_script("asus-screenpad-brightness.sh")
+# Synthetic state-dir uids that never match the invoking user (GHA runner is
+# uid 1001, developers commonly 1000), so restore tests exercise the
+# cross-user fallback instead of "the session user's own file wins".
+_UID_A = "70001"
+_UID_B = "70002"
 
 
 def _brightness_env(tmpdir: str, **extra: str) -> dict[str, str]:
@@ -121,6 +127,124 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
             )
             self.assertEqual(proc.returncode, 0)
             self.assertEqual(read_node_content(node), "200")
+
+    def test_restore_reapplies_persisted_level_without_session_user(self):
+        """restore reads the newest per-user state file even with no session user (boot)."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "255\n", "255")
+            state_root = Path(tmpdir) / "state"
+            older = state_root / _UID_B
+            newer = state_root / _UID_A
+            older.mkdir(parents=True)
+            newer.mkdir(parents=True)
+            (older / "screenpad_brightness").write_text("40\n", encoding="utf-8")
+            (newer / "screenpad_brightness").write_text("120\n", encoding="utf-8")
+            os.utime(older / "screenpad_brightness", (1_000_000, 1_000_000))
+            os.utime(newer / "screenpad_brightness", (2_000_000, 2_000_000))
+            proc = run_shell_script(
+                SCRIPT,
+                args=["restore"],
+                env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+            )
+            self.assertEqual(proc.returncode, 0)
+            self.assertEqual(read_node_content(node), "120")
+
+    def test_restore_skips_malformed_newest_file_for_older_valid_one(self):
+        """A corrupt newest state file must not block restoring an older valid level."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "255\n", "255")
+            state_root = Path(tmpdir) / "state"
+            valid = state_root / _UID_A
+            corrupt = state_root / _UID_B
+            valid.mkdir(parents=True)
+            corrupt.mkdir(parents=True)
+            (valid / "screenpad_brightness").write_text("90\n", encoding="utf-8")
+            (corrupt / "screenpad_brightness").write_text("garbage\n", encoding="utf-8")
+            os.utime(valid / "screenpad_brightness", (1_000_000, 1_000_000))
+            os.utime(corrupt / "screenpad_brightness", (2_000_000, 2_000_000))
+            proc = run_shell_script(
+                SCRIPT,
+                args=["restore"],
+                env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+            )
+            self.assertEqual(proc.returncode, 0)
+            self.assertEqual(read_node_content(node), "90")
+
+    def test_restore_ignores_stale_uid0_file_without_session_user(self):
+        """With no session user, a stale UID-0 file must not shadow newer per-user state."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "255\n", "255")
+            state_root = Path(tmpdir) / "state"
+            root_dir = state_root / "0"
+            user_dir = state_root / _UID_A
+            root_dir.mkdir(parents=True)
+            user_dir.mkdir(parents=True)
+            (root_dir / "screenpad_brightness").write_text("30\n", encoding="utf-8")
+            (user_dir / "screenpad_brightness").write_text("150\n", encoding="utf-8")
+            os.utime(root_dir / "screenpad_brightness", (1_000_000, 1_000_000))
+            os.utime(user_dir / "screenpad_brightness", (2_000_000, 2_000_000))
+            mock_bin = Path(tmpdir) / "bin"
+            mock_bin.mkdir()
+            fake_loginctl_no_sessions(str(mock_bin))
+            env = _brightness_env(
+                tmpdir,
+                ASUS_SCREENPAD_NODE=node,
+                BUS_ROOT=os.path.join(tmpdir, "no-bus"),
+                PATH=f"{mock_bin}:{os.environ['PATH']}",
+            )
+            proc = run_shell_script(SCRIPT, args=["restore"], env=env)
+            self.assertEqual(proc.returncode, 0)
+            self.assertEqual(read_node_content(node), "150")
+
+    def test_restore_skips_oversized_value_for_older_valid_one(self):
+        """A persisted value beyond the shell integer range is corrupt: skipped, not written."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "255\n", "255")
+            state_root = Path(tmpdir) / "state"
+            valid = state_root / _UID_A
+            huge = state_root / _UID_B
+            valid.mkdir(parents=True)
+            huge.mkdir(parents=True)
+            (valid / "screenpad_brightness").write_text("60\n", encoding="utf-8")
+            (huge / "screenpad_brightness").write_text("99999999999999999999\n", encoding="utf-8")
+            os.utime(valid / "screenpad_brightness", (1_000_000, 1_000_000))
+            os.utime(huge / "screenpad_brightness", (2_000_000, 2_000_000))
+            proc = run_shell_script(
+                SCRIPT,
+                args=["restore"],
+                env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+            )
+            self.assertEqual(proc.returncode, 0)
+            self.assertNotIn("integer expected", proc.stderr)
+            self.assertEqual(read_node_content(node), "60")
+
+    def test_restore_clamps_to_max(self):
+        """restore never writes above the node's max_brightness."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "10\n", "100")
+            state_dir = Path(tmpdir) / "state" / _UID_A
+            state_dir.mkdir(parents=True)
+            (state_dir / "screenpad_brightness").write_text("9999\n", encoding="utf-8")
+            proc = run_shell_script(
+                SCRIPT,
+                args=["restore"],
+                env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+            )
+            self.assertEqual(proc.returncode, 0)
+            self.assertEqual(read_node_content(node), "100")
+
+    def test_restore_without_state_is_a_noop(self):
+        """restore exits 0 and leaves the node untouched when nothing was persisted."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = _node_with_max(tmpdir, "77\n", "255")
+            proc = run_shell_script(
+                SCRIPT,
+                args=["restore"],
+                env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+            )
+            self.assertEqual(proc.returncode, 0)
+            self.assertEqual(read_node_content(node), "77")
+            self.assertIn("No persisted", proc.stderr)
 
 
 class TestAsusScreenpadBrightnessFeedback(unittest.TestCase):

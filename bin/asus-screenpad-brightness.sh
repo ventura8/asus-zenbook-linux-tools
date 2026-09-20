@@ -33,7 +33,7 @@ _source_common_helper || exit 1
 _source_screenpad_helper || exit 1
 
 _usage_screenpad_brightness() {
-    echo "Usage: asus-screenpad-brightness.sh up|down|get|set <percent|raw>" >&2
+    echo "Usage: asus-screenpad-brightness.sh up|down|get|restore|set <percent|raw>" >&2
 }
 
 _require_screenpad_node() {
@@ -112,6 +112,19 @@ _screenpad_brightness_set() {
     _notify_screenpad_brightness "$value" "$max_val"
 }
 
+_screenpad_brightness_restore() {
+    # Re-apply the last persisted level (boot / daemon start); silent, no OSD.
+    local node="$1"
+    local max_val value
+    value=$(_load_screenpad_brightness_any_user) || {
+        echo "No persisted ScreenPad brightness to restore." >&2
+        return 0
+    }
+    max_val=$(_read_screenpad_max_value "$node")
+    value=$(_clamp_screenpad_brightness "$value" "$max_val")
+    _screenpad_write_verified "$node" "$value"
+}
+
 _screenpad_brightness_get() {
     local node="$1"
     local curr max_val percent
@@ -128,6 +141,7 @@ _dispatch_screenpad_brightness_cmd() {
         up) _screenpad_brightness_up "$node" ;;
         down) _screenpad_brightness_down "$node" ;;
         get) _screenpad_brightness_get "$node" ;;
+        restore) _screenpad_brightness_restore "$node" ;;
         set) _dispatch_screenpad_set "$node" "$arg" ;;
     esac
 }
@@ -142,7 +156,7 @@ _require_node_for_brightness_cmd() {
     local cmd="$1"
     # Caller (main) validates cmd; helpers assume a known token.
     case "$cmd" in
-        set|up|down) _require_writable_screenpad_node ;;
+        set|up|down|restore) _require_writable_screenpad_node ;;
         get) _require_screenpad_node ;;
     esac
 }
@@ -150,7 +164,7 @@ _require_node_for_brightness_cmd() {
 main() {
     local node cmd="${1:-}"
     case "$cmd" in
-        set|up|down|get) ;;
+        set|up|down|get|restore) ;;
         *)
             _usage_screenpad_brightness
             return 1
