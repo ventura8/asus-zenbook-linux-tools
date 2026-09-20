@@ -37,9 +37,18 @@ _run_kcov_screenpad_brightness_scenarios() {
             ./bin/asus-screenpad-brightness.sh set 40
         _kcov_expect_run_env "1" "$kcov_root" spb_set_invalid ASUS_SCREENPAD_NODE="$tmp/sp/brightness" \
             ./bin/asus-screenpad-brightness.sh set bogus
+        # restore: nothing persisted → exit 0 noop; persisted → written (clamped).
+        _kcov_expect_run_env "0" "$kcov_root" spb_restore_nostate ASUS_SCREENPAD_NODE="$tmp/sp/brightness" \
+            STATE_DIR="$tmp/empty-state" ./bin/asus-screenpad-brightness.sh restore
+        mkdir -p "$tmp/state/$(id -u)"
+        echo 9999 > "$tmp/state/$(id -u)/screenpad_brightness"
+        _kcov_expect_run_env "0" "$kcov_root" spb_restore_clamp ASUS_SCREENPAD_NODE="$tmp/sp/brightness" \
+            STATE_DIR="$tmp/state" ./bin/asus-screenpad-brightness.sh restore
         chmod a-w "$tmp/sp/brightness"
         _kcov_expect_run_env "1" "$kcov_root" spb_not_writable ASUS_SCREENPAD_NODE="$tmp/sp/brightness" \
             ./bin/asus-screenpad-brightness.sh up
+        _kcov_expect_run_env "1" "$kcov_root" spb_restore_not_writable ASUS_SCREENPAD_NODE="$tmp/sp/brightness" \
+            STATE_DIR="$tmp/state" ./bin/asus-screenpad-brightness.sh restore
     )
     (
         tmp=$(mktemp -d)

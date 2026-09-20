@@ -140,6 +140,11 @@ _run_screenpad_write_timeout_paths() {
     _soft_expect 0 _parse_screenpad_set_value 40% 255 >/dev/null
     _soft_expect 1 _parse_screenpad_set_value bogus 255 >/dev/null
     _soft_expect 0 _require_writable_screenpad_node >/dev/null
+    _soft_expect 0 _screenpad_brightness_restore "$ASUS_SCREENPAD_NODE" >/dev/null
+    STATE_DIR="$tmp/empty-state" _soft_expect 0 _screenpad_brightness_restore "$ASUS_SCREENPAD_NODE" >/dev/null
+    _soft_expect 0 _dispatch_screenpad_brightness_cmd restore "$ASUS_SCREENPAD_NODE" "" >/dev/null
+    _soft_expect 0 _require_node_for_brightness_cmd restore >/dev/null
+    _soft_expect 0 main restore >/dev/null
     _soft_expect 0 _brightness_after_delta "$ASUS_SCREENPAD_NODE" 10 255 >/dev/null
     _soft_expect 0 _brightness_after_delta "$ASUS_SCREENPAD_NODE" -200 255 >/dev/null
     chmod a-w "$ASUS_SCREENPAD_NODE"
