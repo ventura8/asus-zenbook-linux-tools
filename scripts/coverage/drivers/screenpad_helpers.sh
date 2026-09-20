@@ -66,6 +66,9 @@ _run_screenpad_read_clamp_paths() {
 _run_screenpad_write_notify_paths() {
     _soft_expect 0 _save_screenpad_brightness 100
     _soft_expect 0 _load_screenpad_brightness >/dev/null
+    _soft_expect 0 _load_screenpad_brightness_any_user >/dev/null
+    _soft_expect 0 _newest_valid_screenpad_brightness >/dev/null
+    _soft_expect 1 _valid_screenpad_brightness_from_file "$STATE_DIR/missing" >/dev/null
     _soft_expect 0 _screenpad_write_verified "$ASUS_SCREENPAD_NODE" 64
     _soft_expect 0 _write_screenpad_brightness "$ASUS_SCREENPAD_NODE" 80
     _soft_expect 0 _screenpad_level_fraction 0 0 >/dev/null
@@ -73,6 +76,41 @@ _run_screenpad_write_notify_paths() {
     _soft_expect 0 _screenpad_percent 80 0 >/dev/null
     _soft_expect 0 _resolve_screenpad_notification_icon on >/dev/null
     _soft_expect 0 _resolve_screenpad_notification_icon off >/dev/null
+}
+
+_run_screenpad_multi_user_state_paths() {
+    # Cross-user discovery: newest *valid* per-user file wins; malformed,
+    # oversized, and unreadable newer candidates are skipped.
+    local tmp="$1" cur newest
+    cur="$(id -u)"
+    mkdir -p "$tmp/state/70001" "$tmp/state/70002" "$tmp/state/70003"
+    printf '41\n' > "$tmp/state/70001/screenpad_brightness"
+    printf '142\n' > "$tmp/state/70002/screenpad_brightness"
+    printf 'garbage\n' > "$tmp/state/70003/screenpad_brightness"
+    touch -d '2020-01-01 00:00:01' "$tmp/state/$cur/screenpad_brightness"
+    touch -d '2020-01-01 00:00:02' "$tmp/state/70001/screenpad_brightness"
+    touch -d '2020-01-01 00:00:03' "$tmp/state/70002/screenpad_brightness"
+    touch -d '2020-01-01 00:00:04' "$tmp/state/70003/screenpad_brightness"
+    newest=$(_newest_valid_screenpad_brightness)
+    _soft_expect 0 test "$newest" = "142"
+    # Oversized newest candidate is corrupt: still 142.
+    printf '99999999999999999999\n' > "$tmp/state/70003/screenpad_brightness"
+    newest=$(_newest_valid_screenpad_brightness)
+    _soft_expect 0 test "$newest" = "142"
+    # Session user resolves (fake loginctl) → its own file wins over newer ones.
+    _soft_expect 0 test "$(_load_screenpad_brightness_any_user)" = "$(_load_screenpad_brightness)"
+    # No resolvable user (no logind sessions, empty bus root) → newest valid
+    # cross-user file, not the UID-0 substitute path.
+    mkdir -p "$tmp/no-sessions" "$tmp/no-bus"
+    _kcov_make_stub "$tmp/no-sessions/loginctl" 'exit 0'
+    _soft_expect 0 test "$(PATH="$tmp/no-sessions:$PATH" BUS_ROOT="$tmp/no-bus" \
+        _load_screenpad_brightness_any_user)" = "142"
+    # Nothing valid anywhere → both fail.
+    rm -rf "$tmp/state"
+    _soft_expect 1 _newest_valid_screenpad_brightness >/dev/null
+    _soft_expect 1 _load_screenpad_brightness_any_user >/dev/null
+    mkdir -p "$tmp/state/$cur"
+    _soft_expect 0 _save_screenpad_brightness 100
 }
 
 _run_screenpad_icon_miss_paths() {
@@ -102,6 +140,11 @@ _run_screenpad_write_timeout_paths() {
     _soft_expect 0 _parse_screenpad_set_value 40% 255 >/dev/null
     _soft_expect 1 _parse_screenpad_set_value bogus 255 >/dev/null
     _soft_expect 0 _require_writable_screenpad_node >/dev/null
+    _soft_expect 0 _screenpad_brightness_restore "$ASUS_SCREENPAD_NODE" >/dev/null
+    STATE_DIR="$tmp/empty-state" _soft_expect 0 _screenpad_brightness_restore "$ASUS_SCREENPAD_NODE" >/dev/null
+    _soft_expect 0 _dispatch_screenpad_brightness_cmd restore "$ASUS_SCREENPAD_NODE" "" >/dev/null
+    _soft_expect 0 _require_node_for_brightness_cmd restore >/dev/null
+    _soft_expect 0 main restore >/dev/null
     _soft_expect 0 _brightness_after_delta "$ASUS_SCREENPAD_NODE" 10 255 >/dev/null
     _soft_expect 0 _brightness_after_delta "$ASUS_SCREENPAD_NODE" -200 255 >/dev/null
     chmod a-w "$ASUS_SCREENPAD_NODE"
@@ -185,6 +228,7 @@ _run_screenpad_kcov_main() {
 
     _run_screenpad_read_clamp_paths "$tmp"
     _run_screenpad_write_notify_paths
+    _run_screenpad_multi_user_state_paths "$tmp"
     _run_screenpad_icon_miss_paths "$tmp"
     _run_screenpad_write_timeout_paths "$tmp"
     _run_screenpad_template_miss_paths "$tmp"

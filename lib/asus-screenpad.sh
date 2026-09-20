@@ -59,6 +59,49 @@ _load_screenpad_brightness() {
     printf '%s\n' "$value"
 }
 
+_valid_screenpad_brightness_from_file() {
+    # Print the positive integer stored in a readable state file, else fail.
+    # Bounded to 9 digits: anything longer is corrupt (max_brightness is far
+    # smaller) and would overflow the `[ -lt ]` comparisons in the clamp.
+    local file="$1" value
+    [ -f "$file" ] && [ -r "$file" ] || return 1
+    value=$(cat "$file" 2>/dev/null) || return 1
+    [[ "$value" =~ ^[1-9][0-9]{0,8}$ ]] || return 1
+    printf '%s\n' "$value"
+}
+
+_newest_valid_screenpad_brightness() {
+    # Newest readable, well-formed per-user state file (boot has no session
+    # user to resolve yet); skips unreadable/empty/malformed candidates.
+    local root="${STATE_DIR:-/var/lib/asus-zenbook-linux-tools}"
+    local f value best_value="" best_mtime=0 mtime
+    for f in "$root"/*/screenpad_brightness; do
+        value=$(_valid_screenpad_brightness_from_file "$f") || continue
+        mtime=$(stat -c %Y "$f" 2>/dev/null) || continue
+        [[ "$mtime" =~ ^[0-9]+$ ]] || continue
+        if [ -z "$best_value" ] || [ "$mtime" -gt "$best_mtime" ]; then
+            best_value="$value"
+            best_mtime="$mtime"
+        fi
+    done
+    [ -n "$best_value" ] || return 1
+    printf '%s\n' "$best_value"
+}
+
+_load_screenpad_brightness_any_user() {
+    # Session user's persisted level first; otherwise the most recently saved
+    # valid one. Only consult the per-user file when a user actually resolved:
+    # with none, _screenpad_brightness_state_file falls back to UID 0, and a
+    # stale root file would otherwise shadow the newest per-user state.
+    local user value
+    user=$(_resolve_notif_target_user 2>/dev/null || true)
+    if [ -n "$user" ] && value=$(_load_screenpad_brightness 2>/dev/null); then
+        printf '%s\n' "$value"
+        return 0
+    fi
+    _newest_valid_screenpad_brightness
+}
+
 _screenpad_symbolic_icon_name() {
     local state="$1"
     if [ "$state" = "on" ]; then

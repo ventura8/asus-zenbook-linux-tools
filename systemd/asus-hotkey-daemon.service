@@ -1,5 +1,9 @@
 [Unit]
 Description=ASUS ZenBook WMI Hotkey Listener Daemon
+# systemd-backlight saves the ScreenPad as 0 at shutdown (panel already off)
+# and clamps it to a dim floor at boot; our ExecStartPre restore must run after
+# it so the persisted hotkey level wins.
+After=systemd-backlight@backlight:asus_screenpad.service
 StartLimitIntervalSec=60
 StartLimitBurst=10
 
@@ -9,6 +13,10 @@ Type=simple
 # helper scripts that write sysfs nodes owned by root (leds, asus-wmi).
 User=root
 Environment=PYTHONDONTWRITEBYTECODE=1
+# Re-apply the last persisted ScreenPad brightness before the daemon starts
+# (the kernel driver resets it at boot). Best-effort: "-" ignores a missing
+# node / state file so the hotkey daemon still comes up.
+ExecStartPre=-/usr/local/bin/asus-screenpad-brightness.sh restore
 ExecStart=/usr/local/bin/asus-hotkey-daemon.py
 Restart=always
 RestartSec=3
