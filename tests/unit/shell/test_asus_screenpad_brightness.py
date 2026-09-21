@@ -18,6 +18,11 @@ from tests.unit.shell.shell_test_utils import (
 )
 
 SCRIPT = bin_script("asus-screenpad-brightness.sh")
+# Synthetic state-dir uids that never match the invoking user (GHA runner is
+# uid 1001, developers commonly 1000), so restore tests exercise the
+# cross-user fallback instead of "the session user's own file wins".
+_UID_A = "70001"
+_UID_B = "70002"
 
 
 def _brightness_env(tmpdir: str, **extra: str) -> dict[str, str]:
@@ -128,8 +133,8 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             node = _node_with_max(tmpdir, "255\n", "255")
             state_root = Path(tmpdir) / "state"
-            older = state_root / "1001"
-            newer = state_root / "1000"
+            older = state_root / _UID_B
+            newer = state_root / _UID_A
             older.mkdir(parents=True)
             newer.mkdir(parents=True)
             (older / "screenpad_brightness").write_text("40\n", encoding="utf-8")
@@ -149,8 +154,8 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             node = _node_with_max(tmpdir, "255\n", "255")
             state_root = Path(tmpdir) / "state"
-            valid = state_root / "1000"
-            corrupt = state_root / "1001"
+            valid = state_root / _UID_A
+            corrupt = state_root / _UID_B
             valid.mkdir(parents=True)
             corrupt.mkdir(parents=True)
             (valid / "screenpad_brightness").write_text("90\n", encoding="utf-8")
@@ -171,7 +176,7 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
             node = _node_with_max(tmpdir, "255\n", "255")
             state_root = Path(tmpdir) / "state"
             root_dir = state_root / "0"
-            user_dir = state_root / "1000"
+            user_dir = state_root / _UID_A
             root_dir.mkdir(parents=True)
             user_dir.mkdir(parents=True)
             (root_dir / "screenpad_brightness").write_text("30\n", encoding="utf-8")
@@ -196,8 +201,8 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             node = _node_with_max(tmpdir, "255\n", "255")
             state_root = Path(tmpdir) / "state"
-            valid = state_root / "1000"
-            huge = state_root / "1001"
+            valid = state_root / _UID_A
+            huge = state_root / _UID_B
             valid.mkdir(parents=True)
             huge.mkdir(parents=True)
             (valid / "screenpad_brightness").write_text("60\n", encoding="utf-8")
@@ -217,7 +222,7 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
         """restore never writes above the node's max_brightness."""
         with tempfile.TemporaryDirectory() as tmpdir:
             node = _node_with_max(tmpdir, "10\n", "100")
-            state_dir = Path(tmpdir) / "state" / "1000"
+            state_dir = Path(tmpdir) / "state" / _UID_A
             state_dir.mkdir(parents=True)
             (state_dir / "screenpad_brightness").write_text("9999\n", encoding="utf-8")
             proc = run_shell_script(
