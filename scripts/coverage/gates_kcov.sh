@@ -362,16 +362,16 @@ _write_sonar_generic_shell_coverage() {
     local merged="$1" reports_root="$2" src dest repo_root
     repo_root="${REPO_ROOT:-$(pwd)}"
     src="$merged/kcov-merged/cobertura.xml"
-    if [ ! -f "$src" ]; then
+    if [[ ! -f "$src" ]]; then
         src=$(find "$merged" -name cobertura.xml -type f 2>/dev/null | head -1)
     fi
-    if [ -z "$src" ] || [ ! -f "$src" ]; then
+    if [[ -z "$src" || ! -f "$src" ]]; then
         echo "  ! Warning: no merged kcov cobertura.xml found under $merged." >&2
         return 0
     fi
     dest="$reports_root/coverage/merged/shell-coverage.xml"
     if python3 "$repo_root/scripts/coverage/cobertura_to_sonar_generic.py" \
-        "$src" "$dest" >/dev/null 2>&1; then
+        --base "$reports_root" "$src" "$dest" >/dev/null 2>&1; then
         echo "  ✓ Sonar generic shell coverage written to $dest"
         return 0
     fi
