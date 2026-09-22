@@ -643,6 +643,12 @@ class TestSonarQubeAnalysisWiring(unittest.TestCase):
         self.assertIn("needs: coverage-merge", sonar)
         self.assertIn("fetch-depth: 0", sonar)
         self.assertIn("SonarSource/sonarqube-scan-action@", sonar)
+        # upload-artifact strips the common ancestor: unpack into the directory
+        # the properties name, or the generic-coverage sensor fails the scan.
+        self.assertIn("path: reports/coverage/merged", sonar)
+        # Missing reports must warn and blank the property, not fail the scan.
+        self.assertIn("-Dsonar.coverageReportPaths=", sonar)
+        self.assertIn("-Dsonar.python.coverage.reportPaths=", sonar)
         self.assertIn("SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}", sonar)
         # Fork PRs have no SONAR_TOKEN; the job must not run there.
         self.assertIn(

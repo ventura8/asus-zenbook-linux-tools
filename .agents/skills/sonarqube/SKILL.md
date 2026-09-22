@@ -90,6 +90,22 @@ for i in d["issues"]:
 
 Tear down when finished: `docker rm -f asus-sonar-local`.
 
+## CI plumbing traps (both of these failed a real scan)
+
+1. **`upload-artifact` strips the common ancestor.** With both reports under
+   `reports/coverage/merged/`, the artifact holds them at its *root*, so the
+   download must use `path: reports/coverage/merged` — not `path: reports`.
+   Change one report path and the ancestor moves; re-check the download path.
+2. **Generic-coverage report paths must exist.** A missing
+   `sonar.coverageReportPaths` file fails the whole scan with a parse error
+   (the Python sensor merely warns). The job checks both files and blanks the
+   property with a `::warning::` when one is absent, so analysis still
+   publishes after an upstream coverage-gate failure.
+3. **The merged kcov tree is a temp dir.** `merge_kcov_coverage_shards` builds
+   it under `mktemp -d` and removes it; the host merge never writes
+   `reports/kcov/<slug>/` (that layout exists only in the Docker coverage-gate
+   flow). Convert from the merged tree inside the merge, before the cleanup.
+
 ## Triage rules
 
 1. **Verify every finding against the code before changing anything.** Sonar
