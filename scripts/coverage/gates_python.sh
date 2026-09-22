@@ -317,6 +317,22 @@ _merge_python_shards_from_reports() {
     run_python_coverage_gate "$include_pattern"
 }
 
+_write_merged_python_coverage_xml() {
+    # Cobertura XML for external report consumers (SonarQube); best-effort so a
+    # writer failure never turns a passing gate into a pipeline failure.
+    local reports_root="$1" combined="$2" include_pattern out_dir
+    include_pattern="$(_python_coverage_include_pattern)" || return 0
+    out_dir="$reports_root/coverage/merged"
+    mkdir -p "$out_dir" || return 0
+    if COVERAGE_FILE="$combined" coverage xml --include="$include_pattern" \
+        -o "$out_dir/coverage.xml" >/dev/null 2>&1; then
+        echo "  ✓ Merged python coverage XML written to $out_dir/coverage.xml"
+        return 0
+    fi
+    echo "  ! Warning: could not write merged python coverage XML to $out_dir/." >&2
+    return 0
+}
+
 merge_python_coverage_shards() {
     local reports_root combined
     reports_root=$(resolve_reports_root) || return 1
@@ -327,5 +343,6 @@ merge_python_coverage_shards() {
             "under $reports_root/coverage-shards" >&2
         return 1
     fi
+    _write_merged_python_coverage_xml "$reports_root" "$combined"
     echo "  ✓ Merged python shards meet ≥90% coverage."
 }
