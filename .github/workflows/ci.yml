@@ -273,7 +273,7 @@ jobs:
           name: coverage-merged-reports
           path: |
             reports/coverage/merged/coverage.xml
-            reports/kcov/coverage-gate-kcov-all/kcov-merged/cobertura.xml
+            reports/coverage/merged/shell-coverage.xml
           if-no-files-found: warn
 
   sonarqube:

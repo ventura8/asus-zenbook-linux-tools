@@ -317,26 +317,6 @@ _merge_python_shards_from_reports() {
     run_python_coverage_gate "$include_pattern"
 }
 
-_write_sonar_generic_shell_coverage() {
-    # SonarQube's sonar.coverageReportPaths accepts only its own generic
-    # coverage XML, while kcov emits Cobertura. Best-effort translation.
-    local reports_root="$1" src dest repo_root
-    repo_root="${REPO_ROOT:-$(pwd)}"
-    src="$reports_root/kcov/coverage-gate-kcov-all/kcov-merged/cobertura.xml"
-    if [ ! -f "$src" ]; then
-        src=$(find "$reports_root/kcov" -name cobertura.xml -type f 2>/dev/null | head -1)
-    fi
-    [ -n "$src" ] && [ -f "$src" ] || return 0
-    dest="$reports_root/coverage/merged/shell-coverage.xml"
-    if python3 "$repo_root/scripts/coverage/cobertura_to_sonar_generic.py" \
-        "$src" "$dest" >/dev/null 2>&1; then
-        echo "  ✓ Sonar generic shell coverage written to $dest"
-        return 0
-    fi
-    echo "  ! Warning: could not convert kcov Cobertura to Sonar generic coverage." >&2
-    return 0
-}
-
 _write_merged_python_coverage_xml() {
     # Cobertura XML for external report consumers (SonarQube); best-effort so a
     # writer failure never turns a passing gate into a pipeline failure.
@@ -364,6 +344,5 @@ merge_python_coverage_shards() {
         return 1
     fi
     _write_merged_python_coverage_xml "$reports_root" "$combined"
-    _write_sonar_generic_shell_coverage "$reports_root"
     echo "  ✓ Merged python shards meet ≥90% coverage."
 }

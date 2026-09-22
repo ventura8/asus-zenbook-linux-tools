@@ -616,8 +616,17 @@ class TestSonarQubeAnalysisWiring(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("_write_merged_python_coverage_xml", gates)
-        self.assertIn("_write_sonar_generic_shell_coverage", gates)
         self.assertIn("coverage/merged", gates)
+        # Shell conversion must read the merged tree inside the kcov merge, before
+        # that temp dir is removed: the host merge never writes reports/kcov/<slug>/.
+        kcov_gates = (self.repo_root / "scripts/coverage/gates_kcov.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("_write_sonar_generic_shell_coverage", kcov_gates)
+        self.assertIn(
+            '_write_sonar_generic_shell_coverage "$merged" "$reports_root"', kcov_gates
+        )
+        self.assertIn("coverage/merged/shell-coverage.xml", kcov_gates)
         self.assertTrue(
             (self.repo_root / "scripts/coverage/cobertura_to_sonar_generic.py").is_file()
         )
@@ -628,6 +637,8 @@ class TestSonarQubeAnalysisWiring(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("name: coverage-merged-reports", workflow)
+        self.assertIn("reports/coverage/merged/shell-coverage.xml", workflow)
+        self.assertNotIn("reports/kcov/coverage-gate-kcov-all", workflow)
         sonar = _workflow_section(workflow, "  sonarqube:", "  distro-tests-debian:")
         self.assertIn("needs: coverage-merge", sonar)
         self.assertIn("fetch-depth: 0", sonar)
