@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 
 CJK_SEPARATORS = ("。",)
+_ALL_LITERAL = "'all'"
+_NONE_LITERAL = "'none'"
 _NONE_TOKEN = re.compile(r"(?<![A-Za-z])none(?![A-Za-z])")
 
 
@@ -80,7 +82,7 @@ def _space_latin_connector(text: str, word: str, escaped: str) -> str:
 
 def space_all_none_tokens(text: str) -> str:
     """Insert missing spaces around literal all/none tokens."""
-    text = text.replace("' all'", "'all'").replace("' none'", "'none'")
+    text = text.replace("' all'", _ALL_LITERAL).replace("' none'", _NONE_LITERAL)
     text = re.sub(r"'(all|none)' (?=[.,;:!?%])", r"'\1'", text)
     text = re.sub(r"(?<=\S)'(all|none)'", r" '\1'", text)
     text = re.sub(r"'(all|none)'(?=[^\s.,;:!?%'])", r"'\1' ", text)
@@ -105,8 +107,8 @@ def ensure_none(text: str) -> str:
     """Append the none option when the string only mentions all."""
     if has_none_token(text):
         return text
-    if "'all'" in text:
-        return text.replace("'all'", "'all' or 'none'", 1)
+    if _ALL_LITERAL in text:
+        return text.replace(_ALL_LITERAL, f"{_ALL_LITERAL} or {_NONE_LITERAL}", 1)
     return re.sub(r"\ball\b", "all, or none", text, count=1)
 
 

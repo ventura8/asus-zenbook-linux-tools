@@ -600,11 +600,13 @@ class TestSonarQubeAnalysisWiring(unittest.TestCase):
             "sonar.python.coverage.reportPaths=reports/coverage/merged/coverage.xml",
             props,
         )
+        # Shell coverage must be Sonar generic XML, never kcov's Cobertura:
+        # sonar.coverageReportPaths rejects Cobertura and fails the scan.
         self.assertIn(
-            "sonar.coverageReportPaths="
-            "reports/kcov/coverage-gate-kcov-all/kcov-merged/cobertura.xml",
+            "sonar.coverageReportPaths=reports/coverage/merged/shell-coverage.xml",
             props,
         )
+        self.assertNotIn("sonar.coverageReportPaths=reports/kcov", props)
         self.assertIn("sonar.projectKey=", props)
         self.assertIn("sonar.organization=", props)
 
@@ -614,7 +616,11 @@ class TestSonarQubeAnalysisWiring(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn("_write_merged_python_coverage_xml", gates)
+        self.assertIn("_write_sonar_generic_shell_coverage", gates)
         self.assertIn("coverage/merged", gates)
+        self.assertTrue(
+            (self.repo_root / "scripts/coverage/cobertura_to_sonar_generic.py").is_file()
+        )
 
     def test_ci_sonar_job_uploads_and_consumes_merged_reports(self) -> None:
         """coverage-merge uploads merged reports; the sonar job downloads them."""

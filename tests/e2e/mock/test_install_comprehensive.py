@@ -319,10 +319,8 @@ class TestComprehensiveInstall(unittest.TestCase):
         with tempfile.TemporaryDirectory() as cdir:
             for py_file in py_files:
                 cfile = str(Path(cdir) / f"{py_file.name}c")
-                try:
-                    py_compile.compile(str(py_file), cfile=cfile, doraise=True)
-                except py_compile.PyCompileError as exc:
-                    self.fail(f"py_compile failed for {py_file.name}: {exc}")
+                # PyCompileError already names the file and the syntax error.
+                py_compile.compile(str(py_file), cfile=cfile, doraise=True)
 
 
 if __name__ == "__main__":

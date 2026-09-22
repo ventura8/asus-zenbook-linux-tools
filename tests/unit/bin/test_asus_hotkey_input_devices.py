@@ -197,8 +197,9 @@ class TestAsusHotkeyScreenpadBrightnessChords(unittest.TestCase):
         """Event loop raises SystemExit after WMI device loss."""
         wmi = MagicMock(fd=1, path="/dev/wmi", name="WMI")
         wmi.read.side_effect = OSError("gone")
+        uinput = MagicMock()
         with self.assertRaises(SystemExit) as ctx:
-            _call("_run_event_loop", wmi, None, MagicMock(), None)
+            _call("_run_event_loop", wmi, None, uinput, None)
         self.assertIn("WMI hotkey device lost", str(ctx.exception))
 
     def test_plain_wmi_brightness_is_forwarded(self):

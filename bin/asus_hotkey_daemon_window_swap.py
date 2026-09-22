@@ -33,6 +33,8 @@ from asus_hotkey_daemon_window_swap_gnome import (
     prime_gnome_window_swap_extension,
 )
 
+_TOPOLOGY_UNAVAILABLE_MESSAGE = "Window swap skipped: monitor topology unavailable"
+
 _logger = logging.getLogger(__name__)
 _WINDOW_SWAP_LOCK = threading.Lock()
 _WINDOW_SWAP = {
@@ -311,14 +313,14 @@ def _deferred_window_swap_worker(ui, swap_step, monitors=None):
     try:
         monitors = _monitors_for_deferred_swap(monitors)
         if monitors is None:
-            _logger.warning("Window swap skipped: monitor topology unavailable")
+            _logger.warning(_TOPOLOGY_UNAVAILABLE_MESSAGE)
             return
         # Prime only when GNOME; keep attempts=1 so a missing D-Bus object falls
         # through to uinput quickly instead of multi-second retry stacks.
         prime_gnome_window_swap_extension()
         direction_key, next_step, target = _resolve_swap_direction(monitors, swap_step, attempts=1)
         if not _window_swap_ready(direction_key, target, monitors):
-            _logger.warning("Window swap skipped: monitor topology unavailable")
+            _logger.warning(_TOPOLOGY_UNAVAILABLE_MESSAGE)
             return
         # Advance bounce step only after a successful move (failed first hop used
         # to look like a no-op while step still advanced for the next press).
@@ -403,7 +405,7 @@ def _run_cached_window_swap(ui, current_step, monitors):
     direction_key, next_step, target = _resolve_swap_direction(monitors, current_step, attempts=1)
     if not _window_swap_ready(direction_key, target, monitors):
         _clear_window_swap_in_flight()
-        _logger.warning("Window swap skipped: monitor topology unavailable")
+        _logger.warning(_TOPOLOGY_UNAVAILABLE_MESSAGE)
         return current_step
     try:
         # Topology is already cached — apply on this call so the first Fn press

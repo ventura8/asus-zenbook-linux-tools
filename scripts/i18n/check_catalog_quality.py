@@ -30,11 +30,15 @@ LANGUAGE_EXACT_TRANSLATION_EXCEPTIONS = {
     "ca": frozenset({"Controls", "General", "Mode: %s"}),
     "oc": frozenset({"Automatic", "General"}),
 }
-PRINTF_PATTERN = re.compile(r"%(?:\d+\$)?[#0 +'I-]*(?:\d+|\*)?(?:\.\d+|\.\*)?[hlLjzt]*[diouxXeEfFgGcrsa%]")
+# Possessive flag/length classes: `0` is both a flag and a width digit, so a
+# backtracking `*` makes this spec super-linear on long digit runs.
+PRINTF_PATTERN = re.compile(r"%(?:\d+\$)?[#0 +'I-]*+(?:\d+|\*)?(?:\.\d+|\.\*)?[hlLjzt]*+[diouxXeEfFgGcrsa%]")
 # Machine-translation / merge junk that still passes empty+placeholder checks.
 TRANSLATION_ARTIFACT_PATTERN = re.compile(
-    r"(?:\n#\s*$)|(?:#@)|(?:@#)|(?:^#%(?:[0-9]+\$)?[diouxXeEfFgGcrsa%])|"
-    r"(?:\s+#+\s*$)|(?:\bGSM\s*\d)|(?:\bMHz\b)",
+    # Single leading \s (not \s+) before #+: `\s+ ... \s*$` backtracks
+    # super-linearly on long whitespace runs and matches the same strings.
+    r"(?:\n#[^\S\n]*$)|(?:#@)|(?:@#)|(?:^#%(?:\d+\$)?[diouxXeEfFgGcrsa%])|"
+    r"(?:\s#+[^\S\n]*$)|(?:\bGSM\s*\d)|(?:\bMHz\b)",
     re.IGNORECASE | re.MULTILINE,
 )
 

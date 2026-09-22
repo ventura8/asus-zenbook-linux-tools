@@ -687,6 +687,13 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   PRs (no token) and still analyses when a gate fails, so findings stay
   visible. Keep the report paths in `sonar-project.properties` in sync with
   the merge step (guarded by `tests/unit/shell/test_pipeline_ci_parity.py`).
+  SonarQube findings are **additional** to these gates, never a replacement:
+  verify each finding against the code, never weaken a test to silence a rule,
+  and never add suppression comments (`# NOSONAR`, `noqa`, `nosec`,
+  `eslint-disable`) — `scripts/check_no_lint_suppressions.py` fails lint on
+  them. See [`.agents/skills/sonarqube/SKILL.md`](.agents/skills/sonarqube/SKILL.md)
+  for the local throwaway-server scan and the coverage-format contract
+  (`sonar.coverageReportPaths` takes Sonar generic XML only — **not** Cobertura).
   Lint is a GHA matrix job `lint` with display labels
   `format+syntax` / `pylint+shellcheck` (env `ASUS_LINT_WAVE=cheap|heavy`);
   local `--full` runs both lint-in-docker wave containers in parallel
@@ -1022,7 +1029,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - **What to update**:
   - Root `AGENTS.md` when project rules, workflows, constraints, or component behavior change
   - Relevant skills under `.agents/skills/*/SKILL.md` when install, lint, test, coverage, systemd,
-    PR review comment resolution (`resolve-pr-comments`), CodeRabbit CLI review
+    PR review comment resolution (`resolve-pr-comments`), SonarQube analysis and
+    finding triage (`sonarqube`), CodeRabbit CLI review
     or plugin Findings fix (`review-with-coderabbit`; must end with a summary
     report: fixed how / skipped why + counts), or other agent workflows
     need new steps or corrected guidance

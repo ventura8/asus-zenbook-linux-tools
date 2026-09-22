@@ -18,6 +18,8 @@
 │       │   ├── SKILL.md
 │       │   ├── examples.md
 │       │   └── reference.md
+│       ├── sonarqube/
+│       │   └── SKILL.md
 │       ├── systemd-verifier/
 │       │   └── SKILL.md
 │       └── test-runner/

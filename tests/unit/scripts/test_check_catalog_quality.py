@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import subprocess
 import unittest
 
 from tests.unit.bin.attr_helpers import call_attr
@@ -37,15 +36,9 @@ class TestCatalogCompleteness(unittest.TestCase):
 
     def test_all_shipped_catalogs_are_complete(self) -> None:
         """Live po/*.po catalogs must pass the same gate as heavy lint."""
-        try:
-            call_attr(_CATALOG, "check_catalogs")
-        except (
-            OSError,
-            RuntimeError,
-            subprocess.CalledProcessError,
-            ValueError,
-        ) as error:
-            self.fail(f"shipped catalogs are incomplete: {error}")
+        # A raised error fails the test with its own traceback, which names the
+        # offending catalog more precisely than a re-wrapped message.
+        call_attr(_CATALOG, "check_catalogs")
 
 
 class TestTranslationArtifactDetection(unittest.TestCase):

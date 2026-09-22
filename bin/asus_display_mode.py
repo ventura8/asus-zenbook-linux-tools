@@ -12,6 +12,8 @@ except ImportError:  # Script execution path: python3 bin/asus_display_mode.py
     import asus_display_mode_core as _core
 import dbus
 
+_INVALID_MODE_MESSAGE = "Invalid mode argument."
+
 DEFAULT_MAIN_CONNECTOR = _core.DEFAULT_MAIN_CONNECTOR
 DEFAULT_SECONDARY_CONNECTOR = _core.DEFAULT_SECONDARY_CONNECTOR
 DEFAULT_MAIN_MODE = _core.DEFAULT_MAIN_MODE
@@ -153,7 +155,7 @@ def _mode_entry_for_connector(modes, mode_id):
 
 def _looks_like_mode_id(mode_token):
     """Return True when *mode_token* looks like WIDTHxHEIGHT or WIDTHxHEIGHT@Hz."""
-    return re.fullmatch(r"[0-9]+x[0-9]+(?:@[0-9.]+)?", str(mode_token)) is not None
+    return re.fullmatch(r"\d+x\d+(?:@[\d.]+)?", str(mode_token)) is not None
 
 
 def _mode_is_current(mode_entry):
@@ -344,7 +346,7 @@ def _run_detect_topology_map():
 def _run_next(args):
     """Handle --next CLI command."""
     if not args:
-        print("Invalid mode argument.", file=sys.stderr)
+        print(_INVALID_MODE_MESSAGE, file=sys.stderr)
         raise SystemExit(1)
     profile_id = args[0]
     if profile_id not in SUPPORTED_PROFILE_IDS:
@@ -359,7 +361,7 @@ def _run_next(args):
 def _run_apply_profile(args):
     """Handle --apply-profile CLI command."""
     if not args:
-        print("Invalid mode argument.", file=sys.stderr)
+        print(_INVALID_MODE_MESSAGE, file=sys.stderr)
         raise SystemExit(1)
     profile_id = args[0]
     if profile_id not in SUPPORTED_PROFILE_IDS:
@@ -380,7 +382,7 @@ COMMAND_HANDLERS = {
 def main():
     """Main entrypoint for asus-display-mode.py."""
     if len(sys.argv) < 2:
-        print("Invalid mode argument.", file=sys.stderr)
+        print(_INVALID_MODE_MESSAGE, file=sys.stderr)
         raise SystemExit(1)
 
     cmd = sys.argv[1]
@@ -390,11 +392,11 @@ def main():
     try:
         mode_num = int(cmd)
     except ValueError as exc:
-        print("Invalid mode argument.", file=sys.stderr)
+        print(_INVALID_MODE_MESSAGE, file=sys.stderr)
         raise SystemExit(1) from exc
 
     if mode_num not in LEGACY_MODE_TO_PROFILE:
-        print("Invalid mode argument.", file=sys.stderr)
+        print(_INVALID_MODE_MESSAGE, file=sys.stderr)
         raise SystemExit(1)
 
     return apply_display_mode(mode_num)

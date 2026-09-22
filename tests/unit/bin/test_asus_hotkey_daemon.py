@@ -515,9 +515,12 @@ class TestAsusHotkeyDaemonLoader(unittest.TestCase):
 
     def test_loader_raises_import_error_when_spec_is_missing(self):
         """Test implementation loader raises ImportError when spec creation fails."""
+        # Name via variable: keeps ruff off getattr-with-literal and pylint off
+        # protected-access, while hoisting both calls out of assertRaises.
+        load_implementation_module_name = "_load_implementation_module"
+        load_implementation_module = getattr(daemon, load_implementation_module_name)
         with patch("importlib.util.spec_from_file_location", return_value=None), self.assertRaises(ImportError):
-            load_implementation_module_name = "_load_implementation_module"
-            getattr(daemon, load_implementation_module_name)()
+            load_implementation_module()
 
     def test_loader_raises_when_shared_imports_spec_missing(self):
         """Module load fails when shared_imports spec_from_file_location returns None."""

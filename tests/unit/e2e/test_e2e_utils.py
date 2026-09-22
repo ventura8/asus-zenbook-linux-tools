@@ -27,11 +27,12 @@ class TestE2EUtils(unittest.TestCase):
 
     def test_invalid_env_timeout_raises_assertion(self):
         """Non-numeric E2E_TEST_TIMEOUT must raise the existing assertion format."""
+        env = self._env_with_log_dir()
         with (
             patch.dict(os.environ, {"E2E_TEST_TIMEOUT": "abc"}, clear=False),
             self.assertRaisesRegex(AssertionError, r"Invalid timeout budget: abcs"),
         ):
-            run_e2e_command(["true"], timeout=None, env=self._env_with_log_dir())
+            run_e2e_command(["true"], timeout=None, env=env)
 
     def test_valid_env_timeout_is_accepted(self):
         """Numeric E2E_TEST_TIMEOUT within bounds is used when timeout is omitted."""
@@ -49,24 +50,27 @@ class TestE2EUtils(unittest.TestCase):
 
     def test_zero_env_timeout_raises_assertion(self):
         """Zero E2E_TEST_TIMEOUT is rejected by the budget validator."""
+        env = self._env_with_log_dir()
         with (
             patch.dict(os.environ, {"E2E_TEST_TIMEOUT": "0"}, clear=False),
             self.assertRaisesRegex(AssertionError, r"Invalid timeout budget: 0s"),
         ):
-            run_e2e_command(["true"], timeout=None, env=self._env_with_log_dir())
+            run_e2e_command(["true"], timeout=None, env=env)
 
     def test_negative_env_timeout_raises_assertion(self):
         """Negative E2E_TEST_TIMEOUT is rejected by the budget validator."""
+        env = self._env_with_log_dir()
         with (
             patch.dict(os.environ, {"E2E_TEST_TIMEOUT": "-1"}, clear=False),
             self.assertRaisesRegex(AssertionError, r"Invalid timeout budget: -1s"),
         ):
-            run_e2e_command(["true"], timeout=None, env=self._env_with_log_dir())
+            run_e2e_command(["true"], timeout=None, env=env)
 
     def test_string_command_is_rejected(self):
         """Shell strings must not be passed where argv sequences are required."""
+        env = self._env_with_log_dir()
         with self.assertRaisesRegex(TypeError, "sequence of argv tokens"):
-            run_e2e_command("true", env=self._env_with_log_dir())
+            run_e2e_command("true", env=env)
 
 
 if __name__ == "__main__":
