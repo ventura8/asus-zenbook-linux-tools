@@ -164,6 +164,52 @@ class TestRefusedInput(unittest.TestCase):
             self.assertFalse((outside / "escape.xml").exists())
 
 
+    def test_source_outside_source_base_is_refused(self) -> None:
+        """Reads may not escape the input root the caller names."""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            merged = base / "merged"
+            merged.mkdir()
+            outside = _write(base, "cobertura.xml", _COBERTURA)
+            code, _, err = _run_main(
+                str(outside),
+                str(base / "out.xml"),
+                "--base",
+                str(base),
+                "--source-base",
+                str(merged),
+            )
+            self.assertEqual(code, 1)
+            self.assertIn("path escapes", err)
+            self.assertFalse((base / "out.xml").exists())
+
+
+class TestSeparateRoots(unittest.TestCase):
+    """The CI shape: read from a temp merged tree, write into reports/."""
+
+    def test_source_and_destination_may_use_different_roots(self) -> None:
+        """A merged temp dir source writes into an unrelated reports root."""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            merged = base / "merged" / "kcov-merged"
+            merged.mkdir(parents=True)
+            reports = base / "reports"
+            reports.mkdir()
+            source = _write(merged, "cobertura.xml", _COBERTURA)
+            destination = reports / "coverage" / "merged" / "shell-coverage.xml"
+            code, out, _ = _run_main(
+                str(source),
+                str(destination),
+                "--base",
+                str(reports),
+                "--source-base",
+                str(merged.parent),
+            )
+            self.assertEqual(code, 0)
+            self.assertIn("(1 files)", out)
+            self.assertTrue(destination.is_file())
+
+
 class TestCliSuccess(unittest.TestCase):
     """Successful runs report what they wrote."""
 

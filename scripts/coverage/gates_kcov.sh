@@ -371,7 +371,8 @@ _write_sonar_generic_shell_coverage() {
     fi
     dest="$reports_root/coverage/merged/shell-coverage.xml"
     if python3 "$repo_root/scripts/coverage/cobertura_to_sonar_generic.py" \
-        --base "$reports_root" "$src" "$dest" >/dev/null 2>&1; then
+        --base "$reports_root" --source-base "$merged" "$src" "$dest" \
+        >/dev/null 2>&1; then
         echo "  ✓ Sonar generic shell coverage written to $dest"
         return 0
     fi

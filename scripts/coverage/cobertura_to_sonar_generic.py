@@ -80,33 +80,37 @@ def _parse_cobertura(source: Path) -> ElementTree.Element:
     return ElementTree.fromstring(text)
 
 
-def _destination_within(destination: Path, base: Path) -> Path:
-    """Resolve *destination* and require it to stay inside *base*.
+def _resolved_within(path: Path, base: Path) -> Path:
+    """Resolve *path* and require it to stay inside *base*.
 
-    The path comes from the command line, so writes are confined to the output
-    root the caller names: no escaping through `..` or a symlink.
+    Both paths come from the command line, so reads and writes are confined to
+    the roots the caller names: no escaping through `..` or a symlink.
     """
     root_dir = base.resolve()
-    resolved = (
-        destination.resolve()
-        if destination.is_absolute()
-        else (root_dir / destination).resolve()
-    )
+    resolved = path.resolve() if path.is_absolute() else (root_dir / path).resolve()
     try:
         resolved.relative_to(root_dir)
     except ValueError as exc:
-        raise ValueError(f"path escapes {root_dir}: {destination}") from exc
+        raise ValueError(f"path escapes {root_dir}: {path}") from exc
     return resolved
 
 
-def convert(source: Path, destination: Path, base: Path | None = None) -> int:
+def convert(
+    source: Path,
+    destination: Path,
+    base: Path | None = None,
+    source_base: Path | None = None,
+) -> int:
     """Write *source* Cobertura as generic coverage at *destination*; count files.
 
-    Reading *source* is unconstrained (the merged kcov tree is a temp dir);
-    *destination* must resolve inside *base* (default: the working directory).
+    *destination* must resolve inside *base* and *source* inside *source_base*
+    (the merged kcov tree is a temp dir, so it gets its own root). Both default
+    to *base*, then to the working directory.
     """
-    safe_destination = _destination_within(destination, base or Path.cwd())
-    root = _parse_cobertura(source)
+    write_root = base or Path.cwd()
+    safe_destination = _resolved_within(destination, write_root)
+    safe_source = _resolved_within(source, source_base or write_root)
+    root = _parse_cobertura(safe_source)
     files = _merge_class_lines(root)
     if not files:
         # An empty document would still satisfy the workflow's `-s` check and be
@@ -129,12 +133,20 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="output root the destination must stay inside (default: cwd)",
     )
+    parser.add_argument(
+        "--source-base",
+        type=Path,
+        default=None,
+        help="input root the source must stay inside (default: --base, else cwd)",
+    )
     args = parser.parse_args(argv)
     if not args.source.is_file():
         print(f"Missing Cobertura report: {args.source}", file=sys.stderr)
         return 1
     try:
-        count = convert(args.source, args.destination, args.base)
+        count = convert(
+            args.source, args.destination, args.base, args.source_base
+        )
     except ElementTree.ParseError as exc:
         print(f"Malformed Cobertura report {args.source}: {exc}", file=sys.stderr)
         return 1
