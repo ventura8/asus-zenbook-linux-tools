@@ -15,7 +15,7 @@ from pathlib import Path
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape
 
-_ENTITY_DECLARATION = re.compile(r"<!\s*ENTITY", re.IGNORECASE)
+_ENTITY_DECLARATION = re.compile(rb"<!\s*ENTITY", re.IGNORECASE)
 
 
 def _line_hit(line_node: ElementTree.Element) -> tuple[int, int] | None:
@@ -73,11 +73,18 @@ def _parse_cobertura(source: Path) -> ElementTree.Element:
     internal ones, which is what "billion laughs" and quadratic-blowup inputs
     rely on. kcov emits a plain external DOCTYPE and no entity declarations,
     so rejecting `<!ENTITY` blocks the amplification without a new dependency.
+
+    The raw bytes are handed to the parser so the document's own encoding
+    declaration decides how it is decoded: decoding here as UTF-8 would mangle
+    non-ASCII ``filename`` attributes in a latin-1 report, and Sonar would then
+    fail to match the coverage to its source file.
     """
-    text = source.read_text(encoding="utf-8", errors="replace")
-    if _ENTITY_DECLARATION.search(text):
+    data = source.read_bytes()
+    # Dropping NULs normalises UTF-16 to ASCII-ish so the scan catches an
+    # entity declaration in any of the encodings expat accepts.
+    if _ENTITY_DECLARATION.search(data.replace(b"\x00", b"")):
         raise ValueError(f"entity declarations are not accepted: {source}")
-    return ElementTree.fromstring(text)
+    return ElementTree.fromstring(data)
 
 
 def _resolved_within(path: Path, base: Path) -> Path:
@@ -110,7 +117,13 @@ def convert(
     write_root = base or Path.cwd()
     safe_destination = _resolved_within(destination, write_root)
     safe_source = _resolved_within(source, source_base or write_root)
-    root = _parse_cobertura(safe_source)
+    try:
+        root = _parse_cobertura(safe_source)
+    except (ValueError, ElementTree.ParseError):
+        # The caller is best-effort and ignores this failure, so a stale report
+        # left on disk would be handed to Sonar as if it were current.
+        safe_destination.unlink(missing_ok=True)
+        raise
     files = _merge_class_lines(root)
     if not files:
         # An empty document would still satisfy the workflow's `-s` check and be

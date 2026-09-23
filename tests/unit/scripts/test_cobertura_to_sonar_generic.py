@@ -41,6 +41,24 @@ _COBERTURA = """<?xml version="1.0" ?>
 """
 
 
+_LATIN1_COBERTURA = """<?xml version="1.0" encoding="iso-8859-1"?>
+<coverage><packages><package name="">
+  <classes>
+    <class name="cafe_sh__1" filename="bin/caf\u00e9.sh">
+      <lines><line number="1" hits="1"/></lines>
+    </class>
+  </classes>
+</package></packages></coverage>
+"""
+
+
+def _write_bytes(directory: Path, name: str, data: bytes) -> Path:
+    """Write raw *data* to ``directory/name`` and return the path."""
+    path = directory / name
+    path.write_bytes(data)
+    return path
+
+
 def _write(directory: Path, name: str, text: str) -> Path:
     """Write *text* to ``directory/name`` and return the path."""
     path = directory / name
@@ -182,6 +200,55 @@ class TestRefusedInput(unittest.TestCase):
             self.assertEqual(code, 1)
             self.assertIn("path escapes", err)
             self.assertFalse((base / "out.xml").exists())
+
+
+class TestEncoding(unittest.TestCase):
+    """The document's own encoding declaration decides how it is decoded."""
+
+    def test_non_utf8_filenames_survive(self) -> None:
+        """A latin-1 report keeps its non-ASCII paths intact."""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            source = _write_bytes(
+                base, "cobertura.xml", _LATIN1_COBERTURA.encode("iso-8859-1")
+            )
+            destination = base / "shell-coverage.xml"
+            self.assertEqual(_CONVERTER.convert(source, destination, base), 1)
+            root = ElementTree.parse(destination).getroot()
+            self.assertEqual(
+                [node.get("path") for node in root.findall("file")], ["bin/café.sh"]
+            )
+
+
+class TestStaleOutput(unittest.TestCase):
+    """A refused conversion never leaves an older report for Sonar to read."""
+
+    def test_entity_refusal_removes_stale_destination(self) -> None:
+        """A rejected entity document clears a previous report."""
+        hostile = (
+            '<?xml version="1.0"?>\n'
+            '<!DOCTYPE coverage [<!ENTITY lol "lol">]>\n'
+            "<coverage><packages/></coverage>\n"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            source = _write(base, "cobertura.xml", hostile)
+            stale = _write(base, "shell-coverage.xml", "<coverage version=\"1\"/>\n")
+            code, _, err = _run_main(str(source), str(stale), "--base", str(base))
+            self.assertEqual(code, 1)
+            self.assertIn("entity declarations", err)
+            self.assertFalse(stale.exists())
+
+    def test_malformed_xml_removes_stale_destination(self) -> None:
+        """A truncated document also clears a previous report."""
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            source = _write(base, "cobertura.xml", "<coverage><packages>\n")
+            stale = _write(base, "shell-coverage.xml", "<coverage version=\"1\"/>\n")
+            code, _, err = _run_main(str(source), str(stale), "--base", str(base))
+            self.assertEqual(code, 1)
+            self.assertIn("Malformed Cobertura report", err)
+            self.assertFalse(stale.exists())
 
 
 class TestSeparateRoots(unittest.TestCase):
