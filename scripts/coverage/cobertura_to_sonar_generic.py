@@ -9,10 +9,13 @@ translation step before SonarQube can import it.
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape
+
+_ENTITY_DECLARATION = re.compile(r"<!\s*ENTITY", re.IGNORECASE)
 
 
 def _line_hit(line_node: ElementTree.Element) -> tuple[int, int] | None:
@@ -63,6 +66,20 @@ def _render(files: dict[str, dict[int, int]]) -> str:
     return "\n".join(out) + "\n"
 
 
+def _parse_cobertura(source: Path) -> ElementTree.Element:
+    """Parse *source*, refusing documents that declare internal entities.
+
+    ElementTree never fetches external entities, but expat still expands
+    internal ones, which is what "billion laughs" and quadratic-blowup inputs
+    rely on. kcov emits a plain external DOCTYPE and no entity declarations,
+    so rejecting `<!ENTITY` blocks the amplification without a new dependency.
+    """
+    text = source.read_text(encoding="utf-8", errors="replace")
+    if _ENTITY_DECLARATION.search(text):
+        raise ValueError(f"entity declarations are not accepted: {source}")
+    return ElementTree.fromstring(text)
+
+
 def _destination_within(destination: Path, base: Path) -> Path:
     """Resolve *destination* and require it to stay inside *base*.
 
@@ -89,8 +106,13 @@ def convert(source: Path, destination: Path, base: Path | None = None) -> int:
     *destination* must resolve inside *base* (default: the working directory).
     """
     safe_destination = _destination_within(destination, base or Path.cwd())
-    root = ElementTree.parse(source).getroot()
+    root = _parse_cobertura(source)
     files = _merge_class_lines(root)
+    if not files:
+        # An empty document would still satisfy the workflow's `-s` check and be
+        # handed to Sonar as real (zero) coverage: drop any stale file instead.
+        safe_destination.unlink(missing_ok=True)
+        return 0
     safe_destination.parent.mkdir(parents=True, exist_ok=True)
     safe_destination.write_text(_render(files), encoding="utf-8")
     return len(files)
@@ -117,7 +139,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Malformed Cobertura report {args.source}: {exc}", file=sys.stderr)
         return 1
     except ValueError as exc:
-        print(f"Refusing to write outside the working tree: {exc}", file=sys.stderr)
+        print(f"Refusing to convert {args.source}: {exc}", file=sys.stderr)
         return 1
     if not count:
         print(f"No files found in {args.source}", file=sys.stderr)

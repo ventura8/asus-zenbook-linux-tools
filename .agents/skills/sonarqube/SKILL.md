@@ -40,7 +40,8 @@ the same change set when they move.
 
 ```bash
 docker run -d --name asus-sonar-local -p 9000:9000 \
-  -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true sonarqube:community
+  -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true \
+  sonarqube@sha256:58b068af30bdfdccf91222de36e310529033e853dfae221b429cba80d10d5751  # community
 # Wait for {"status":"UP"} (roughly a minute):
 curl -s http://localhost:9000/api/system/status
 ```
@@ -71,7 +72,8 @@ Scan (`sonar.organization` is Cloud-only, so blank it for the local server):
 
 ```bash
 docker run --rm --network host -e SONAR_HOST_URL=http://localhost:9000 \
-  -e SONAR_TOKEN="$TOKEN" -v "$PWD:/usr/src" sonarsource/sonar-scanner-cli \
+  -e SONAR_TOKEN="$TOKEN" -v "$PWD:/usr/src" \
+  sonarsource/sonar-scanner-cli@sha256:a3f4215076706c95a17a68c19322ee916e40a3acd081a8c1a1e839e0194afa57 \
   -Dsonar.projectKey=asus-local -Dsonar.organization=
 ```
 
@@ -87,6 +89,10 @@ for i in d["issues"]:
     where = i["component"].split(":", 1)[-1] + ":" + str(i.get("line", "-"))
     print(i["severity"], i["type"], where, i["message"])'
 ```
+
+Both images are pinned by digest: the scanner receives the token and a mount of
+the whole checkout, so a mutable tag must not decide what runs. Refresh a pin
+with `docker buildx imagetools inspect <image>:<tag> --format '{{.Manifest.Digest}}'`.
 
 Tear down when finished: `docker rm -f asus-sonar-local`.
 
