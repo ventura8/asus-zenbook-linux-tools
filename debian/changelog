@@ -1,3 +1,17 @@
+asus-zenbook-linux-tools (1.0.7) resolute; urgency=medium
+
+  * Added SonarQube Cloud analysis to CI, fed by the pipeline's own Python and
+    shell coverage (new kcov Cobertura to Sonar generic coverage converter).
+  * Fixed findings the analysis surfaced in product code: monitor scale is now
+    compared with math.isclose instead of float equality in the GNOME window
+    swap helper, the touchpad read loop logs a traceback, redundant exception
+    classes and duplicated literals were cleaned up, and two regular
+    expressions no longer backtrack super-linearly.
+  * Refreshed pinned dependencies: all nine Docker base image digests and
+    docker/setup-buildx-action 4.4.1.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Wed, 23 Sep 2026 14:30:00 +0300
+
 asus-zenbook-linux-tools (1.0.6) resolute; urgency=medium
 
   * ScreenPad brightness now survives reboot: the hotkey daemon unit runs
