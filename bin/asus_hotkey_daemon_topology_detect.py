@@ -149,7 +149,7 @@ def _parse_topology_map_output(output_text):
     """Parse JSON topology-map output emitted by the display-mode backend."""
     try:
         payload = json.loads(str(output_text).strip())
-    except (TypeError, ValueError, json.JSONDecodeError):
+    except (TypeError, ValueError):  # JSONDecodeError derives from ValueError
         return None, None
     return _parse_topology_map_payload(payload)
 

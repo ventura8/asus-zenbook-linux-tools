@@ -286,8 +286,8 @@ def run_event_loop(dev, share_bounds):
     try:
         for event in dev.read_loop():
             state, share_bounds = _dispatch_event(event, state, share_bounds)
-    except OSError as exc:
-        _logger.error("Touchpad read loop failed: %s", exc)
+    except OSError:
+        _logger.exception("Touchpad read loop failed")
         raise
 
 

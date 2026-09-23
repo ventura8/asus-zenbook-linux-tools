@@ -354,6 +354,32 @@ _merge_kcov_shards_from_reports() {
     _finalize_merged_kcov_temp "$tmp" "$merged" "$min_percent"
 }
 
+_write_sonar_generic_shell_coverage() {
+    # SonarQube's sonar.coverageReportPaths accepts only its own generic
+    # coverage XML, never Cobertura. Convert from the merged tree *before* the
+    # caller deletes it: the host merge never writes reports/kcov/<slug>/.
+    # Best-effort — a conversion failure must not fail a passing gate.
+    local merged="$1" reports_root="$2" src dest repo_root
+    repo_root="${REPO_ROOT:-$(pwd)}"
+    src="$merged/kcov-merged/cobertura.xml"
+    if [[ ! -f "$src" ]]; then
+        src=$(find "$merged" -name cobertura.xml -type f 2>/dev/null | head -1)
+    fi
+    if [[ -z "$src" || ! -f "$src" ]]; then
+        echo "  ! Warning: no merged kcov cobertura.xml found under $merged." >&2
+        return 0
+    fi
+    dest="$reports_root/coverage/merged/shell-coverage.xml"
+    if python3 "$repo_root/scripts/coverage/cobertura_to_sonar_generic.py" \
+        --base "$reports_root" --source-base "$merged" "$src" "$dest" \
+        >/dev/null 2>&1; then
+        echo "  ✓ Sonar generic shell coverage written to $dest"
+        return 0
+    fi
+    echo "  ! Warning: could not convert kcov Cobertura to Sonar generic coverage." >&2
+    return 0
+}
+
 merge_kcov_coverage_shards() {
     local reports_root tmp merged min_percent
     reports_root=$(resolve_reports_root) || return 1
@@ -365,6 +391,7 @@ merge_kcov_coverage_shards() {
         rm -rf "$tmp"
         return 1
     fi
+    _write_sonar_generic_shell_coverage "$merged" "$reports_root"
     rm -rf "$tmp"
     echo "  ✓ Merged kcov shards meet ≥${min_percent}% line coverage."
 }

@@ -65,7 +65,7 @@ def _translation() -> gettext.NullTranslations:
                 languages=[language],
                 fallback=False,
             )
-        except (FileNotFoundError, OSError):
+        except OSError:  # FileNotFoundError derives from OSError
             continue
     return gettext.NullTranslations()
 

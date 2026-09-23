@@ -104,8 +104,7 @@ def _extract_supported_scales(modes):
     """Return sorted unique supported scales from Mutter mode tuples."""
     scales = set()
     for mode_entry in modes:
-        for scale in _supported_scale_values(mode_entry):
-            scales.add(scale)
+        scales.update(_supported_scale_values(mode_entry))
     return sorted(scales)
 
 

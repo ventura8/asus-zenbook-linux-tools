@@ -68,7 +68,7 @@ function _isScreenpadGeometry(monitor) {
 
 function _screenpadIndexByGeometry() {
     const monitors = Main.layoutManager?.monitors;
-    if (!monitors || !monitors.length)
+    if (!monitors?.length)
         return -1;
     const primary = _primaryMonitorIndex();
     for (let i = 0; i < monitors.length; i++) {

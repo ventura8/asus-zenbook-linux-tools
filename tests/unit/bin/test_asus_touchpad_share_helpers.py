@@ -140,8 +140,9 @@ class TestAsusTouchpadShareHelpers(unittest.TestCase):
         """OSError from read_loop is logged and re-raised."""
         mock_dev = MagicMock()
         mock_dev.read_loop.side_effect = OSError("device gone")
+        bounds = _share_bounds()
         with self.assertLogs("asus_touchpad_share", level="ERROR"), self.assertRaises(OSError):
-            touchpad.run_event_loop(mock_dev, _share_bounds())
+            touchpad.run_event_loop(mock_dev, bounds)
 
     @patch("asus_touchpad_share.find_touchpad_device_path", return_value="/dev/input/event1")
     @patch("asus_touchpad_share.evdev.InputDevice")

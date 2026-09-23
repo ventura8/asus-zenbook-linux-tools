@@ -142,8 +142,7 @@ class TestDotTestRunner(unittest.TestCase):
             def test_subs(self):
                 """Run one passing subtest."""
                 with self.subTest(label="a"):
-                    ok = True
-                    self.assertTrue(ok)
+                    self.assertIn("a", ("a", "b"))
 
         test = SubCase("test_subs")
         test.run(result)
@@ -242,8 +241,8 @@ class TestDotTestRunner(unittest.TestCase):
 
             @unittest.expectedFailure
             def test_unexpected_success(self):
-                """Unexpected success path."""
-                self.assertEqual(1, 1)
+                """Unexpected success path (passes, so the runner reports it)."""
+                self.assertEqual(len("ab"), 2)
 
         stream = self._make_result_stream()
         result = dot_test_runner.ClassDotResult(stream, descriptions=False, verbosity=1)

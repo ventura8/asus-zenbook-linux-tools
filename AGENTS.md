@@ -676,7 +676,25 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `coverage-merge` — a coverage shard failure would cascade-skip those jobs and
   hide real Full-DE/Distro status. `coverage-merge` still runs after coverage
   cells execute (pass or fail) so a shard failure surfaces as merge failure,
-  not a skipped merge. Lint is a GHA matrix job `lint` with display labels
+  not a skipped merge. `coverage-merge` also writes a merged Cobertura XML to
+  `reports/coverage/merged/coverage.xml` (best-effort; a writer failure never
+  fails a passing gate) and uploads it with the kcov Cobertura report as the
+  `coverage-merged-reports` artifact. The `sonarqube` job (SonarQube Cloud)
+  consumes that artifact after `coverage-merge`: full-history checkout
+  (`fetch-depth: 0`) for new-code attribution, `sonar-project.properties`
+  at the repo root for keys / sources / report paths, `sonar.projectVersion`
+  from the root `VERSION`, and `secrets.SONAR_TOKEN`. It is skipped for fork
+  PRs (no token) and still analyses when a gate fails, so findings stay
+  visible. Keep the report paths in `sonar-project.properties` in sync with
+  the merge step (guarded by `tests/unit/shell/test_pipeline_ci_parity.py`).
+  SonarQube findings are **additional** to these gates, never a replacement:
+  verify each finding against the code, never weaken a test to silence a rule,
+  and never add suppression comments (`# NOSONAR`, `noqa`, `nosec`,
+  `eslint-disable`) — `scripts/check_no_lint_suppressions.py` fails lint on
+  them. See [`.agents/skills/sonarqube/SKILL.md`](.agents/skills/sonarqube/SKILL.md)
+  for the local throwaway-server scan and the coverage-format contract
+  (`sonar.coverageReportPaths` takes Sonar generic XML only — **not** Cobertura).
+  Lint is a GHA matrix job `lint` with display labels
   `format+syntax` / `pylint+shellcheck` (env `ASUS_LINT_WAVE=cheap|heavy`);
   local `--full` runs both lint-in-docker wave containers in parallel
   with deb smoke.
@@ -1011,7 +1029,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - **What to update**:
   - Root `AGENTS.md` when project rules, workflows, constraints, or component behavior change
   - Relevant skills under `.agents/skills/*/SKILL.md` when install, lint, test, coverage, systemd,
-    PR review comment resolution (`resolve-pr-comments`), CodeRabbit CLI review
+    PR review comment resolution (`resolve-pr-comments`), SonarQube analysis and
+    finding triage (`sonarqube`), CodeRabbit CLI review
     or plugin Findings fix (`review-with-coderabbit`; must end with a summary
     report: fixed how / skipped why + counts), or other agent workflows
     need new steps or corrected guidance

@@ -26,24 +26,25 @@ _DESKTOP_USER_LOCK = threading.Lock()
 SCRIPT_BINDIR = os.environ.get("SCRIPT_BINDIR", "/usr/local/bin")
 _DISPLAY_MODE_SCRIPT = "asus-display-mode.sh"
 _SCREENPAD_BRIGHTNESS_SCRIPT = "asus-screenpad-brightness.sh"
+_CONTROL_CENTER_SCRIPT = "asus-control-center.sh"
 _SCRIPT_MAP = {
-    0x5C: "asus-control-center.sh",
-    0x68: "asus-control-center.sh",
+    0x5C: _CONTROL_CENTER_SCRIPT,
+    0x68: _CONTROL_CENTER_SCRIPT,
     0x6A: "asus-screenpad-toggle.sh",
     0x85: "asus-camera-toggle.sh",
-    0x86: "asus-control-center.sh",
-    0x88: "asus-control-center.sh",
+    0x86: _CONTROL_CENTER_SCRIPT,
+    0x88: _CONTROL_CENTER_SCRIPT,
     0x9D: "asus-fan-toggle.sh",
     0xBF: "asus-screenshot.sh",
-    0xCC: "asus-control-center.sh",
+    0xCC: _CONTROL_CENTER_SCRIPT,
 }
 _CODE_SCRIPT_MAP = {
-    148: "asus-control-center.sh",
-    156: "asus-control-center.sh",
+    148: _CONTROL_CENTER_SCRIPT,
+    156: _CONTROL_CENTER_SCRIPT,
     212: "asus-camera-toggle.sh",
     227: _DISPLAY_MODE_SCRIPT,
     482: "asus-fan-toggle.sh",
-    570: "asus-control-center.sh",
+    570: _CONTROL_CENTER_SCRIPT,
     634: "asus-screenshot.sh",
 }
 

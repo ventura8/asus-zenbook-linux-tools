@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """GNOME Window Swap extension helpers for the ASUS hotkey daemon."""
 
+import math
 import re
 import shutil
 import subprocess
@@ -141,7 +142,7 @@ def _monitor_index_for_scale(monitors, point_x, point_y, scale_from_monitor):
     """Return monitor index using logical scale 1 or each monitor's scale field."""
     for idx, monitor in enumerate(monitors):
         scale = _monitor_scale_value(monitor, scale_from_monitor)
-        if scale_from_monitor and scale == 1.0:
+        if scale_from_monitor and math.isclose(scale, 1.0):
             continue
         if _point_in_monitor(monitor, point_x, point_y, scale):
             return idx
