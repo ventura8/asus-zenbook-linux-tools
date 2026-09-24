@@ -1,3 +1,16 @@
+asus-zenbook-linux-tools (1.0.8) resolute; urgency=medium
+
+  * Hardened bin/asus_hda_verb.py: the hwdep device path from the command line
+    is now confined to /dev/snd (DEV_SND_ROOT for test fixtures) and must name
+    an hwC<N>D<M> node, so the root helper cannot be pointed at another file.
+  * CI/security hygiene: pinned and wheels-only coverage install, npm installs
+    with --ignore-scripts, curl restricted to HTTPS (--proto '=https'), and the
+    loginctl test stub written owner-only.
+  * SonarQube Cloud project renamed to asus-zenbook-linux-tools.
+  * pylint 4.0.9.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Thu, 24 Sep 2026 22:30:00 +0300
+
 asus-zenbook-linux-tools (1.0.7) resolute; urgency=medium
 
   * Added SonarQube Cloud analysis to CI, fed by the pipeline's own Python and

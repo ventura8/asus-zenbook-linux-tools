@@ -49,7 +49,7 @@ RUN chmod +x /tmp/el10-kcov-libcurl.sh \
         alsa-utils-[0-9]* \
     && /tmp/el10-kcov-libcurl.sh \
     && rm -f /tmp/el10-kcov-libcurl.sh \
-    && curl -fL --retry 8 --retry-all-errors --retry-delay 2 \
+    && curl -fL --proto '=https' --tlsv1.2 --retry 8 --retry-all-errors --retry-delay 2 \
         "https://github.com/SimonKagstrom/kcov/archive/refs/tags/${KCOV_VERSION}.tar.gz" \
         -o /tmp/kcov.tar.gz \
     && echo "${KCOV_SHA256}  /tmp/kcov.tar.gz" | sha256sum -c - \

@@ -2,8 +2,10 @@
 
 import array
 import io
+import os
 import struct
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -175,3 +177,46 @@ class TestAsusHdaVerb(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestDeviceValidation(unittest.TestCase):
+    """The hwdep path comes from argv and the helper runs as root."""
+
+    def test_accepts_hwdep_node_under_sound_root(self):
+        """A real hwdep name under the sound root resolves unchanged."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            node = root / "hwC0D0"
+            node.touch()
+            with mock.patch.dict(os.environ, {"DEV_SND_ROOT": str(root)}):
+                self.assertEqual(hda.validated_device(str(node)), str(node.resolve()))
+
+    def test_rejects_path_outside_sound_root(self):
+        """A traversal out of the sound root is refused before open()."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "snd"
+            root.mkdir()
+            outside = Path(tmp) / "hwC0D0"
+            outside.touch()
+            env = mock.patch.dict(os.environ, {"DEV_SND_ROOT": str(root)})
+            with env, self.assertRaisesRegex(ValueError, "outside"):
+                hda.validated_device(str(root / ".." / "hwC0D0"))
+
+    def test_rejects_non_hwdep_name(self):
+        """Only hwC<N>D<M> nodes are accepted, not arbitrary files."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "controlC0").touch()
+            env = mock.patch.dict(os.environ, {"DEV_SND_ROOT": str(root)})
+            with env, self.assertRaisesRegex(ValueError, "hwdep device name"):
+                hda.validated_device(str(root / "controlC0"))
+
+    def test_main_reports_refused_device(self):
+        """main() turns a refused device into exit 1 with a message."""
+        with tempfile.TemporaryDirectory() as tmp:
+            env = mock.patch.dict(os.environ, {"DEV_SND_ROOT": str(Path(tmp) / "snd")})
+            stderr = io.StringIO()
+            with env, mock.patch("sys.stderr", stderr):
+                code = hda.main(["/etc/passwd", "0x20", "0x500", "0x1b"])
+            self.assertEqual(code, 1)
+            self.assertIn("outside", stderr.getvalue())

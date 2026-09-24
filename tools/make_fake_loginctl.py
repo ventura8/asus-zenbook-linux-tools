@@ -98,10 +98,11 @@ def main(argv: list[str] | None = None) -> None:
     current_user, target_dir = _parse_loginctl_args(sys.argv[1:] if argv is None else argv)
     content = _current_user_content(str(os.getuid()), _current_username()) if current_user else _ghost_user_content()
     loginctl_path = os.path.join(target_dir, "loginctl")
-    fd = os.open(loginctl_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o755)
+    # Owner-only: the stub is executed by the user that wrote it.
+    fd = os.open(loginctl_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o700)
     with os.fdopen(fd, "w", encoding="utf-8") as handle:
         handle.write(content)
-    os.chmod(loginctl_path, 0o755)
+    os.chmod(loginctl_path, 0o700)
 
 
 if __name__ == "__main__":

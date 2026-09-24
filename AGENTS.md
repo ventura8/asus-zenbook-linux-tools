@@ -6,7 +6,7 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.7`, displayed as `v1.0.7`). After bumping `VERSION`, run
+  (currently `1.0.8`, displayed as `v1.0.8`). After bumping `VERSION`, run
   `scripts/sync_poetry_version.sh` (also invoked from `step_version_sync` and
   `install-poetry-deps.sh`) so `pyproject.toml` `tool.poetry.version` matches; do not hand-edit
   the poetry version. PKGBUILD, RPM `%version`, and Snap `adopt-info` read `VERSION` at build time

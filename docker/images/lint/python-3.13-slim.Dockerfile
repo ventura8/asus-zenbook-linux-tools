@@ -20,14 +20,15 @@ RUN apt-get update \
         shellcheck=* \
         systemd=* \
     && install -d -m 0755 /etc/apt/keyrings \
-    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key -o /tmp/nodesource.asc \
+    && curl -fsSL --proto '=https' --tlsv1.2 \
+        https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key -o /tmp/nodesource.asc \
     && gpg --batch --show-keys --with-fingerprint --with-colons /tmp/nodesource.asc | grep -Fqx 'fpr:::::::::6F71F525282841EEDAF851B42F59B5F99B1BE0B4:' \
     && gpg --batch --dearmor -o /etc/apt/keyrings/nodesource.gpg /tmp/nodesource.asc \
     && echo 'deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main' > /etc/apt/sources.list.d/nodesource.list \
     && rm -f /tmp/nodesource.asc \
     && apt-get update \
     && apt-get install -y --no-install-recommends nodejs=* \
-    && npm install -g npm@12.0.2 markdownlint-cli@0.49.1 \
+    && npm install -g --ignore-scripts npm@12.0.2 markdownlint-cli@0.49.1 \
     && rm -rf /root/.npm \
     && rm -rf /var/lib/apt/lists/* \
     && case "${TARGETARCH}" in \
@@ -41,7 +42,8 @@ RUN apt-get update \
             ;; \
         *) echo "unsupported TARGETARCH for hadolint: ${TARGETARCH}" >&2; exit 1 ;; \
     esac \
-    && curl -fsSL "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-linux-${hadolint_arch}" \
+    && curl -fsSL --proto '=https' --tlsv1.2 \
+        "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-linux-${hadolint_arch}" \
         -o /usr/local/bin/hadolint \
     && echo "${hadolint_sha256}  /usr/local/bin/hadolint" | sha256sum -c - \
     && chmod +x /usr/local/bin/hadolint
