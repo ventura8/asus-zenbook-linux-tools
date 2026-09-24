@@ -356,7 +356,8 @@ _eslint_workspace_deps_ready() {
 
 _run_eslint_npm_ci() {
     echo "  → Installing workspace ESLint deps via npm ci (CI/local parity)..."
-    (cd "$REPO_ROOT" && npm ci) || return 1
+    # --ignore-scripts: lint deps need no lifecycle scripts (S6505).
+    (cd "$REPO_ROOT" && npm ci --ignore-scripts) || return 1
     if _eslint_workspace_deps_ready; then
         return 0
     fi

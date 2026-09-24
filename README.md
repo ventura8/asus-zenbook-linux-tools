@@ -5,7 +5,7 @@
 [![Python: 3.13](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
 [![Shell: Bash](https://img.shields.io/badge/Shell-Bash-4EAA25.svg)](https://www.gnu.org/software/bash/)
 [![Coverage](assets/coverage.svg)](assets/coverage.svg)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=ventura8_asus-zenbook-linux-tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ventura8_asus-zenbook-linux-tools)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=asus-zenbook-linux-tools&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=asus-zenbook-linux-tools)
 
 A complete utility suite and interactive installer to fix hardware hotkeys,
 Cirrus audio amplifiers, dual-screen window swapping, and touchpad gestures
@@ -77,10 +77,10 @@ via `/run/host` (`--filesystem=host`); native packages are recommended.
 
 ```bash
 curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.7/install.sh.sha256 \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.8/install.sh.sha256 \
   -o install.sh.sha256 &&
   curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.7/install.sh \
+  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.8/install.sh \
   -o install.sh &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh

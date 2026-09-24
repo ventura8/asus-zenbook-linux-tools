@@ -115,7 +115,7 @@ _xfconf_fetch_tarball() {
         echo "install-de-family: curl required to fetch xfconf tarball" >&2
         return 1
     }
-    curl -fsSL --connect-timeout 15 --max-time 120 \
+    curl -fsSL --proto '=https' --tlsv1.2 --connect-timeout 15 --max-time 120 \
         --retry 8 --retry-all-errors --retry-delay 2 \
         "$_XFCONF_TARBALL_URL" -o "$dest"
     echo "${_XFCONF_TARBALL_SHA256}  ${dest}" | sha256sum -c -

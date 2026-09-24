@@ -13,8 +13,11 @@ from __future__ import annotations
 import argparse
 import array
 import fcntl
+import os
+import re
 import struct
 import sys
+from pathlib import Path
 
 _IOC_READ = 2
 _IOC_WRITE = 1
@@ -67,6 +70,9 @@ def _verb_param_word(verb: int, param: int) -> int:
     return (verb << 8) | (param & 0xFF)
 
 
+_HWDEP_NAME = re.compile(r"hwC\d+D\d+")
+
+
 def pack_verb(nid: int, verb: int, param: int) -> int:
     """Encode NID/verb/param into a single HDA verb word."""
     if not 0 <= nid <= 0xFF:
@@ -86,10 +92,28 @@ def verb_buffer(verb: int, res: int = 0) -> array.array:
     return array.array("I", [verb & 0xFFFFFFFF, res & 0xFFFFFFFF])
 
 
+def validated_device(device: str) -> str:
+    """Return *device* resolved inside the sound root, or raise ValueError.
+
+    The helper runs as root and takes the path from argv, so restrict it to an
+    HDA hwdep node under /dev/snd (DEV_SND_ROOT overrides it for test fixtures).
+    """
+    root = Path(os.environ.get("DEV_SND_ROOT") or "/dev/snd").resolve()
+    resolved = Path(device).resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"device path outside {root}: {device}") from exc
+    if not _HWDEP_NAME.fullmatch(resolved.name):
+        raise ValueError(f"not an HDA hwdep device name: {resolved.name}")
+    return str(resolved)
+
+
 def write_verb(device: str, nid: int, verb: int, param: int) -> int:
     """Send one verb via HDA hwdep ioctl; return codec response."""
     packed = pack_verb(nid, verb, param)
-    with open(device, "rb+", buffering=0) as handle:
+    safe_device = validated_device(device)
+    with open(safe_device, "rb+", buffering=0) as handle:
         version = struct.unpack(
             "i",
             fcntl.ioctl(handle, _ioctl_request(HDA_IOCTL_PVERSION), struct.pack("i", 0)),

@@ -246,7 +246,8 @@ jobs:
           set -euo pipefail
           sudo apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kcov
-          python3 -m pip install --user 'coverage>=7.15,<8'
+          # Pinned + wheels only: no setup scripts, no unlocked resolution.
+          python3 -m pip install --user --only-binary :all: 'coverage==7.16.1'
 
       - name: Merge coverage shards on host and enforce gates
         run: |

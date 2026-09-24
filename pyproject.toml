@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "asus-zenbook-linux-tools"
-version = "1.0.7"
+version = "1.0.8"
 description = "ASUS ZenBook Linux support tools"
 authors = ["Sergiu Alexandrescu <alexandrescu.sergiu@gmail.com>"]
 package-mode = false
@@ -14,7 +14,7 @@ dbus-python = "==1.4.0"
 PyYAML = "==6.0.3"
 anybadge = "==1.16.0"
 coverage = "==7.16.1"
-pylint = "==4.0.8"
+pylint = "==4.0.9"
 pytest = "==9.1.1"
 pytest-timeout = "==2.4.0"
 radon = "==6.0.1"
