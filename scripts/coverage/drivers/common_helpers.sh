@@ -7,6 +7,8 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_CH_TINT_COLOR="#123456"
+
 _setup_common_bus_root() {
     if [[ -n "${KCOV_BUS_ROOT:-}" ]]; then
         BUS_ROOT="$KCOV_BUS_ROOT"
@@ -182,7 +184,7 @@ _run_notif_icon_color_valid_paths() {
 }
 
 _run_notif_icon_override_paths() {
-    ASUS_NOTIF_APP_NAME_COLOR='#123456' _soft _notif_override_app_name_color >/dev/null
+    ASUS_NOTIF_APP_NAME_COLOR="$_KCOV_CH_TINT_COLOR" _soft _notif_override_app_name_color >/dev/null
     _soft unset ASUS_NOTIF_APP_NAME_COLOR
     ASUS_SCREENPAD_APP_NAME_COLOR='#1234' _soft _notif_override_app_name_color >/dev/null
     _soft unset ASUS_SCREENPAD_APP_NAME_COLOR
@@ -193,11 +195,11 @@ _run_notif_icon_override_paths() {
 
 _run_notif_icon_tint_paths() {
     local tmp="$1" src="$2" dest="$3" theme_root="$4"
-    _soft _prepare_tint_svg_temp "$tmp/missing.svg" "$dest" '#123456'
+    _soft _prepare_tint_svg_temp "$tmp/missing.svg" "$dest" "$_KCOV_CH_TINT_COLOR"
     _soft _prepare_tint_svg_temp "$src" "$dest" invalid
-    _soft _tint_svg_stroke "$src" "$dest" '#123456'
+    _soft _tint_svg_stroke "$src" "$dest" "$_KCOV_CH_TINT_COLOR"
     : > "$tmp/empty.svg"
-    _soft _render_tinted_svg "$tmp/empty.svg" "$tmp/empty-tinted.svg" '#123456'
+    _soft _render_tinted_svg "$tmp/empty.svg" "$tmp/empty-tinted.svg" "$_KCOV_CH_TINT_COLOR"
     _soft _notif_tinted_icon_path "asus-test" >/dev/null
     ASUS_ICON_THEME_ROOT="$theme_root"
     _soft _theme_icon_exists camera-photo-symbolic

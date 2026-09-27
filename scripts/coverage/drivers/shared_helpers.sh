@@ -7,6 +7,10 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_SH_SESSION_LIB="asus-session.sh"
+readonly _KCOV_SH_SESSION_LABEL="session helper"
+readonly _KCOV_SH_MISSING_DIR="/nonexistent"
+
 # shellcheck source=lib/install-shared.sh
 source "$REPO_ROOT/lib/install-shared.sh" >/dev/null 2>&1
 # shellcheck source=lib/asus-i18n.sh
@@ -24,8 +28,8 @@ _run_version_helpers() {
     _exercise _format_display_version >/dev/null
     _exercise _read_project_version >/dev/null
     _exercise INSTALL_SOURCE_DIR="$REPO_ROOT" _read_project_version >/dev/null
-    _exercise SCRIPT_DIR="/nonexistent" _resolve_version_file >/dev/null
-    _exercise INSTALL_SOURCE_DIR="/nonexistent" SCRIPT_DIR="/also-missing" _resolve_version_file >/dev/null
+    _exercise SCRIPT_DIR="$_KCOV_SH_MISSING_DIR" _resolve_version_file >/dev/null
+    _exercise INSTALL_SOURCE_DIR="$_KCOV_SH_MISSING_DIR" SCRIPT_DIR="/also-missing" _resolve_version_file >/dev/null
     empty_ver=$(mktemp -d)
     trap 'rm -rf "$empty_ver"' RETURN
     printf '' > "$empty_ver/VERSION"
@@ -48,7 +52,7 @@ _run_root_and_timeout_helpers() {
     _exercise _run_command_with_timeout 0 true >/dev/null
     _exercise _run_command_with_timeout 9 true >/dev/null
     _exercise INSTALL_SKIP_TIMEOUT_WRAPPER=0 _run_command_with_timeout 1 true >/dev/null
-    _exercise INSTALL_SKIP_TIMEOUT_WRAPPER=0 PATH="/nonexistent" _run_command_with_timeout 1 true >/dev/null
+    _exercise INSTALL_SKIP_TIMEOUT_WRAPPER=0 PATH="$_KCOV_SH_MISSING_DIR" _run_command_with_timeout 1 true >/dev/null
     _exercise INSTALL_COMMAND_TIMEOUT_MAX=bad _run_command_with_timeout 1 true >/dev/null
     _exercise INSTALL_COMMAND_TIMEOUT_MAX=0 _run_command_with_timeout 1 true >/dev/null
     _exercise INSTALL_COMMAND_TIMEOUT_MAX=5 _run_command_with_timeout 9 true >/dev/null
@@ -57,10 +61,10 @@ _run_root_and_timeout_helpers() {
 
 _run_lib_resolve_helpers() {
     local stage=""
-    _exercise _resolve_script_lib_path "$REPO_ROOT" "asus-session.sh" "session helper" >/dev/null
-    _exercise INSTALL_SOURCE_DIR="$REPO_ROOT" _resolve_script_lib_path "/nope" "asus-session.sh" "session helper" >/dev/null
+    _exercise _resolve_script_lib_path "$REPO_ROOT" "$_KCOV_SH_SESSION_LIB" "$_KCOV_SH_SESSION_LABEL" >/dev/null
+    _exercise INSTALL_SOURCE_DIR="$REPO_ROOT" _resolve_script_lib_path "/nope" "$_KCOV_SH_SESSION_LIB" "$_KCOV_SH_SESSION_LABEL" >/dev/null
     _exercise LIB_DIR="" _resolve_script_lib_path "/nope" "missing.sh" "missing helper" >/dev/null
-    _exercise LIB_DIR="$REPO_ROOT/lib" _resolve_script_lib_path "/nope" "asus-session.sh" "session helper" >/dev/null
+    _exercise LIB_DIR="$REPO_ROOT/lib" _resolve_script_lib_path "/nope" "$_KCOV_SH_SESSION_LIB" "$_KCOV_SH_SESSION_LABEL" >/dev/null
     _exercise _resolve_session_helper_path "$REPO_ROOT" >/dev/null
     _exercise _resolve_common_helper_path "$REPO_ROOT" >/dev/null
     _exercise _resolve_bootstrap_helper_path "$REPO_ROOT" >/dev/null
@@ -76,7 +80,7 @@ _run_lib_resolve_helpers() {
         "expected _source_session_helper '/nope' (missing LIB_DIR) to fail" || return 1
     stage=$(mktemp)
     trap 'rm -f "$stage"' RETURN
-    _exercise _stage_resolved_lib_copy "$REPO_ROOT/lib/asus-session.sh" "$stage" >/dev/null
+    _exercise _stage_resolved_lib_copy "$REPO_ROOT/lib/$_KCOV_SH_SESSION_LIB" "$stage" >/dev/null
     _cleanup_staged_lib_file "$stage"
     _exercise _stage_resolved_lib_copy "/missing" "$stage" >/dev/null
     _cleanup_staged_lib_file "$stage"
@@ -86,9 +90,9 @@ _run_lib_resolve_helpers() {
 
 _run_privilege_and_path_exercises() {
     _exercise _install_run_as_other_user 1 "nosuch-user-$$" true >/dev/null
-    _exercise PATH="/nonexistent" _install_run_as_other_user 1 "$(id -un)" true >/dev/null
+    _exercise PATH="$_KCOV_SH_MISSING_DIR" _install_run_as_other_user 1 "$(id -un)" true >/dev/null
     # Neither runuser nor sudo on PATH → privilege-drop error.
-    _exercise PATH="/nonexistent" SUDO_CMD="/nonexistent/sudo" \
+    _exercise PATH="$_KCOV_SH_MISSING_DIR" SUDO_CMD="$_KCOV_SH_MISSING_DIR/sudo" \
         _install_run_as_other_user 1 root true >/dev/null
     if getent passwd root >/dev/null 2>&1 && [[ "$(id -un)" != "root" ]]; then
         _exercise _install_run_as_user root true >/dev/null
@@ -133,18 +137,18 @@ _run_helper_install_exercises() {
     _exercise _install_notif_icons_helper "$REPO_ROOT" >/dev/null
     _exercise _install_i18n_helper "$REPO_ROOT" >/dev/null
     _exercise _install_screenpad_helper "$REPO_ROOT" >/dev/null
-    _exercise _try_echo_existing_file "$REPO_ROOT/lib/asus-session.sh" >/dev/null
-    _exercise _try_echo_lib_under_dir "$REPO_ROOT/lib" "asus-session.sh" >/dev/null
+    _exercise _try_echo_existing_file "$REPO_ROOT/lib/$_KCOV_SH_SESSION_LIB" >/dev/null
+    _exercise _try_echo_lib_under_dir "$REPO_ROOT/lib" "$_KCOV_SH_SESSION_LIB" >/dev/null
     _exercise _try_source_asus_session_from_optional_dir "$REPO_ROOT/lib" >/dev/null
     _exercise _reject_empty_or_root_path "" >/dev/null
     _exercise _reject_empty_or_root_path / >/dev/null
     _exercise _is_safe_config_dir_under_state "$state" "$state/uid" >/dev/null
     _exercise _is_safe_config_dir "" >/dev/null
     _exercise STATE_DIR="$state" _is_safe_config_dir "$state/uid" >/dev/null
-    _exercise _install_lib_paths_match "$REPO_ROOT/lib/asus-session.sh" \
-        "$dest/lib/asus-session.sh" >/dev/null
-    _exercise _install_resolved_lib_file "$REPO_ROOT" "asus-session.sh" \
-        "session helper" >/dev/null
+    _exercise _install_lib_paths_match "$REPO_ROOT/lib/$_KCOV_SH_SESSION_LIB" \
+        "$dest/lib/$_KCOV_SH_SESSION_LIB" >/dev/null
+    _exercise _install_resolved_lib_file "$REPO_ROOT" "$_KCOV_SH_SESSION_LIB" \
+        "$_KCOV_SH_SESSION_LABEL" >/dev/null
     _exercise _asus_soft true >/dev/null
     _exercise _install_command_timeout_max >/dev/null
     _exercise _clamp_install_command_timeout 999 >/dev/null

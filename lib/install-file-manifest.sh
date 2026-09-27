@@ -254,21 +254,23 @@ _asus_remove_one_manifest_icon() {
 }
 
 _asus_remove_manifest_icon_files() {
-    local -n _failed_ref="$1"
+    local failed_var_name="$1"
+    local -n _failed_ref="$failed_var_name"
     local share="$2" name
     while IFS= read -r name; do
         [[ -n "$name" ]] || continue
-        _asus_remove_one_manifest_icon "$1" "$share" "$name"
+        _asus_remove_one_manifest_icon "$failed_var_name" "$share" "$name"
     done < <(_asus_manifest_icon_basenames)
     return $?
 }
 
 _asus_remove_manifest_share_files() {
-    local -n _failed_ref="$1"
+    local failed_var_name="$1"
+    local -n _failed_ref="$failed_var_name"
     local share
     share=$(_asus_manifest_share_root)
-    _asus_remove_manifest_desktop_files "$1" "$share"
-    _asus_remove_manifest_icon_files "$1" "$share"
-    _asus_remove_manifest_locale_files "$1" "$share"
+    _asus_remove_manifest_desktop_files "$failed_var_name" "$share"
+    _asus_remove_manifest_icon_files "$failed_var_name" "$share"
+    _asus_remove_manifest_locale_files "$failed_var_name" "$share"
     return $?
 }

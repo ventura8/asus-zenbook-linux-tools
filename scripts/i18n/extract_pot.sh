@@ -7,8 +7,9 @@ POT_PATH="$REPO_ROOT/po/asus-zenbook-linux-tools.pot"
 DOMAIN="asus-zenbook-linux-tools"
 
 _require_tool() {
-    command -v "$1" >/dev/null 2>&1 || {
-        printf 'Missing required gettext tool: %s\n' "$1" >&2
+    local tool="$1"
+    command -v "$tool" >/dev/null 2>&1 || {
+        printf 'Missing required gettext tool: %s\n' "$tool" >&2
         return 1
     }
 }

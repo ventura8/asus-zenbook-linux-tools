@@ -71,8 +71,8 @@ _kcov_socket_owner_is_safe() {
 
 _kcov_bind_warning() {
     local bus_path="$1" sock_tmp="$2"
-    echo "Warning: AF_UNIX bind failed for $bus_path (staging path length: ${#sock_tmp})" >&2
-    return $?
+    echo "Warning: AF_UNIX bind failed for $bus_path (staging path length: ${#sock_tmp})" >&2 || return
+    return 0
 }
 
 _kcov_create_socket_stage() {

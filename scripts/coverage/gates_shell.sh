@@ -44,8 +44,8 @@ _pipefail_state() {
         echo 1
     else
         echo 0
-    fi
-    return $?
+    fi || return
+    return 0
 }
 
 _restore_pipefail() {

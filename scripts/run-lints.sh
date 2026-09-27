@@ -6,6 +6,9 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 _soft() { "$@" || return 0; }
 
+readonly LINT_BANNER_RULE="=================================================="
+readonly MARKDOWNLINT_PASSED_MSG="  ✓ MarkdownLint check passed."
+
 cd "$REPO_ROOT"
 export PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 
@@ -308,19 +311,19 @@ step_markdownlint() {
     if command -v markdownlint &>/dev/null; then
         mapfile -t MD_FILES < <(find_markdown_files)
         if [[ "${#MD_FILES[@]}" -eq 0 ]]; then
-            echo "  ✓ MarkdownLint check passed."
+            echo "$MARKDOWNLINT_PASSED_MSG"
             return
         fi
         markdownlint "${MD_FILES[@]}"
-        echo "  ✓ MarkdownLint check passed."
+        echo "$MARKDOWNLINT_PASSED_MSG"
     elif command -v npx &>/dev/null; then
         mapfile -t MD_FILES < <(find_markdown_files)
         if [[ "${#MD_FILES[@]}" -eq 0 ]]; then
-            echo "  ✓ MarkdownLint check passed."
+            echo "$MARKDOWNLINT_PASSED_MSG"
             return
         fi
         npx -y markdownlint-cli@0.49.1 "${MD_FILES[@]}"
-        echo "  ✓ MarkdownLint check passed."
+        echo "$MARKDOWNLINT_PASSED_MSG"
     else
         echo "  ✗ markdownlint / npx not installed." >&2
         exit 1
@@ -561,15 +564,15 @@ source "$SCRIPT_DIR/run-lints-waves.sh"
 
 run_all_lints() {
     trap '_lint_run_registered_cleanups' EXIT
-    echo "=================================================="
+    echo "$LINT_BANNER_RULE"
     echo "      ASUS ZenBook Linux Tools Linting           "
-    echo "=================================================="
+    echo "$LINT_BANNER_RULE"
     _run_selected_lint_waves || exit 1
     _lint_run_registered_cleanups
     trap - EXIT
-    echo "=================================================="
+    echo "$LINT_BANNER_RULE"
     echo "          All Linting Checks Passed!             "
-    echo "=================================================="
+    echo "$LINT_BANNER_RULE"
 }
 
 # Prefer UTF-8 so ShellCheck can print source lines that contain ✓/✗ markers.

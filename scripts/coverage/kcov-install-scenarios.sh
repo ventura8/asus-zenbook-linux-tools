@@ -67,8 +67,8 @@ _seed_gnome_backup_state() {
     echo "['Print']" > "$state_dir/orig_show_screenshot_ui"
     echo "['XF86Launch1']" > "$state_dir/orig_control_center"
     echo "['<Super>p']" > "$state_dir/orig_switch_video_mode"
-    echo "['<Super>p']" > "$state_dir/orig_switch_monitor"
-    return $?
+    echo "['<Super>p']" > "$state_dir/orig_switch_monitor" || return
+    return 0
 }
 
 _run_kcov_install_base_runs() {
@@ -133,10 +133,11 @@ _run_kcov_install_fail_runs_2() {
 }
 
 _run_kcov_install_runs() {
-    _run_kcov_install_base_runs "$1" "$2"
-    _run_kcov_install_fail_runs_1 "$1" "$2"
-    _run_kcov_install_fail_runs_2 "$1" "$2"
-    _run_kcov_install_deps_and_selection_runs "$1" "$2"
+    local kcov_root="$1" tmp="$2"
+    _run_kcov_install_base_runs "$kcov_root" "$tmp"
+    _run_kcov_install_fail_runs_1 "$kcov_root" "$tmp"
+    _run_kcov_install_fail_runs_2 "$kcov_root" "$tmp"
+    _run_kcov_install_deps_and_selection_runs "$kcov_root" "$tmp"
     return $?
 }
 

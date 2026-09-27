@@ -2,6 +2,12 @@
 # GNOME configuration helper for install.sh
 # Extracted to maintain modularity and line limits
 
+# gsettings schemas / keys touched by the GNOME shortcut backup + apply path.
+_ASUS_GNOME_MEDIA_KEYS_SCHEMA="org.gnome.settings-daemon.plugins.media-keys"
+_ASUS_GNOME_MUTTER_KEYS_SCHEMA="org.gnome.mutter.keybindings"
+_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY="switch-video-mode"
+_ASUS_GNOME_SWITCH_MONITOR_KEY="switch-monitor"
+
 # Parse/emit gsettings "as" arrays via GLib.Variant (no string scratch parsers).
 _gsettings_python3_with_gi() {
     # Prefer PATH python3 when it has gi; else fall back to /usr/bin/python3
@@ -159,7 +165,8 @@ backup_gnome_keybinding() {
 }
 
 _read_existing_gnome_backup() {
-    cat "$1" 2>/dev/null || return 0
+    local backup_file="$1"
+    cat "$backup_file" 2>/dev/null || return 0
 }
 
 _gsettings_set_key() {
@@ -194,7 +201,7 @@ _restore_custom_keybindings_file() {
     orig_custom=$(cat "$config_dir/orig_custom_keybindings" 2>/dev/null || true)
     [[ -n "$orig_custom" ]] || return 0
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings" "$orig_custom" \
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "custom-keybindings" "$orig_custom" \
         "custom-keybindings"
 }
 
@@ -204,7 +211,7 @@ rollback_gnome_shortcuts() {
     _gsettings_restore_key "$user" "$bus" \
         "org.gnome.shell.keybindings" "show-screenshot-ui" "$orig_ss" "show-screenshot-ui" || failed=1
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.settings-daemon.plugins.media-keys" "control-center" "$orig_ctrl" "control-center" || failed=1
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "control-center" "$orig_ctrl" "control-center" || failed=1
     _rollback_gnome_optional_shortcuts "$user" "$bus" "$config_dir" \
         "$orig_vm" "$orig_sm" || failed=1
     return "$failed"
@@ -214,10 +221,10 @@ _rollback_gnome_optional_shortcuts() {
     local user="$1" bus="$2" config_dir="$3" orig_vm="$4" orig_sm="$5"
     local failed=0
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode" "$orig_vm" "switch-video-mode" || failed=1
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" "$orig_vm" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" || failed=1
     _restore_custom_keybindings_file "$user" "$bus" "$config_dir" || failed=1
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.mutter.keybindings" "switch-monitor" "$orig_sm" "switch-monitor" || failed=1
+        "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" "$orig_sm" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" || failed=1
     return "$failed"
 }
 
@@ -232,14 +239,14 @@ _reset_native_display_binding() {
     local bus_path="${bus_addr#unix:path=}"
     local schema
 
-    if _gsettings_key_exists "$user" "$bus_path" "org.gnome.mutter.keybindings" "switch-monitor"; then
+    if _gsettings_key_exists "$user" "$bus_path" "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY"; then
         _gsettings_set_optional_path "$user" "$bus_addr" \
-            "org.gnome.mutter.keybindings" "switch-monitor" "['<Super>p']"
+            "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" "['<Super>p']"
     fi
 
-    if _gsettings_key_exists "$user" "$bus_path" "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode"; then
+    if _gsettings_key_exists "$user" "$bus_path" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY"; then
         _gsettings_set_optional_path "$user" "$bus_addr" \
-            "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode" "[]"
+            "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" "[]"
     fi
 
     schema="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/asus-display-mode-superp/"
@@ -260,7 +267,7 @@ _set_display_keybinding() {
     local bus_addr="unix:path=$bus" current merged
     _reset_native_display_binding "$user" "$bus_addr"
     current=$(_user_gsettings "$user" "$bus_addr" \
-        get org.gnome.settings-daemon.plugins.media-keys custom-keybindings 2>/dev/null || echo "[]")
+        get "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" custom-keybindings 2>/dev/null || echo "[]")
     merged=$(_merge_custom_keybindings "$current" \
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/asus-display-mode-xf86display/" \
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/myasus-1/" \
@@ -277,7 +284,7 @@ _set_display_keybinding() {
         return 1
     fi
     _user_gsettings "$user" "$bus_addr" \
-        set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+        set "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" custom-keybindings \
         "$merged" 2>/dev/null || return 1
     _set_display_binding_slots "$user" "$bus_addr"
 }
@@ -316,7 +323,7 @@ _set_gnome_keybindings() {
     _gsettings_set_key "$user" "$bus" org.gnome.shell.keybindings show-screenshot-ui \
         "['Print', '<Super><Shift>s', '<Super><Shift>S']" || err=1
 
-    _gsettings_set_key "$user" "$bus" org.gnome.settings-daemon.plugins.media-keys control-center \
+    _gsettings_set_key "$user" "$bus" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" control-center \
         "['XF86Launch1', 'XF86Tools', 'XF86Launch2', 'XF86Launch3', 'XF86Launch4', 'XF86ControlCenter', 'XF86MyComputer', 'XF86Explorer', 'XF86VendorHome', 'XF86LaunchA']" || err=1
 
     _set_myasus_keybindings "$user" "$bus"
@@ -395,12 +402,12 @@ _apply_gnome_config() {
     local target_user="$1" bus_path="$2" config_dir="$3"
     local orig_ss orig_ctrl orig_vm="" orig_sm=""
     orig_ss=$(backup_gnome_keybinding "$target_user" "$bus_path" "org.gnome.shell.keybindings" "show-screenshot-ui" "$config_dir/orig_show_screenshot_ui")
-    orig_ctrl=$(backup_gnome_keybinding "$target_user" "$bus_path" "org.gnome.settings-daemon.plugins.media-keys" "control-center" "$config_dir/orig_control_center")
+    orig_ctrl=$(backup_gnome_keybinding "$target_user" "$bus_path" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "control-center" "$config_dir/orig_control_center")
     orig_vm=$(_backup_optional_gnome_key "$target_user" "$bus_path" \
-        "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode" "$config_dir/orig_switch_video_mode")
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" "$config_dir/orig_switch_video_mode")
     orig_sm=$(_backup_optional_gnome_key "$target_user" "$bus_path" \
-        "org.gnome.mutter.keybindings" "switch-monitor" "$config_dir/orig_switch_monitor")
-    backup_gnome_keybinding "$target_user" "$bus_path" "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings" "$config_dir/orig_custom_keybindings" >/dev/null || true
+        "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" "$config_dir/orig_switch_monitor")
+    backup_gnome_keybinding "$target_user" "$bus_path" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "custom-keybindings" "$config_dir/orig_custom_keybindings" >/dev/null || true
 
     if [[ -f "$config_dir/orig_show_screenshot_ui" ]] && [[ -f "$config_dir/orig_control_center" ]]; then
         apply_gnome_shortcuts "$target_user" "$bus_path" "$orig_ss" "$orig_ctrl" "$orig_vm" "$config_dir" "$orig_sm"
@@ -583,7 +590,8 @@ configure_gnome_component() {
 }
 
 _gnome_install_optional_window_swap() {
-    if ! _install_gnome_window_swap_extension "$1" "$2"; then
+    local target_user="$1" bus="$2"
+    if ! _install_gnome_window_swap_extension "$target_user" "$bus"; then
         echo "  ⚠ ASUS Window Swap GNOME extension not enabled (Wayland swap may need 2 presses)." >&2
     fi
     return $?

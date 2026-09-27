@@ -315,11 +315,9 @@ _remove_shared_install_files() {
 }
 
 _remove_empty_install_dirs() {
-    if [[ -d "$LIB_DIR" ]]; then
-        if ! rmdir "$LIB_DIR" 2>/dev/null; then
-            echo "Warning: $LIB_DIR is not empty; leaving residual entries in place." >&2
-            _print_residual_entries
-        fi
+    if [[ -d "$LIB_DIR" ]] && ! rmdir "$LIB_DIR" 2>/dev/null; then
+        echo "Warning: $LIB_DIR is not empty; leaving residual entries in place." >&2
+        _print_residual_entries
     fi
     if [[ -d "$STATE_DIR" ]]; then
         _asus_soft rmdir "$STATE_DIR" 2>/dev/null

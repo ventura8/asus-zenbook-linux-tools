@@ -128,7 +128,6 @@ _run_tui_selection() {
 
 _apply_tui_selection() {
     local choice_tmp="$1"
-    local ui_out_fd="$2"
     local raw_selection parsed normalize_status
 
     raw_selection=$(tr '\n' ',' <"$choice_tmp")
@@ -172,7 +171,7 @@ _prompt_tui_selection() {
 
     _prompt_tui_selection_prepare choice_tmp || return $?
     if _run_tui_selection "$ui_in_fd" "$ui_out_fd" "$choice_tmp"; then
-        _apply_tui_selection "$choice_tmp" "$ui_out_fd"
+        _apply_tui_selection "$choice_tmp"
         return $?
     fi
     tui_rc=$?

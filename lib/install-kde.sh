@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # KDE Plasma shortcut configuration for the DESKTOP install component.
 
+# kglobalshortcutsrc group / key names used by backup, apply, and restore.
+_ASUS_KDE_KSCREEN_GROUP="kscreen"
+_ASUS_KDE_LAUNCH_KEY="_launch"
+_ASUS_KDE_FRIENDLY_NAME_KEY="_k_friendly_name"
+
 _kde_first_cmd() {
     local cand
     for cand in "$@"; do
@@ -96,9 +101,9 @@ _kde_backup_shortcut_key() {
 
 _kde_backup_kscreen_group() {
     local user="$1" config_dir="$2"
-    _kde_backup_shortcut_key "$user" "kscreen" "_launch" \
+    _kde_backup_shortcut_key "$user" "$_ASUS_KDE_KSCREEN_GROUP" "$_ASUS_KDE_LAUNCH_KEY" \
         "$config_dir/orig_kde_kscreen_launch"
-    _kde_backup_shortcut_key "$user" "kscreen" "_k_friendly_name" \
+    _kde_backup_shortcut_key "$user" "$_ASUS_KDE_KSCREEN_GROUP" "$_ASUS_KDE_FRIENDLY_NAME_KEY" \
         "$config_dir/orig_kde_kscreen_friendly"
     return $?
 }
@@ -115,9 +120,9 @@ _kde_restore_kscreen_key() {
 
 _kde_restore_kscreen_group() {
     local user="$1" conf="$2" config_dir="$3"
-    _kde_restore_kscreen_key "$user" "$conf" "kscreen" "_launch" \
+    _kde_restore_kscreen_key "$user" "$conf" "$_ASUS_KDE_KSCREEN_GROUP" "$_ASUS_KDE_LAUNCH_KEY" \
         "$config_dir/orig_kde_kscreen_launch" || return 1
-    _kde_restore_kscreen_key "$user" "$conf" "kscreen" "_k_friendly_name" \
+    _kde_restore_kscreen_key "$user" "$conf" "$_ASUS_KDE_KSCREEN_GROUP" "$_ASUS_KDE_FRIENDLY_NAME_KEY" \
         "$config_dir/orig_kde_kscreen_friendly" || return 1
 }
 
@@ -134,8 +139,8 @@ _kde_state_config_dir() {
 
 _apply_kde_shortcut_group() {
     local user="$1" conf="$2" group="$3" friendly="$4" binding="$5"
-    _kde_write_shortcut "$user" "$conf" "$group" "_k_friendly_name" "$friendly" || return 1
-    _kde_write_shortcut "$user" "$conf" "$group" "_launch" \
+    _kde_write_shortcut "$user" "$conf" "$group" "$_ASUS_KDE_FRIENDLY_NAME_KEY" "$friendly" || return 1
+    _kde_write_shortcut "$user" "$conf" "$group" "$_ASUS_KDE_LAUNCH_KEY" \
         "${binding},none,${friendly}" || return 1
 }
 
@@ -176,7 +181,7 @@ _set_kde_keybindings() {
     screenshot_name=$(_asus_gettext "ASUS Screenshot")
     _kde_backup_kscreen_group "$user" "$config_dir"
     _kde_require_kscreen_backup "$config_dir" || return 1
-    _delete_kde_shortcut_group "$user" "$conf" "kscreen"
+    _delete_kde_shortcut_group "$user" "$conf" "$_ASUS_KDE_KSCREEN_GROUP"
     _apply_asus_kde_shortcuts "$user" "$conf" \
         "$display_name" "$settings_name" "$screenshot_name" || return 1
     if ! _kde_reconfigure_kglobalaccel "$user"; then
@@ -208,8 +213,8 @@ _delete_kde_shortcut_key() {
 
 _delete_kde_shortcut_group() {
     local user="$1" conf="$2" group="$3"
-    _delete_kde_shortcut_key "$user" "$conf" "$group" "_launch"
-    _delete_kde_shortcut_key "$user" "$conf" "$group" "_k_friendly_name"
+    _delete_kde_shortcut_key "$user" "$conf" "$group" "$_ASUS_KDE_LAUNCH_KEY"
+    _delete_kde_shortcut_key "$user" "$conf" "$group" "$_ASUS_KDE_FRIENDLY_NAME_KEY"
     return $?
 }
 

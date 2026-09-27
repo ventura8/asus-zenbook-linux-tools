@@ -84,7 +84,8 @@ _kill_active_pids() {
 }
 
 _kill_pid_if_running() {
-    _kill_pgid_if_running "$1"
+    local pid="$1"
+    _kill_pgid_if_running "$pid"
 }
 
 _remove_active_containers() {
@@ -135,12 +136,13 @@ _resolve_distro_image() {
 
 _distro_family_images() {
     # Print family member images (one per line). Unknown family → exit 1.
-    case "$1" in
+    local family="$1"
+    case "$family" in
         debian) printf '%s\n' "${DISTRO_FAMILY_DEBIAN[@]}" ;;
         rhel) printf '%s\n' "${DISTRO_FAMILY_RHEL[@]}" ;;
         suse-arch) printf '%s\n' "${DISTRO_FAMILY_SUSE_ARCH[@]}" ;;
         *)
-            echo "Unsupported distro family: $1 (use debian|rhel|suse-arch)" >&2
+            echo "Unsupported distro family: $family (use debian|rhel|suse-arch)" >&2
             return 1
             ;;
     esac

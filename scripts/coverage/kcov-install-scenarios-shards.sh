@@ -144,20 +144,21 @@ _kcov_start_shard_workers() {
 }
 
 run_shell_kcov_scenarios() {
+    local kcov_root="$1"
     export KCOV_REPO_ROOT
     KCOV_REPO_ROOT="$(pwd)"
-    local fail_file="$1/.kcov_scenario_failures"
+    local fail_file="$kcov_root/.kcov_scenario_failures"
     local status=0
     rm -f "$fail_file"
     export KCOV_SCENARIO_FAIL_FILE="$fail_file"
-    _kcov_start_shard_workers "$1"
+    _kcov_start_shard_workers "$kcov_root"
     set +e
     _kcov_wait_shard_pids
     status=$?
     set -e
-    _kcov_merge_shard_fail_files "$1" "$fail_file"
-    _kcov_collect_shard_run_dirs "$1"
-    _kcov_collect_shard_logs "$1"
+    _kcov_merge_shard_fail_files "$kcov_root" "$fail_file"
+    _kcov_collect_shard_run_dirs "$kcov_root"
+    _kcov_collect_shard_logs "$kcov_root"
     if _kcov_fail_file_has_entries; then
         echo "  ✗ kcov scenario expectation failures recorded under $fail_file:" >&2
         cat "$fail_file" >&2

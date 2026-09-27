@@ -22,7 +22,9 @@ _print_failure_details() {
 }
 
 _parallel_report_done() {
-    _parallel_report_done_job "$1" "$2" "$3" "$4" "$5" _print_distro_log
+    local done_pid="$1" code="$2" pids_name="$3" names_name="$4" logs_name="$5"
+    _parallel_report_done_job "$done_pid" "$code" "$pids_name" "$names_name" "$logs_name" \
+        _print_distro_log
     return $?
 }
 

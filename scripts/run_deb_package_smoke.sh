@@ -8,8 +8,9 @@ ARTIFACTS_DIR="${ASUS_DEB_ARTIFACTS_DIR:-$REPO_ROOT/artifacts}"
 PACKAGE_NAME="${ASUS_DEB_PACKAGE_NAME:-asus-zenbook-linux-tools}"
 
 _require_tool() {
-    command -v "$1" >/dev/null 2>&1 || {
-        printf 'Missing required tool: %s\n' "$1" >&2
+    local tool="$1"
+    command -v "$tool" >/dev/null 2>&1 || {
+        printf 'Missing required tool: %s\n' "$tool" >&2
         return 1
     }
 }

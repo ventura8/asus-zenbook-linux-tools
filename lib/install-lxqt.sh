@@ -48,17 +48,20 @@ _lxqt_write_state_file() {
 }
 
 _lxqt_write_backup_value() {
-    _lxqt_atomic_write_file "$1" value "$2"
+    local dest="$1" value="$2"
+    _lxqt_atomic_write_file "$dest" value "$value"
     return $?
 }
 
 _lxqt_mark_backup_absent() {
-    _lxqt_atomic_write_file "${1}.absent" absent
+    local dest="$1"
+    _lxqt_atomic_write_file "${dest}.absent" absent
     return $?
 }
 
 _lxqt_write_section_id() {
-    _lxqt_atomic_write_file "${1}.section" value "$2"
+    local dest="$1" section_id="$2"
+    _lxqt_atomic_write_file "${dest}.section" value "$section_id"
     return $?
 }
 
@@ -354,7 +357,8 @@ _lxqt_try_set_or_fail() {
 }
 
 _lxqt_print_configure_progress() {
-    _install_print_next_step "$(_asus_gettextf "Configuring LXQt Global Keys for %s..." "$1")"
+    local target_user="$1"
+    _install_print_next_step "$(_asus_gettextf "Configuring LXQt Global Keys for %s..." "$target_user")"
     return $?
 }
 

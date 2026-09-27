@@ -224,7 +224,8 @@ _resolve_pkg_remove_cmd() {
 }
 
 _resolve_pkg_remove_cmd_for_family() {
-    _resolve_pkg_remove_cmd "$1"
+    local os_family="$1"
+    _resolve_pkg_remove_cmd "$os_family"
     return $?
 }
 

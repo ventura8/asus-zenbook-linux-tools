@@ -64,7 +64,8 @@ _mate_backup_slot() {
 }
 
 _mate_optional_slot_value() {
-    _user_gsettings "$1" "$2" get "$3" "$4" 2>/dev/null || return 0
+    local user="$1" bus="$2" schema="$3" key="$4"
+    _user_gsettings "$user" "$bus" get "$schema" "$key" 2>/dev/null || return 0
 }
 
 _mate_write_slot_backup() {
@@ -114,7 +115,7 @@ _mate_apply_bindings() {
 }
 
 _mate_restore_slot() {
-    local user="$1" bus="$2" slot="$3" dest="$4" schema line key val
+    local user="$1" bus="$2" slot="$3" dest="$4" schema
     schema=$(_mate_custom_schema "$slot")
     if [[ -f "${dest}.absent" ]]; then
         _asus_soft _user_gsettings "$user" "$bus" reset-recursively "$schema"
@@ -193,7 +194,8 @@ _set_mate_keybindings() {
 }
 
 _mate_print_configure_progress() {
-    _install_print_next_step "$(_asus_gettextf "Configuring MATE shortcuts for %s..." "$1")"
+    local target_user="$1"
+    _install_print_next_step "$(_asus_gettextf "Configuring MATE shortcuts for %s..." "$target_user")"
     return $?
 }
 

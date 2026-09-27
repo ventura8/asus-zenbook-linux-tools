@@ -324,7 +324,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     `scripts/run-lints.sh` discovers all repo `*.sh` via `_find_repo_files` (same prune set
     as Python/YAML/Markdown), plus Debian maintainer scripts; that includes coverage
     scenario entrypoints (`scripts/coverage/kcov-scenarios.sh`, `kcov-install-scenarios.sh`,
-    `kcov-screenpad-scenarios.sh`) and CI image helpers under `docker/images/tests/scripts/`.
+    `kcov-screenpad-scenarios.sh`, `kcov-display-scenarios.sh`) and CI image helpers under
+    `docker/images/tests/scripts/`. Shared kcov stub bodies (`_KCOV_STUB_EXIT0` /
+    `_KCOV_STUB_EXIT1` / `_KCOV_STUB_BODY_FAIL`) and the `_kcov_rm_scenario_tmp` EXIT-trap
+    cleanup live in `scripts/coverage/common.sh`; reuse them in scenarios and drivers instead
+    of repeating `'#!/bin/sh\nexit 0\n'` / `trap 'rm -rf "$tmp"' EXIT` literals.
     `_find_repo_files` must also prune `debian/asus-zenbook-linux-tools`, `debian/tmp`,
     `debian/.debhelper`, `artifacts`, `.rpm-build*`, `packaging/arch/pkg`,
     `packaging/arch/src`, `packaging/appimage/AppDir`, `packaging/flatpak/builddir`,
@@ -731,7 +735,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   root-owned (instead of spinning until the lock timeout). Local `--full` wave 2 uses
   `_wait_bg_jobs_fail_fast` (and `run_docker_matrix.sh` parallel compat uses
   `wait -n -p` + `_kill_pgid_list` delegating to `_kill_pgid_list` in
-  `docker-utils.sh`) so the first failing release/coverage/compat lane terminates
+  `docker-utils-parallel.sh`, sourced by `docker-utils.sh`) so the first failing release/coverage/compat lane terminates
   sibling **process groups** (`setsid` workers + `kill -TERM -- "-$pid"`) instead
   of running every matrix to completion.
   CI workflow concurrency uses `group: ${{ github.workflow }}` with

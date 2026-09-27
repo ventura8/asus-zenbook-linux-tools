@@ -7,6 +7,9 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_UN_SHELL_KB_SCHEMA="org.gnome.shell.keybindings"
+readonly _KCOV_UN_SCREENSHOT_KEY="show-screenshot-ui"
+
 _driver_source_i18n || exit 1
 
 # shellcheck source=scripts/coverage/gates.sh
@@ -251,14 +254,14 @@ _seed_uninstall_backup_bus() {
 _run_uninstall_restore_helpers() {
     _seed_uninstall_backup_bus
     _exercise _restore_schema_file "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid/orig_show_screenshot_ui" \
-        "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     _exercise _restore_schema_file "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid/missing_file" \
-        "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     : > "$STATE_DIR/$uid/empty_val"
     _exercise _restore_schema_file "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid/empty_val" \
-        "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     _exercise restore_gnome_keybinding_schema "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid" \
-        "orig_show_screenshot_ui" "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "orig_show_screenshot_ui" "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     _exercise _reset_gnome_custom_bindings "$uname_cur" "$BUS_ROOT/$uid/bus" >/dev/null
     _exercise _restore_primary_keybindings "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid" >/dev/null
     # Optional-key skip path when backup file is absent (modern GNOME without switch-video-mode).

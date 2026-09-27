@@ -93,7 +93,8 @@ Use this skill to validate project code quality, formatting, unit tests, and end
    Serial matrix logs for coverage cells are `coverage-gate-${MODE}-${SHARD}.log`.
    Wave 2 uses `_wait_bg_jobs_fail_fast` so the first failing
    release/coverage/compat lane kills sibling **process groups** (`setsid` workers +
-   `_kill_pgid_list` in `docker-utils.sh`); `run_docker_matrix.sh` parallel compat uses
+   `_kill_pgid_list` in `docker-utils-parallel.sh`, sourced by `docker-utils.sh`);
+   `run_docker_matrix.sh` parallel compat uses
    the same `wait -n -p` pattern. Local lint cheap∥heavy share one
    `${DOCKER_BUILD_CACHE_DIR}/.locks/lint-image` mkdir lock (plus the shared
    `lint-python-3.13-slim` buildx cache lock). Local buildx cache exports serialize

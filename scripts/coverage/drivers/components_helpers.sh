@@ -7,6 +7,8 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_COMP_HOTKEY_UNIT="asus-hotkey-daemon.service"
+
 _driver_source_i18n || exit 1
 
 # shellcheck source=lib/install-shared.sh
@@ -60,17 +62,17 @@ _run_component_predicates() {
 }
 
 _run_unit_ops() {
-    _exercise _run_unit_management_ops_common "asus-hotkey-daemon.service" restart >/dev/null
-    _exercise _run_unit_management_ops_unverified "asus-hotkey-daemon.service" restart >/dev/null
-    _exercise INSTALL_ASSUME_UNIT_ACTIVE=1 _is_systemd_unit_active "asus-hotkey-daemon.service" >/dev/null
+    _exercise _run_unit_management_ops_common "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
+    _exercise _run_unit_management_ops_unverified "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
+    _exercise INSTALL_ASSUME_UNIT_ACTIVE=1 _is_systemd_unit_active "$_KCOV_COMP_HOTKEY_UNIT" >/dev/null
 }
 
 _run_fail_systemctl_ops() {
     [[ -n "${KCOV_FAIL_SYSTEMCTL:-}" ]] || return 0
     local saved_systemctl="${SYSTEMCTL:-}"
     SYSTEMCTL="$KCOV_FAIL_SYSTEMCTL"
-    _exercise _run_unit_management_ops_common "asus-hotkey-daemon.service" restart >/dev/null
-    _exercise _install_unit "$REPO_ROOT" "asus-hotkey-daemon.service" restart 1 >/dev/null
+    _exercise _run_unit_management_ops_common "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
+    _exercise _install_unit "$REPO_ROOT" "$_KCOV_COMP_HOTKEY_UNIT" restart 1 >/dev/null
     SYSTEMCTL="$saved_systemctl"
 }
 
@@ -80,7 +82,7 @@ _run_component_deploys() {
     _exercise deploy_sound_component "$REPO_ROOT" >/dev/null
     _exercise INSTALL_ASSUME_UNIT_ACTIVE=0 SYSTEMCTL="${KCOV_FAIL_SYSTEMCTL:-$SYSTEMCTL}" \
         deploy_wmi_component "$REPO_ROOT" >/dev/null
-    _exercise _install_unit "/missing-src" "asus-hotkey-daemon.service" restart 0 >/dev/null
+    _exercise _install_unit "/missing-src" "$_KCOV_COMP_HOTKEY_UNIT" restart 0 >/dev/null
     _exercise run_installer_selected_components "WMI" "$REPO_ROOT" >/dev/null
     _exercise run_installer_selected_components "" "$REPO_ROOT" >/dev/null
     _exercise _deploy_selected_component DESKTOP "$REPO_ROOT" >/dev/null
@@ -337,7 +339,7 @@ EOF
     _exercise _ensure_uinput_group >/dev/null
     _exercise INSTALL_ASSUME_UNIT_ACTIVE=1 _report_wmi_unit_result >/dev/null
     _exercise INSTALL_ASSUME_UNIT_ACTIVE=0 _report_wmi_unit_result >/dev/null
-    _exercise _run_unit_management_ops_unverified "asus-hotkey-daemon.service" restart >/dev/null
+    _exercise _run_unit_management_ops_unverified "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
     # Missing units helper path (sibling file absent beside a temp copy).
     units_tmp=$(mktemp -d)
     cat > "$units_tmp/install-components.sh" <<'EOF'
@@ -475,6 +477,13 @@ EOF
         mv "$units" "$units.__kcov_hide"
         trap 'mv "$units.__kcov_hide" "$units"' EXIT
         _soft _source_install_component_unit_helpers
+    )
+    # Missing uinput helper sibling on the live product file path.
+    (
+        uinput_helpers="$REPO_ROOT/lib/install-components-uinput.sh"
+        mv "$uinput_helpers" "$uinput_helpers.__kcov_hide"
+        trap 'mv "$uinput_helpers.__kcov_hide" "$uinput_helpers"' EXIT
+        _soft _source_install_component_uinput_helpers
     )
     # Touchpad / sound report helpers (force inactive via non-printing systemctl).
     _exercise SYSTEMCTL=/bin/true INSTALL_ASSUME_UNIT_ACTIVE=1 \

@@ -287,7 +287,8 @@ _should_request_ydotool_deb() {
 }
 
 _emit_missing_if_absent_dpkg() {
-    dpkg -s "$1" &>/dev/null || printf '%s\n' "$1"
+    local pkg="$1"
+    dpkg -s "$pkg" &>/dev/null || printf '%s\n' "$pkg"
     return $?
 }
 
@@ -352,7 +353,8 @@ _should_request_rpm_if_known() {
 }
 
 _emit_missing_if_absent_rpm() {
-    rpm -q "$1" &>/dev/null || printf '%s\n' "$1"
+    local pkg="$1"
+    rpm -q "$pkg" &>/dev/null || printf '%s\n' "$pkg"
     return $?
 }
 
@@ -488,7 +490,7 @@ fi
 _revert_pkg_record_entries() {
     # Drop pre-recorded package names from missing_file when install cannot reconcile.
     local missing_file="$1"
-    local record tmp_merge grep_status
+    local record tmp_merge
     record=$(_pkg_revert_record "$missing_file") || return 0
     tmp_merge=$(_create_pkg_revert_temp) || return 1
     _write_reverted_pkg_record "$missing_file" "$record" "$tmp_merge" || return 1

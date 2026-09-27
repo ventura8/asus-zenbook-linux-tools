@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Display kcov watchdog helpers (sourced by display_helpers.sh).
 
+# Sticky-OSD injection tool name recorded in fixture ctx files.
+_KCOV_DISP_WD_YDOTOOL="ydotool"
+
 _wait_for_display_watchdog_exit() {
     local wd_pid="$1"
     local _
@@ -99,16 +102,16 @@ _run_display_watchdog_force_release_paths() {
     sleep 0.05
     _soft _watchdog_force_release "$prefix_wd"
     _soft wait
-    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "ydotool"
+    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _mark_osd_cancel_in_progress "$prefix_wd"
     _soft _watchdog_release_if_idle "$prefix_wd"
     _soft _release_osd_modifiers "$prefix_wd"
-    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "ydotool"
+    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _dismiss_osd_modifiers "$prefix_wd"
     _soft _write_ctx "$prefix_wd" "$(id -un)" ":0" "xdotool"
     _soft _dismiss_osd_modifiers "$prefix_wd"
     _soft _clear_stuck_non_super_modifiers "$(id -un)" ":0" "xdotool"
-    _soft _clear_stuck_non_super_modifiers "$(id -un)" "$fake_sock" "ydotool"
+    _soft _clear_stuck_non_super_modifiers "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     return $?
 }
 
@@ -142,7 +145,7 @@ _run_display_watchdog_poll_loop_paths() {
     _OSD_IDLE_SECS=0
     _soft _watchdog_poll_loop "$prefix_wd"
     _soft rm -f "${prefix_wd}.session"
-    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "ydotool"
+    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _watchdog_release_session_or_ctx "$prefix_wd"
     _soft rm -f "${prefix_wd}.session"
     ASUS_DISPLAY_MODE_WATCHDOG_PREFIX="" _soft _run_internal_watchdog

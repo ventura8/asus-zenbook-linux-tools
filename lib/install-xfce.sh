@@ -173,7 +173,8 @@ _set_xfce_keybindings() {
 }
 
 _xfce_print_configure_progress() {
-    _install_print_next_step "$(_asus_gettextf "Configuring XFCE shortcuts for %s..." "$1")"
+    local target_user="$1"
+    _install_print_next_step "$(_asus_gettextf "Configuring XFCE shortcuts for %s..." "$target_user")"
     return $?
 }
 

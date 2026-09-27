@@ -7,11 +7,14 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_GNOME_TEST_PATH="/org/gnome/x/"
+readonly _KCOV_GNOME_PRINT_BINDING="['Print']"
+
 _driver_source_i18n || exit 1
 
 _write_gnome_gsettings_stub() {
     local mock="$1" log="$2"
-    printf '%s\n' "['Print']" > "${log}.val.show-screenshot-ui"
+    printf '%s\n' "$_KCOV_GNOME_PRINT_BINDING" > "${log}.val.show-screenshot-ui"
     printf '%s\n' "['<Super>p']" > "${log}.val.switch-monitor"
     printf '%s\n' "['<Super>p']" > "${log}.val.switch-video-mode"
     printf '%s\n' "[]" > "${log}.val.custom-keybindings"
@@ -102,7 +105,7 @@ _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 GNOME_GET_FAIL=1 \
     configure_gnome_component
 _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 GNOME_SET_FAIL=1 \
     configure_gnome_component
-_soft_expect 0 _ensure_keybinding_path "[]" "/org/gnome/x/" >/dev/null
+_soft_expect 0 _ensure_keybinding_path "[]" "$_KCOV_GNOME_TEST_PATH" >/dev/null
 _soft_expect 0 _gsettings_as_array_op merge "[]" "/org/gnome/a/" "/org/gnome/b/" >/dev/null
 _soft_expect 0 _gsettings_as_array_op drop "['/org/gnome/a/']" "/org/gnome/a/" >/dev/null
 _soft_expect 1 _gsettings_set_key "$user" "$BUS_ROOT/$uid/bus" \
@@ -115,8 +118,8 @@ _soft_expect 1 _is_safe_config_dir "$STATE_DIR"
 _soft_expect 0 _is_safe_config_dir "$STATE_DIR/$uid"
 _soft_expect 0 backup_gnome_keybinding "$user" "$BUS_ROOT/$uid/bus" \
     "org.gnome.shell.keybindings" "show-screenshot-ui" "$STATE_DIR/$uid/orig_show_screenshot_ui"
-_soft_expect 0 _merge_custom_keybindings "[]" "/org/gnome/x/" >/dev/null
-_soft_expect 0 _drop_keybinding_path "['/org/gnome/x/']" "/org/gnome/x/" >/dev/null
+_soft_expect 0 _merge_custom_keybindings "[]" "$_KCOV_GNOME_TEST_PATH" >/dev/null
+_soft_expect 0 _drop_keybinding_path "['/org/gnome/x/']" "$_KCOV_GNOME_TEST_PATH" >/dev/null
 _soft_expect 0 apply_gnome_shortcuts "$user" "$BUS_ROOT/$uid/bus" \
     "$STATE_DIR/$uid/orig_ss" "$STATE_DIR/$uid/orig_ctrl" \
     "$STATE_DIR/$uid/orig_vm" "$STATE_DIR/$uid" "$STATE_DIR/$uid/orig_sm"
@@ -126,7 +129,7 @@ _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
     "org.gnome.shell.keybindings" "show-screenshot-ui" \
     "/proc/1/root/blocked-backup-$$/orig"
 _soft_expect 0 _gsettings_restore_key "$user" "$BUS_ROOT/$uid/bus" \
-    org.gnome.shell.keybindings show-screenshot-ui "['Print']" show-screenshot-ui
+    org.gnome.shell.keybindings show-screenshot-ui "$_KCOV_GNOME_PRINT_BINDING" show-screenshot-ui
 _soft_expect 0 _set_custom_binding_slot "$user" "$BUS_ROOT/$uid/bus" \
     "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom99/" \
     "ASUS Test" "/bin/true" "<Super>F24" >/dev/null
@@ -138,7 +141,7 @@ _soft_expect 0 _backup_optional_gnome_key "$user" "$BUS_ROOT/$uid/bus" \
 _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 PATH="/nonexistent" \
     _gsettings_python3_with_gi >/dev/null
 _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 PATH="/nonexistent" \
-    _gsettings_as_array_op merge "[]" "/org/gnome/x/" >/dev/null
+    _gsettings_as_array_op merge "[]" "$_KCOV_GNOME_TEST_PATH" >/dev/null
 (
     mv() { return 1; }
     _soft_expect 1 backup_gnome_keybinding "$user" "$BUS_ROOT/$uid/bus" \
@@ -150,13 +153,13 @@ _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 PATH="/nonexistent" \
         "$STATE_DIR/$uid/orig_sm" >/dev/null
 )
 _soft_expect 1 _gsettings_restore_key "$user" "$BUS_ROOT/$uid/bus" \
-    org.gnome.shell.keybindings show-screenshot-ui "['Print']" show-screenshot-ui \
+    org.gnome.shell.keybindings show-screenshot-ui "$_KCOV_GNOME_PRINT_BINDING" show-screenshot-ui \
     >/dev/null
 # Force restore warning by stubbing set to fail.
 (
     _gsettings_set_key() { return 1; }
     _soft_expect 1 _gsettings_restore_key "$user" "$BUS_ROOT/$uid/bus" \
-        org.gnome.shell.keybindings show-screenshot-ui "['Print']" show-screenshot-ui \
+        org.gnome.shell.keybindings show-screenshot-ui "$_KCOV_GNOME_PRINT_BINDING" show-screenshot-ui \
         >/dev/null
 )
 _soft_expect 0 _gnome_disable_extension_cli "$user" "" \

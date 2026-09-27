@@ -10,11 +10,10 @@ _coverage_cli_direct() {
 
 _coverage_cli() {
     # Under sudo --full, coverage lives in the invoker's user site-packages.
-    if [[ "$(id -u)" -eq 0 ]] && [[ -n "${SUDO_USER:-}" ]] && [[ "$SUDO_USER" != root ]]; then
-        if command -v runuser >/dev/null 2>&1; then
-            runuser -u "$SUDO_USER" -- python3 -m coverage "$@"
-            return $?
-        fi
+    if [[ "$(id -u)" -eq 0 ]] && [[ -n "${SUDO_USER:-}" ]] && [[ "$SUDO_USER" != root ]] \
+        && command -v runuser >/dev/null 2>&1; then
+        runuser -u "$SUDO_USER" -- python3 -m coverage "$@"
+        return $?
     fi
     _coverage_cli_direct "$@"
 }
@@ -162,7 +161,8 @@ _python_coverage_tee_report() {
 }
 
 _python_coverage_gate_has_violations() {
-    _python_coverage_below_threshold "$1" "$2" || [[ -n "$3" ]]
+    local below_total="$1" below_files="$2" missing_files="$3"
+    _python_coverage_below_threshold "$below_total" "$below_files" || [[ -n "$missing_files" ]]
     return $?
 }
 
@@ -224,7 +224,8 @@ _python_coverage_include_pattern() {
 }
 
 _python_coverage_below_threshold() {
-    [[ -n "$1" ]] || [[ -n "$2" ]]
+    local below_total="$1" below_files="$2"
+    [[ -n "$below_total" ]] || [[ -n "$below_files" ]]
     return $?
 }
 
