@@ -23,7 +23,7 @@ INSTALL_MANIFEST_LIB="$SCRIPT_DIR/lib/install-file-manifest.sh"
 
 _require_uninstall_helper() {
     local path="$1" label="$2"
-    if [ ! -f "$path" ]; then
+    if [[ ! -f "$path" ]]; then
         echo "Missing $label: $path" >&2
         return 1
     fi
@@ -62,7 +62,7 @@ _source_required_uninstall_helpers || exit 1
 # GNOME restore helpers (sourced once; restore_gnome_shortcuts still checks the file exists).
 INSTALL_GNOME_LIB="$SCRIPT_DIR/lib/install-gnome.sh"
 _source_optional_gnome_helper() {
-    if [ -f "$INSTALL_GNOME_LIB" ]; then
+    if [[ -f "$INSTALL_GNOME_LIB" ]]; then
     # shellcheck source=lib/install-gnome.sh
         source "$INSTALL_GNOME_LIB"
     fi
@@ -98,7 +98,7 @@ _remove_uninstall_systemctl_temp() {
     local -a kept=()
     local path
     for path in "${_UNINSTALL_SYSTEMCTL_TEMPS[@]+"${_UNINSTALL_SYSTEMCTL_TEMPS[@]}"}"; do
-        [ "$path" = "$target" ] && continue
+        [[ "$path" = "$target" ]] && continue
         kept+=("$path")
     done
     _UNINSTALL_SYSTEMCTL_TEMPS=("${kept[@]+"${kept[@]}"}")
@@ -106,8 +106,8 @@ _remove_uninstall_systemctl_temp() {
 
 _register_uninstall_cleanup() {
     # Register only when executed as main. Empty BASH_SOURCE[0] also counts as main.
-    if [ "${ASUS_UNINSTALL_SOURCE_ONLY:-0}" != "1" ] \
-        && { [ "${BASH_SOURCE[0]-}" = "$0" ] || [ -z "${BASH_SOURCE[0]-}" ]; }; then
+    if [[ "${ASUS_UNINSTALL_SOURCE_ONLY:-0}" != "1" ]] \
+        && { [[ "${BASH_SOURCE[0]-}" = "$0" ]] || [[ -z "${BASH_SOURCE[0]-}" ]]; }; then
         trap '_cleanup_uninstall_systemctl_temps' EXIT
     fi
 }
@@ -124,7 +124,7 @@ _run_systemctl_capture() {
     _UNINSTALL_SYSTEMCTL_TEMPS+=("$err_file")
     # Capture status via || — $? after a failed `if cmd; fi` is always 0.
     _run_command_with_timeout "${INSTALL_COMMAND_TIMEOUT:-5}" env LC_ALL=C "$@" 2>"$err_file" || status=$?
-    if [ "$status" -eq 0 ]; then
+    if [[ "$status" -eq 0 ]]; then
         _err_out=""
     else
         _err_out=$(cat "$err_file" 2>/dev/null || true)
@@ -146,7 +146,7 @@ _run_systemctl_unit_action() {
     if _is_systemctl_transport_unavailable "$err_text"; then
         return 0
     fi
-    [ -z "$err_text" ] && err_text="(no stderr output)"
+    [[ -z "$err_text" ]] && err_text="(no stderr output)"
     echo "Warning: systemctl $action failed for $unit: $err_text" >&2
     return 1
 }
@@ -162,7 +162,7 @@ _is_inactive_is_active_status() {
     # systemctl is-active --quiet: historically 3=inactive; systemd 259+ often
     # returns 4 for inactive/not-loaded (LSB-ish).
     local status="$1" err_text="$2"
-    [ "$status" -eq 3 ] || [ "$status" -eq 4 ] || _is_absent_unit_error "$err_text"
+    [[ "$status" -eq 3 ]] || [[ "$status" -eq 4 ]] || _is_absent_unit_error "$err_text"
 }
 
 _report_service_inactive_status() {
@@ -170,7 +170,7 @@ _report_service_inactive_status() {
     if _is_systemctl_transport_unavailable "$err_text"; then
         return 0
     fi
-    if [ "$status" -eq 0 ]; then
+    if [[ "$status" -eq 0 ]]; then
         echo "Warning: service remained active after stop: $unit" >&2
         return 1
     fi
@@ -179,12 +179,12 @@ _report_service_inactive_status() {
         echo "Warning: unable to verify service state for $unit: timed out (exit $status)" >&2
         return 1
         ;;
+        *) ;;
     esac
     if _is_inactive_is_active_status "$status" "$err_text"; then
         return 0
     fi
-    [ -z "$err_text" ] && err_text="(no stderr output)"
-    echo "Warning: unable to verify service state for $unit: $err_text" >&2
+    echo "Warning: unable to verify service state for $unit: ${err_text:-(no stderr output)}" >&2
     return 1
 }
 
@@ -195,7 +195,7 @@ _is_systemctl_transport_unavailable() {
 }
 
 _systemctl_is_usable() {
-    command -v "$SYSTEMCTL" >/dev/null 2>&1 || { [ -n "$SYSTEMCTL" ] && [ -x "$SYSTEMCTL" ]; }
+    command -v "$SYSTEMCTL" >/dev/null 2>&1 || { [[ -n "$SYSTEMCTL" ]] && [[ -x "$SYSTEMCTL" ]]; }
 }
 
 _run_systemctl_daemon_reload() {
@@ -209,7 +209,7 @@ _run_systemctl_daemon_reload() {
     if _is_systemctl_transport_unavailable "$err_text"; then
         return 0
     fi
-    [ -z "$err_text" ] && err_text="(no stderr output)"
+    [[ -z "$err_text" ]] && err_text="(no stderr output)"
     echo "Warning: systemctl daemon-reload failed: $err_text" >&2
     return 1
 }
@@ -242,7 +242,7 @@ _require_systemctl() {
     if command -v "$SYSTEMCTL" >/dev/null 2>&1; then
         return 0
     fi
-    if [ -n "$SYSTEMCTL" ] && [ -x "$SYSTEMCTL" ]; then
+    if [[ -n "$SYSTEMCTL" ]] && [[ -x "$SYSTEMCTL" ]]; then
         return 0
     fi
     echo "Error: systemctl command not available: $SYSTEMCTL" >&2
@@ -252,10 +252,10 @@ _require_systemctl() {
 _print_residual_entries() {
     local entry count=0
     for entry in "$LIB_DIR"/* "$LIB_DIR"/.[!.]* "$LIB_DIR"/..?*; do
-        [ -e "$entry" ] || [ -L "$entry" ] || continue
+        [[ -e "$entry" ]] || [[ -L "$entry" ]] || continue
         printf '  %s\n' "${entry##*/}" >&2
         count=$((count + 1))
-        if [ "$count" -ge 20 ]; then
+        if [[ "$count" -ge 20 ]]; then
             echo "  ... truncated (showing first 20 residual entries)" >&2
             break
         fi
@@ -297,7 +297,7 @@ _remove_manifest_installed_files() {
 }
 
 _reload_udev_after_remove() {
-    if [ -z "${PREFIX:-}" ] && command -v udevadm >/dev/null 2>&1; then
+    if [[ -z "${PREFIX:-}" ]] && command -v udevadm >/dev/null 2>&1; then
         _asus_soft udevadm control --reload-rules 2>/dev/null
         _asus_soft udevadm trigger --subsystem-match=misc --name-match=uinput 2>/dev/null
     fi
@@ -315,13 +315,13 @@ _remove_shared_install_files() {
 }
 
 _remove_empty_install_dirs() {
-    if [ -d "$LIB_DIR" ]; then
+    if [[ -d "$LIB_DIR" ]]; then
         if ! rmdir "$LIB_DIR" 2>/dev/null; then
             echo "Warning: $LIB_DIR is not empty; leaving residual entries in place." >&2
             _print_residual_entries
         fi
     fi
-    if [ -d "$STATE_DIR" ]; then
+    if [[ -d "$STATE_DIR" ]]; then
         _asus_soft rmdir "$STATE_DIR" 2>/dev/null
     fi
 }
@@ -342,9 +342,9 @@ remove_installed_files() {
 
 resolve_fallback_user() {
     local real_user="${SUDO_USER:-${USER-}}"
-    if [ "$real_user" = "root" ] || [ -z "$real_user" ]; then
+    if [[ "$real_user" = "root" ]] || [[ -z "$real_user" ]]; then
         real_user=$(who 2>/dev/null | awk 'NR==1{print $1}' || true)
-        [ -z "$real_user" ] && real_user="$NO_SESSION_USER"
+        [[ -z "$real_user" ]] && real_user="$NO_SESSION_USER"
     fi
     echo "$real_user"
 }
@@ -353,10 +353,10 @@ _restore_schema_file() {
     local user="$1" bus="$2" file_path="$3" schema="$4" key="$5"
     local bus_addr="unix:path=$bus" runtime_dir
     runtime_dir=$(dirname "$bus")
-    if [ -f "$file_path" ]; then
+    if [[ -f "$file_path" ]]; then
         local val
         val=$(cat "$file_path" 2>/dev/null)
-        if [ -n "$val" ]; then
+        if [[ -n "$val" ]]; then
             _install_run_as_user "$user" env DBUS_SESSION_BUS_ADDRESS="$bus_addr" \
                 XDG_RUNTIME_DIR="$runtime_dir" \
                 gsettings set "$schema" "$key" "$val"
@@ -390,7 +390,7 @@ _restore_named_keybinding() {
 
 _restore_optional_named_keybinding() {
     local user="$1" bus="$2" dir="$3" file_name="$4" schema="$5" key="$6"
-    [ -f "$dir/$file_name" ] || return 0
+    [[ -f "$dir/$file_name" ]] || return 0
     restore_gnome_keybinding_schema "$user" "$bus" "$dir" "$file_name" "$schema" "$key"
 }
 
@@ -412,7 +412,7 @@ _restore_primary_keybindings() {
 
 _restore_custom_keybindings() {
     local user="$1" bus="$2" dir="$3"
-    if [ -f "$dir/orig_custom_keybindings" ]; then
+    if [[ -f "$dir/orig_custom_keybindings" ]]; then
         _restore_named_keybinding "$user" "$bus" "$dir" "orig_custom_keybindings" "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings"
         return $?
     fi
@@ -439,14 +439,14 @@ _restore_user_keybindings() {
 
 _check_valid_restore_env() {
     local uid="$1" dir="$2" bus="$3"
-    if [ -z "$dir" ] || [ ! -d "$dir" ]; then
+    if [[ -z "$dir" ]] || [[ ! -d "$dir" ]]; then
         return 1
     fi
-    if [ -z "$uid" ]; then
+    if [[ -z "$uid" ]]; then
         echo "Warning: Skipping GNOME keybinding restore (missing user id)." >&2
         return 1
     fi
-    if [ ! -S "$bus" ]; then
+    if [[ ! -S "$bus" ]]; then
         echo "Warning: Skipping GNOME keybinding restore (missing D-Bus socket $bus)." >&2
         return 1
     fi
@@ -459,8 +459,8 @@ _UNINSTALL_TARGET_UID=""
 _resolve_target_user_info() {
     local target_user user_id
     target_user=$(find_active_session_user || true)
-    [ -z "$target_user" ] && target_user=$(resolve_fallback_user)
-    if [ "$target_user" = "$NO_SESSION_USER" ]; then
+    [[ -z "$target_user" ]] && target_user=$(resolve_fallback_user)
+    if [[ "$target_user" = "$NO_SESSION_USER" ]]; then
         user_id=""
     else
         user_id=$(id -u "$target_user" 2>/dev/null || true)
@@ -471,12 +471,12 @@ _resolve_target_user_info() {
 
 _resolve_persisted_target_user() {
     local config_dir="$1" fallback_user="$2" persisted
-    if [ ! -f "$config_dir/target_user" ]; then
+    if [[ ! -f "$config_dir/target_user" ]]; then
         printf '%s\n' "$fallback_user"
         return 0
     fi
     IFS= read -r persisted <"$config_dir/target_user" || persisted=""
-    if [ -n "$persisted" ] && getent passwd "$persisted" >/dev/null 2>&1; then
+    if [[ -n "$persisted" ]] && getent passwd "$persisted" >/dev/null 2>&1; then
         printf '%s\n' "$persisted"
         return 0
     fi
@@ -485,13 +485,13 @@ _resolve_persisted_target_user() {
 
 _gnome_backup_state_present() {
     local config_dir="$1"
-    [ -d "$config_dir" ] || return 1
-    [ -n "$(ls -A "$config_dir" 2>/dev/null || true)" ]
+    [[ -d "$config_dir" ]] || return 1
+    [[ -n "$(ls -A "$config_dir" 2>/dev/null || true)" ]]
 }
 
 restore_gnome_shortcuts() {
     local target_user="$1" user_id="$2" config_dir bus_path gnome_lib
-    if [ -z "$user_id" ]; then
+    if [[ -z "$user_id" ]]; then
         echo "Warning: Skipping GNOME keybinding restore (missing user id)." >&2
         return 0
     fi
@@ -502,7 +502,7 @@ restore_gnome_shortcuts() {
         return $?
     fi
     gnome_lib="${INSTALL_GNOME_LIB:-$SCRIPT_DIR/lib/install-gnome.sh}"
-    if [ ! -f "$gnome_lib" ]; then
+    if [[ ! -f "$gnome_lib" ]]; then
         echo "Missing installer GNOME helper: $gnome_lib" >&2
         return 1
     fi
@@ -530,7 +530,7 @@ _restore_and_remove_gnome_backup() {
 
 _read_desktop_family() {
     local config_dir="$1"
-    [ -f "$config_dir/desktop_family" ] || return 0
+    [[ -f "$config_dir/desktop_family" ]] || return 0
     cat "$config_dir/desktop_family" 2>/dev/null
 }
 
@@ -540,7 +540,7 @@ restore_desktop_shortcuts() {
     target_user="$_UNINSTALL_TARGET_USER"
     user_id="$_UNINSTALL_TARGET_UID"
 
-    if [ -z "$user_id" ]; then
+    if [[ -z "$user_id" ]]; then
         echo "Warning: Skipping desktop keybinding restore (missing user id)." >&2
         return 0
     fi
@@ -552,7 +552,7 @@ restore_desktop_shortcuts() {
 }
 
 _remove_uinput_group() {
-    if [ -z "${PREFIX:-}" ]; then
+    if [[ -z "${PREFIX:-}" ]]; then
         _asus_soft groupdel asus-uinput
     fi
 }
@@ -586,10 +586,10 @@ main() {
 }
 
 _maybe_run_uninstall_main() {
-    if [ "${ASUS_UNINSTALL_SOURCE_ONLY:-0}" = "1" ]; then
+    if [[ "${ASUS_UNINSTALL_SOURCE_ONLY:-0}" = "1" ]]; then
         return 0
     fi
-    if [ "${BASH_SOURCE[0]-}" = "$0" ] || [ -z "${BASH_SOURCE[0]-}" ]; then
+    if [[ "${BASH_SOURCE[0]-}" = "$0" ]] || [[ -z "${BASH_SOURCE[0]-}" ]]; then
         main "$@"
     fi
 }

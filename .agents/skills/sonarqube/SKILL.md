@@ -33,7 +33,7 @@ XML — never Cobertura.** Handing it kcov's `cobertura.xml` fails the scan with
 `Error during parsing of the generic coverage report`. That is why the
 converter exists; keep both writers in `scripts/coverage/gates_python.sh`
 best-effort so a report failure never turns a passing gate into a red pipeline.
-`tests/unit/shell/test_pipeline_ci_parity.py` guards these paths — update it in
+`tests/unit/shell/test_pipeline_ci_parity_sonar.py` guards these paths — update it in
 the same change set when they move.
 
 ## Local scan (throwaway server)
@@ -128,7 +128,19 @@ Tear down when finished: `docker rm -f asus-sonar-local`.
 5. **Never add suppression comments** (`# NOSONAR`, `noqa`, `nosec`,
    `eslint-disable`). `scripts/check_no_lint_suppressions.py` fails the lint
    gate on them; fix the code or leave the finding with a stated reason.
-6. After fixing, re-run the repo's own gates — `scripts/run-lints.sh` and the
+6. Read Cloud findings without a token (the project is public):
+   `curl -s "https://sonarcloud.io/api/issues/search?componentKeys=asus-zenbook-linux-tools&ps=500&p=1&resolved=false"`
+   (page with `p=`; `total` gives the count). Each issue carries `textRange`
+   (line + column offsets), which is enough to drive a scripted fix for the
+   high-volume mechanical shell rules (`S7688` `[`→`[[`, `S7682` trailing
+   `return $?`, `S131` `*) ;;`). After a codemod, always re-run
+   `tools/shell_complexity.py` (new `*)` arms add CCN), the 600-line gate, and
+   audit every `[[ … -eq/-lt … ]]` whose operand is not a status/count for a
+   prior `^[0-9]+$` check (see AGENTS.md "Shell style").
+7. Known false positives to leave with a stated reason: `S1481` "unused local"
+   on a variable consumed only through a nameref/`eval` or inside a heredoc,
+   plus the two Python cases in rule 4.
+8. After fixing, re-run the repo's own gates — `scripts/run-lints.sh` and the
    affected unit suites — before re-scanning. Sonar is additional to those
    gates, never a replacement.
 

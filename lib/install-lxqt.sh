@@ -3,14 +3,14 @@
 
 _LXQT_INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 _LXQT_COMMON="$_LXQT_INSTALL_DIR/install-lxqt-common.sh"
-if [ ! -f "$_LXQT_COMMON" ]; then
+if [[ ! -f "$_LXQT_COMMON" ]]; then
     echo "Missing LXQt common helper: $_LXQT_COMMON" >&2
     return 1
 fi
 # shellcheck source=lib/install-lxqt-common.sh
 . "$_LXQT_COMMON"
 _LXQT_SECTIONS="$_LXQT_INSTALL_DIR/install-lxqt-sections.sh"
-if [ ! -f "$_LXQT_SECTIONS" ]; then
+if [[ ! -f "$_LXQT_SECTIONS" ]]; then
     echo "Missing LXQt sections helper: $_LXQT_SECTIONS" >&2
     return 1
 fi
@@ -20,19 +20,19 @@ fi
 _lxqt_atomic_write_file() {
     local dest="$1" mode="$2" val="${3:-}" tmp st
     tmp="${dest}.tmp"
-    if [ "$mode" = "value" ]; then
+    if [[ "$mode" = "value" ]]; then
         printf '%s\n' "$val" > "$tmp"
     else
         : > "$tmp"
     fi
     st=$?
-    [ "$st" -eq 0 ] || {
+    [[ "$st" -eq 0 ]] || {
         _lxqt_rm_tmp "$tmp"
         return "$st"
     }
     mv "$tmp" "$dest"
     st=$?
-    [ "$st" -eq 0 ] || _lxqt_rm_tmp "$tmp"
+    [[ "$st" -eq 0 ]] || _lxqt_rm_tmp "$tmp"
     return "$st"
 }
 
@@ -40,7 +40,7 @@ _lxqt_write_state_file() {
     local dest="$1" value="$2" label="$3" st
     _lxqt_atomic_write_file "$dest" value "$value"
     st=$?
-    [ "$st" -eq 0 ] || {
+    [[ "$st" -eq 0 ]] || {
         echo "  ✗ LXQt configuration failed: could not write ${label} state." >&2
         return "$st"
     }
@@ -49,14 +49,17 @@ _lxqt_write_state_file() {
 
 _lxqt_write_backup_value() {
     _lxqt_atomic_write_file "$1" value "$2"
+    return $?
 }
 
 _lxqt_mark_backup_absent() {
     _lxqt_atomic_write_file "${1}.absent" absent
+    return $?
 }
 
 _lxqt_write_section_id() {
     _lxqt_atomic_write_file "${1}.section" value "$2"
+    return $?
 }
 
 _lxqt_reject_symlink() {
@@ -66,9 +69,9 @@ _lxqt_reject_symlink() {
     local path="$1" prefix="" part
     IFS='/' read -ra _lxqt_path_parts <<< "$path"
     for part in "${_lxqt_path_parts[@]}"; do
-        [ -n "$part" ] || continue
+        [[ -n "$part" ]] || continue
         prefix="$prefix/$part"
-        [ -L "$prefix" ] && return 1
+        [[ -L "$prefix" ]] && return 1
     done
     return 0
 }
@@ -100,7 +103,7 @@ _lxqt_atomic_write_conf_guard() {
     # symlink-checked here too, not just the leaf.
     local conf="$1"
     _lxqt_reject_symlink "$conf" || return 1
-    [ -e "$conf" ] && [ ! -f "$conf" ] && return 1
+    [[ -e "$conf" ]] && [[ ! -f "$conf" ]] && return 1
     return 0
 }
 
@@ -108,13 +111,13 @@ _lxqt_write_tmp_and_swap() {
     local user="$1" tmp="$2" conf="$3" content_file="$4" st
     _install_run_as_user "$user" tee "$tmp" < "$content_file" > /dev/null
     st=$?
-    [ "$st" -eq 0 ] || {
+    [[ "$st" -eq 0 ]] || {
         _install_run_as_user "$user" rm -f "$tmp"
         return "$st"
     }
     _install_run_as_user "$user" mv -T "$tmp" "$conf"
     st=$?
-    [ "$st" -eq 0 ] || _install_run_as_user "$user" rm -f "$tmp"
+    [[ "$st" -eq 0 ]] || _install_run_as_user "$user" rm -f "$tmp"
     return "$st"
 }
 
@@ -131,7 +134,7 @@ _lxqt_atomic_write_conf() {
 _lxqt_snapshot_fail_read() {
     local conf="$1" snap="$2" as_user="${3:-}"
     _lxqt_rm_tmp "$snap"
-    if [ -n "$as_user" ]; then
+    if [[ -n "$as_user" ]]; then
         echo "  ✗ LXQt configuration failed: could not read $conf as $as_user." >&2
     else
         echo "  ✗ LXQt configuration failed: could not read $conf." >&2
@@ -146,7 +149,7 @@ _lxqt_snapshot_read_into() {
     if cat "$conf" > "$snap" 2>/dev/null; then
         return 0
     fi
-    if [ ! -e "$conf" ]; then
+    if [[ ! -e "$conf" ]]; then
         : > "$snap"
         return 0
     fi
@@ -177,7 +180,7 @@ _lxqt_snapshot_conf() {
     # Missing conf → empty snapshot; present-but-unreadable → fail closed.
     local user="$1" conf="$2" snap
     snap=$(mktemp) || return 1
-    if [ "$(id -u)" -eq 0 ]; then
+    if [[ "$(id -u)" -eq 0 ]]; then
         _lxqt_snapshot_read_as_user "$user" "$snap" "$conf" || return 1
     else
         _lxqt_snapshot_read_into "$snap" "$conf" || return 1
@@ -204,7 +207,7 @@ _lxqt_restore_absent() {
     _lxqt_conf_without_section "$snap" "$section_id" > "$work"
     st=$?
     _lxqt_rm_tmp "$snap"
-    [ "$st" -eq 0 ] || {
+    [[ "$st" -eq 0 ]] || {
         _lxqt_rm_tmp "$work"
         return "$st"
     }
@@ -228,7 +231,7 @@ _lxqt_restore_backup_value() {
     } > "$work"
     st=$?
     _lxqt_rm_tmp "$snap"
-    [ "$st" -eq 0 ] || {
+    [[ "$st" -eq 0 ]] || {
         _lxqt_rm_tmp "$work"
         return "$st"
     }
@@ -240,16 +243,16 @@ _lxqt_restore_backup_value() {
 
 _lxqt_restore_one() {
     local user="$1" conf="$2" backup="$3" section_id
-    [ -f "${backup}.section" ] || {
+    [[ -f "${backup}.section" ]] || {
         echo "  ! Warning: LXQt restore skipped: section id missing for $backup." >&2
         return 0
     }
     section_id=$(_lxqt_read_section_id_file "$backup") || return 1
-    [ -f "${backup}.absent" ] && {
+    [[ -f "${backup}.absent" ]] && {
         _lxqt_restore_absent "$user" "$conf" "$section_id"
         return $?
     }
-    [ -f "$backup" ] || {
+    [[ -f "$backup" ]] || {
         echo "  ! Warning: LXQt restore skipped for $section_id:" \
             "backup and .absent marker both missing." >&2
         return 0
@@ -267,7 +270,7 @@ _lxqt_restore_all_rows() {
     local user="$1" conf="$2" config_dir="$3" failed=0
     local key backup_name comment exec_cmd
     while IFS='|' read -r key backup_name comment exec_cmd; do
-        [ -n "$backup_name" ] || continue
+        [[ -n "$backup_name" ]] || continue
         _lxqt_restore_one "$user" "$conf" "$config_dir/$backup_name" || failed=1
     done < <(_lxqt_shortcut_table)
     return "$failed"
@@ -307,14 +310,14 @@ _lxqt_write_markers() {
 
 _lxqt_conf_writable() {
     local conf="$1"
-    [ -e "$conf" ] || return 0
-    [ -w "$conf" ]
+    [[ -e "$conf" ]] || return 0
+    [[ -w "$conf" ]]
 }
 
 _lxqt_resolve_configure_context() {
     local info target_user user_id home_dir conf
     info=$(_resolve_user_bus_info)
-    [ -n "$info" ] || {
+    [[ -n "$info" ]] || {
         echo "  ✗ LXQt configuration failed: desktop D-Bus session not found." >&2
         return 1
     }
@@ -352,6 +355,7 @@ _lxqt_try_set_or_fail() {
 
 _lxqt_print_configure_progress() {
     _install_print_next_step "$(_asus_gettextf "Configuring LXQt Global Keys for %s..." "$1")"
+    return $?
 }
 
 configure_lxqt_component() {

@@ -120,8 +120,8 @@ _append_readable_shell_targets() {
     local entry
     for entry in "${found[@]}"; do
         entry="${entry#./}"
-        [ -n "$entry" ] || continue
-        if [ -r "$entry" ]; then
+        [[ -n "$entry" ]] || continue
+        if [[ -r "$entry" ]]; then
             SHELL_SCRIPT_TARGETS+=("$entry")
         fi
     done
@@ -142,7 +142,7 @@ _resolve_shell_script_targets() {
     _append_readable_shell_targets
     found=("${debian_shell[@]}")
     _append_readable_shell_targets
-    if [ "${#SHELL_SCRIPT_TARGETS[@]}" -eq 0 ]; then
+    if [[ "${#SHELL_SCRIPT_TARGETS[@]}" -eq 0 ]]; then
         echo "  ✗ No shell script targets found for bash -n." >&2
         exit 1
     fi
@@ -163,7 +163,7 @@ step_ruff() {
     start_step "Running Python Ruff Check..."
     if command -v ruff &>/dev/null; then
         mapfile -t PYTHON_FILES < <(find_python_files)
-        if [ "${#PYTHON_FILES[@]}" -eq 0 ]; then
+        if [[ "${#PYTHON_FILES[@]}" -eq 0 ]]; then
             echo "  ✗ No product Python files found for Ruff." >&2
             exit 1
         fi
@@ -180,11 +180,11 @@ step_pylint() {
     if command -v pylint &>/dev/null; then
         mapfile -t PYTHON_FILES < <(find_python_files | grep -Ev '^(\./)?tests/unit/')
         mapfile -t UNIT_TEST_FILES < <(find tests/unit -type f -name '*.py' | sort)
-        if [ "${#PYTHON_FILES[@]}" -eq 0 ]; then
+        if [[ "${#PYTHON_FILES[@]}" -eq 0 ]]; then
             echo "  ✗ No product Python files found for Pylint." >&2
             exit 1
         fi
-        if [ "${#UNIT_TEST_FILES[@]}" -eq 0 ]; then
+        if [[ "${#UNIT_TEST_FILES[@]}" -eq 0 ]]; then
             echo "  ✗ No unit test Python files found for Pylint." >&2
             exit 1
         fi
@@ -205,7 +205,7 @@ step_po_lint() {
         exit 1
     fi
     mapfile -t PO_FILES < <(find_po_files)
-    if [ "${#PO_FILES[@]}" -eq 0 ]; then
+    if [[ "${#PO_FILES[@]}" -eq 0 ]]; then
         echo "  ✗ No gettext PO files found." >&2
         exit 1
     fi
@@ -220,7 +220,7 @@ step_yamllint() {
     start_step "Running YAML Lint..."
     if command -v yamllint &>/dev/null; then
         mapfile -t YAML_FILES < <(find_yaml_files)
-        if [ "${#YAML_FILES[@]}" -eq 0 ]; then
+        if [[ "${#YAML_FILES[@]}" -eq 0 ]]; then
             echo "  ✓ Yamllint check passed."
             return
         fi
@@ -236,7 +236,7 @@ step_dockerfilelint() {
     start_step "Running Dockerfile Lint..."
     if command -v hadolint &>/dev/null; then
         mapfile -t DOCKER_FILES < <(find docker -type f \( -name 'Dockerfile' -o -name '*.Dockerfile' \) | sort)
-        if [ "${#DOCKER_FILES[@]}" -eq 0 ]; then
+        if [[ "${#DOCKER_FILES[@]}" -eq 0 ]]; then
             echo "  ✗ No Dockerfiles found under docker/." >&2
             exit 1
         fi
@@ -285,12 +285,12 @@ step_radon() {
     start_step "Running Radon Cyclomatic Complexity Check (A-rank only)..."
     if command -v radon &>/dev/null; then
         mapfile -t PYTHON_FILES < <(find_python_files)
-        if [ "${#PYTHON_FILES[@]}" -eq 0 ]; then
+        if [[ "${#PYTHON_FILES[@]}" -eq 0 ]]; then
             echo "  ✗ No Python files found for Radon." >&2
             exit 1
         fi
         VIOLATIONS=$(radon cc "${PYTHON_FILES[@]}" -n B -s)
-        if [ -n "$VIOLATIONS" ]; then
+        if [[ -n "$VIOLATIONS" ]]; then
             echo "  ✗ Complexity violations (rank B or worse found):"
             echo "$VIOLATIONS"
             exit 1
@@ -307,7 +307,7 @@ step_markdownlint() {
     start_step "Running MarkdownLint..."
     if command -v markdownlint &>/dev/null; then
         mapfile -t MD_FILES < <(find_markdown_files)
-        if [ "${#MD_FILES[@]}" -eq 0 ]; then
+        if [[ "${#MD_FILES[@]}" -eq 0 ]]; then
             echo "  ✓ MarkdownLint check passed."
             return
         fi
@@ -315,7 +315,7 @@ step_markdownlint() {
         echo "  ✓ MarkdownLint check passed."
     elif command -v npx &>/dev/null; then
         mapfile -t MD_FILES < <(find_markdown_files)
-        if [ "${#MD_FILES[@]}" -eq 0 ]; then
+        if [[ "${#MD_FILES[@]}" -eq 0 ]]; then
             echo "  ✓ MarkdownLint check passed."
             return
         fi
@@ -332,7 +332,7 @@ _require_eslint_npm_manifest() {
         echo "  ✗ npm is required to install ESLint deps from package-lock.json." >&2
         return 1
     fi
-    if [ ! -f "$REPO_ROOT/package-lock.json" ] || [ ! -f "$REPO_ROOT/package.json" ]; then
+    if [[ ! -f "$REPO_ROOT/package-lock.json" ]] || [[ ! -f "$REPO_ROOT/package.json" ]]; then
         echo "  ✗ package.json / package-lock.json missing for ESLint npm ci." >&2
         return 1
     fi
@@ -349,9 +349,9 @@ _ensure_eslint_workspace_deps() {
 _eslint_workspace_deps_ready() {
     # eslint.config.mjs imports resolve from the repo root — global eslint alone is
     # not enough (CI clean checkouts fail without workspace node_modules).
-    [ -x "$REPO_ROOT/node_modules/.bin/eslint" ] \
-        && [ -d "$REPO_ROOT/node_modules/@eslint/js" ] \
-        && [ -d "$REPO_ROOT/node_modules/@stylistic/eslint-plugin" ]
+    [[ -x "$REPO_ROOT/node_modules/.bin/eslint" ]] \
+        && [[ -d "$REPO_ROOT/node_modules/@eslint/js" ]] \
+        && [[ -d "$REPO_ROOT/node_modules/@stylistic/eslint-plugin" ]]
 }
 
 _run_eslint_npm_ci() {
@@ -368,7 +368,7 @@ _run_eslint_npm_ci() {
 step_eslint() {
     start_step "Running ESLint on JavaScript..."
     mapfile -t JS_FILES < <(find_js_files)
-    if [ "${#JS_FILES[@]}" -eq 0 ]; then
+    if [[ "${#JS_FILES[@]}" -eq 0 ]]; then
         echo "  ✓ ESLint check passed (no JavaScript files)."
         return
     fi
@@ -388,7 +388,7 @@ _maybe_link_shellcheck_lib() {
     local name="$2"
     local only_missing="$3"
     local src="$REPO_ROOT/lib/$name"
-    [ "$only_missing" = "1" ] && [ -e "$dest/$name" ] && return 0
+    [[ "$only_missing" = "1" ]] && [[ -e "$dest/$name" ]] && return 0
     ln -sfn "$src" "$dest/$name"
 }
 
@@ -426,10 +426,11 @@ ensure_shellcheck_installed_lib_paths() {
 
 _cleanup_shellcheck_repo_symlink() {
     local path="$1" target
-    [ -L "$path" ] || return 0
+    [[ -L "$path" ]] || return 0
     target=$(readlink -f "$path" 2>/dev/null || true)
     case "$target" in
         "$REPO_ROOT"/*) rm -f "$path" ;;
+        *) ;;
     esac
 }
 
@@ -471,10 +472,10 @@ _lint_unregister_systemd_cleanup() {
 }
 
 _lint_run_registered_cleanups() {
-    if [ "$_LINT_CLEANUP_SHELLCHECK" = "1" ]; then
+    if [[ "$_LINT_CLEANUP_SHELLCHECK" = "1" ]]; then
         _cleanup_shellcheck_step
     fi
-    if [ "$_LINT_CLEANUP_SYSTEMD" = "1" ]; then
+    if [[ "$_LINT_CLEANUP_SYSTEMD" = "1" ]]; then
         _cleanup_systemd_verify_step
     fi
 }
@@ -533,10 +534,10 @@ _run_systemd_verify() {
             sed "s|/usr/local/bin|$_SYSTEMD_VERIFY_TMP_BIN|g" "$svc" \
                 > "$_SYSTEMD_VERIFY_TMP_SVC/$(basename "$svc")"
         done
-        if [ "$had_nullglob" -eq 0 ]; then
+        if [[ "$had_nullglob" -eq 0 ]]; then
             shopt -u nullglob
         fi
-        if [ "$svc_count" -eq 0 ]; then
+        if [[ "$svc_count" -eq 0 ]]; then
             echo "  ✗ No systemd unit files matched systemd/*.service" >&2
             exit 1
         fi

@@ -8,7 +8,7 @@ cd "$REPO_ROOT" || exit 1
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
 _setup_common_bus_root() {
-    if [ -n "${KCOV_BUS_ROOT:-}" ]; then
+    if [[ -n "${KCOV_BUS_ROOT:-}" ]]; then
         BUS_ROOT="$KCOV_BUS_ROOT"
     else
         BUS_ROOT=$(mktemp -d)
@@ -17,7 +17,7 @@ _setup_common_bus_root() {
 }
 
 _ensure_common_bus_socket() {
-    if [ -S "$BUS_ROOT/$(id -u)/bus" ]; then
+    if [[ -S "$BUS_ROOT/$(id -u)/bus" ]]; then
         return 0
     fi
     _driver_bind_required "$BUS_ROOT/$(id -u)/bus" common_helpers
@@ -36,14 +36,14 @@ _other_existing_user() {
     local cur candidate
     cur="$(id -un)"
     for candidate in nobody daemon www-data sshd; do
-        if [ "$candidate" != "$cur" ] && getent passwd "$candidate" >/dev/null 2>&1; then
+        if [[ "$candidate" != "$cur" ]] && getent passwd "$candidate" >/dev/null 2>&1; then
             printf '%s\n' "$candidate"
             return 0
         fi
     done
     echo "Warning: no non-root passwd candidate for kcov privilege-drop paths" \
         "(current user=$cur)." >&2
-    if [ "$cur" = "root" ]; then
+    if [[ "$cur" = "root" ]]; then
         return 1
     fi
     printf '%s\n' "$cur"
@@ -61,7 +61,7 @@ _run_common_other_user_priv_paths() {
     no_priv=$(mktemp -d)
     for tool in bash sh true id getent env; do
         src=$(command -v "$tool" 2>/dev/null) || src=""
-        [ -n "$src" ] || continue
+        [[ -n "$src" ]] || continue
         ln -sf "$src" "$no_priv/$tool"
     done
     _exercise PATH="$no_priv" _run_as_user "$other" true >/dev/null
@@ -78,7 +78,7 @@ _run_common_notify_paths() {
     # can safely use saved_path and mock here.
     trap 'export PATH="$saved_path"; rm -rf "$mock"' RETURN
     printf '#!/bin/sh\necho 99\n' > "$mock/notify-send"
-    printf '#!/bin/sh\nexit 1\n' > "$mock/gdbus"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/gdbus"
     cat > "$mock/runuser" <<'EOF'
 #!/bin/sh
 while [ "$#" -gt 0 ]; do
@@ -105,7 +105,7 @@ EOF
     export PATH="$mock:$PATH"
     _exercise _check_node /etc/hostname >/dev/null
     _exercise _check_node /missing-asus-node >/dev/null
-    printf '#!/bin/sh\nexit 0\n' > "$mock/loginctl"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/loginctl"
     chmod +x "$mock/loginctl"
     _exercise RUN_USER_ROOT="$BUS_ROOT" PATH="$mock:$saved_path" _resolve_notif_target_user >/dev/null
     missing_notif_root=$(mktemp -d "$BUS_ROOT/missing-notif.XXXXXX")
@@ -130,7 +130,7 @@ EOF
         "cam" "tag" "icon" "title" "msg" >/dev/null
     _exercise _run_as_user "$(id -un)" true >/dev/null
     _exercise _run_as_user "asus-missing-user-$$" true >/dev/null
-    if [ -n "$other" ]; then
+    if [[ -n "$other" ]]; then
         _run_common_other_user_priv_paths "$other" "$mock"
     fi
     _exercise _write_notif_id_file "9" "$BUS_ROOT/$uid/.asus_notif_write.id" >/dev/null
@@ -282,7 +282,7 @@ EOF
 
 _restore_asus_lib_dir() {
     local had_lib_dir="$1" saved_lib_dir="$2"
-    if [ "$had_lib_dir" = 1 ]; then
+    if [[ "$had_lib_dir" = 1 ]]; then
         _ASUS_LIB_DIR="$saved_lib_dir"
     else
         unset _ASUS_LIB_DIR
@@ -291,7 +291,7 @@ _restore_asus_lib_dir() {
 
 _run_missing_common_path() {
     local saved_lib_dir had_lib_dir=0 missing_lib
-    if [ -n "${_ASUS_LIB_DIR+set}" ]; then
+    if [[ -n "${_ASUS_LIB_DIR+set}" ]]; then
         saved_lib_dir="$_ASUS_LIB_DIR"
         had_lib_dir=1
     fi
@@ -306,7 +306,7 @@ _run_missing_common_path() {
 _run_source_common_failure_path() {
     # File exists but sourcing fails → bootstrap error lines after the existence check.
     local tmp saved_lib_dir had_lib_dir=0
-    if [ -n "${_ASUS_LIB_DIR+set}" ]; then
+    if [[ -n "${_ASUS_LIB_DIR+set}" ]]; then
         saved_lib_dir="$_ASUS_LIB_DIR"
         had_lib_dir=1
     fi

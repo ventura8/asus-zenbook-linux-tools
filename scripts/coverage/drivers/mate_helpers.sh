@@ -38,15 +38,16 @@ EOF
 
 _driver_set_prefix _MATE_PREFIX_OWNED
 _mate_rm_if_set() {
-    [ -n "${1:-}" ] || return 0
-    /bin/rm -rf "$1"
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
+    /bin/rm -rf "$target_path"
 }
 _mate_cleanup() {
     _mate_rm_if_set "${mock:-}"
     _mate_rm_if_set "${iso:-}"
     _mate_rm_if_set "${glog:-}"
     _mate_rm_if_set "${empty_bus:-}"
-    if [ "${_MATE_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_MATE_PREFIX_OWNED:-0}" = 1 ]]; then
         _mate_rm_if_set "${PREFIX:-}"
     fi
 }

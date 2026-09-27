@@ -6,13 +6,13 @@ SYS_PLATFORM_ROOT="${SYS_PLATFORM_ROOT:-/sys/devices/platform}"
 _source_bootstrap_helper() {
     local script_dir installed_lib
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    if [ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ] \
-        && [ -f "$script_dir/../lib/asus-bootstrap.sh" ]; then
+    if [[ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ]] \
+        && [[ -f "$script_dir/../lib/asus-bootstrap.sh" ]]; then
         . "$script_dir/../lib/asus-bootstrap.sh"
         return 0
     fi
     installed_lib="${ASUS_INSTALLED_LIB_DIR:-/usr/local/lib/asus-zenbook-linux-tools}"
-    if [ -f "$installed_lib/asus-bootstrap.sh" ]; then
+    if [[ -f "$installed_lib/asus-bootstrap.sh" ]]; then
         . "$installed_lib/asus-bootstrap.sh"
         return 0
     fi
@@ -31,6 +31,7 @@ _get_fan_icon() {
         2) echo "power-profile-power-saver" ;;
         *) echo "power-profile-balanced" ;;
     esac
+    return $?
 }
 
 _send_notification() {
@@ -39,30 +40,39 @@ _send_notification() {
 
     icon=$(_get_fan_icon "$profile_value")
     _send_user_notification "$title" "$msg" "$icon" "fan" "fan" "$icon"
+    return $?
 }
 
-_fan_sysfs_path_allowed() {
-    # Print canonical path on success so callers use the resolved node.
-    local node="$1" canonical platform_root
-    [ -n "$node" ] || return 1
+_fan_canonical_path() {
+    local node="$1" canonical
     if command -v realpath >/dev/null 2>&1; then
         canonical=$(realpath -m -- "$node" 2>/dev/null) || canonical="$node"
     else
         canonical=$(readlink -f -- "$node" 2>/dev/null) || canonical="$node"
     fi
+    printf '%s\n' "$canonical"
+    return 0
+}
+
+_fan_sysfs_path_allowed() {
+    # Print canonical path on success so callers use the resolved node.
+    local node="$1" canonical platform_root
+    [[ -n "$node" ]] || return 1
+    canonical=$(_fan_canonical_path "$node")
     platform_root="${SYS_PLATFORM_ROOT:-/sys/devices/platform}"
     case "$canonical" in
         "$platform_root"/*)
             printf '%s\n' "$canonical"
             return 0
             ;;
+        *) ;;
     esac
     return 1
 }
 
 find_fan_node() {
     local allowed
-    if [ -n "${ASUS_FAN_NODE:-}" ]; then
+    if [[ -n "${ASUS_FAN_NODE:-}" ]]; then
         if allowed=$(_fan_sysfs_path_allowed "$ASUS_FAN_NODE"); then
             printf '%s\n' "$allowed"
             return 0
@@ -78,7 +88,7 @@ _normalize_fan_value() {
     local value
     value="$(printf '%s' "$1" | tr -d '[:space:]')"
     if [[ "$value" =~ ^[0-9]+$ ]]; then
-        if [ "$value" -gt 2 ]; then
+        if [[ "$value" -gt 2 ]]; then
             value=2
         fi
         printf '%s' "$value"
@@ -95,6 +105,7 @@ _get_next_fan_profile_name() {
         2) _asus_gettext "Quiet (Silent)" ;;
         *) _asus_gettext "Balanced" ;;
     esac
+    return $?
 }
 
 _ppd_name_from_value() {
@@ -103,17 +114,20 @@ _ppd_name_from_value() {
         2) printf 'power-saver' ;;
         *) printf 'balanced' ;;
     esac
+    return $?
 }
 
 _value_from_ppd_name() {
-    case "$1" in
+    local profile_name="$1"
+    case "$profile_name" in
         performance) printf '1' ;;
         power-saver|powersave) printf '2' ;;
         balanced) printf '0' ;;
         *)
-            echo "unrecognized powerprofilesctl profile name: $1" >&2
+            echo "unrecognized powerprofilesctl profile name: $profile_name" >&2
             printf '0' ;;
     esac
+    return $?
 }
 
 _ASUS_FAN_USE_PPD_MODE=""
@@ -142,7 +156,7 @@ _validate_asus_fan_use_ppd() {
 
 _ppd_enabled() {
     command -v powerprofilesctl >/dev/null 2>&1 || return 1
-    if [ "$_ASUS_FAN_PPD_VALIDATED" != "1" ]; then
+    if [[ "$_ASUS_FAN_PPD_VALIDATED" != "1" ]]; then
         _validate_asus_fan_use_ppd || return 1
     fi
     _ppd_mode_enabled
@@ -156,10 +170,11 @@ _ppd_mode_enabled() {
         1) ;;
         "")
             # Sysfs-only when ASUS_FAN_NODE is set, unless coverage forces PPD.
-            if [ -n "${ASUS_FAN_NODE:-}" ]; then
+            if [[ -n "${ASUS_FAN_NODE:-}" ]]; then
                 return 1
             fi
             ;;
+        *) ;;
     esac
     return 0
 }
@@ -168,7 +183,7 @@ _read_ppd_profile() {
     local name
     _ppd_enabled || return 1
     name=$(powerprofilesctl get 2>/dev/null | tr -d '[:space:]') || return 1
-    [ -n "$name" ] || return 1
+    [[ -n "$name" ]] || return 1
     printf '%s\n' "$name"
 }
 
@@ -176,7 +191,7 @@ _read_current_fan_value() {
     local node="$1"
     local ppd_name raw
     ppd_name=$(_read_ppd_profile) || {
-        if [ -z "$node" ]; then
+        if [[ -z "$node" ]]; then
             echo "Warning: No fan sysfs node; assuming Normal (0)" >&2
             printf '0'
             return 0
@@ -205,11 +220,11 @@ _apply_fan_profile() {
 
 _apply_fan_profile_sysfs() {
     local next="$1" node="$2"
-    if [ -z "$node" ]; then
+    if [[ -z "$node" ]]; then
         echo "Error: Failed to apply fan profile (no writable sysfs node)." >&2
         return 1
     fi
-    if [ ! -w "$node" ]; then
+    if [[ ! -w "$node" ]]; then
         echo "Error: Failed to apply fan profile (no writable sysfs node)." >&2
         return 1
     fi
@@ -233,21 +248,20 @@ _toggle_fan_val() {
 
 _prepare_ppd_fan_node() {
     local node="$1"
-    if [ -n "$node" ]; then
-        if [ ! -w "$node" ]; then
-            node=""
-        fi
+    if [[ -n "$node" && ! -w "$node" ]]; then
+        node=""
     fi
     printf '%s\n' "$node"
+    return $?
 }
 
 _require_sysfs_fan_node() {
     local node="$1"
-    if [ -z "$node" ]; then
+    if [[ -z "$node" ]]; then
         echo "Error: No fan control node found." >&2
         return 1
     fi
-    if [ ! -w "$node" ]; then
+    if [[ ! -w "$node" ]]; then
         echo "Error: Fan control node is not writable: $node" >&2
         return 1
     fi
@@ -266,6 +280,6 @@ main() {
     _toggle_fan_val "$node"
 }
 
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
     main "$@"
 fi

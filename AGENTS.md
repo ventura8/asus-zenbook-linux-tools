@@ -333,6 +333,19 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     `R0801` duplicate-code or ESLint `global` fail the lint gate. `run_deb_package_smoke.sh`
     cleans the debian tree before build and on EXIT; `--full` runs
     `step_preflight_clean_build_trees` for RPM/Arch/portable staging trees for the same reason.
+  - Shell style (SonarQube `shelldre` rules, all `sonar.sources` shell incl. `scripts/`):
+    use `[[ … ]]` for tests (never `[`/`test`; `-a`/`-o` become `&&`/`||`, keep the
+    right-hand side of `=`/`!=` quoted so it cannot become a glob); end every function
+    with an explicit `return`/`exit` (`return $?` preserves the last command's status —
+    do not swap in `return 0`); read positional parameters into named `local`s before
+    use; give every `case` a `*)` arm (`*) ;;` when nothing else applies); hoist
+    literals repeated ≥3 times into a file-level constant (unique file prefix in
+    sourced `lib/*.sh`); never change gettext msgids for this. **Arithmetic safety:**
+    inside `[[ ]]`, `-eq`/`-lt`/… evaluate operands as arithmetic expressions (a value
+    like `a[$(cmd)]` executes), so any operand read from env, files, sysfs or command
+    output must pass a `^[0-9]+$` check first (`_screenpad_state_mtime`,
+    `_docker_lock_grace_secs`, `_lock_is_duplicate` are the patterns). New `*)` arms
+    count toward CCN — extract a helper rather than exceed A-rank.
   - JavaScript: Clean `eslint` on `gnome/**/*.js` (flat config `eslint.config.mjs`; no inline
     `eslint-disable`). GNOME Shell globals such as `global` are declared in the config.
     `scripts/run-lints.sh` `step_eslint` must `npm ci` into the workspace when
@@ -686,7 +699,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   from the root `VERSION`, and `secrets.SONAR_TOKEN`. It is skipped for fork
   PRs (no token) and still analyses when a gate fails, so findings stay
   visible. Keep the report paths in `sonar-project.properties` in sync with
-  the merge step (guarded by `tests/unit/shell/test_pipeline_ci_parity.py`).
+  the merge step (guarded by `tests/unit/shell/test_pipeline_ci_parity_sonar.py`).
   SonarQube findings are **additional** to these gates, never a replacement:
   verify each finding against the code, never weaken a test to silence a rule,
   and never add suppression comments (`# NOSONAR`, `noqa`, `nosec`,

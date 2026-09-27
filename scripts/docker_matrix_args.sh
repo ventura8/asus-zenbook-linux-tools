@@ -27,6 +27,7 @@ Options:
                     Also accepted via env ASUS_CI_DE_FAMILY. Always-on CI full-DE job
                     uses this; local --distro + --de-family is for debug.
 EOF
+    return $?
 }
 
 _handle_distro_arg() {
@@ -83,6 +84,7 @@ _handle_mode_arg() {
     else
         export PARALLEL=0
     fi
+    return $?
 }
 
 _handle_output_switch_arg() {
@@ -147,7 +149,8 @@ _process_arg() {
 }
 
 _matrix_arg_has_value() {
-    [ "$#" -ge 2 ] && [[ "$2" != --* ]]
+    [[ "$#" -ge 2 ]] && [[ "$2" != --* ]]
+    return $?
 }
 
 _matrix_valued_shift_count() {
@@ -175,6 +178,7 @@ parse_args() {
         _process_arg "$1"
         shift
     done
+    return $?
 }
 
 _validate_selected_distros() {

@@ -40,7 +40,7 @@ _release_smoke_wipe_kind_staging() {
     if [[ "$kind" == rpm-* ]]; then
         _release_docker_rm "$REPO_ROOT" "${REPO_ROOT}/.rpm-build-${kind}"
     fi
-    if [ "$kind" = "arch" ]; then
+    if [[ "$kind" = "arch" ]]; then
         _release_docker_rm "$REPO_ROOT" \
             "${REPO_ROOT}/packaging/arch/pkg" \
             "${REPO_ROOT}/packaging/arch/src"
@@ -83,7 +83,7 @@ _build_one_kind() {
     _release_smoke_wipe_kind_staging "$kind" "$artifacts_dir"
     _release_smoke_build_kind "$kind" "$artifacts_dir" "$log_file" || return 1
     _release_smoke_validate_kind "$kind" "$artifacts_dir" "$log_file" || return 1
-    if [ "${ASUS_RELEASE_INSTALL_SMOKE:-1}" = "1" ]; then
+    if [[ "${ASUS_RELEASE_INSTALL_SMOKE:-1}" = "1" ]]; then
         _release_smoke_install_kind "$kind" "$artifacts_dir" "$log_file" || return 1
     fi
     printf 'Release package smoke passed (%s).\n' "$kind"
@@ -119,8 +119,8 @@ _run_kinds_wait_one() {
     completed_status=0
     wait -n -p completed_pid "${_rw_pids[@]}" || completed_status=$?
     for i in "${!_rw_pids[@]}"; do
-        [ "${_rw_pids[$i]}" = "$completed_pid" ] || continue
-        if [ "$completed_status" -ne 0 ]; then
+        [[ "${_rw_pids[$i]}" = "$completed_pid" ]] || continue
+        if [[ "$completed_status" -ne 0 ]]; then
             printf 'Release package smoke failed (%s).\n' "${_rw_kinds[$i]}" >&2
             _rw_failed=1
         fi
@@ -138,7 +138,7 @@ _run_kinds_kill_remaining() {
             remaining+=("${_rk_pids[$i]}")
         fi
     done
-    if [ "${#remaining[@]}" -gt 0 ]; then
+    if [[ "${#remaining[@]}" -gt 0 ]]; then
         _kill_pgid_list "${remaining[@]}"
     fi
 }
@@ -148,12 +148,12 @@ _run_kinds_parallel() {
     local -a pids=() kinds=()
     _run_kinds_spawn_workers pids kinds "$@"
     pending=${#pids[@]}
-    while [ "$pending" -gt 0 ]; do
+    while [[ "$pending" -gt 0 ]]; do
         _run_kinds_wait_one pids kinds failed
         pending=$((pending - 1))
-        [ "$failed" -ne 0 ] && break
+        [[ "$failed" -ne 0 ]] && break
     done
-    if [ "$failed" -ne 0 ]; then
+    if [[ "$failed" -ne 0 ]]; then
         _run_kinds_kill_remaining pids
         return 1
     fi
@@ -162,7 +162,7 @@ _run_kinds_parallel() {
 
 _collect_requested_kinds() {
     REQUESTED_KINDS=()
-    if [ "$#" -eq 0 ] || [ "${1:-}" = "--all" ]; then
+    if [[ "$#" -eq 0 ]] || [[ "${1:-}" = "--all" ]]; then
         REQUESTED_KINDS=("${RELEASE_PACKAGE_KINDS[@]}")
         return 0
     fi
@@ -192,13 +192,14 @@ _prepare_portable_host_deps() {
             appimage | flatpak | snap)
                 "${SCRIPT_DIR}/prepare_release_package_host_deps.sh" "$kind"
                 ;;
+            *) ;;
         esac
     done
 }
 
 _run_requested_release_kinds() {
     local -a requested=("$@")
-    if [ "$PARALLEL" = "1" ]; then
+    if [[ "$PARALLEL" = "1" ]]; then
         _run_kinds_parallel "${requested[@]}"
         return $?
     fi
@@ -213,7 +214,7 @@ main() {
     _collect_requested_kinds "$@" || exit 1
     requested=("${REQUESTED_KINDS[@]}")
     _require_tool docker
-    if [ "${ASUS_RELEASE_SKIP_HOST_DEPS:-0}" != "1" ]; then
+    if [[ "${ASUS_RELEASE_SKIP_HOST_DEPS:-0}" != "1" ]]; then
         _prepare_portable_host_deps "${requested[@]}"
     fi
     _run_requested_release_kinds "${requested[@]}"

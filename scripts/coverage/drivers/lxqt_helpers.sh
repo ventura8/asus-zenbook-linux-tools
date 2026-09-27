@@ -11,7 +11,7 @@ _driver_source_i18n || exit 1
 
 _write_lxqt_stubs() {
     local mock="$1" user="$2"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/pkill"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/pkill"
     cat > "$mock/mktemp" <<'EOF'
 #!/bin/sh
 if [ -n "${LXQT_MKTEMP_COUNT_FILE:-}" ]; then
@@ -140,7 +140,7 @@ _run_lxqt_root_ensure_conf_dir_paths() {
     mkdir -p "$root_home"
     _soft_expect 0 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         LXQT_HOME_OVERRIDE="$root_home" _lxqt_ensure_conf_dir "$user"
-    [ -d "$root_home/.config/lxqt" ] || \
+    [[ -d "$root_home/.config/lxqt" ]] || \
         _kcov_record_scenario_failure lxqt "root _lxqt_ensure_conf_dir did not create conf dir"
 
     local root_home_sym real_target
@@ -151,7 +151,7 @@ _run_lxqt_root_ensure_conf_dir_paths() {
     ln -s "$real_target" "$root_home_sym/.config"
     _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         LXQT_HOME_OVERRIDE="$root_home_sym" _lxqt_ensure_conf_dir "$user"
-    [ "$(stat -c '%a' "$real_target")" = "755" ] || \
+    [[ "$(stat -c '%a' "$real_target")" = "755" ]] || \
         _kcov_record_scenario_failure lxqt \
             "root _lxqt_ensure_conf_dir modified perms through a symlinked .config"
 
@@ -174,7 +174,7 @@ _run_lxqt_root_atomic_write_paths() {
     local root_conf="$scratch/root.conf"
     _soft_expect 0 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         _lxqt_atomic_write_conf "$user" "$root_conf" "$conf"
-    [ -s "$root_conf" ] || \
+    [[ -s "$root_conf" ]] || \
         _kcov_record_scenario_failure lxqt "root _lxqt_atomic_write_conf produced no output"
 
     local root_conf_sym real_conf_target
@@ -184,7 +184,7 @@ _run_lxqt_root_atomic_write_paths() {
     ln -s "$real_conf_target" "$root_conf_sym"
     _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         _lxqt_atomic_write_conf "$user" "$root_conf_sym" "$conf"
-    [ -s "$real_conf_target" ] && \
+    [[ -s "$real_conf_target" ]] && \
         _kcov_record_scenario_failure lxqt \
             "root _lxqt_atomic_write_conf wrote through a symlinked conf target"
     _lxqt_root_conf_tmp_leftover "$scratch" && \
@@ -266,9 +266,10 @@ _run_lxqt_restore_failure_path() {
 
 _driver_set_prefix _LXQT_PREFIX_OWNED
 _lxqt_rm_if_set() {
-    [ -n "${1:-}" ] || return 0
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
     # Prefer absolute rm so cleanup still works after iso (which may provide rm) is deleted.
-    /bin/rm -rf "$1"
+    /bin/rm -rf "$target_path"
 }
 
 _lxqt_driver_cleanup() {
@@ -276,7 +277,7 @@ _lxqt_driver_cleanup() {
     _lxqt_rm_if_set "${iso:-}"
     _lxqt_rm_if_set "${_LXQT_EMPTY_BUS:-}"
     _lxqt_rm_if_set "${_LXQT_HOME_ROOT:-}"
-    if [ "${_LXQT_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_LXQT_PREFIX_OWNED:-0}" = 1 ]]; then
         _lxqt_rm_if_set "${PREFIX:-}"
     fi
 }
@@ -351,7 +352,7 @@ mkdir -p "$BUS_ROOT/$uid"
 _driver_bind_required "$BUS_ROOT/$uid/bus" lxqt_helpers
 
 # Reload miss path: pkill always fails → warning only.
-printf '#!/bin/sh\nexit 1\n' > "$mock/pkill"
+printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/pkill"
 chmod +x "$mock/pkill"
 _seed_lxqt_home_conf "$home_dir"
 _soft_expect 0 configure_lxqt_component

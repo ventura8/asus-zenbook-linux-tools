@@ -6,17 +6,17 @@
 _send_display_notification() {
     local title="$1" msg="$2"
     _send_user_notification "$title" "$msg" "video-display" "display" "display" "video-display"
+    return $?
 }
 
 _clamp_mutter_screenpad_value() {
     local val="$1" max_path="$2" max_val
     max_val=$(cat "$max_path" 2>/dev/null) || max_val=255
-    if [[ "$max_val" =~ ^[1-9][0-9]*$ ]]; then
-        if [ "$val" -gt "$max_val" ]; then
-            val="$max_val"
-        fi
+    if [[ "$max_val" =~ ^[1-9][0-9]*$ ]] && [[ "$val" -gt "$max_val" ]]; then
+        val="$max_val"
     fi
     printf '%s\n' "$val"
+    return $?
 }
 
 _set_screenpad_backlight() {
@@ -24,7 +24,7 @@ _set_screenpad_backlight() {
     [[ "$val" =~ ^[0-9]+$ ]] || return 1
     for n in "$root/backlight/asus_screenpad/brightness" \
         "$root/leds/asus::screenpad/brightness"; do
-        [ -w "$n" ] || continue
+        [[ -w "$n" ]] || continue
         max_path="$(dirname "$n")/max_brightness"
         val=$(_clamp_mutter_screenpad_value "$val" "$max_path")
         echo "$val" > "$n" 2>/dev/null && return 0
@@ -38,6 +38,7 @@ _run_display_mode_python() {
     shift 2
     case "$secs" in
         ''|*[!0-9]*|0) secs=5 ;;
+        *) ;;
     esac
     if command -v timeout >/dev/null 2>&1; then
         _run_as_user "$user" env DBUS_SESSION_BUS_ADDRESS="$bus_addr" \
@@ -82,6 +83,7 @@ _get_fallback_next_profile_info() {
         main_only) printf 'screenpad_only:%s\n' "$(_asus_gettext "ScreenPad only")" ;;
         *) printf 'all:%s\n' "$(_asus_gettext "All displays (Main + ScreenPad)")" ;;
     esac
+    return $?
 }
 
 _normalize_detected_profile() {
@@ -105,7 +107,7 @@ _detect_current_mutter_state() {
         || detected=""
     detected=$(printf '%s\n' "${detected:-}" | head -n1)
     normalized=$(_normalize_detected_profile "${detected:-}")
-    [ -n "$normalized" ] && { echo "$normalized"; return 0; }
+    [[ -n "$normalized" ]] && { echo "$normalized"; return 0; }
     # Timeout/D-Bus failures fall through to the default profile (do not abort under set -e).
     echo "all"
 }
@@ -115,18 +117,18 @@ _get_next_profile_info() {
     result=$(_run_display_mode_python "$user" "unix:path=$bus_path" \
         --next "$current_profile" 2>/dev/null) || result=""
     matched=$(echo "${result:-}" | grep -E '^[a-z_]+:.+$' | head -n1)
-    [ -n "$matched" ] && { echo "$matched"; return 0; }
+    [[ -n "$matched" ]] && { echo "$matched"; return 0; }
     _get_fallback_next_profile_info "$current_profile"
 }
 
 _mutter_cycle_preflight() {
     local user="$1" user_id="$2" bus_path="$3"
-    [ -n "$user" ] && [ -n "$user_id" ] && [ -S "$bus_path" ] || return 1
+    [[ -n "$user" ]] && [[ -n "$user_id" ]] && [[ -S "$bus_path" ]] || return 1
     _soft _ensure_notif_id_dir "$user_id"
 }
 
 _cycle_mutter_display_mode() {
-    if [ "${ASUS_DISPLAY_MODE_DISABLE_MUTTER_CYCLE:-0}" = "1" ]; then
+    if [[ "${ASUS_DISPLAY_MODE_DISABLE_MUTTER_CYCLE:-0}" = "1" ]]; then
         return 1
     fi
     local user user_id bus_path state_file current_state info next_state status_text

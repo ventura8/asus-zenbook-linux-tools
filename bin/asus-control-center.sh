@@ -4,13 +4,13 @@
 _source_bootstrap_helper() {
     local script_dir installed_lib
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    if [ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ] \
-        && [ -f "$script_dir/../lib/asus-bootstrap.sh" ]; then
+    if [[ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ]] \
+        && [[ -f "$script_dir/../lib/asus-bootstrap.sh" ]]; then
         . "$script_dir/../lib/asus-bootstrap.sh"
         return 0
     fi
     installed_lib="${ASUS_INSTALLED_LIB_DIR:-/usr/local/lib/asus-zenbook-linux-tools}"
-    if [ -f "$installed_lib/asus-bootstrap.sh" ]; then
+    if [[ -f "$installed_lib/asus-bootstrap.sh" ]]; then
         . "$installed_lib/asus-bootstrap.sh"
         return 0
     fi
@@ -24,14 +24,14 @@ _source_common_helper || exit 1
 get_dbus_bus_path() {
     local target_user="$1" user_id bus_root bus_path
     user_id=$(id -u "$target_user" 2>/dev/null)
-    if [ -z "$user_id" ]; then
+    if [[ -z "$user_id" ]]; then
         echo "Error: Unable to resolve user id for active user '$target_user'." >&2
         return 1
     fi
 
     bus_root="${RUN_USER_ROOT:-/run/user}"
     bus_path="$bus_root/$user_id/bus"
-    if [ -S "$bus_path" ]; then
+    if [[ -S "$bus_path" ]]; then
         echo "$bus_path"
         return 0
     fi
@@ -42,6 +42,7 @@ get_dbus_bus_path() {
 
 _cc_user_env() {
     _asus_session_launch_env "$@"
+    return $?
 }
 
 _try_launch_cmd() {
@@ -68,7 +69,7 @@ _launch_via_desktop_file() {
     launch_status=0
     _run_as_user "$target_user" env "${env_args[@]}" \
         gio launch "$file" </dev/null >/dev/null 2>&1 || launch_status=$?
-    if [ "$launch_status" -eq 0 ]; then
+    if [[ "$launch_status" -eq 0 ]]; then
         return 0
     fi
     echo "Error: gio launch failed for $file (exit $launch_status)." >&2
@@ -90,6 +91,7 @@ _settings_cmds_for_family() {
     commands="${_SETTINGS_CMDS_BY_FAMILY[$family]-$_DEFAULT_SETTINGS_CMDS}"
     read -r -a command_array <<<"$commands"
     printf '%s\n' "${command_array[@]}"
+    return $?
 }
 
 _try_one_settings_cmd() {
@@ -103,7 +105,7 @@ _try_launch_cmd_from_list() {
     local target_user target_uid runtime_root bus_addr family cmd
     target_user="$1" target_uid="$2" runtime_root="$3" bus_addr="$4" family="$5"
     while read -r cmd; do
-        [ -n "$cmd" ] || continue
+        [[ -n "$cmd" ]] || continue
         _try_one_settings_cmd "$cmd" "$target_user" "$target_uid" "$runtime_root" "$bus_addr" || continue
         return 0
     done < <(_settings_cmds_for_family "$family")
@@ -113,7 +115,7 @@ _try_launch_cmd_from_list() {
 _first_existing_desktop() {
     local candidate
     for candidate in "$@"; do
-        [ -f "$candidate" ] || continue
+        [[ -f "$candidate" ]] || continue
         echo "$candidate"
         return 0
     done
@@ -135,7 +137,7 @@ _desktop_file_for_family() {
     for suffix in $suffixes; do
         candidates+=("$root/$suffix")
     done
-    if [ "${#candidates[@]}" -gt 0 ]; then
+    if [[ "${#candidates[@]}" -gt 0 ]]; then
         _first_existing_desktop "${candidates[@]}" && return 0
     fi
     _first_existing_desktop "$root/org.gnome.Settings.desktop"
@@ -179,12 +181,12 @@ launch_control_center() {
 
 main() {
     local target_user bus_path
-    if [ -n "${1:-}" ]; then
+    if [[ -n "${1:-}" ]]; then
         echo "Usage: ${0##*/}" >&2
         return 2
     fi
     target_user=$(find_active_session_user)
-    if [ -n "$target_user" ]; then
+    if [[ -n "$target_user" ]]; then
         if bus_path=$(get_dbus_bus_path "$target_user"); then
             launch_control_center "$target_user" "$bus_path"
             return $?
@@ -195,6 +197,6 @@ main() {
     return 1
 }
 
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
     main "$@"
 fi

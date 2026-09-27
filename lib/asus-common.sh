@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Source-only library: executing this file as a script must not pull in peers.
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
     echo "Usage: . lib/asus-common.sh" >&2
     exit 1
 fi
@@ -11,7 +11,7 @@ _ASUS_COMMON_DIR="${ASUS_COMMON_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pw
 
 _source_required_common_peer() {
     local file_name="$1" label="$2"
-    if [ ! -f "$_ASUS_COMMON_DIR/$file_name" ]; then
+    if [[ ! -f "$_ASUS_COMMON_DIR/$file_name" ]]; then
         echo "Error: Missing $label helper lib/$file_name" >&2
         return 1
     fi
@@ -30,11 +30,11 @@ _source_common_peers || return 1
 RUN_USER_ROOT="${RUN_USER_ROOT:-/run/user}"
 
 _resolve_session_bus_root() {
-    if [ -n "${BUS_ROOT:-}" ]; then
+    if [[ -n "${BUS_ROOT:-}" ]]; then
         printf '%s\n' "$BUS_ROOT"
         return 0
     fi
-    if [ -n "${DBUS_BUS_ROOT:-}" ]; then
+    if [[ -n "${DBUS_BUS_ROOT:-}" ]]; then
         printf '%s\n' "$DBUS_BUS_ROOT"
         return 0
     fi
@@ -59,21 +59,22 @@ _soft_write_stdout() {
 
 _check_node() {
     local node="$1"
-    [ -w "$node" ] && echo "$node" && return 0
+    [[ -w "$node" ]] && echo "$node" && return 0
     return 1
 }
 
 _notif_user_from_bus_entry() {
     local entry="$1" uid bus owner
-    [ -d "$entry" ] || return 1
+    [[ -d "$entry" ]] || return 1
     uid=$(basename "$entry")
     case "$uid" in
         *[!0-9]*) return 1 ;;
+        *) ;;
     esac
     bus="$entry/bus"
-    [ -S "$bus" ] || return 1
+    [[ -S "$bus" ]] || return 1
     owner=$(getent passwd "$uid" 2>/dev/null | cut -d: -f1)
-    [ -n "$owner" ] || return 1
+    [[ -n "$owner" ]] || return 1
     printf '%s\n' "$owner"
 }
 
@@ -93,12 +94,12 @@ _resolve_notif_target_user() {
     if ! user=$(find_active_session_user); then
         user=""
     fi
-    if [ -n "$user" ]; then
+    if [[ -n "$user" ]]; then
         echo "$user"
         return 0
     fi
     candidate=$(_first_notif_bus_user) || candidate=""
-    if [ -n "$candidate" ]; then
+    if [[ -n "$candidate" ]]; then
         echo "$candidate"
     fi
     return 0
@@ -107,6 +108,7 @@ _resolve_notif_target_user() {
 _is_valid_notification_tag() {
     local tag="$1"
     [[ "$tag" =~ ^[A-Za-z0-9._-]+$ ]]
+    return $?
 }
 
 _notif_id_file_path() {
@@ -139,6 +141,7 @@ _send_notification_backends() {
 _ensure_notif_id_dir() {
     local user_id="$1"
     mkdir -p "$NOTIF_ID_ROOT/$user_id" 2>/dev/null
+    return $?
 }
 
 _check_launch_process() {
@@ -180,14 +183,16 @@ _asus_session_launch_env() {
             DISPLAY=*|WAYLAND_DISPLAY=*|XDG_SESSION_TYPE=*|XDG_CURRENT_DESKTOP=*)
                 _asus_env_out_ref+=("$line")
                 ;;
+            *) ;;
         esac
     done < <(asus_export_session_env_args "$target_user")
+    return $?
 }
 
 _run_as_user() {
     local target_user="$1"
     shift
-    if [ "$(id -un 2>/dev/null)" = "$target_user" ]; then
+    if [[ "$(id -un 2>/dev/null)" = "$target_user" ]]; then
         "$@"
         return $?
     fi
@@ -220,11 +225,12 @@ _extract_notif_id() {
     local res="$1"
     local new_id
     new_id=$(printf '%s' "$res" | awk -F'uint32 ' 'NF>1 {print $2; exit}' | tr -d ',()[:space:]')
-    if [ -z "$new_id" ]; then
+    if [[ -z "$new_id" ]]; then
         new_id=$(printf '%s' "$res" | tr -d '[:space:]')
     fi
     case "$new_id" in
         ''|0|*[!0-9]*) return 1 ;;
+        *) ;;
     esac
     printf '%s' "$new_id"
 }
@@ -279,6 +285,7 @@ _read_notif_id_file() {
         value=$(cat "$id_file" 2>/dev/null) || value=""
     fi
     printf '%s' "$value"
+    return $?
 }
 
 _normalize_notif_prev_id() {
@@ -287,14 +294,16 @@ _normalize_notif_prev_id() {
         *[!0-9]*|""|0) echo 0 ;;
         *) echo "$value" ;;
     esac
+    return $?
 }
 
 _get_notif_prev_id() {
     local id_file="$1" value=""
-    if [ -f "$id_file" ]; then
+    if [[ -f "$id_file" ]]; then
         value=$(_read_notif_id_file "$id_file")
     fi
     _normalize_notif_prev_id "$value"
+    return $?
 }
 
 _save_notif_id() {
@@ -331,12 +340,12 @@ _send_synchronous_notification() {
 _prepare_user_notification_context() {
     local user user_id bus_path bus_root
     user=$(_resolve_notif_target_user)
-    [ -n "$user" ] || return 1
+    [[ -n "$user" ]] || return 1
     user_id=$(id -u "$user" 2>/dev/null)
-    [ -n "$user_id" ] || return 1
+    [[ -n "$user_id" ]] || return 1
     bus_root="$(_resolve_session_bus_root)"
     bus_path="$bus_root/$user_id/bus"
-    [ -S "$bus_path" ] || return 1
+    [[ -S "$bus_path" ]] || return 1
     printf '%s\n' "$user" "$user_id" "unix:path=$bus_path"
 }
 
@@ -358,7 +367,7 @@ _send_user_notification() {
     local title="$1" msg="$2" icon="$3" id_suffix="$4" sync_tag="$5" fallback_icon="$6"
     local user user_id bus_addr bus_root id_file prev_id
 
-    if [ -z "$fallback_icon" ]; then
+    if [[ -z "$fallback_icon" ]]; then
         fallback_icon="$icon"
     fi
 
@@ -368,7 +377,7 @@ _send_user_notification() {
         read -r bus_addr
     } < <(_prepare_user_notification_context) || return 0
 
-    [ -n "$bus_addr" ] || return 0
+    [[ -n "$bus_addr" ]] || return 0
     # Derive bus_root from the prepared address; do not re-resolve/reconstruct.
     # unix:path=$bus_root/$uid/bus → dirname twice yields the session bus root.
     bus_root=$(dirname "$(dirname "${bus_addr#unix:path=}")")

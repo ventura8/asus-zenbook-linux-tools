@@ -34,6 +34,7 @@ esac
 exit 0
 EOF
     chmod +x "$mock_bin/gsettings"
+    return $?
 }
 
 _smoke_assert_mate_installed() {
@@ -41,7 +42,7 @@ _smoke_assert_mate_installed() {
     local state_dir
     state_dir="$dest/var/lib/asus-zenbook-linux-tools/$uid"
     _smoke_assert_family_marker "$state_dir" mate
-    if [ ! -f "$state_dir/orig_mate_xf86display" ]; then
+    if [[ ! -f "$state_dir/orig_mate_xf86display" ]]; then
         _smoke_require_file "$state_dir/orig_mate_xf86display.absent" \
             "MATE XF86Display backup missing"
     fi
@@ -51,6 +52,7 @@ _smoke_assert_mate_installed() {
         "MATE control-center binding missing"
     _smoke_require_grep "asus-screenshot" "$gset_log" \
         "MATE screenshot binding missing"
+    return $?
 }
 
 _smoke_assert_mate_uninstalled() {
@@ -58,4 +60,5 @@ _smoke_assert_mate_uninstalled() {
     local state_dir
     state_dir="$dest/var/lib/asus-zenbook-linux-tools/$uid"
     _smoke_assert_marker_cleared "$state_dir" MATE
+    return $?
 }

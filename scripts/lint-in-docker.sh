@@ -30,7 +30,7 @@ mkdir -p "$LOG_DIR"
 _LINT_BUILD_PID=""
 
 _lint_stop_active_build() {
-    if [ -z "${_LINT_BUILD_PID:-}" ]; then
+    if [[ -z "${_LINT_BUILD_PID:-}" ]]; then
         return 0
     fi
     if kill -0 "$_LINT_BUILD_PID" 2>/dev/null; then
@@ -68,7 +68,7 @@ _lint_setup() {
 
 _lint_release_build_lock() {
     local lock_dir="$1"
-    [ -n "${lock_dir:-}" ] || return 0
+    [[ -n "${lock_dir:-}" ]] || return 0
     rm -f "${lock_dir}/owner.pid" 2>/dev/null || true
     rmdir "$lock_dir" 2>/dev/null || true
 }

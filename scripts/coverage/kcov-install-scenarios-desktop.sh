@@ -33,7 +33,7 @@ _run_kcov_cc_desktop_runs() {
             "$iso_tmp/gdbus" "$iso_tmp/gio"
         rm -f "$desk_iso/loginctl" "$desk_iso/sudo" "$desk_iso/id"
         _soft cp -a "$tmp/loginctl" "$tmp/sudo" "$tmp/id" "$desk_iso/"
-        _kcov_make_stub "$desk_iso/gdbus" 'exit 1'
+        _kcov_make_stub "$desk_iso/gdbus" "$_KCOV_STUB_BODY_FAIL"
         _kcov_make_stub "$desk_iso/gio" 'sleep 1; exit 0'
         _kcov_expect_run_env "0" "$kcov_root" cc_desktop_app PATH="$desk_iso" \
             RUN_USER_ROOT="$tmp/bus_root" DBUS_BUS_ROOT="$tmp/bus_root" DESKTOP_DIR="$iso_tmp/apps" \
@@ -41,17 +41,18 @@ _run_kcov_cc_desktop_runs() {
         _kcov_expect_run_env "1" "$kcov_root" cc_desktop_empty PATH="$desk_iso" \
             RUN_USER_ROOT="$tmp/bus_root" DBUS_BUS_ROOT="$tmp/bus_root" DESKTOP_DIR="$iso_tmp/empty" \
             ./bin/asus-control-center.sh
-        _kcov_make_stub "$desk_iso/gio" 'exit 1'
+        _kcov_make_stub "$desk_iso/gio" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "1" "$kcov_root" cc_desktop_gio_fail PATH="$desk_iso" \
             RUN_USER_ROOT="$tmp/bus_root" DBUS_BUS_ROOT="$tmp/bus_root" DESKTOP_DIR="$iso_tmp/apps" \
             ./bin/asus-control-center.sh
         rm -f "$desk_iso/gnome-control-center" "$desk_iso/gdbus"
         _kcov_make_stub "$desk_iso/gnome-control-center" 'exit 42'
-        _kcov_make_stub "$desk_iso/gdbus" 'exit 1'
+        _kcov_make_stub "$desk_iso/gdbus" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "1" "$kcov_root" cc_launch_dies PATH="$desk_iso" \
             RUN_USER_ROOT="$tmp/bus_root" DBUS_BUS_ROOT="$tmp/bus_root" \
             ./bin/asus-control-center.sh
     )
+    return $?
 }
 
 _run_kcov_cc_family_desktop_scenarios() {
@@ -66,7 +67,7 @@ _run_kcov_cc_family_desktop_scenarios() {
         _make_fake_sudo_script "$tmp"
         mkdir -p "$tmp/bus_root/$uid" "$tmp/apps"
         _kcov_bind_unix_bus "$tmp/bus_root/$uid/bus"
-        _kcov_make_stub "$tmp/gdbus" 'exit 1'
+        _kcov_make_stub "$tmp/gdbus" "$_KCOV_STUB_BODY_FAIL"
         touch "$tmp/apps/systemsettings.desktop" \
             "$tmp/apps/org.kde.systemsettings.desktop" \
             "$tmp/apps/xfce4-settings-manager.desktop" \
@@ -80,7 +81,7 @@ _run_kcov_cc_family_desktop_scenarios() {
             "$iso/systemsettings" "$iso/systemsettings5" \
             "$iso/gnome-control-center" "$iso/xfce4-settings-manager" "$iso/lxqt-config"
         _soft cp -a "$tmp/loginctl" "$tmp/sudo" "$tmp/id" "$iso/"
-        _kcov_make_stub "$iso/gdbus" 'exit 1'
+        _kcov_make_stub "$iso/gdbus" "$_KCOV_STUB_BODY_FAIL"
         _kcov_make_stub "$iso/gio"
 
         for family in kde xfce lxqt cinnamon mate gnome; do
@@ -96,9 +97,10 @@ _run_kcov_cc_family_desktop_scenarios() {
         _kcov_expect_run_env "0" "$kcov_root" cc_lxqt_desktop PATH="$iso" \
             RUN_USER_ROOT="$tmp/bus_root" DESKTOP_DIR="$tmp/apps" \
             ASUS_DESKTOP_FAMILY=lxqt ./bin/asus-control-center.sh
-        _kcov_make_stub "$iso/gio" 'exit 1'
+        _kcov_make_stub "$iso/gio" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "1" "$kcov_root" cc_desktop_launch_failure PATH="$iso" \
             RUN_USER_ROOT="$tmp/bus_root" DESKTOP_DIR="$tmp/apps" \
             ASUS_DESKTOP_FAMILY=mate ./bin/asus-control-center.sh
     )
+    return $?
 }

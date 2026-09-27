@@ -1,30 +1,33 @@
 #!/usr/bin/env bash
 
+# Banner rule printed around install completion / failure summaries.
+_ASUS_INSTALL_BANNER_RULE="=================================================="
+
 # When executed from stdin (for example: curl ... | sudo bash), re-exec from a
 # temp file attached to /dev/tty so interactive prompts behave like a normal
 # script execution. Piped installs require an explicit INSTALL_SOURCE_DIR.
 _is_stdin_executed_script() {
-    [ -z "${BASH_SOURCE[0]-}" ]
+    [[ -z "${BASH_SOURCE[0]-}" ]]
 }
 
 _install_is_direct_execution() {
-    [ "${BASH_SOURCE[0]-}" = "$0" ] || [ -z "${BASH_SOURCE[0]-}" ]
+    [[ "${BASH_SOURCE[0]-}" = "$0" ]] || [[ -z "${BASH_SOURCE[0]-}" ]]
 }
 
 _should_reexec_from_tty() {
-    _is_stdin_executed_script && [ -z "${INSTALL_STDIN_REEXEC:-}" ] && [ ! -t 0 ] && [ -r /dev/tty ] && [ -w /dev/tty ]
+    _is_stdin_executed_script && [[ -z "${INSTALL_STDIN_REEXEC:-}" ]] && [[ ! -t 0 ]] && [[ -r /dev/tty ]] && [[ -w /dev/tty ]]
 }
 
 _reexec_capture_stdin_to_temp() {
     local tmp_script="$1"
     cat > "$tmp_script"
     local status=$?
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         echo "Error: Failed to write temporary installer script from stdin (exit $status)." >&2
         rm -f "$tmp_script"
         return "$status"
     fi
-    if [ ! -s "$tmp_script" ]; then
+    if [[ ! -s "$tmp_script" ]]; then
         echo "Error: Temporary installer script is empty after stdin capture." >&2
         rm -f "$tmp_script"
         return 1
@@ -38,7 +41,7 @@ _reexec_validate_temp_script() {
     syntax_log=$(mktemp "${TMPDIR:-/tmp}/asus-zenbook-install-syntax.XXXXXX.log")
     bash -n "$tmp_script" >"$syntax_log" 2>&1
     status=$?
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         cat "$syntax_log" >&2
         rm -f "$syntax_log" "$tmp_script"
         return "$status"
@@ -48,9 +51,9 @@ _reexec_validate_temp_script() {
 }
 
 _install_source_dir_is_valid() {
-    [ -n "${INSTALL_SOURCE_DIR:-}" ] \
-        && [ -d "${INSTALL_SOURCE_DIR}/bin" ] \
-        && [ -d "${INSTALL_SOURCE_DIR}/systemd" ]
+    [[ -n "${INSTALL_SOURCE_DIR:-}" ]] \
+        && [[ -d "${INSTALL_SOURCE_DIR}/bin" ]] \
+        && [[ -d "${INSTALL_SOURCE_DIR}/systemd" ]]
 }
 
 # Never invent INSTALL_SOURCE_DIR from $PWD; only accept an explicit caller value.
@@ -71,14 +74,14 @@ _reexec_verify_temp_script_checksum() {
         return 1
     fi
     checksum_file="$INSTALL_SOURCE_DIR/install.sh.sha256"
-    if [ ! -f "$checksum_file" ]; then
+    if [[ ! -f "$checksum_file" ]]; then
         echo "Error: Missing checksum file: $checksum_file" >&2
         rm -f "$tmp_script"
         return 1
     fi
     expected=$(awk '{print $1; exit}' "$checksum_file")
     actual=$(sha256sum "$tmp_script" | awk '{print $1}')
-    if [ -z "$expected" ] || [ "$expected" != "$actual" ]; then
+    if [[ -z "$expected" ]] || [[ "$expected" != "$actual" ]]; then
         echo "Error: Temporary installer script failed install.sh.sha256 verification." >&2
         rm -f "$tmp_script"
         return 1
@@ -105,7 +108,7 @@ _reexec_from_tty_if_needed() {
 }
 
 _maybe_reexec_install() {
-    [ "${ASUS_INSTALL_SOURCE_ONLY:-0}" = "1" ] && return 0
+    [[ "${ASUS_INSTALL_SOURCE_ONLY:-0}" = "1" ]] && return 0
     _install_is_direct_execution || return 0
     _reexec_from_tty_if_needed "$@"
 }
@@ -116,7 +119,7 @@ set -euo pipefail
 
 _validate_required_source_file() {
     local file_path="$1" label="$2"
-    if [ -f "$file_path" ]; then
+    if [[ -f "$file_path" ]]; then
         return 0
     fi
     echo "Missing ${label}: $file_path" >&2
@@ -173,7 +176,7 @@ _load_install_helper_libraries() {
 }
 
 _bootstrap_set_install_prefix_paths() {
-    if [ -n "${ASUS_HOST_ROOT:-}" ]; then
+    if [[ -n "${ASUS_HOST_ROOT:-}" ]]; then
         PREFIX="${ASUS_HOST_ROOT}"
     else
         PREFIX="${DESTDIR:-}"
@@ -190,7 +193,7 @@ _bootstrap_set_install_prefix_paths() {
 }
 
 _bootstrap_resolve_installer_script_dir() {
-    if [ -n "${BASH_SOURCE[0]-}" ]; then
+    if [[ -n "${BASH_SOURCE[0]-}" ]]; then
         SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
         return 0
     fi
@@ -219,7 +222,7 @@ _bootstrap_installer_after_reexec() {
     INSTALL_MANIFEST_LIB="$(_resolve_startup_library install-file-manifest.sh)"
     _load_install_helper_libraries
 
-    if [ -n "${INSTALL_TEMP_SCRIPT:-}" ] && [ -f "${INSTALL_TEMP_SCRIPT}" ]; then
+    if [[ -n "${INSTALL_TEMP_SCRIPT:-}" ]] && [[ -f "${INSTALL_TEMP_SCRIPT}" ]]; then
         trap 'rm -f "${INSTALL_TEMP_SCRIPT}"' EXIT
     fi
 }
@@ -260,7 +263,7 @@ _resolve_install_script_dir() {
         return 0
     fi
 
-    if [ "${INSTALL_STDIN_REEXEC:-}" = "1" ] || [ -z "${BASH_SOURCE[0]-}" ]; then
+    if [[ "${INSTALL_STDIN_REEXEC:-}" = "1" ]] || [[ -z "${BASH_SOURCE[0]-}" ]]; then
         echo "Error: INSTALL_SOURCE_DIR must be set for piped/stdin installs." >&2
         exit 1
     fi
@@ -277,9 +280,9 @@ _prepare_install_selection() {
 }
 
 _print_empty_install_completion() {
-    echo "=================================================="
+    echo "$_ASUS_INSTALL_BANNER_RULE"
     printf '      %s\n' "$(_asus_gettext "No components were selected. Nothing was installed.")"
-    echo "=================================================="
+    echo "$_ASUS_INSTALL_BANNER_RULE"
 }
 
 main() {
@@ -291,7 +294,7 @@ main() {
     _prepare_install_selection "$script_dir"
     choice="$INSTALL_CHOICE"
 
-    if [ -z "$choice" ]; then
+    if [[ -z "$choice" ]]; then
         _print_empty_install_completion
         return 0
     fi
@@ -303,16 +306,16 @@ main() {
     _prepare_install_runtime "$script_dir"
 
     if run_installer_selected_components "$choice" "$script_dir"; then
-        echo "=================================================="
+        echo "$_ASUS_INSTALL_BANNER_RULE"
         printf '      %s\n' "$(_asus_gettext "Installation complete.")"
         printf '      %s\n' "$(_asus_gettext "ASUS ZenBook Linux Tools is ready to use.")"
-        echo "=================================================="
+        echo "$_ASUS_INSTALL_BANNER_RULE"
         return 0
     fi
 
-    echo "==================================================" >&2
+    echo "$_ASUS_INSTALL_BANNER_RULE" >&2
     echo "      Installation failed with one or more component errors." >&2
-    echo "==================================================" >&2
+    echo "$_ASUS_INSTALL_BANNER_RULE" >&2
     return 1
 }
 
@@ -320,7 +323,7 @@ _maybe_bootstrap_and_main() {
     # Always load helper libraries when sourced or executed so unit/kcov can
     # call installer functions after `source install.sh` (SOURCE_ONLY or not).
     _bootstrap_installer_after_reexec
-    [ "${ASUS_INSTALL_SOURCE_ONLY:-0}" = "1" ] && return 0
+    [[ "${ASUS_INSTALL_SOURCE_ONLY:-0}" = "1" ]] && return 0
     _install_is_direct_execution || return 0
     main "$@"
 }

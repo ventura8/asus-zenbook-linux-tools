@@ -90,7 +90,7 @@ _run_privilege_and_path_exercises() {
     # Neither runuser nor sudo on PATH → privilege-drop error.
     _exercise PATH="/nonexistent" SUDO_CMD="/nonexistent/sudo" \
         _install_run_as_other_user 1 root true >/dev/null
-    if getent passwd root >/dev/null 2>&1 && [ "$(id -un)" != "root" ]; then
+    if getent passwd root >/dev/null 2>&1 && [[ "$(id -un)" != "root" ]]; then
         _exercise _install_run_as_user root true >/dev/null
     fi
     _exercise _canonical_install_path "$REPO_ROOT/lib" >/dev/null

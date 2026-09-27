@@ -47,6 +47,7 @@ esac
 exit 0
 EOF
     chmod +x "$mock_bin/gsettings"
+    return $?
 }
 
 _smoke_assert_cinnamon_installed() {
@@ -62,6 +63,7 @@ _smoke_assert_cinnamon_installed() {
         "Cinnamon control-center slot missing"
     _smoke_require_grep "asus-screenshot" "$gset_log" \
         "Cinnamon screenshot slot missing"
+    return $?
 }
 
 _smoke_assert_cinnamon_uninstalled() {
@@ -73,4 +75,5 @@ _smoke_assert_cinnamon_uninstalled() {
         "Cinnamon custom-list"
     _smoke_assert_file_eq "${gset_log}.val.video-outputs" "$_SMOKE_CINNAMON_ORIG_VIDEO" \
         "Cinnamon video-outputs"
+    return $?
 }

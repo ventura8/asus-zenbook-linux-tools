@@ -53,14 +53,15 @@ EOF
 
 _driver_set_prefix _GNOME_PREFIX_OWNED
 _gnome_rm_if_set() {
-    [ -n "${1:-}" ] || return 0
-    /bin/rm -rf "$1"
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
+    /bin/rm -rf "$target_path"
 }
 _gnome_cleanup() {
     _gnome_rm_if_set "${mock:-}"
     _gnome_rm_if_set "${iso:-}"
     _gnome_rm_if_set "${glog:-}"
-    if [ "${_GNOME_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_GNOME_PREFIX_OWNED:-0}" = 1 ]]; then
         _gnome_rm_if_set "${PREFIX:-}"
     fi
 }

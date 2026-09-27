@@ -198,7 +198,7 @@ _run_screenpad_verify_context_paths() {
 _run_screenpad_osd_fallback_paths() {
     local tmp="$1"
     # Shell ShowOsd miss → prime → retry → percent OSD / notify fallback.
-    _kcov_make_stub "$tmp/gdbus" 'exit 1'
+    _kcov_make_stub "$tmp/gdbus" "$_KCOV_STUB_BODY_FAIL"
     ASUS_DESKTOP_FAMILY=gnome _soft _try_show_screenpad_shell_osd 0.5 >/dev/null
     ASUS_DESKTOP_FAMILY=gnome _soft _notify_screenpad_brightness 80 255 >/dev/null
     ASUS_DESKTOP_FAMILY=kde _soft _try_show_screenpad_percent_osds 40 >/dev/null

@@ -20,10 +20,13 @@ _log() { printf '[nested-session-smoke] %s\n' "$*"; }
 _soft_skip() { _log "SOFT-SKIP: $*"; exit 0; }
 _fail() { echo "[nested-session-smoke] ERROR: $*" >&2; exit 1; }
 
-_require_cmd() { command -v "$1" >/dev/null 2>&1; }
+_require_cmd() {
+    local cmd="$1"
+    command -v "$cmd" >/dev/null 2>&1
+}
 
 _cleanup() {
-    if [ -n "${SHELL_PID}" ]; then
+    if [[ -n "${SHELL_PID}" ]]; then
         kill "${SHELL_PID}" 2>/dev/null || true
         wait "${SHELL_PID}" 2>/dev/null || true
     fi
@@ -38,7 +41,7 @@ _require_runtime_pkgs() {
 }
 
 _prepare_runtime_dir() {
-    if [ -z "${XDG_RUNTIME_DIR:-}" ] || [ ! -d "${XDG_RUNTIME_DIR}" ]; then
+    if [[ -z "${XDG_RUNTIME_DIR:-}" ]] || [[ ! -d "${XDG_RUNTIME_DIR}" ]]; then
         XDG_RUNTIME_DIR="$(mktemp -d "${TMPDIR:-/tmp}/asus-nested-rt.XXXXXX")"
     fi
     chmod 700 "$XDG_RUNTIME_DIR" 2>/dev/null || true
@@ -48,7 +51,7 @@ _prepare_runtime_dir() {
 
 _assert_extension_tree() {
     local ext="$REPO_ROOT/gnome/asus-window-swap@ventura8.github.com"
-    [ -f "$ext/metadata.json" ] && [ -f "$ext/extension.js" ]
+    [[ -f "$ext/metadata.json" ]] && [[ -f "$ext/extension.js" ]]
 }
 
 _assert_gsettings_under_xvfb() {
@@ -69,7 +72,7 @@ _dbus_shell_ready() {
 
 _assert_shell_started() {
     # Process alive OR session D-Bus name — both preferred; D-Bus required.
-    if [ -n "${SHELL_PID}" ] && kill -0 "${SHELL_PID}" 2>/dev/null; then
+    if [[ -n "${SHELL_PID}" ]] && kill -0 "${SHELL_PID}" 2>/dev/null; then
         _log "  ✓ gnome-shell process alive (pid=${SHELL_PID})"
     else
         _log "  · gnome-shell process not alive (pid=${SHELL_PID:-unset})"
@@ -112,7 +115,7 @@ _run_shell_probe_inner() {
 
 _run_nested_session_probe() {
     local status=0
-    if [ "${ASUS_NESTED_INNER:-}" = "1" ]; then
+    if [[ "${ASUS_NESTED_INNER:-}" = "1" ]]; then
         if _run_shell_probe_inner; then
             status=0
         else
@@ -128,13 +131,14 @@ _run_nested_session_probe() {
 }
 
 _report_nested_session_status() {
-    case "$1" in
+    local status="$1"
+    case "$status" in
         0)
             _log "nested-session smoke passed (limited; Shell D-Bus asserted)"
             ;;
         *)
             _soft_skip \
-                "nested Shell failed to start after packages present (status=$1; see /tmp/asus-nested-shell.log)"
+                "nested Shell failed to start after packages present (status=$status; see /tmp/asus-nested-shell.log)"
             ;;
     esac
 }

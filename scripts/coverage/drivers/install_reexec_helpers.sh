@@ -22,10 +22,10 @@ _reexec_cleanup_temps() {
         chmod u+w "$dir" 2>/dev/null
     done
     _REEXEC_RESTORE_CHMOD=()
-    if [ "${#_REEXEC_TEMP_FILES[@]}" -gt 0 ]; then
+    if [[ "${#_REEXEC_TEMP_FILES[@]}" -gt 0 ]]; then
         rm -f "${_REEXEC_TEMP_FILES[@]}"
     fi
-    if [ "${#_REEXEC_TEMP_DIRS[@]}" -gt 0 ]; then
+    if [[ "${#_REEXEC_TEMP_DIRS[@]}" -gt 0 ]]; then
         rm -rf "${_REEXEC_TEMP_DIRS[@]}"
     fi
     _REEXEC_TEMP_FILES=()
@@ -57,11 +57,11 @@ EOF
     _exercise _reexec_validate_temp_script "$bad_script" >/dev/null
     ok_script="$(mktemp --suffix=.sh "${TMPDIR:-/tmp}/asus-zenbook-install.XXXXXX")"
     _REEXEC_TEMP_FILES+=("$ok_script")
-    printf '#!/bin/sh\nexit 0\n' > "$ok_script"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$ok_script"
     _exercise _reexec_validate_temp_script "$ok_script" >/dev/null
 
     # Cover stdin-capture write failure (unwritable destination).
-    if [ "$(id -u)" -eq 0 ]; then
+    if [[ "$(id -u)" -eq 0 ]]; then
         echo "Skipping stdin-capture write-failure exercise as root (directory mode does not block writes)" >&2
     else
         nowrite_dir="$(mktemp -d "${TMPDIR:-/tmp}/asus-zenbook-nowrite.XXXXXX")"
@@ -100,7 +100,7 @@ _run_checksum_helpers() {
     ok_script="$(mktemp --suffix=.sh "${TMPDIR:-/tmp}/asus-zenbook-install.XXXXXX")"
     bad_script="$(mktemp --suffix=.sh "${TMPDIR:-/tmp}/asus-zenbook-install.XXXXXX")"
     _REEXEC_TEMP_FILES+=("$ok_script" "$bad_script")
-    printf '#!/bin/sh\nexit 0\n' > "$ok_script"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$ok_script"
     # Success path with valid INSTALL_SOURCE_DIR + matching sha256.
     _soft_expect 0 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         INSTALL_SOURCE_DIR="$REPO_ROOT" \
@@ -111,7 +111,7 @@ _run_checksum_helpers() {
     mkdir -p "$missing_sum/bin" "$missing_sum/systemd"
     : > "$missing_sum/bin/.keep"
     : > "$missing_sum/systemd/.keep"
-    printf '#!/bin/sh\nexit 0\n' > "$bad_script"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$bad_script"
     _soft_expect 1 _exercise KCOV_EXERCISE_RETURN_STATUS=1 \
         INSTALL_SOURCE_DIR="$missing_sum" \
         _reexec_verify_temp_script_checksum "$bad_script" >/dev/null
@@ -132,7 +132,7 @@ _run_bootstrap_exercises() {
     prefix_dir="$(mktemp -d "${TMPDIR:-/tmp}/asus-zenbook-prefix.XXXXXX")"
     _REEXEC_TEMP_FILES+=("$tmp_script")
     _REEXEC_TEMP_DIRS+=("$prefix_dir")
-    printf '#!/bin/sh\nexit 0\n' > "$tmp_script"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$tmp_script"
     mkdir -p "$prefix_dir/usr/local/bin" \
         "$prefix_dir/usr/local/lib/asus-zenbook-linux-tools" \
         "$prefix_dir/etc/systemd/system"

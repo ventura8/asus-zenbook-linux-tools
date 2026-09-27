@@ -16,7 +16,7 @@ _write_coverage_shard_ok_stamp() {
         echo "  ✗ Failed to finalize ${kind} shard stamp: $dest/shard_ok" >&2
         return 1
     fi
-    [ -f "$dest/shard_ok" ]
+    [[ -f "$dest/shard_ok" ]]
 }
 
 _require_asus_coverage_shard_id() {
@@ -45,22 +45,24 @@ _pipefail_state() {
     else
         echo 0
     fi
+    return $?
 }
 
 _restore_pipefail() {
     local had_pipefail="$1"
-    if [ "$had_pipefail" -eq 0 ]; then
+    if [[ "$had_pipefail" -eq 0 ]]; then
         set +o pipefail
     else
         set -o pipefail
     fi
+    return $?
 }
 
 _finalize_kcov_coverage() {
     local cov_json="$1"
     local min_percent="${2:-90}"
     local kcov_root="${3:-}"
-    if [ -z "$cov_json" ]; then
+    if [[ -z "$cov_json" ]]; then
         echo "  ✗ Failed to generate shell coverage report" >&2
         return 1
     fi
@@ -82,7 +84,7 @@ _list_sorted_relpaths_under() {
     done
     find_tmp=$(mktemp)
     find "${find_roots[@]}" -type f -name "$pattern" >"$find_tmp" || find_status=$?
-    if [ "$find_status" -ne 0 ]; then
+    if [[ "$find_status" -ne 0 ]]; then
         rm -f "$find_tmp"
         echo "  ✗ Failed to list ${err_label} under $root" >&2
         return "$find_status"
@@ -94,7 +96,7 @@ _list_sorted_relpaths_under() {
 
 _require_product_dir() {
     local root="$1" dir="$2" err_label="$3"
-    if [ -d "$root/$dir" ]; then
+    if [[ -d "$root/$dir" ]]; then
         return 0
     fi
     echo "  ✗ Missing ${err_label} under $root" >&2
@@ -104,10 +106,11 @@ _require_product_dir() {
 _print_root_relative_paths() {
     local root="$1" find_list="$2" abs rel
     while IFS= read -r abs; do
-        [ -n "$abs" ] || continue
+        [[ -n "$abs" ]] || continue
         rel="${abs#"$root"/}"
         printf '%s\n' "$rel"
     done <<< "$find_list"
+    return $?
 }
 
 _load_all_script_coverage() {
@@ -212,6 +215,7 @@ for file_entry in data.get("files", []):
 for name, value in sorted(best_by_name.items()):
     print(f"{name}\t{value}")
 PY
+    return $?
 }
 
 _pct_meets_min() {
@@ -221,6 +225,7 @@ _pct_meets_min() {
         if (min == "") min = 90
         exit !(pct + 0 >= min + 0)
     }'
+    return $?
 }
 
 _report_script_coverage_line() {
@@ -236,6 +241,7 @@ _report_script_coverage_line() {
 _list_product_toplevel_scripts() {
     # Shared allowlist of repo-root product shell entrypoints.
     printf '%s\n' install.sh uninstall.sh
+    return $?
 }
 
 _list_product_shell_scripts() {
@@ -243,7 +249,7 @@ _list_product_shell_scripts() {
     # CI tooling under scripts/ is excluded from the line-coverage gate.
     local root
     root="${KCOV_REPO_ROOT:-}"
-    if [ -z "$root" ]; then
+    if [[ -z "$root" ]]; then
         root="$(_kcov_repo_root)"
     fi
     _list_sorted_relpaths_under "$root" "product shell directories (bin/ or lib/)" \
@@ -256,11 +262,11 @@ _fill_pct_by_name() {
     local cov_json="$1" kcov_root="$2"
     local script_name pct cov_rows load_status=0
     cov_rows=$(_load_all_script_coverage "$cov_json" "$kcov_root") || load_status=$?
-    if [ "$load_status" -ne 0 ]; then
+    if [[ "$load_status" -ne 0 ]]; then
         return "$load_status"
     fi
     while IFS=$'\t' read -r script_name pct; do
-        [ -n "$script_name" ] || continue
+        [[ -n "$script_name" ]] || continue
         pct_by_name["$script_name"]="$pct"
     done <<< "$cov_rows"
 }
@@ -275,7 +281,7 @@ _check_scripts_against_pct_map() {
             shell_cov_fail="$shell_cov_fail $script"
         fi
     done
-    if [ -n "$shell_cov_fail" ]; then
+    if [[ -n "$shell_cov_fail" ]]; then
         echo "  ✗ Shell coverage failures:$shell_cov_fail" >&2
         return 1
     fi
@@ -285,16 +291,16 @@ _check_scripts_against_pct_map() {
 _load_product_shell_scripts_for_gate() {
     local shell_scripts shell_status=0
     shell_scripts=$(_list_product_shell_scripts) || shell_status=$?
-    if [ "$shell_status" -ne 0 ]; then
+    if [[ "$shell_status" -ne 0 ]]; then
         echo "  ✗ Failed to list product shell scripts for coverage gate." >&2
         return "$shell_status"
     fi
-    if [ -z "$shell_scripts" ]; then
+    if [[ -z "$shell_scripts" ]]; then
         echo "  ✗ No product shell scripts found for coverage gate." >&2
         return 1
     fi
     mapfile -t scripts <<< "$shell_scripts"
-    if [ "${#scripts[@]}" -eq 0 ]; then
+    if [[ "${#scripts[@]}" -eq 0 ]]; then
         echo "  ✗ No product shell scripts found for coverage gate." >&2
         return 1
     fi

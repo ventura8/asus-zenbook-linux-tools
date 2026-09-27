@@ -10,10 +10,11 @@ _try_source_libdir_common() {
     # Libdir that provided this bootstrap (checkout or /usr/local/lib/...).
     # shellcheck source=lib/asus-common.sh
     . "$_ASUS_LIB_DIR/asus-common.sh"
+    return $?
 }
 
 _source_common_helper() {
-    if [ ! -f "$_ASUS_LIB_DIR/asus-common.sh" ]; then
+    if [[ ! -f "$_ASUS_LIB_DIR/asus-common.sh" ]]; then
         echo "Error: Missing common helper lib/asus-common.sh" >&2
         return 1
     fi

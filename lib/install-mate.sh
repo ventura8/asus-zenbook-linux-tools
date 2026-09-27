@@ -13,12 +13,14 @@ _mate_shortcut_table() {
         "$control"
     printf 'asus-screenshot|<Super><Shift>s|%s|/usr/local/bin/asus-screenshot.sh|orig_mate_super_shift_s\n' \
         "$screenshot"
+    return $?
 }
 
 _mate_custom_schema() {
     local slot="$1"
     printf '%s\n' \
         "org.mate.control-center.keybinding:/org/mate/desktop/keybindings/${slot}/"
+    return $?
 }
 
 _mate_atomic_write() {
@@ -45,11 +47,12 @@ _mate_write_state_file() {
 _mate_mark_absent() {
     local dest="$1"
     _mate_atomic_write "${dest}.absent" ""
+    return $?
 }
 
 _mate_backup_slot() {
     local user="$1" bus="$2" slot="$3" dest="$4" schema val
-    if [ -f "$dest" ] || [ -f "${dest}.absent" ]; then
+    if [[ -f "$dest" ]] || [[ -f "${dest}.absent" ]]; then
         return 0
     fi
     schema=$(_mate_custom_schema "$slot")
@@ -84,7 +87,7 @@ _mate_backup_all() {
     local user="$1" bus="$2" config_dir="$3"
     local slot binding name action backup
     while IFS='|' read -r slot binding name action backup; do
-        [ -n "$slot" ] || continue
+        [[ -n "$slot" ]] || continue
         _mate_backup_slot "$user" "$bus" "$slot" "$config_dir/$backup" || return 1
     done < <(_mate_shortcut_table)
 }
@@ -103,7 +106,7 @@ _mate_apply_bindings() {
     local bus_addr="unix:path=$bus"
     local slot binding name action backup
     while IFS='|' read -r slot binding name action backup; do
-        [ -n "$slot" ] || continue
+        [[ -n "$slot" ]] || continue
         _mate_set_slot "$user" "$bus_addr" "$slot" "$binding" "$name" "$action" \
             || return 1
     done < <(_mate_shortcut_table)
@@ -113,23 +116,24 @@ _mate_apply_bindings() {
 _mate_restore_slot() {
     local user="$1" bus="$2" slot="$3" dest="$4" schema line key val
     schema=$(_mate_custom_schema "$slot")
-    if [ -f "${dest}.absent" ]; then
+    if [[ -f "${dest}.absent" ]]; then
         _asus_soft _user_gsettings "$user" "$bus" reset-recursively "$schema"
         return 0
     fi
-    [ -f "$dest" ] || return 0
+    [[ -f "$dest" ]] || return 0
     _mate_restore_slot_file "$user" "$bus" "$schema" "$dest"
 }
 
 _mate_restore_slot_file() {
     local user="$1" bus="$2" schema="$3" dest="$4" line key val
-    while IFS= read -r line || [ -n "$line" ]; do
+    while IFS= read -r line || [[ -n "$line" ]]; do
         key=${line%%=*}
         val=${line#*=}
         case "$key" in
             binding|action|name)
                 _user_gsettings "$user" "$bus" set "$schema" "$key" "$val" || return 1
                 ;;
+            *) ;;
         esac
     done < "$dest"
 }
@@ -158,13 +162,13 @@ restore_mate_shortcuts() {
 
 _mate_restore_table_row() {
     local user="$1" bus_path="$2" config_dir="$3" slot="$4" backup="$5"
-    [ -n "$slot" ] || return 0
+    [[ -n "$slot" ]] || return 0
     _mate_restore_slot "$user" "$bus_path" "$slot" "$config_dir/$backup"
 }
 
 _mate_finish_restore() {
     local config_dir="$1" failed="$2"
-    if [ "$failed" -eq 0 ]; then
+    if [[ "$failed" -eq 0 ]]; then
         _mate_clear_config_dir "$config_dir"
         return $?
     fi
@@ -190,12 +194,13 @@ _set_mate_keybindings() {
 
 _mate_print_configure_progress() {
     _install_print_next_step "$(_asus_gettextf "Configuring MATE shortcuts for %s..." "$1")"
+    return $?
 }
 
 configure_mate_component() {
     local info target_user user_id bus_path config_dir
     info=$(_resolve_user_bus_info)
-    if [ -z "$info" ]; then
+    if [[ -z "$info" ]]; then
         echo "  ✗ MATE configuration failed: desktop D-Bus session not found." >&2
         return 1
     fi

@@ -6,14 +6,16 @@
 # images. Fail closed when curated packages should be present but CLIs miss.
 
 _smoke_tool_present() {
-    command -v "$1" >/dev/null 2>&1
+    local tool="$1"
+    command -v "$tool" >/dev/null 2>&1
+    return $?
 }
 
 _smoke_full_de_abs_bin() {
     # Resolve before mock_bin is prepended to PATH (caller must probe early).
     local tool="$1" resolved=""
     resolved="$(type -P "$tool" 2>/dev/null || true)"
-    [ -n "$resolved" ] && [ -x "$resolved" ] || return 1
+    [[ -n "$resolved" ]] && [[ -x "$resolved" ]] || return 1
     printf '%s' "$resolved"
 }
 
@@ -49,15 +51,16 @@ _smoke_lxqt_conf_candidates() {
         /etc/xdg/lxqt/globalkeyshortcuts.conf/globalkeyshortcuts.conf \
         /usr/share/lxqt/globalkeyshortcuts.conf \
         /usr/share/lxqt/globalkeyshortcuts.conf/globalkeyshortcuts.conf
+    return $?
 }
 
 _smoke_lxqt_conf_is_present() {
     # Debian ships the defaults as a *directory* containing the .conf file.
     local conf="$1" nested=""
-    [ -f "$conf" ] && return 0
-    [ -d "$conf" ] || return 1
+    [[ -f "$conf" ]] && return 0
+    [[ -d "$conf" ]] || return 1
     for nested in "$conf"/globalkeyshortcuts.conf "$conf"/*.conf; do
-        [ -f "$nested" ] && return 0
+        [[ -f "$nested" ]] && return 0
     done
     return 1
 }
@@ -78,18 +81,21 @@ _smoke_require_gnome_schema() {
     local abs="$1"
     "$abs" list-schemas 2>/dev/null | grep -Fq 'org.gnome.desktop.wm.keybindings' \
         || _smoke_fail "FULL_DE gnome schemas missing (org.gnome.desktop.wm.keybindings)"
+    return $?
 }
 
 _smoke_probe_cinnamon_schema() {
     local abs="$1"
     "$abs" list-schemas 2>/dev/null | grep -Fq 'org.cinnamon.desktop.keybindings' \
         || _smoke_log "  · cinnamon schemas not listed (package may ship data-only)"
+    return $?
 }
 
 _smoke_probe_mate_schema() {
     local abs="$1"
     "$abs" list-schemas 2>/dev/null | grep -Fq 'org.mate.desktop' \
         || _smoke_log "  · mate schemas not listed (package may ship data-only)"
+    return $?
 }
 
 _smoke_probe_gsettings_schema() {
@@ -98,12 +104,14 @@ _smoke_probe_gsettings_schema() {
         gnome) _smoke_require_gnome_schema "$abs" ;;
         cinnamon) _smoke_probe_cinnamon_schema "$abs" ;;
         mate) _smoke_probe_mate_schema "$abs" ;;
+        *) ;;
     esac
+    return $?
 }
 
 _smoke_probe_full_de_schemas() {
     local family="$1" abs=""
-    if [ "$family" = "lxqt" ]; then
+    if [[ "$family" = "lxqt" ]]; then
         _smoke_probe_lxqt_conf
         return 0
     fi
@@ -119,11 +127,13 @@ _smoke_full_de_tools_for_family() {
         kde) printf '%s\n' kwriteconfig6 kwriteconfig5 ;;
         xfce) printf '%s\n' xfconf-query ;;
         lxqt) printf '%s\n' lxqt-globalkeysd lxqt-config-globalkeyshortcuts ;;
+        *) ;;
     esac
+    return $?
 }
 
 _smoke_require_one_full_de_cli() {
-    local family="$1" tool="$2"
+    local tool="$1"
     if _smoke_probe_real_cli "$tool"; then
         return 0
     fi
@@ -139,11 +149,11 @@ _smoke_require_any_full_de_cli() {
     local family="$1" tool="" saw_any=0
     while IFS= read -r tool; do
         saw_any=1
-        if _smoke_require_one_full_de_cli "$family" "$tool"; then
+        if _smoke_require_one_full_de_cli "$tool"; then
             return 0
         fi
     done < <(_smoke_full_de_tools_for_family "$family")
-    [ "$saw_any" -eq 1 ] || return 0
+    [[ "$saw_any" -eq 1 ]] || return 0
     _smoke_fail \
         "ASUS_CI_FULL_DE=1 ASUS_CI_DE_FAMILY=$family missing CLI: kwriteconfig6|kwriteconfig5"
 }
@@ -151,16 +161,17 @@ _smoke_require_any_full_de_cli() {
 _smoke_require_all_full_de_clis() {
     local family="$1" tool=""
     while IFS= read -r tool; do
-        if ! _smoke_require_one_full_de_cli "$family" "$tool"; then
+        if ! _smoke_require_one_full_de_cli "$tool"; then
             _smoke_fail "ASUS_CI_FULL_DE=1 ASUS_CI_DE_FAMILY=$family missing CLI: $tool"
         fi
     done < <(_smoke_full_de_tools_for_family "$family")
+    return $?
 }
 
 _smoke_require_full_de_clis() {
     local family="$1" expected="${ASUS_CI_DE_FAMILY:-}"
-    [ -n "$expected" ] || return 0
-    [ "$expected" = "$family" ] || return 0
+    [[ -n "$expected" ]] || return 0
+    [[ "$expected" = "$family" ]] || return 0
     case "$family" in
         kde) _smoke_require_any_full_de_cli "$family" ;;
         *) _smoke_require_all_full_de_clis "$family" ;;

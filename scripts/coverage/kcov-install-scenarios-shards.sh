@@ -6,6 +6,7 @@ _run_kcov_shard_bin_sound() {
     _run_kcov_bin_scenarios "$kcov_root"
     _run_kcov_sound_scenarios "$kcov_root"
     _run_kcov_sound_helper_scenarios "$kcov_root"
+    return $?
 }
 
 _run_kcov_shard_ui() {
@@ -14,12 +15,14 @@ _run_kcov_shard_ui() {
     _run_kcov_screenshot_family_scenarios "$kcov_root"
     _run_kcov_control_center_scenarios "$kcov_root"
     _run_kcov_cc_family_desktop_scenarios "$kcov_root"
+    return $?
 }
 
 _run_kcov_shard_install_lib() {
     local kcov_root="$1"
     _run_kcov_install_uninstall_scenarios "$kcov_root"
     _run_kcov_product_lib_helpers "$kcov_root"
+    return $?
 }
 
 _kcov_run_one_named_shard() {
@@ -38,7 +41,7 @@ _kcov_run_one_named_shard() {
 _kcov_list_shards() {
     local want="${KCOV_SHARD:-}"
     local cov_shard="${ASUS_COVERAGE_SHARD:-}"
-    if [ -n "$want" ]; then
+    if [[ -n "$want" ]]; then
         printf '%s\n' "$want"
         return 0
     fi
@@ -66,8 +69,8 @@ _kcov_list_shards() {
 _kcov_collect_shard_run_dirs() {
     local kcov_root="$1" shard_root run_dir
     for shard_root in "$kcov_root"/shard-*/runs; do
-        [ -d "$shard_root" ] || continue
-        if [ -z "$(find "$shard_root" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]; then
+        [[ -d "$shard_root" ]] || continue
+        if [[ -z "$(find "$shard_root" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]]; then
             continue
         fi
         mkdir -p "$kcov_root/runs"
@@ -75,27 +78,30 @@ _kcov_collect_shard_run_dirs() {
             cp -a "$run_dir" "$kcov_root/runs/"
         done < <(find "$shard_root" -mindepth 1 -maxdepth 1 -type d -print0)
     done
+    return $?
 }
 
 _kcov_collect_shard_logs() {
     local kcov_root="$1" shard_logs
     mkdir -p "$kcov_root/logs"
     for shard_logs in "$kcov_root"/shard-*/logs; do
-        [ -d "$shard_logs" ] || continue
-        if [ -z "$(find "$shard_logs" -mindepth 1 -maxdepth 1 2>/dev/null)" ]; then
+        [[ -d "$shard_logs" ]] || continue
+        if [[ -z "$(find "$shard_logs" -mindepth 1 -maxdepth 1 2>/dev/null)" ]]; then
             continue
         fi
         cp -a "$shard_logs"/. "$kcov_root/logs/"
     done
+    return $?
 }
 
 _kcov_merge_shard_fail_files() {
     local kcov_root="$1" fail_file="$2" shard_fail
     : >"$fail_file"
     for shard_fail in "$kcov_root"/shard-*/.kcov_scenario_failures; do
-        [ -f "$shard_fail" ] || continue
+        [[ -f "$shard_fail" ]] || continue
         cat "$shard_fail" >>"$fail_file"
     done
+    return $?
 }
 
 _kcov_wait_shard_pids() {
@@ -105,7 +111,7 @@ _kcov_wait_shard_pids() {
         wait "${_KCOV_SHARD_PIDS[$i]}"
         pid_status=$?
         set -e
-        if [ "$pid_status" -ne 0 ]; then
+        if [[ "$pid_status" -ne 0 ]]; then
             echo "  ✗ kcov shard ${_KCOV_SHARD_IDS[$i]} failed (status $pid_status)" >&2
             status=1
         fi
@@ -119,7 +125,7 @@ _kcov_start_shard_workers() {
     _KCOV_SHARD_PIDS=()
     _KCOV_SHARD_IDS=()
     while IFS= read -r shard_id; do
-        [ -n "$shard_id" ] || continue
+        [[ -n "$shard_id" ]] || continue
         shard_root="$kcov_root/shard-$shard_id"
         mkdir -p "$shard_root/runs" "$shard_root/logs"
         fail_file="$shard_root/.kcov_scenario_failures"
@@ -134,6 +140,7 @@ _kcov_start_shard_workers() {
         _KCOV_SHARD_PIDS+=("$pid")
         _KCOV_SHARD_IDS+=("$shard_id")
     done < <(_kcov_list_shards)
+    return $?
 }
 
 run_shell_kcov_scenarios() {

@@ -14,22 +14,25 @@ _kde_first_cmd() {
 
 _kde_kwriteconfig_bin() {
     _kde_first_cmd kwriteconfig6 kwriteconfig5
+    return $?
 }
 
 _kde_kreadconfig_bin() {
     _kde_first_cmd kreadconfig6 kreadconfig5
+    return $?
 }
 
 _kde_user_config_env() {
     local user="$1" home_dir config_home
     home_dir=$(getent passwd "$user" | cut -d: -f6 || true)
-    [ -n "$home_dir" ] || return 1
+    [[ -n "$home_dir" ]] || return 1
     config_home="${home_dir}/.config"
     printf '%s\n%s\n' "$home_dir" "$config_home"
 }
 
 _kde_qdbus_bin() {
     _kde_first_cmd qdbus6 qdbus-qt6 qdbus
+    return $?
 }
 
 _kde_write_shortcut() {
@@ -58,7 +61,7 @@ _kde_read_shortcut() {
 _kde_atomic_write_file() {
     local dest="$1" mode="$2" val="${3:-}" tmp
     tmp="${dest}.tmp"
-    if [ "$mode" = "value" ]; then
+    if [[ "$mode" = "value" ]]; then
         if ! printf '%s\n' "$val" > "$tmp"; then
             rm -f "$tmp"
             return 1
@@ -75,7 +78,7 @@ _kde_atomic_write_file() {
 
 _kde_write_backup_value_or_absent() {
     local dest="$1" val="$2"
-    if [ -n "$val" ]; then
+    if [[ -n "$val" ]]; then
         _kde_atomic_write_file "$dest" value "$val"
         return $?
     fi
@@ -84,7 +87,7 @@ _kde_write_backup_value_or_absent() {
 
 _kde_backup_shortcut_key() {
     local user="$1" group="$2" key="$3" dest="$4" val
-    if [ -f "$dest" ] || [ -f "${dest}.absent" ]; then
+    if [[ -f "$dest" ]] || [[ -f "${dest}.absent" ]]; then
         return 0
     fi
     val=$(_kde_read_shortcut "$user" "$group" "$key") || return 0
@@ -97,15 +100,16 @@ _kde_backup_kscreen_group() {
         "$config_dir/orig_kde_kscreen_launch"
     _kde_backup_shortcut_key "$user" "kscreen" "_k_friendly_name" \
         "$config_dir/orig_kde_kscreen_friendly"
+    return $?
 }
 
 _kde_restore_kscreen_key() {
     local user="$1" conf="$2" group="$3" key="$4" backup="$5"
-    if [ -f "${backup}.absent" ]; then
+    if [[ -f "${backup}.absent" ]]; then
         _delete_kde_shortcut_key "$user" "$conf" "$group" "$key"
         return 0
     fi
-    [ -f "$backup" ] || return 0
+    [[ -f "$backup" ]] || return 0
     _kde_write_shortcut "$user" "$conf" "$group" "$key" "$(cat "$backup" 2>/dev/null)" || return 1
 }
 
@@ -125,6 +129,7 @@ _kde_backup_marker() {
 
 _kde_state_config_dir() {
     printf '%s/kde\n' "$1"
+    return $?
 }
 
 _apply_kde_shortcut_group() {
@@ -154,8 +159,8 @@ _kde_require_kscreen_backup() {
     local config_dir="$1"
     local launch="$config_dir/orig_kde_kscreen_launch"
     local friendly="$config_dir/orig_kde_kscreen_friendly"
-    if { [ -f "$launch" ] || [ -f "${launch}.absent" ]; } \
-        && { [ -f "$friendly" ] || [ -f "${friendly}.absent" ]; }; then
+    if { [[ -f "$launch" ]] || [[ -f "${launch}.absent" ]]; } \
+        && { [[ -f "$friendly" ]] || [[ -f "${friendly}.absent" ]]; }; then
         return 0
     fi
     echo "  ✗ KDE configuration failed: kscreen shortcut backup missing." >&2
@@ -165,7 +170,7 @@ _kde_require_kscreen_backup() {
 _set_kde_keybindings() {
     local user="$1" conf="$2" config_dir="$3"
     local display_name settings_name screenshot_name
-    [ -n "$conf" ] || return 1
+    [[ -n "$conf" ]] || return 1
     display_name=$(_asus_gettext "ASUS Display Mode")
     settings_name=$(_asus_gettext "ASUS ZenBook Settings")
     screenshot_name=$(_asus_gettext "ASUS Screenshot")
@@ -205,19 +210,21 @@ _delete_kde_shortcut_group() {
     local user="$1" conf="$2" group="$3"
     _delete_kde_shortcut_key "$user" "$conf" "$group" "_launch"
     _delete_kde_shortcut_key "$user" "$conf" "$group" "_k_friendly_name"
+    return $?
 }
 
 _remove_kde_helper_desktops() {
     rm -f "${PREFIX:-}/usr/local/share/applications/asus-display-mode.desktop" \
         "${PREFIX:-}/usr/local/share/applications/asus-control-center.desktop" \
         "${PREFIX:-}/usr/local/share/applications/asus-screenshot.desktop"
+    return $?
 }
 
 _kde_cleanup_state_and_desktops() {
     local state_root="$1" config_dir
     _remove_kde_helper_desktops
     config_dir=$(_kde_state_config_dir "$state_root")
-    if [ -d "$config_dir" ]; then
+    if [[ -d "$config_dir" ]]; then
         rm -rf "$config_dir" || return 1
     fi
     return 0
@@ -242,7 +249,7 @@ restore_kde_shortcuts() {
 
 _kde_finish_restore() {
     local user="$1" state_root="$2" failed="$3"
-    if [ "$failed" -ne 0 ]; then
+    if [[ "$failed" -ne 0 ]]; then
         _remove_kde_helper_desktops
         return 1
     fi
@@ -284,7 +291,7 @@ EOF
 
 _kde_install_precheck() {
     local info="$1"
-    if [ -z "$info" ]; then
+    if [[ -z "$info" ]]; then
         echo "  ✗ KDE configuration failed: desktop D-Bus session not found." >&2
         return 1
     fi

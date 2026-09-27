@@ -111,7 +111,7 @@ _matrix_exit_handler() {
     local exit_status="$1"
     trap - EXIT
     _kill_active_pids
-    if [ "$exit_status" -ne 0 ]; then
+    if [[ "$exit_status" -ne 0 ]]; then
         _remove_active_containers
     fi
     exit "$exit_status"
@@ -248,13 +248,13 @@ _matrix_setup_env_exports() {
     _de_ref=""
     _full_ref=""
     _runtime_ref=""
-    if [ -n "$DE_FAMILY" ]; then
+    if [[ -n "$DE_FAMILY" ]]; then
         _de_ref="export ASUS_CI_DE_FAMILY=\"${DE_FAMILY}\""
     fi
-    if [ "${ASUS_CI_FULL_DE:-}" = "1" ]; then
+    if [[ "${ASUS_CI_FULL_DE:-}" = "1" ]]; then
         _full_ref="export ASUS_CI_FULL_DE=1"
     fi
-    if [ "${ASUS_CI_FULL_DE:-}" = "1" ] && [ -n "$DE_FAMILY" ]; then
+    if [[ "${ASUS_CI_FULL_DE:-}" = "1" ]] && [[ -n "$DE_FAMILY" ]]; then
         _runtime_ref="$(_matrix_runtime_de_install_snippet)"
     fi
 }
@@ -334,7 +334,7 @@ build_repo_image() {
     # F1: never bake DE into the image; cache key is distro-only (shared with stub lanes).
     cache_key=$(echo "$resolved" | tr '/:' '__')
     echo "Building test image $tag from $dockerfile_path"
-    if [ -n "$DE_FAMILY" ]; then
+    if [[ -n "$DE_FAMILY" ]]; then
         echo "  runtime ASUS_CI_DE_FAMILY=$DE_FAMILY (not baked into image)"
     fi
     ASUS_CI_DE_FAMILY="" docker_build_with_buildx_or_build \
@@ -394,7 +394,7 @@ run_target() {
         dockerfile_path=$(dockerfile_for_distro "$image")
         tag=$(tag_for_distro "$image")
         echo "[dry-run] Would build $tag from $dockerfile_path"
-        if [ -n "$DE_FAMILY" ]; then
+        if [[ -n "$DE_FAMILY" ]]; then
             echo "[dry-run] ASUS_CI_DE_FAMILY=$DE_FAMILY (runtime install-de-family)"
         fi
         if [[ "$COMPAT_ONLY" -eq 1 ]]; then

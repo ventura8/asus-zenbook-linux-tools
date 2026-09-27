@@ -29,8 +29,8 @@ _run_unit_management_ops_common() {
 
 _valid_unit_log_file() {
     local log_file="$1"
-    [ -n "$log_file" ] || return 1
-    [ -e "$log_file" ]
+    [[ -n "$log_file" ]] || return 1
+    [[ -e "$log_file" ]]
 }
 
 _run_unit_management_ops() {
@@ -51,11 +51,11 @@ _run_unit_management_ops() {
 _verify_unit_state_after_action() {
     local timeout_value="$1" unit_name="$2" run_action="$3"
 
-    if [ "$run_action" = "disable" ]; then
+    if [[ "$run_action" = "disable" ]]; then
         return 0
     fi
 
-    if [ "${INSTALL_ASSUME_UNIT_ACTIVE:-0}" = "1" ]; then
+    if [[ "${INSTALL_ASSUME_UNIT_ACTIVE:-0}" = "1" ]]; then
         return 0
     fi
 
@@ -64,4 +64,5 @@ _verify_unit_state_after_action() {
 
 _run_unit_management_ops_unverified() {
     _run_unit_management_ops_common "$@"
+    return $?
 }

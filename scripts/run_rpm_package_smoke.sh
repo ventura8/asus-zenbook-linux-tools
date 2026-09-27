@@ -24,7 +24,7 @@ _require_exact_one_glob() {
     local label="$1"
     shift
     local matches=("$@")
-    if [ "${#matches[@]}" -ne 1 ]; then
+    if [[ "${#matches[@]}" -ne 1 ]]; then
         printf 'Expected exactly one %s file, found %s\n' "$label" "${#matches[@]}" >&2
         printf '%s\n' "${matches[@]}" >&2
         return 1

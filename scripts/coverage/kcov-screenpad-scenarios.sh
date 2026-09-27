@@ -13,6 +13,7 @@ _kcov_screenpad_brightness_osd_setup() {
     printf '%s\n' "$gdbus_body" > "$tmp/mock/gdbus"
     chmod +x "$tmp/mock/gdbus"
     _kcov_bind_unix_bus "$tmp/bus/$uid/bus"
+    return $?
 }
 
 _run_kcov_screenpad_brightness_scenarios() {
@@ -21,7 +22,7 @@ _run_kcov_screenpad_brightness_scenarios() {
     _kcov_expect_run "1" "$kcov_root" spb_usage ./bin/asus-screenpad-brightness.sh
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/sp"
         echo 100 > "$tmp/sp/brightness"; echo 255 > "$tmp/sp/max_brightness"
         chmod 666 "$tmp/sp/brightness"
@@ -52,7 +53,7 @@ _run_kcov_screenpad_brightness_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_screenpad_brightness_osd_setup "$tmp" "$(cat <<'EOF'
 #!/bin/sh
 case "$*" in
@@ -69,7 +70,7 @@ EOF
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_screenpad_brightness_osd_setup "$tmp" "$(cat <<'EOF'
 #!/bin/sh
 case "$*" in
@@ -86,7 +87,7 @@ EOF
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_screenpad_brightness_osd_setup "$tmp" "$(cat <<'EOF'
 #!/bin/sh
 case "$*" in
@@ -105,7 +106,7 @@ EOF
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_screenpad_brightness_osd_setup "$tmp" "$(cat <<'EOF'
 #!/bin/sh
 case "$*" in
@@ -123,7 +124,7 @@ EOF
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_screenpad_brightness_osd_setup "$tmp" "$(cat <<'EOF'
 #!/bin/sh
 case "$*" in
@@ -139,6 +140,7 @@ EOF
             RUN_USER_ROOT="$tmp/bus" PATH="$tmp/mock:$PATH" \
             ./bin/asus-screenpad-brightness.sh up
     )
+    return $?
 }
 
 _run_kcov_screenpad_scenarios() {
@@ -147,7 +149,7 @@ _run_kcov_screenpad_scenarios() {
     _kcov_expect_run "1" "$kcov_root" sp_no_node ./bin/asus-screenpad-toggle.sh
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 128 > "$tmp/b"; echo 255 > "$tmp/max_brightness"; chmod 666 "$tmp/b"
         _kcov_expect_run_env "0" "$kcov_root" sp_on ASUS_SCREENPAD_NODE="$tmp/b" ./bin/asus-screenpad-toggle.sh
         echo 0 > "$tmp/b"
@@ -158,7 +160,7 @@ _run_kcov_screenpad_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/sp" "$tmp/state/$(id -u)"
         echo 0 > "$tmp/sp/brightness"
         echo 200 > "$tmp/sp/max_brightness"
@@ -171,14 +173,14 @@ _run_kcov_screenpad_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/sp"
         echo 0 > "$tmp/sp/brightness"; echo 200 > "$tmp/sp/max_brightness"; chmod 666 "$tmp/sp/brightness"
         _kcov_expect_run_env "0" "$kcov_root" sp_max_bright ASUS_SCREENPAD_NODE="$tmp/sp/brightness" ./bin/asus-screenpad-toggle.sh
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         uid="$(id -u)"
         mkdir -p "$tmp/sp" "$tmp/bus/$uid" "$tmp/mock"
         echo 128 > "$tmp/sp/brightness"; chmod 666 "$tmp/sp/brightness"
@@ -192,4 +194,5 @@ _run_kcov_screenpad_scenarios() {
     _run_kcov_screenpad_brightness_scenarios "$kcov_root"
     _kcov_expect_run_env "0" "$kcov_root" screenpad_helpers \
         REPO_ROOT="$(pwd)" "$(_kcov_driver screenpad_helpers.sh)"
+    return $?
 }

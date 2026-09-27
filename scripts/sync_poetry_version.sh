@@ -7,18 +7,18 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 VERSION_FILE="${REPO_ROOT}/VERSION"
 PYPROJECT="${REPO_ROOT}/pyproject.toml"
 
-if [ ! -f "$VERSION_FILE" ]; then
+if [[ ! -f "$VERSION_FILE" ]]; then
     echo "Missing VERSION file: $VERSION_FILE" >&2
     exit 1
 fi
 
 VERSION="$(tr -d '[:space:]' < "$VERSION_FILE")"
-if [ -z "$VERSION" ]; then
+if [[ -z "$VERSION" ]]; then
     echo "VERSION file is empty: $VERSION_FILE" >&2
     exit 1
 fi
 
-if [ ! -f "$PYPROJECT" ]; then
+if [[ ! -f "$PYPROJECT" ]]; then
     echo "Missing pyproject.toml: $PYPROJECT" >&2
     exit 1
 fi

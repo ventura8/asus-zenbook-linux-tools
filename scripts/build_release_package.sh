@@ -50,16 +50,16 @@ _rpm_docker_copy_artifact() {
 _rpm_install_smoke_snippet() {
     local install_line="$1"
     local remove_line="$2"
-    cat <<EOF
-if [ "\${ASUS_RELEASE_INSTALL_SMOKE:-1}" = "1" ]; then
-  pkg_name="asus-zenbook-linux-tools"
-  installed_rpm="\$artifacts_dir/\$(basename "\$rpm_path")"
-  rpm -qip "\$installed_rpm"
-  ${install_line}
-  rpm -q "\$pkg_name"
-  ${remove_line}
-fi
-EOF
+    # printf (not an unquoted heredoc) keeps the local uses visible to analysers.
+    printf '%s\n' \
+        'if [ "${ASUS_RELEASE_INSTALL_SMOKE:-1}" = "1" ]; then' \
+        '  pkg_name="asus-zenbook-linux-tools"' \
+        '  installed_rpm="$artifacts_dir/$(basename "$rpm_path")"' \
+        '  rpm -qip "$installed_rpm"' \
+        "  ${install_line}" \
+        '  rpm -q "$pkg_name"' \
+        "  ${remove_line}" \
+        'fi'
 }
 
 _rpm_docker_body() {
@@ -188,7 +188,7 @@ _dispatch_pkg_kind() {
         _run_release_builder "$kind" _build_rpm_kind "$kind"
         return $?
     fi
-    if [ "$kind" = "arch" ]; then
+    if [[ "$kind" = "arch" ]]; then
         _run_release_builder "$kind" _build_arch_package
         return $?
     fi

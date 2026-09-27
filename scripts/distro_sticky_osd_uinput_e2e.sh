@@ -18,10 +18,13 @@ _log() { printf '[sticky-osd-uinput-e2e] %s\n' "$*"; }
 _soft_skip() { _log "SOFT-SKIP: $*"; exit 0; }
 _fail() { echo "[sticky-osd-uinput-e2e] ERROR: $*" >&2; exit 1; }
 
-_require_cmd() { command -v "$1" >/dev/null 2>&1; }
+_require_cmd() {
+    local cmd="$1"
+    command -v "$cmd" >/dev/null 2>&1
+}
 
 _cleanup() {
-    if [ -n "${YDOTOOLD_PID}" ]; then
+    if [[ -n "${YDOTOOLD_PID}" ]]; then
         kill "${YDOTOOLD_PID}" 2>/dev/null || true
         wait "${YDOTOOLD_PID}" 2>/dev/null || true
     fi
@@ -38,27 +41,25 @@ _require_runtime_pkgs() {
 }
 
 _try_load_uinput() {
-    if [ ! -e /dev/uinput ]; then
-        if _require_cmd modprobe; then
-            sudo -n modprobe uinput 2>/dev/null || _e2e_soft modprobe uinput 2>/dev/null
-        fi
+    if [[ ! -e /dev/uinput ]] && _require_cmd modprobe; then
+        sudo -n modprobe uinput 2>/dev/null || _e2e_soft modprobe uinput 2>/dev/null
     fi
 }
 
 _try_fix_uinput_permissions() {
-    if [ -e /dev/uinput ] && [ ! -w /dev/uinput ]; then
+    if [[ -e /dev/uinput ]] && [[ ! -w /dev/uinput ]]; then
         _e2e_soft sudo -n chmod a+rw /dev/uinput 2>/dev/null
         _e2e_soft sudo -n setfacl -m "u:$(id -un):rw" /dev/uinput 2>/dev/null
     fi
 }
 
 _try_make_uinput_writable() {
-    if [ -e /dev/uinput ] && [ -w /dev/uinput ]; then
+    if [[ -e /dev/uinput ]] && [[ -w /dev/uinput ]]; then
         return 0
     fi
     _try_load_uinput
     _try_fix_uinput_permissions
-    [ -e /dev/uinput ] && [ -w /dev/uinput ]
+    [[ -e /dev/uinput ]] && [[ -w /dev/uinput ]]
 }
 
 _runtime_dir() {
@@ -72,7 +73,7 @@ _ydotool_socket_path() {
 _wait_socket() {
     local sock="$1" _
     for _ in $(seq 1 50); do
-        [ -S "$sock" ] && return 0
+        [[ -S "$sock" ]] && return 0
         sleep 0.1
     done
     return 1
@@ -83,7 +84,7 @@ _ensure_ydotoold() {
     runtime="$(_runtime_dir)"
     mkdir -p "$runtime"
     sock="$(_ydotool_socket_path)"
-    if [ -S "$sock" ]; then
+    if [[ -S "$sock" ]]; then
         _log "  · ydotoold socket already present: $sock"
         export YDOTOOL_SOCKET="$sock"
         return 0
@@ -103,7 +104,7 @@ _run_display_mode() {
     local helper="$1"
     export ASUS_DISPLAY_MODE_DISABLE_MUTTER_CYCLE=1
     export ASUS_DISPLAY_MODE_DISABLE_SETTINGS=1
-    if [ -n "${YDOTOOL_SOCKET:-}" ]; then
+    if [[ -n "${YDOTOOL_SOCKET:-}" ]]; then
         export ASUS_TEST_MODE="${ASUS_TEST_MODE:-1}"
         export ASUS_YDOTOOL_SOCKET_ALLOW="${ASUS_YDOTOOL_SOCKET_ALLOW:-1}"
     fi
@@ -124,7 +125,7 @@ _prepare_sticky_osd_environment() {
 _require_sticky_osd_runtime() {
     local helper="$1"
     _log "Sticky OSD marker/ydotool E2E (pkgs required; soft-skip only on env failure)"
-    [ -x "$helper" ] || _fail "missing $helper"
+    [[ -x "$helper" ]] || _fail "missing $helper"
     _require_runtime_pkgs
 
     if ! _try_make_uinput_writable; then
@@ -145,7 +146,7 @@ _open_sticky_osd_session() {
     if ! _run_display_mode "$helper"; then
         _soft_skip "asus-display-mode.sh did not complete under Xvfb+ydotoold (env)"
     fi
-    if [ ! -f "${prefix}.session" ] && [ ! -f "${prefix}.ctx" ]; then
+    if [[ ! -f "${prefix}.session" ]] && [[ ! -f "${prefix}.ctx" ]]; then
         _soft_skip "no .session/.ctx after display-mode (injection backend inactive)"
     fi
     _log "  ✓ sticky markers present"
@@ -156,7 +157,7 @@ _cancel_sticky_osd_session() {
     if ! timeout 5 "$helper" --cancel-osd; then
         _fail "--cancel-osd failed"
     fi
-    if [ -f "${prefix}.session" ] || [ -f "${prefix}.ctx" ]; then
+    if [[ -f "${prefix}.session" ]] || [[ -f "${prefix}.ctx" ]]; then
         _fail "--cancel-osd left sticky markers"
     fi
     _log "  ✓ --cancel-osd cleared markers"

@@ -25,7 +25,7 @@ _smoke_bind_bus_socket() {
     rm -f "$bus_path"
     python3 -c "import socket,sys; s=socket.socket(socket.AF_UNIX); s.bind(sys.argv[1]); s.close()" \
         "$bus_path" 2>/dev/null || return 1
-    [ -S "$bus_path" ]
+    [[ -S "$bus_path" ]]
 }
 
 _smoke_write_sudo_stub() {
@@ -44,6 +44,7 @@ done
 exec "$@"
 EOF
     chmod +x "$mock_bin/sudo"
+    return $?
 }
 
 _smoke_write_session_loginctl() {
@@ -66,6 +67,7 @@ fi
 exit 0
 EOF
     chmod +x "$mock_bin/loginctl"
+    return $?
 }
 
 _smoke_write_getent_stub() {
@@ -82,6 +84,7 @@ fi
 exit 1
 EOF
     chmod +x "$mock_bin/getent"
+    return $?
 }
 
 _smoke_write_gnome_stubs() {
@@ -132,6 +135,7 @@ EOF
     chmod +x "$mock_bin/gsettings"
     printf '#!/bin/sh\nexit 0\n' > "$mock_bin/gnome-extensions"
     chmod +x "$mock_bin/gnome-extensions"
+    return $?
 }
 
 _smoke_write_kde_stubs() {
@@ -186,6 +190,7 @@ exit 0
 EOF
     printf '#!/bin/sh\nexit 0\n' > "$mock_bin/qdbus"
     chmod +x "$mock_bin/kwriteconfig6" "$mock_bin/kreadconfig6" "$mock_bin/qdbus"
+    return $?
 }
 
 _smoke_write_xfce_stubs() {
@@ -240,6 +245,7 @@ fi
 exit 0
 EOF
     chmod +x "$mock_bin/xfconf-query"
+    return $?
 }
 
 _smoke_prepare_desktop_workspace() {
@@ -278,6 +284,7 @@ _smoke_run_desktop_install() {
         DESTDIR="$dest" DBUS_BUS_ROOT="$bus_root" BUS_ROOT="$bus_root" \
         SYSTEMCTL_CMD="$mock_bin/systemctl" \
         ./install.sh
+    return $?
 }
 
 _smoke_run_desktop_uninstall() {
@@ -290,55 +297,70 @@ _smoke_run_desktop_uninstall() {
         DESTDIR="$dest" DBUS_BUS_ROOT="$bus_root" BUS_ROOT="$bus_root" \
         SYSTEMCTL_CMD="$mock_bin/systemctl" \
         ./uninstall.sh
+    return $?
 }
 
 _smoke_require_file() {
-    if [ ! -f "$1" ]; then
-        _smoke_fail "$2"
+    local path="$1" message="$2"
+    if [[ ! -f "$path" ]]; then
+        _smoke_fail "$message"
     fi
+    return $?
 }
 
 _smoke_require_dir() {
-    if [ ! -d "$1" ]; then
-        _smoke_fail "$2"
+    local path="$1" message="$2"
+    if [[ ! -d "$path" ]]; then
+        _smoke_fail "$message"
     fi
+    return $?
 }
 
 _smoke_require_absent() {
-    if [ -e "$1" ]; then
-        _smoke_fail "$2"
+    local path="$1" message="$2"
+    if [[ -e "$path" ]]; then
+        _smoke_fail "$message"
     fi
+    return $?
 }
 
 _smoke_require_eq() {
-    if [ "$1" != "$2" ]; then
-        _smoke_fail "$3"
+    local actual="$1" expected="$2" message="$3"
+    if [[ "$actual" != "$expected" ]]; then
+        _smoke_fail "$message"
     fi
+    return $?
 }
 
 _smoke_require_grep() {
-    if ! grep -Fq "$1" "$2" 2>/dev/null; then
-        _smoke_fail "$3"
+    local needle="$1" path="$2" message="$3"
+    if ! grep -Fq "$needle" "$path" 2>/dev/null; then
+        _smoke_fail "$message"
     fi
+    return $?
 }
 
 _smoke_require_no_grep() {
-    if grep -Fq "$1" "$2" 2>/dev/null; then
-        _smoke_fail "$3"
+    local needle="$1" path="$2" message="$3"
+    if grep -Fq "$needle" "$path" 2>/dev/null; then
+        _smoke_fail "$message"
     fi
+    return $?
 }
 
 _smoke_assert_family_marker() {
     local state_dir="$1" family="$2"
     _smoke_require_file "$state_dir/desktop_family" "$family desktop_family marker missing"
     _smoke_require_eq "$(cat "$state_dir/desktop_family")" "$family" "expected desktop_family=$family"
+    return $?
 }
 
 _smoke_assert_marker_cleared() {
     local state_dir="$1" label="$2"
-    if [ -f "$state_dir/desktop_family" ]; then
+    if [[ -f "$state_dir/desktop_family" ]]; then
         _smoke_fail "uninstall left $label desktop_family marker"
     fi
+    return $?
 }
 
 _smoke_assert_gnome_installed() {
@@ -355,6 +377,7 @@ _smoke_assert_gnome_installed() {
         "GNOME orig_control_center backup missing"
     _smoke_require_grep "$_SMOKE_WINDOW_SWAP_UUID" "${gset_log}.enabled" \
         "gsettings enabled-extensions was not set with Window Swap UUID"
+    return $?
 }
 
 _smoke_assert_file_eq() {
@@ -362,6 +385,7 @@ _smoke_assert_file_eq() {
     _smoke_require_file "$path" "$label missing at $path"
     _smoke_require_eq "$(cat "$path")" "$expected" \
         "$label not restored (expected $expected)"
+    return $?
 }
 
 _smoke_assert_gnome_uninstalled() {
@@ -379,6 +403,7 @@ _smoke_assert_gnome_uninstalled() {
         "GNOME show-screenshot-ui"
     _smoke_assert_file_eq "${gset_log}.val.control-center" "$_SMOKE_GNOME_ORIG_BINDING" \
         "GNOME control-center"
+    return $?
 }
 
 _smoke_assert_kde_installed() {
@@ -396,6 +421,7 @@ _smoke_assert_kde_installed() {
     _smoke_require_dir "$state_dir/kde" "KDE state directory missing"
     _smoke_require_grep "asus-display-mode.desktop" "$kde_log" \
         "kwriteconfig was not invoked for asus-display-mode.desktop"
+    return $?
 }
 
 _smoke_assert_kde_uninstalled() {
@@ -414,6 +440,7 @@ _smoke_assert_kde_uninstalled() {
         "KDE kscreen _launch"
     _smoke_assert_file_eq "${kde_log}.val.kscreen._k_friendly_name" "$_SMOKE_KDE_ORIG_KSCREEN" \
         "KDE kscreen _k_friendly_name"
+    return $?
 }
 
 _smoke_assert_xfce_installed() {
@@ -422,12 +449,13 @@ _smoke_assert_xfce_installed() {
     state_dir="$dest/var/lib/asus-zenbook-linux-tools/$uid"
     _smoke_assert_family_marker "$state_dir" xfce
     _smoke_require_file "$state_dir/xfce_bus_path" "XFCE xfce_bus_path missing"
-    if [ ! -f "$state_dir/orig_xfce_xf86display" ]; then
+    if [[ ! -f "$state_dir/orig_xfce_xf86display" ]]; then
         _smoke_require_file "$state_dir/orig_xfce_xf86display.absent" \
             "XFCE XF86Display backup missing"
     fi
     _smoke_require_grep "XF86Display" "$xfce_log" \
         "xfconf-query was not invoked for XF86Display"
+    return $?
 }
 
 _smoke_assert_xfce_uninstalled() {
@@ -441,6 +469,7 @@ _smoke_assert_xfce_uninstalled() {
         "XFCE Super+F12"
     _smoke_assert_file_eq "${xfce_log}.val.SuperShiftS" "$_SMOKE_XFCE_ORIG_BINDING" \
         "XFCE Super+Shift+S"
+    return $?
 }
 
 _smoke_run_logged_step() {
@@ -455,9 +484,10 @@ _smoke_run_logged_step() {
     pipe_status=("${PIPESTATUS[@]}")
     eval "$caller_errexit"
     status="${pipe_status[0]}"
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         _smoke_fail "$label"
     fi
+    return $?
 }
 
 _smoke_require_desktop_workspace() {
@@ -467,10 +497,11 @@ _smoke_require_desktop_workspace() {
     _SMOKE_DESKTOP_BUS_ROOT=""
     _SMOKE_DESKTOP_HOME_DIR=""
     _smoke_prepare_desktop_workspace "$tmp" "$user" "$uid" "$gid"
-    if [ -z "${_SMOKE_DESKTOP_DEST:-}" ] || [ -z "${_SMOKE_DESKTOP_MOCK_BIN:-}" ] \
-        || [ -z "${_SMOKE_DESKTOP_BUS_ROOT:-}" ] || [ -z "${_SMOKE_DESKTOP_HOME_DIR:-}" ]; then
+    if [[ -z "${_SMOKE_DESKTOP_DEST:-}" ]] || [[ -z "${_SMOKE_DESKTOP_MOCK_BIN:-}" ]] \
+        || [[ -z "${_SMOKE_DESKTOP_BUS_ROOT:-}" ]] || [[ -z "${_SMOKE_DESKTOP_HOME_DIR:-}" ]]; then
         _smoke_fail "desktop workspace prepare returned empty dest/mock/bus/home"
     fi
+    return $?
 }
 
 _smoke_desktop_family_cycle_body() {
@@ -491,7 +522,7 @@ _smoke_desktop_family_cycle_body() {
     : > "$gset_log"
     : > "$kde_log"
     : > "$xfce_log"
-    if [ "$family" = "lxqt" ]; then
+    if [[ "$family" = "lxqt" ]]; then
         _smoke_seed_lxqt_conf "$home_dir"
     fi
     _smoke_write_family_stubs "$family" "$mock_bin" "$gset_log" "$kde_log" "$xfce_log"
@@ -507,6 +538,7 @@ _smoke_desktop_family_cycle_body() {
     _smoke_assert_family_uninstalled "$family" "$dest" "$home_dir" "$uid" \
         "$gset_log" "$kde_log" "$xfce_log"
     _smoke_log "DESKTOP cycle passed: family=$family"
+    return $?
 }
 
 _smoke_desktop_family_cycle() {
@@ -527,13 +559,14 @@ _run_desktop_install_uninstall_cycles() {
     for family in gnome kde xfce lxqt cinnamon mate; do
         _smoke_desktop_family_cycle "$family"
     done
+    return $?
 }
 
 _verify_python_gi_import() {
     local py
     _smoke_log "Checking python3 GLib (gi) for gsettings as-array helpers"
     for py in /usr/bin/python3 "$(command -v python3 2>/dev/null || true)"; do
-        [ -n "$py" ] && [ -x "$py" ] || continue
+        [[ -n "$py" ]] && [[ -x "$py" ]] || continue
         if "$py" -c 'import gi; gi.require_version("GLib", "2.0"); from gi.repository import GLib' \
             >/dev/null 2>&1; then
             _smoke_log "  ✓ $py imports gi.repository.GLib"

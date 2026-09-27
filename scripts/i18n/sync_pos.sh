@@ -13,7 +13,7 @@ command -v msgmerge >/dev/null 2>&1 || {
 
 python3 "$SCRIPT_DIR/seed_whisper_languages.py"
 while IFS= read -r language; do
-    [ -n "$language" ] || continue
+    [[ -n "$language" ]] || continue
     msgmerge --update --backup=none --no-fuzzy-matching \
         "$PO_DIR/$language.po" "$POT_PATH"
 done <"$PO_DIR/SUPPORTED_LANGUAGES"

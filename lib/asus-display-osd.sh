@@ -1,6 +1,9 @@
 #!/bin/bash
 # Display-mode helper library (sourced by bin/asus-display-mode.sh).
 
+# Sticky OSD backend token for the xdotool injection path (ctx files store it).
+_ASUS_DISPLAY_OSD_XDOTOOL="xdotool"
+
 _resolve_user_id() {
     local user="$1"
     if echo "$user" | grep -Eq '^[0-9]+$'; then
@@ -16,20 +19,21 @@ _resolve_cycle_user() {
     user="${user:-${SUDO_USER:-}}"
     user="${user:-$(id -un 2>/dev/null)}"
     echo "${user:-${USER:-}}"
+    return $?
 }
 
 _ydotool_key() {
     local active_user="$1" sock="$2"
     shift 2
-    if [ -n "$active_user" ] && [ -n "$sock" ]; then
+    if [[ -n "$active_user" ]] && [[ -n "$sock" ]]; then
         _run_as_user "$active_user" env YDOTOOL_SOCKET="$sock" ydotool key "$@" 2>/dev/null
         return $?
     fi
-    if [ -n "$sock" ]; then
+    if [[ -n "$sock" ]]; then
         YDOTOOL_SOCKET="$sock" ydotool key "$@" 2>/dev/null
         return $?
     fi
-    if [ -n "$active_user" ]; then
+    if [[ -n "$active_user" ]]; then
         _run_as_user "$active_user" ydotool key "$@" 2>/dev/null
         return $?
     fi
@@ -39,7 +43,7 @@ _ydotool_key() {
 _xdotool_cmd() {
     local active_user="$1" display_val="$2"
     shift 2
-    if [ -n "$active_user" ]; then
+    if [[ -n "$active_user" ]]; then
         _run_as_user "$active_user" env DISPLAY="$display_val" xdotool "$@" 2>/dev/null
         return $?
     fi
@@ -56,7 +60,7 @@ _release_osd_modifiers() {
         _osd_cleanup_marker_files "$prefix"
         return 0
     fi
-    if [ "$backend" = "xdotool" ]; then
+    if [[ "$backend" = "$_ASUS_DISPLAY_OSD_XDOTOOL" ]]; then
         # Super up first so Mutter applies the OSD selection, then clear peers.
         _soft _xdotool_cmd "$active_user" "${target:-:0}" keyup Super_L Super_R
         _soft _xdotool_cmd "$active_user" "${target:-:0}" keyup \
@@ -80,7 +84,7 @@ _dismiss_osd_modifiers() {
     # Stop idle watchdog apply (Super-up without Esc) from racing this cancel path.
     _mark_osd_cancel_in_progress "$prefix"
     _soft rm -f "${prefix}.session"
-    if [ "$backend" = "xdotool" ]; then
+    if [[ "$backend" = "$_ASUS_DISPLAY_OSD_XDOTOOL" ]]; then
         _soft _xdotool_cmd "$active_user" "${target:-:0}" key --clearmodifiers Escape
         _osd_cancel_pause
         _soft _xdotool_cmd "$active_user" "${target:-:0}" keyup Super_L Super_R
@@ -101,12 +105,13 @@ _dismiss_osd_modifiers() {
 
 _osd_cancel_pause() {
     sleep 0.05 2>/dev/null || sleep 1
+    return $?
 }
 
 _clear_stuck_non_super_modifiers() {
     # Stuck Shift/Ctrl/Alt makes Super+P look like Super+Shift+P (no OSD).
     local active_user="$1" target="$2" backend="$3"
-    if [ "$backend" = "xdotool" ]; then
+    if [[ "$backend" = "$_ASUS_DISPLAY_OSD_XDOTOOL" ]]; then
         _soft _xdotool_cmd "$active_user" "${target:-:0}" keyup \
             Shift_L Shift_R Control_L Control_R Alt_L Alt_R
         return 0
@@ -116,7 +121,7 @@ _clear_stuck_non_super_modifiers() {
 
 _start_ydotool_user_unit() {
     local active_user="$1" user_id="$2"
-    [ -n "$user_id" ] && [ -n "$active_user" ] || return 0
+    [[ -n "$user_id" ]] && [[ -n "$active_user" ]] || return 0
     # Ubuntu/Debian ship user unit "ydotool" (ExecStart=ydotoold). Prefer enable
     # --now so a missing prior enable cannot leave Display Toggle on Mutter-only.
     _soft _run_as_user "$active_user" env \
@@ -132,7 +137,7 @@ _find_ydotool_socket() {
     local sock
     for sock in "$DBUS_BUS_ROOT/$user_id/.ydotool_socket" \
         /run/ydotoold/socket; do
-        [ -S "$sock" ] || continue
+        [[ -S "$sock" ]] || continue
         _yd_user="$sock_user"
         _yd_target="$sock"
         return 0
@@ -143,10 +148,10 @@ _find_ydotool_socket() {
 _wait_ydotool_socket() {
     # After starting ydotoold, the socket can lag ~100-300ms; one immediate probe
     # made the first Display Toggle fall through without a sticky OSD.
-    local sock_user="$1" user_id="$2"
+    local sock_user="$1" user_id="$2" user_var_name="$3" target_var_name="$4"
     local _i
     for _i in 1 2 3 4 5 6 7 8 9 10 11 12; do
-        if _find_ydotool_socket "$sock_user" "$user_id" "$3" "$4"; then
+        if _find_ydotool_socket "$sock_user" "$user_id" "$user_var_name" "$target_var_name"; then
             return 0
         fi
         sleep 0.05
@@ -155,12 +160,13 @@ _wait_ydotool_socket() {
 }
 
 _resolve_ydotool_target() {
-    local -n _yd_user="$1" _yd_target="$2"
+    local user_var_name="$1" target_var_name="$2"
+    local -n _yd_user="$user_var_name" _yd_target="$target_var_name"
     local sock_user user_id
     if ! command -v ydotool >/dev/null 2>&1; then
         return 1
     fi
-    if [ "${ASUS_DISPLAY_MODE_FORCE_LOCAL:-0}" = "1" ]; then
+    if [[ "${ASUS_DISPLAY_MODE_FORCE_LOCAL:-0}" = "1" ]]; then
         _yd_user=""
         _yd_target=""
         return 0
@@ -169,25 +175,27 @@ _resolve_ydotool_target() {
     user_id=$(_resolve_user_id "$sock_user")
     # Prefer an already-running socket; starting the user unit on every press
     # added ~0.5s and let rapid hotkeys overlap into racing Super holds.
-    if _find_ydotool_socket "$sock_user" "$user_id" "$1" "$2"; then
+    if _find_ydotool_socket "$sock_user" "$user_id" "$user_var_name" "$target_var_name"; then
         return 0
     fi
     _start_ydotool_user_unit "$sock_user" "$user_id"
     # Fail closed without a socket so we do not "succeed" with an empty TARGET
     # (first press looked like a no-op; second press found the socket).
-    _wait_ydotool_socket "$sock_user" "$user_id" "$1" "$2"
+    _wait_ydotool_socket "$sock_user" "$user_id" "$user_var_name" "$target_var_name"
 }
 
 _resolve_x11_display() {
     local user="$1" display_val
     display_val=$(asus_session_env_value "DISPLAY" "$user")
-    [ -n "$display_val" ] || display_val="${DISPLAY:-:0}"
+    [[ -n "$display_val" ]] || display_val="${DISPLAY:-:0}"
     echo "$display_val"
+    return $?
 }
 
 _clear_osd_session_marker() {
     local prefix="$1"
     rm -f "${prefix}.session" "${prefix}.ctx"
+    return $?
 }
 
 _finalize_osd_open_with_watchdog() {
@@ -218,8 +226,8 @@ _open_osd_session_ydotool() {
 
 _open_osd_session_xdotool() {
     local prefix="$1" active_user="$2" display_val="$3"
-    _clear_stuck_non_super_modifiers "$active_user" "$display_val" "xdotool"
-    _write_ctx "$prefix" "$active_user" "$display_val" "xdotool"
+    _clear_stuck_non_super_modifiers "$active_user" "$display_val" "$_ASUS_DISPLAY_OSD_XDOTOOL"
+    _write_ctx "$prefix" "$active_user" "$display_val" "$_ASUS_DISPLAY_OSD_XDOTOOL"
     _bump_session_expiry "$prefix"
     if ! _xdotool_cmd "$active_user" "$display_val" keydown Super_L; then
         _clear_osd_session_marker "$prefix"
@@ -235,7 +243,7 @@ _open_osd_session_xdotool() {
 
 _cycle_osd_backend() {
     local active_user="$1" target="$2" backend="$3"
-    if [ "$backend" = "xdotool" ]; then
+    if [[ "$backend" = "$_ASUS_DISPLAY_OSD_XDOTOOL" ]]; then
         _xdotool_cmd "$active_user" "${target:-:0}" key p
         return $?
     fi
@@ -256,7 +264,7 @@ _cycle_osd_session() {
 }
 
 _trigger_ydotool_display_switch() {
-    if [ "${ASUS_DISPLAY_MODE_DISABLE_YDOTOOL:-0}" = "1" ]; then
+    if [[ "${ASUS_DISPLAY_MODE_DISABLE_YDOTOOL:-0}" = "1" ]]; then
         return 1
     fi
     local prefix active_user target
@@ -266,26 +274,26 @@ _trigger_ydotool_display_switch() {
 }
 
 _xdotool_ready() {
-    [ "${ASUS_DISPLAY_MODE_DISABLE_XDOTOOL:-0}" != "1" ] || return 1
+    [[ "${ASUS_DISPLAY_MODE_DISABLE_XDOTOOL:-0}" != "1" ]] || return 1
     command -v xdotool >/dev/null 2>&1
 }
 
 _xdotool_allowed_for_session() {
     local stype="$1"
-    [ "$stype" != "wayland" ] && return 0
-    [ "${ASUS_DISPLAY_MODE_FORCE_XDOTOOL:-0}" = "1" ]
+    [[ "$stype" != "wayland" ]] && return 0
+    [[ "${ASUS_DISPLAY_MODE_FORCE_XDOTOOL:-0}" = "1" ]]
 }
 
 _trigger_xdotool_display_switch() {
     local prefix user stype display_val
     _xdotool_ready || return 1
     prefix="$(_display_state_prefix)"
-    if [ "${ASUS_DISPLAY_MODE_FORCE_LOCAL:-0}" = "1" ]; then
+    if [[ "${ASUS_DISPLAY_MODE_FORCE_LOCAL:-0}" = "1" ]]; then
         _open_osd_session_xdotool "$prefix" "" "${DISPLAY:-:0}"
         return $?
     fi
     user=$(_resolve_cycle_user)
-    [ -n "$user" ] || return 1
+    [[ -n "$user" ]] || return 1
     stype=$(asus_session_type "$user")
     _xdotool_allowed_for_session "$stype" || return 1
     display_val=$(_resolve_x11_display "$user")
@@ -297,31 +305,44 @@ _run_settings_cmd() {
     local user="$1" bus_addr="$2"
     shift 2
     _run_as_user "$user" env DBUS_SESSION_BUS_ADDRESS="$bus_addr" "$@" >/dev/null 2>&1
+    return $?
 }
 
 _open_gnome_display_settings() {
-    _run_settings_cmd "$1" "$2" gnome-control-center display
+    local user="$1" bus_addr="$2"
+    _run_settings_cmd "$user" "$bus_addr" gnome-control-center display
+    return $?
 }
 
 _open_kde_display_settings() {
-    _run_settings_cmd "$1" "$2" systemsettings kcm_kscreen \
-        || _run_settings_cmd "$1" "$2" systemsettings5 kcm_kscreen
+    local user="$1" bus_addr="$2"
+    _run_settings_cmd "$user" "$bus_addr" systemsettings kcm_kscreen \
+        || _run_settings_cmd "$user" "$bus_addr" systemsettings5 kcm_kscreen
+    return $?
 }
 
 _open_xfce_display_settings() {
-    _run_settings_cmd "$1" "$2" xfce4-display-settings
+    local user="$1" bus_addr="$2"
+    _run_settings_cmd "$user" "$bus_addr" xfce4-display-settings
+    return $?
 }
 
 _open_lxqt_display_settings() {
-    _run_settings_cmd "$1" "$2" lxqt-config-monitor
+    local user="$1" bus_addr="$2"
+    _run_settings_cmd "$user" "$bus_addr" lxqt-config-monitor
+    return $?
 }
 
 _open_cinnamon_display_settings() {
-    _run_settings_cmd "$1" "$2" cinnamon-settings display
+    local user="$1" bus_addr="$2"
+    _run_settings_cmd "$user" "$bus_addr" cinnamon-settings display
+    return $?
 }
 
 _open_mate_display_settings() {
-    _run_settings_cmd "$1" "$2" mate-display-properties
+    local user="$1" bus_addr="$2"
+    _run_settings_cmd "$user" "$bus_addr" mate-display-properties
+    return $?
 }
 
 _settings_fn_gnome_kde_xfce() {
@@ -343,9 +364,10 @@ _settings_fn_lxqt_cinnamon_mate() {
 }
 
 _settings_fn_for_family() {
-    case "$1" in
-        gnome|kde|xfce) _settings_fn_gnome_kde_xfce "$1" ;;
-        lxqt|cinnamon|mate) _settings_fn_lxqt_cinnamon_mate "$1" ;;
+    local family="$1"
+    case "$family" in
+        gnome|kde|xfce) _settings_fn_gnome_kde_xfce "$family" ;;
+        lxqt|cinnamon|mate) _settings_fn_lxqt_cinnamon_mate "$family" ;;
         *) return 1 ;;
     esac
 }
@@ -369,12 +391,12 @@ _open_any_display_settings() {
 }
 
 _open_display_settings() {
-    if [ "${ASUS_DISPLAY_MODE_DISABLE_SETTINGS:-0}" = "1" ]; then
+    if [[ "${ASUS_DISPLAY_MODE_DISABLE_SETTINGS:-0}" = "1" ]]; then
         return 1
     fi
     local user user_id bus_addr family
     user=$(_resolve_cycle_user)
-    [ -n "$user" ] || return 1
+    [[ -n "$user" ]] || return 1
     user_id=$(_resolve_user_id "$user")
     bus_addr="unix:path=$DBUS_BUS_ROOT/$user_id/bus"
     family=$(asus_desktop_family "$user")
@@ -384,21 +406,30 @@ _open_display_settings() {
 
 _try_osd_backends() {
     _trigger_ydotool_display_switch || _trigger_xdotool_display_switch
+    return $?
+}
+
+_cycle_user_desktop_family() {
+    # Empty output when no cycle user resolves (callers treat that as GNOME path).
+    local user
+    user=$(_resolve_cycle_user || true)
+    if [[ -n "$user" ]]; then
+        asus_desktop_family "$user" 2>/dev/null || true
+    fi
+    return 0
 }
 
 _try_fallback_backends() {
     # Locked KDE/XFCE/LXQt/Cinnamon/MATE: sticky Super+P OSD first (above), then
     # DE settings — never Mutter ApplyMonitorsConfig on those families.
-    local user family=""
-    user=$(_resolve_cycle_user || true)
-    if [ -n "$user" ]; then
-        family=$(asus_desktop_family "$user" 2>/dev/null || true)
-    fi
+    local family
+    family=$(_cycle_user_desktop_family)
     case "$family" in
         kde|xfce|lxqt|cinnamon|mate)
             _open_display_settings
             return $?
             ;;
+        *) ;;
     esac
     _cycle_mutter_display_mode || _open_display_settings
 }

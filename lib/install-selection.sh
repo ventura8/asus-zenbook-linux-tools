@@ -9,13 +9,14 @@ _trim_shell_whitespace() {
     value="${value#"${value%%[![:space:]]*}"}"
     value="${value%"${value##*[![:space:]]}"}"
     printf '%s' "$value"
+    return $?
 }
 
 _append_component_choice() {
     local parsed="$1"
     local component="$2"
 
-    if [ -z "$parsed" ]; then
+    if [[ -z "$parsed" ]]; then
         printf '%s' "$component"
         return 0
     fi
@@ -37,10 +38,11 @@ _is_valid_component_token() {
 _resolve_desktop_family() {
     local family
     family="${ASUS_DESKTOP_FAMILY:-}"
-    if [ -z "$family" ] && command -v asus_desktop_family >/dev/null 2>&1; then
+    if [[ -z "$family" ]] && command -v asus_desktop_family >/dev/null 2>&1; then
         family=$(asus_desktop_family 2>/dev/null || true)
     fi
     printf '%s' "$family"
+    return $?
 }
 
 _desktop_family_supports_desktop_component() {
@@ -56,6 +58,7 @@ _default_all_components() {
     else
         echo "WMI TOUCHPAD SOUND"
     fi
+    return $?
 }
 
 _normalize_component_selection() {
@@ -72,7 +75,7 @@ _normalize_component_selection() {
     split_tokens=${normalized//,/ }
     read -r -a normalized_tokens <<< "$split_tokens"
     # Empty array under set -u: treat as empty selection (not unbound).
-    if [ "${#normalized_tokens[@]}" -eq 0 ]; then
+    if [[ "${#normalized_tokens[@]}" -eq 0 ]]; then
         echo ""
         return 0
     fi
@@ -92,15 +95,15 @@ _normalize_component_selection() {
 
 _print_special_component_selection() {
     local normalized="$1"
-    if [ -z "$normalized" ]; then
+    if [[ -z "$normalized" ]]; then
         echo ""
         return 0
     fi
-    if [ "$normalized" = "ALL" ]; then
+    if [[ "$normalized" = "ALL" ]]; then
         _default_all_components
         return 0
     fi
-    if [ "$normalized" = "NONE" ]; then
+    if [[ "$normalized" = "NONE" ]]; then
         echo ""
         return 0
     fi
@@ -117,26 +120,29 @@ _append_normalized_component_choice() {
         4|GNOME|DESKTOP) _append_component_choice "$parsed" "DESKTOP" ;;
         *) printf '%s' "$parsed" ;;
     esac
+    return $?
 }
 
 _close_wizard_ui_fds() {
-    if [ -n "${INSTALL_UI_IN_FD:-}" ]; then
+    if [[ -n "${INSTALL_UI_IN_FD:-}" ]]; then
         exec {INSTALL_UI_IN_FD}<&- || true
         INSTALL_UI_IN_FD=
     fi
-    if [ -n "${INSTALL_UI_OUT_FD:-}" ]; then
+    if [[ -n "${INSTALL_UI_OUT_FD:-}" ]]; then
         exec {INSTALL_UI_OUT_FD}>&- || true
         INSTALL_UI_OUT_FD=
     fi
+    return $?
 }
 
 _has_open_wizard_ui_fds() {
-    [ -n "${INSTALL_UI_IN_FD:-}" ] && [ -n "${INSTALL_UI_OUT_FD:-}" ]
+    [[ -n "${INSTALL_UI_IN_FD:-}" ]] && [[ -n "${INSTALL_UI_OUT_FD:-}" ]]
+    return $?
 }
 
 _can_open_wizard_ui_tty() {
-    [ -t 0 ] || return 1
-    [ -r /dev/tty ] && [ -w /dev/tty ]
+    [[ -t 0 ]] || return 1
+    [[ -r /dev/tty ]] && [[ -w /dev/tty ]]
 }
 
 _open_wizard_ui_out_fd() {
@@ -147,7 +153,7 @@ _open_wizard_ui_out_fd() {
 }
 
 _open_wizard_ui_fd() {
-    [ "${INSTALL_FAKE_NO_TTY:-0}" = "1" ] && return 1
+    [[ "${INSTALL_FAKE_NO_TTY:-0}" = "1" ]] && return 1
     _has_open_wizard_ui_fds && return 0
     _can_open_wizard_ui_tty || return 1
     exec {INSTALL_UI_IN_FD}</dev/tty || return 1
@@ -177,6 +183,7 @@ _print_selection_explainer() {
         printf '  %s\n' "$(_asus_gettext "The interface language follows your desktop session.")"
         echo
     } >&"$ui_out_fd"
+    return $?
 }
 
 _print_text_selection_intro() {
@@ -190,6 +197,7 @@ _print_text_selection_intro() {
         _asus_gettext "Press Enter to install all recommended components, or enter 'all' or 'none'."
         echo
     } >&"$ui_out_fd"
+    return $?
 }
 
 _reject_text_selection() {
@@ -197,6 +205,7 @@ _reject_text_selection() {
     _asus_gettextf "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or none." "$input" \
         >&"$ui_out_fd"
     echo >&"$ui_out_fd"
+    return $?
 }
 
 _try_apply_text_selection() {
@@ -204,7 +213,7 @@ _try_apply_text_selection() {
     local input="$1" ui_out_fd="$2" parsed status
     parsed=$(_normalize_component_selection "$input") || {
         status=$?
-        if [ "$status" -eq 2 ]; then
+        if [[ "$status" -eq 2 ]]; then
             _reject_text_selection "$ui_out_fd" "$input"
             return 1
         fi
@@ -216,14 +225,14 @@ _try_apply_text_selection() {
 
 _default_text_selection_if_empty() {
     local input="$1"
-    [ -n "$input" ] && return 1
+    [[ -n "$input" ]] && return 1
     INSTALL_CHOICE="$(_default_all_components)"
     return 0
 }
 
 _prompt_text_selection_retry_or_fail() {
     local status="$1"
-    [ "$status" -eq 1 ] && return 0
+    [[ "$status" -eq 1 ]] && return 0
     return "$status"
 }
 
@@ -231,6 +240,7 @@ _read_text_selection_input() {
     local ui_in_fd="$1"
     local -n _input_ref="$2"
     IFS= read -r -u "$ui_in_fd" _input_ref || _input_ref=""
+    return $?
 }
 
 _prompt_text_selection() {
@@ -271,25 +281,26 @@ _handle_noninteractive_choice() {
 _set_default_interactive_choice() {
     INSTALL_CHOICE="$(_default_all_components)"
     echo "No interactive terminal detected; defaulting to: $INSTALL_CHOICE" >&2
+    return $?
 }
 
 _should_use_text_fallback() {
-    [ "${INSTALL_PIPED_STDIN:-0}" = "1" ] && return 0
-    [ -t 0 ] && return 1
+    [[ "${INSTALL_PIPED_STDIN:-0}" = "1" ]] && return 0
+    [[ -t 0 ]] && return 1
     # Non-tty stdin still allows the TUI when wizard FDs were pre-opened.
     ! _has_open_wizard_ui_fds
 }
 
 _can_prompt_interactively() {
     _has_open_wizard_ui_fds && return 0
-    [ -t 0 ] && _open_wizard_ui_fd
+    [[ -t 0 ]] && _open_wizard_ui_fd
 }
 
 _tui_or_text_selection() {
     local ui_in_fd="$1" ui_out_fd="$2" rc=0
     _prompt_tui_selection "$ui_in_fd" "$ui_out_fd" || rc=$?
-    [ "$rc" -eq 0 ] && return 0
-    [ "$rc" -eq 1 ] && return 1
+    [[ "$rc" -eq 0 ]] && return 0
+    [[ "$rc" -eq 1 ]] && return 1
     _prompt_text_selection "$ui_in_fd" "$ui_out_fd"
 }
 
@@ -316,7 +327,7 @@ prompt_user_selection() {
     local noninteractive_choice="${NONINTERACTIVE_CHOICE:-}"
     local status=0
 
-    if [ -n "${NONINTERACTIVE_CHOICE+x}" ]; then
+    if [[ -n "${NONINTERACTIVE_CHOICE+x}" ]]; then
         _handle_noninteractive_choice "$noninteractive_choice" || status=$?
         _close_wizard_ui_fds
         return "$status"
@@ -332,7 +343,7 @@ _install_selection_tui_init() {
     if ! declare -F _validate_required_source_file >/dev/null 2>&1; then
         _validate_required_source_file() {
             local file_path="$1" label="$2"
-            if [ -f "$file_path" ]; then
+            if [[ -f "$file_path" ]]; then
                 return 0
             fi
             echo "Missing ${label}: $file_path" >&2
@@ -347,6 +358,6 @@ _install_selection_tui_init() {
     . "$tui_lib"
 }
 
-if [ "${ASUS_SELECTION_SKIP_TUI_INIT:-0}" != "1" ]; then
+if [[ "${ASUS_SELECTION_SKIP_TUI_INIT:-0}" != "1" ]]; then
     _install_selection_tui_init || return 1 2>/dev/null || exit 1
 fi
