@@ -31,7 +31,7 @@ _get_fan_icon() {
         2) echo "power-profile-power-saver" ;;
         *) echo "power-profile-balanced" ;;
     esac
-    return $?
+    return
 }
 
 _send_notification() {

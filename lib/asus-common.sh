@@ -294,7 +294,7 @@ _normalize_notif_prev_id() {
         *[!0-9]*|""|0) echo 0 ;;
         *) echo "$value" ;;
     esac
-    return $?
+    return
 }
 
 _get_notif_prev_id() {

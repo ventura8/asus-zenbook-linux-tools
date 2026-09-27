@@ -19,7 +19,7 @@ _resolve_cycle_user() {
     user="${user:-${SUDO_USER:-}}"
     user="${user:-$(id -un 2>/dev/null)}"
     echo "${user:-${USER:-}}"
-    return $?
+    return
 }
 
 _ydotool_key() {
@@ -189,7 +189,7 @@ _resolve_x11_display() {
     display_val=$(asus_session_env_value "DISPLAY" "$user")
     [[ -n "$display_val" ]] || display_val="${DISPLAY:-:0}"
     echo "$display_val"
-    return $?
+    return
 }
 
 _clear_osd_session_marker() {

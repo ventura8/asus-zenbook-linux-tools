@@ -22,7 +22,7 @@ _read_screenpad_value() {
     value=$(cat "$node" 2>/dev/null || echo 0)
     [[ "$value" =~ ^[0-9]+$ ]] || value=0
     echo "$value"
-    return $?
+    return
 }
 
 _read_screenpad_max_value() {
@@ -34,7 +34,7 @@ _read_screenpad_max_value() {
         max_value=255
     fi
     echo "$max_value"
-    return $?
+    return
 }
 
 _screenpad_brightness_state_file() {

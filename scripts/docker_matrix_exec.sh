@@ -128,7 +128,7 @@ _print_target_distros() {
         distro_name="${distro_name%%:*}"
         echo "- $distro_name -> $image"
     done
-    return $?
+    return
 }
 
 _matrix_log_slug_for_image() {

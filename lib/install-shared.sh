@@ -113,7 +113,7 @@ print_setup_banner() {
         printf '      %s\n' "$(_asus_gettext "Hardware features for your Linux desktop")"
         echo "=================================================="
     } >&"$out_fd"
-    return $?
+    return
 }
 
 _asus_soft() {

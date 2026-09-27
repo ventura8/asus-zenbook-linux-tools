@@ -308,7 +308,7 @@ _asus_secondary_desktop_family() {
         *gnome*|*ubuntu*|*pop*) echo "gnome" ;;
         *) echo "other" ;;
     esac
-    return $?
+    return
 }
 
 asus_desktop_family_from_string() {

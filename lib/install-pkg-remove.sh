@@ -256,7 +256,7 @@ _report_no_pkg_remover() {
     else
         echo "  ! No supported package manager detected; skipping dependency removal."
     fi
-    return $?
+    return
 }
 
 _report_pkg_remove_failure() {

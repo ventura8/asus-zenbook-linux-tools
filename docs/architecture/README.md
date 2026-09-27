@@ -70,6 +70,8 @@
 │   ├── asus-notif-icons.sh
 │   ├── asus-session.sh
 │   ├── install-components.sh
+│   ├── install-components-uinput.sh
+│   ├── install-components-units.sh
 │   ├── install-gnome.sh
 │   ├── install-kde.sh
 │   ├── install-lxqt.sh

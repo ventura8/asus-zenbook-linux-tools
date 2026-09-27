@@ -2143,4 +2143,6 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `display_helpers_watchdog.sh` and
   `display_helpers_backend.sh` to stay under the 600-line cap. Systemd unit lifecycle helpers
   used by `install-components.sh` live in
-  `lib/install-components-units.sh`; keep that sibling source wired when changing component activation.
+  `lib/install-components-units.sh`, and the asus-uinput group / udev helpers live in
+  `lib/install-components-uinput.sh`; keep both sibling sources wired when changing component
+  activation.

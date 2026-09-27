@@ -7,7 +7,7 @@ _ASUS_TUI_DEFAULT_ACCENT_RGB="53 132 228"
 _tui_selection_title() {
     _asus_gettextf "ASUS ZenBook Linux Setup %s" "$(_format_display_version)"
     echo
-    return $?
+    return
 }
 
 _tui_wrap_text() {
@@ -90,7 +90,7 @@ _desktop_default_on() {
     else
         echo "OFF"
     fi
-    return $?
+    return
 }
 
 _tui_desktop_cli_flag() {

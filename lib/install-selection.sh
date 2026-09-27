@@ -58,7 +58,7 @@ _default_all_components() {
     else
         echo "WMI TOUCHPAD SOUND"
     fi
-    return $?
+    return
 }
 
 _normalize_component_selection() {
@@ -183,7 +183,7 @@ _print_selection_explainer() {
         printf '  %s\n' "$(_asus_gettext "The interface language follows your desktop session.")"
         echo
     } >&"$ui_out_fd"
-    return $?
+    return
 }
 
 _print_text_selection_intro() {
@@ -197,7 +197,7 @@ _print_text_selection_intro() {
         _asus_gettext "Press Enter to install all recommended components, or enter 'all' or 'none'."
         echo
     } >&"$ui_out_fd"
-    return $?
+    return
 }
 
 _reject_text_selection() {
@@ -205,7 +205,7 @@ _reject_text_selection() {
     _asus_gettextf "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or none." "$input" \
         >&"$ui_out_fd"
     echo >&"$ui_out_fd"
-    return $?
+    return
 }
 
 _try_apply_text_selection() {
@@ -281,7 +281,7 @@ _handle_noninteractive_choice() {
 _set_default_interactive_choice() {
     INSTALL_CHOICE="$(_default_all_components)"
     echo "No interactive terminal detected; defaulting to: $INSTALL_CHOICE" >&2
-    return $?
+    return
 }
 
 _should_use_text_fallback() {

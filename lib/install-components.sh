@@ -98,7 +98,7 @@ _resolve_ydotool_session_user() {
     local target_user
     target_user=$(find_active_session_user || true)
     echo "${target_user:-${SUDO_USER:-${USER:-}}}"
-    return $?
+    return
 }
 
 _soft_systemctl() {
