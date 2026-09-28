@@ -574,7 +574,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
-  `.coverage.real-e2e.*` after runs under sudo.
+  `.coverage.real-e2e.*` after runs under sudo. `tests/e2e/real/` must keep its
+  `__init__.py` (discover `-t .` refuses a non-package start dir). `coverage` must
+  be importable and on `PATH` as root; for a user-site install pass
+  `sudo env PATH=… PYTHONPATH=<user site-packages> E2E_REAL_ALLOW_SYSTEM_CHANGES=1 …`.
 - Unit and mocked E2E runs use `tools/dot_test_runner.py` with **fail-fast enabled by
   default** (`--failfast`; opt out with `--no-failfast`). `build-and-test.sh` passes
   `--failfast` and exits immediately on the first failing suite instead of printing a
