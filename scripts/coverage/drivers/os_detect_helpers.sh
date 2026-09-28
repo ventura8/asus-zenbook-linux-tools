@@ -63,7 +63,7 @@ _run_pkg_installer_cmds() {
     # No timeout(1): cover the bash -c fallback branch.
     _exercise PATH="/usr/bin:/bin" _run_pkg_install_cmd "true" >/dev/null
     no_timeout=$(mktemp -d)
-    printf '#!/bin/sh\nexit 0\n' > "$no_timeout/bash"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$no_timeout/bash"
     chmod +x "$no_timeout/bash"
     _exercise PATH="$no_timeout" _run_pkg_install_cmd "true" >/dev/null
     _exercise PATH="$no_timeout" _run_pkg_install_cmd "false" >/dev/null
@@ -79,8 +79,8 @@ _run_pkg_path_exercises() {
     dnf_only=$(mktemp -d)
     pacman_only=$(mktemp -d)
     no_timeout=$(mktemp -d)
-    printf '#!/bin/sh\nexit 0\n' > "$apt_only/apt"
-    printf '#!/bin/sh\nexit 0\n' > "$apt_only/dpkg"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$apt_only/apt"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$apt_only/dpkg"
     chmod +x "$apt_only/apt" "$apt_only/dpkg"
     _exercise PATH="$apt_only" INSTALL_OS_ID=ubuntu INSTALL_OS_ID_LIKE=debian pkg_installer_cmd >/dev/null
     _exercise PATH="$apt_only" INSTALL_OS_ID=ubuntu INSTALL_OS_ID_LIKE=debian pkg_remover_cmd >/dev/null
@@ -90,11 +90,11 @@ _run_pkg_path_exercises() {
     _exercise INSTALL_OS_ID=rocky _rhel_family_skips_optional_rpm >/dev/null
     _exercise INSTALL_OS_ID=opensuse _resolve_any_supported_pkg_cmd >/dev/null
 
-    printf '#!/bin/sh\nexit 0\n' > "$dnf_only/dnf"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$dnf_only/dnf"
     chmod +x "$dnf_only/dnf"
     _exercise PATH="$dnf_only" _resolve_any_supported_pkg_cmd >/dev/null
 
-    printf '#!/bin/sh\nexit 0\n' > "$pacman_only/pacman"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$pacman_only/pacman"
     chmod +x "$pacman_only/pacman"
     _exercise PATH="$pacman_only" _resolve_any_supported_pkg_cmd >/dev/null
     _exercise _resolve_pkg_cmd_for_redhat_or_arch other >/dev/null
@@ -108,7 +108,7 @@ _run_pkg_path_exercises() {
     _exercise INSTALL_OS_ID=bogus INSTALL_OS_ID_LIKE='' pkg_remover_cmd >/dev/null
     _exercise _resolve_pkg_remove_cmd_for_family bogus >/dev/null
 
-    printf '#!/bin/sh\nexit 0\n' > "$no_timeout/bash"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$no_timeout/bash"
     chmod +x "$no_timeout/bash"
     _exercise PATH="$no_timeout" INSTALL_COMMAND_TIMEOUT=1 INSTALL_SKIP_TIMEOUT_WRAPPER=1 \
         _run_pkg_remove_cmd "true" >/dev/null
@@ -120,7 +120,7 @@ _make_pkg_manager_stubs() {
     local stub_dir="$1" tool
     mkdir -p "$stub_dir"
     for tool in apt apt-get dpkg dnf rpm pacman zypper yum sudo; do
-        printf '#!/bin/sh\nexit 0\n' > "$stub_dir/$tool"
+        printf '%s' "$_KCOV_STUB_EXIT0" > "$stub_dir/$tool"
         chmod +x "$stub_dir/$tool"
     done
 }
@@ -182,7 +182,7 @@ _run_remove_system_deps() {
     _exercise INSTALL_COMMAND_TIMEOUT=1 INSTALL_SKIP_TIMEOUT_WRAPPER=1 _run_pkg_remove_cmd "true" >/dev/null
     _exercise INSTALL_COMMAND_TIMEOUT=1 INSTALL_SKIP_TIMEOUT_WRAPPER=1 _run_pkg_remove_cmd "false" >/dev/null
     no_timeout=$(mktemp -d)
-    printf '#!/bin/sh\nexit 0\n' > "$no_timeout/bash"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$no_timeout/bash"
     chmod +x "$no_timeout/bash"
     _exercise PATH="$no_timeout" _run_pkg_remove_cmd "true" >/dev/null
     _exercise PATH="$no_timeout" _run_pkg_remove_cmd "false" >/dev/null

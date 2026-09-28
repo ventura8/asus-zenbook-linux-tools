@@ -3,7 +3,7 @@
 _resolve_merged_kcov_coverage_json() {
     local merged="$1" preferred
     preferred="$merged/kcov-merged/coverage.json"
-    if [ -f "$preferred" ]; then
+    if [[ -f "$preferred" ]]; then
         printf '%s\n' "$preferred"
         return 0
     fi
@@ -13,7 +13,7 @@ _resolve_merged_kcov_coverage_json() {
 
 _require_kcov_run_dirs() {
     local kcov_root="$1"
-    if [ -d "$kcov_root/runs" ] && [ -n "$(find "$kcov_root/runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]; then
+    if [[ -d "$kcov_root/runs" ]] && [[ -n "$(find "$kcov_root/runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]]; then
         return 0
     fi
     echo "  ✗ kcov --merge skipped: no run directories under $kcov_root/runs" >&2
@@ -30,7 +30,7 @@ _merge_kcov_runs() {
     kcov --merge "$merged" "$kcov_root/runs"/* 2>&1 | tee "$logs_dir/kcov-merge.log"
     merge_status=${PIPESTATUS[0]}
     eval "$saved_errexit"
-    if [ "$merge_status" -ne 0 ]; then
+    if [[ "$merge_status" -ne 0 ]]; then
         echo "  ✗ kcov --merge failed with status $merge_status" >&2
         return 1
     fi
@@ -41,11 +41,13 @@ _normalize_kcov_min_percent() {
     local min_percent="${KCOV_MIN_PERCENT:-90}"
     case "$min_percent" in
         ''|*[!0-9]*) min_percent=90 ;;
+        *) ;;
     esac
-    if [ "$min_percent" -lt 90 ]; then
+    if [[ "$min_percent" -lt 90 ]]; then
         min_percent=90
     fi
     printf '%s\n' "$min_percent"
+    return $?
 }
 
 _setup_kcov_temp_root() {
@@ -58,7 +60,7 @@ _setup_kcov_temp_root() {
     # single quotes because teardown re-evaluates it via eval.
     if [[ ${_KCOV_SAVED_EXIT_TRAP} =~ ^trap\ --\ \'(.*)\'\ EXIT$ ]]; then
         _KCOV_SAVED_EXIT_BODY="${BASH_REMATCH[1]}"
-    elif [ -n "${_KCOV_SAVED_EXIT_TRAP:-}" ]; then
+    elif [[ -n "${_KCOV_SAVED_EXIT_TRAP:-}" ]]; then
         echo "  ✗ Existing EXIT trap is not a single-line form; refusing to" \
             "replace it for kcov temp cleanup." >&2
         echo "  ✗ Current trap: ${_KCOV_SAVED_EXIT_TRAP}" >&2
@@ -78,6 +80,7 @@ _teardown_kcov_temp_root() {
     _cleanup_kcov_temp_root "$kcov_root" "$merged" "$cov_json"
     eval "${_KCOV_SAVED_EXIT_TRAP:-trap - EXIT}"
     unset _KCOV_SAVED_EXIT_TRAP _KCOV_SAVED_EXIT_BODY _KCOV_TEMP_ROOT _KCOV_MERGED _KCOV_JSON
+    return $?
 }
 
 _export_and_teardown_kcov_shard() {
@@ -96,8 +99,8 @@ _run_kcov_coverage_pipeline() {
     _run_and_merge_kcov_scenarios "$kcov_root" "$merged"
     status=$?
     set -e
-    [ "$status" -eq 0 ] || return 1
-    if [ -n "${ASUS_COVERAGE_SHARD:-}" ]; then
+    [[ "$status" -eq 0 ]] || return 1
+    if [[ -n "${ASUS_COVERAGE_SHARD:-}" ]]; then
         _export_and_teardown_kcov_shard "$kcov_root" "$merged"
         return $?
     fi
@@ -110,7 +113,7 @@ _run_kcov_coverage_pipeline() {
 _copy_kcov_runs_into_shard_dest() {
     local kcov_root="$1" dest="$2"
     mkdir -p "$dest/runs" || return 1
-    if [ -d "$kcov_root/runs" ]; then
+    if [[ -d "$kcov_root/runs" ]]; then
         cp -a "$kcov_root/runs"/. "$dest/runs/" || return 1
     fi
     return 0
@@ -138,13 +141,13 @@ _require_kcov_shard_ok_stamps() {
     local reports_root="$1" shard dest
     for shard in 1 2; do
         dest="$reports_root/coverage-shards/kcov-${shard}"
-        if [ ! -f "$dest/shard_ok" ]; then
+        if [[ ! -f "$dest/shard_ok" ]]; then
             echo "  ✗ Missing kcov shard stamp: $dest/shard_ok" \
                 "(shard did not export successfully; refusing stale merge)" >&2
             return 1
         fi
-        if [ ! -d "$dest/runs" ] || \
-            [ -z "$(find "$dest/runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]; then
+        if [[ ! -d "$dest/runs" ]] || \
+            [[ -z "$(find "$dest/runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]]; then
             echo "  ✗ kcov shard kcov-${shard} has stamp but no run dirs" >&2
             return 1
         fi
@@ -163,7 +166,7 @@ _run_and_merge_kcov_scenarios() {
     )
     status=$?
     set -e
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         echo "  ✗ kcov scenario suite failed (status $status)" >&2
         return 1
     fi
@@ -189,10 +192,10 @@ step_kcov_coverage() {
     _run_kcov_coverage_pipeline "$kcov_root" "$merged" "$min_percent"
     status=$?
     set -e
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         exit 1
     fi
-    if [ -n "${ASUS_COVERAGE_SHARD:-}" ]; then
+    if [[ -n "${ASUS_COVERAGE_SHARD:-}" ]]; then
         echo "  ✓ kcov coverage shard ${ASUS_COVERAGE_SHARD} scenarios completed (merge job gates %)."
         return 0
     fi
@@ -201,14 +204,14 @@ step_kcov_coverage() {
 
 _cleanup_kcov_temp_root() {
     local kcov_root="${1-}" merged="${2-}" cov_json="${3-}"
-    [ -n "$kcov_root" ] || return 0
-    [ -d "$kcov_root" ] || return 0
+    [[ -n "$kcov_root" ]] || return 0
+    [[ -d "$kcov_root" ]] || return 0
     _copy_kcov_report "$merged" "$cov_json" "$kcov_root/logs" || true
     rm -rf "$kcov_root"
 }
 
 _handle_missing_kcov() {
-    if [ "${REQUIRE_KCOV:-0}" = "1" ]; then
+    if [[ "${REQUIRE_KCOV:-0}" = "1" ]]; then
         echo "  ✗ kcov is required but not installed (set REQUIRE_KCOV=0 to allow skipping locally)." >&2; exit 1
     fi
     echo "  ! kcov not installed locally (skipping shell coverage gate; enforced in CI)."
@@ -217,7 +220,7 @@ _handle_missing_kcov() {
 resolve_reports_root() {
     local repo_root="${REPO_ROOT:-$(pwd)}"
     local preferred_root="$repo_root/reports"
-    if mkdir -p "$preferred_root" 2>/dev/null && [ -w "$preferred_root" ]; then
+    if mkdir -p "$preferred_root" 2>/dev/null && [[ -w "$preferred_root" ]]; then
         echo "$preferred_root"
         return 0
     fi
@@ -234,31 +237,33 @@ _copy_kcov_merged_report() {
     local merged="$1" cov_json="$2" report_dest="$3"
     # Wipe prior report artifacts so nested kcov HTML from older include-path
     # mistakes cannot accumulate under reports/kcov/<slug>/.
-    if [ -d "$report_dest" ]; then
+    if [[ -d "$report_dest" ]]; then
         find "$report_dest" -mindepth 1 -maxdepth 1 ! -name logs -exec rm -rf {} +
     else
         mkdir -p "$report_dest"
     fi
-    if [ -d "$merged" ]; then
+    if [[ -d "$merged" ]]; then
         cp -r "$merged/." "$report_dest/"
     fi
-    if [ -n "$cov_json" ] && [ -f "$cov_json" ]; then
+    if [[ -n "$cov_json" ]] && [[ -f "$cov_json" ]]; then
         cp "$cov_json" "$report_dest/coverage.json"
     fi
+    return $?
 }
 
 _copy_kcov_scenario_logs() {
     local logs_dir="$1" report_dest="$2"
-    if [ -n "$logs_dir" ] && [ -d "$logs_dir" ]; then
+    if [[ -n "$logs_dir" ]] && [[ -d "$logs_dir" ]]; then
         mkdir -p "$report_dest/logs"
         cp -r "$logs_dir/." "$report_dest/logs/"
     fi
+    return $?
 }
 
 _copy_kcov_scenario_logs_to_distro() {
     # Mirror scenario *.log into distro-logs for CI artifact upload on failure.
     local logs_dir="$1" reports_root="$2" dest
-    [ -n "$logs_dir" ] && [ -d "$logs_dir" ] || return 0
+    [[ -n "$logs_dir" ]] && [[ -d "$logs_dir" ]] || return 0
     dest="$reports_root/distro-logs/kcov-scenarios"
     mkdir -p "$dest"
     cp -r "$logs_dir/." "$dest/"
@@ -269,7 +274,7 @@ _copy_kcov_report() {
     local slug="${REPORT_DISTRO_SLUG:-local}"
     local reports_root report_dest
     reports_root=$(resolve_reports_root) || return 1
-    if [ -z "$reports_root" ] || [ ! -d "$reports_root" ]; then
+    if [[ -z "$reports_root" ]] || [[ ! -d "$reports_root" ]]; then
         echo "  ✗ Failed to resolve reports root for kcov copy" >&2
         return 1
     fi
@@ -288,12 +293,13 @@ _collect_kcov_shard_runs() {
         "$reports_root"/coverage-shards/kcov-*/runs \
         "$reports_root"/coverage-shards/coverage-shard-kcov-*/runs
     do
-        [ -d "$shard_runs" ] || continue
-        if [ -z "$(find "$shard_runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]; then
+        [[ -d "$shard_runs" ]] || continue
+        if [[ -z "$(find "$shard_runs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)" ]]; then
             continue
         fi
         cp -a "$shard_runs"/. "$dest_runs/"
     done
+    return $?
 }
 
 _copy_one_gha_coverage_shard_dir() {
@@ -304,7 +310,7 @@ _copy_one_gha_coverage_shard_dir() {
         *) return 0 ;;
     esac
     mode_shard=${name#coverage-shard-}
-    [ -n "$mode_shard" ] || return 0
+    [[ -n "$mode_shard" ]] || return 0
     mkdir -p "$dest_root/$mode_shard"
     cp -a "$src_dir"/. "$dest_root/$mode_shard/"
 }
@@ -312,7 +318,7 @@ _copy_one_gha_coverage_shard_dir() {
 _iter_gha_coverage_shard_dirs() {
     local src="$1" dest="$2" dir
     for dir in "$src"/coverage-shard-*; do
-        [ -d "$dir" ] || continue
+        [[ -d "$dir" ]] || continue
         _copy_one_gha_coverage_shard_dir "$dir" "$dest" || return 1
     done
 }
@@ -322,7 +328,7 @@ normalize_coverage_shard_artifacts() {
     local reports_root src dest
     reports_root=$(resolve_reports_root) || return 1
     src="$reports_root/coverage-shards-download"
-    [ -d "$src" ] || return 0
+    [[ -d "$src" ]] || return 0
     dest="$reports_root/coverage-shards"
     mkdir -p "$dest"
     _iter_gha_coverage_shard_dirs "$src" "$dest"
@@ -330,9 +336,9 @@ normalize_coverage_shard_artifacts() {
 
 _rewrite_kcov_docker_workspace_prefix() {
     local runs_dir="$1" repo_root script_dir
-    [ -d "$runs_dir" ] || return 0
+    [[ -d "$runs_dir" ]] || return 0
     repo_root="${KCOV_REPO_ROOT:-$(_kcov_repo_root)}"
-    [ -n "$repo_root" ] || return 1
+    [[ -n "$repo_root" ]] || return 1
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     python3 "$script_dir/rewrite_kcov_workspace_prefix.py" "$runs_dir" "$repo_root"
 }

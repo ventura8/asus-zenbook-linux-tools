@@ -324,7 +324,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     `scripts/run-lints.sh` discovers all repo `*.sh` via `_find_repo_files` (same prune set
     as Python/YAML/Markdown), plus Debian maintainer scripts; that includes coverage
     scenario entrypoints (`scripts/coverage/kcov-scenarios.sh`, `kcov-install-scenarios.sh`,
-    `kcov-screenpad-scenarios.sh`) and CI image helpers under `docker/images/tests/scripts/`.
+    `kcov-screenpad-scenarios.sh`, `kcov-display-scenarios.sh`) and CI image helpers under
+    `docker/images/tests/scripts/`. Shared kcov stub bodies (`_KCOV_STUB_EXIT0` /
+    `_KCOV_STUB_EXIT1` / `_KCOV_STUB_BODY_FAIL`) and the `_kcov_rm_scenario_tmp` EXIT-trap
+    cleanup live in `scripts/coverage/common.sh`; reuse them in scenarios and drivers instead
+    of repeating `'#!/bin/sh\nexit 0\n'` / `trap 'rm -rf "$tmp"' EXIT` literals.
     `_find_repo_files` must also prune `debian/asus-zenbook-linux-tools`, `debian/tmp`,
     `debian/.debhelper`, `artifacts`, `.rpm-build*`, `packaging/arch/pkg`,
     `packaging/arch/src`, `packaging/appimage/AppDir`, `packaging/flatpak/builddir`,
@@ -333,6 +337,26 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     `R0801` duplicate-code or ESLint `global` fail the lint gate. `run_deb_package_smoke.sh`
     cleans the debian tree before build and on EXIT; `--full` runs
     `step_preflight_clean_build_trees` for RPM/Arch/portable staging trees for the same reason.
+  - Shell style (SonarQube `shelldre` rules, all `sonar.sources` shell incl. `scripts/`):
+    use `[[ … ]]` for tests (never `[`/`test`; `-a`/`-o` become `&&`/`||`, keep the
+    right-hand side of `=`/`!=` quoted so it cannot become a glob); end every function
+    with an explicit `return`/`exit` (`return $?` preserves the last command's status —
+    do not swap in `return 0`); read positional parameters into named `local`s before
+    use; give every `case` a `*)` arm (`*) ;;` when nothing else applies); hoist
+    literals repeated ≥3 times into a file-level constant (unique file prefix in
+    sourced `lib/*.sh`); never change gettext msgids for this. **Arithmetic safety:**
+    inside `[[ ]]`, `-eq`/`-lt`/… evaluate operands as arithmetic expressions (a value
+    like `a[$(cmd)]` executes), so any operand read from env, files, sysfs or command
+    output must pass a `^[0-9]+$` check first (`_screenpad_state_mtime`,
+    `_docker_lock_grace_secs`, `_lock_is_duplicate` are the patterns). Arithmetic
+    also reads a leading `0` as octal (`08` errors, `0150` is 104, unlike `[ ]`), so
+    normalise zero-padded digit strings after that check by stripping leading zeros
+    with parameter expansion (`_asus_decimal` in `lib/install-shared.sh`, inline in
+    `_normalize_fan_value`). Do **not** use `$((10#$x))`: SonarQube's shell parser
+    reports it as a syntax error and silently skips the whole file (the scanner log
+    shows `WARN Syntax error in …`; `bin/asus-sound-fix.sh` and
+    `bin/asus-screenpad-brightness.sh` still use it). New `*)` arms
+    count toward CCN — extract a helper rather than exceed A-rank.
   - JavaScript: Clean `eslint` on `gnome/**/*.js` (flat config `eslint.config.mjs`; no inline
     `eslint-disable`). GNOME Shell globals such as `global` are declared in the config.
     `scripts/run-lints.sh` `step_eslint` must `npm ci` into the workspace when
@@ -554,7 +578,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
-  `.coverage.real-e2e.*` after runs under sudo.
+  `.coverage.real-e2e.*` after runs under sudo. `tests/e2e/real/` must keep its
+  `__init__.py` (discover `-t .` refuses a non-package start dir). `coverage` must
+  be importable and on `PATH` as root; for a user-site install pass
+  `sudo env PATH=… PYTHONPATH=<user site-packages> E2E_REAL_ALLOW_SYSTEM_CHANGES=1 …`.
 - Unit and mocked E2E runs use `tools/dot_test_runner.py` with **fail-fast enabled by
   default** (`--failfast`; opt out with `--no-failfast`). `build-and-test.sh` passes
   `--failfast` and exits immediately on the first failing suite instead of printing a
@@ -686,7 +713,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   from the root `VERSION`, and `secrets.SONAR_TOKEN`. It is skipped for fork
   PRs (no token) and still analyses when a gate fails, so findings stay
   visible. Keep the report paths in `sonar-project.properties` in sync with
-  the merge step (guarded by `tests/unit/shell/test_pipeline_ci_parity.py`).
+  the merge step (guarded by `tests/unit/shell/test_pipeline_ci_parity_sonar.py`).
   SonarQube findings are **additional** to these gates, never a replacement:
   verify each finding against the code, never weaken a test to silence a rule,
   and never add suppression comments (`# NOSONAR`, `noqa`, `nosec`,
@@ -718,7 +745,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   root-owned (instead of spinning until the lock timeout). Local `--full` wave 2 uses
   `_wait_bg_jobs_fail_fast` (and `run_docker_matrix.sh` parallel compat uses
   `wait -n -p` + `_kill_pgid_list` delegating to `_kill_pgid_list` in
-  `docker-utils.sh`) so the first failing release/coverage/compat lane terminates
+  `docker-utils-parallel.sh`, sourced by `docker-utils.sh`) so the first failing release/coverage/compat lane terminates
   sibling **process groups** (`setsid` workers + `kill -TERM -- "-$pid"`) instead
   of running every matrix to completion.
   CI workflow concurrency uses `group: ${{ github.workflow }}` with
@@ -1073,7 +1100,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   so nested quotes do not inflate CCN). Empty selection is a successful no-op (no deps, no runtime deploy,
   no components; message `No components were selected. Nothing was installed.`). TUI Ok with
   nothing checked, `NONINTERACTIVE_CHOICE=` / `none`, or text `,` apply empty; Esc/Cancel still
-  aborts; bare Enter in text mode still defaults to all recommended. Kcov `install_none` runs
+  aborts (TUI exit 1 → `Installation cancelled by user.`; `_prompt_tui_selection` captures the
+  status with `|| tui_rc=$?` — `$?` after a failed `if …; fi` is 0 and silently fell back to text
+  mode); bare Enter in text mode still defaults to all recommended. Kcov `install_none` runs
   `install.sh` with `NONINTERACTIVE_CHOICE=none` so `_print_empty_install_completion` is covered.
   Helper load order sources
   `lib/install-shared.sh` before `lib/install-os-detection.sh` and desktop helpers.
@@ -1674,7 +1703,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `bin/asus-display-mode.sh` bootstrap/main/lock paths; session covers watchdog +
   state; backend covers OSD/Mutter/settings. Prefer same-shell calls (not
   `_exercise` subshells) for product lines under kcov — nested `_exercise` often
-  drops attribution; put critical same-shell work early in each slice. Do not call
+  drops attribution; put critical same-shell work early in each slice. Adding
+  `return $?` / `*) ;;` lines makes them executable for kcov, so a function reached
+  only via `_exercise` can dip a file under 90% (`common_helpers`
+  `_run_common_notif_id_near_misses` and the `mate_helpers` read-only-dir mv
+  failures are the same-shell fix). Do not call
   blocking `_run_internal_watchdog` under kcov;
   stub `gdbus` fail-fast in the backend slice (listening-but-dead AF_UNIX hangs).
   `_ensure_watchdog` RETURN traps must expand `lock_dir` when armed (not deferred
@@ -2126,4 +2159,6 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `display_helpers_watchdog.sh` and
   `display_helpers_backend.sh` to stay under the 600-line cap. Systemd unit lifecycle helpers
   used by `install-components.sh` live in
-  `lib/install-components-units.sh`; keep that sibling source wired when changing component activation.
+  `lib/install-components-units.sh`, and the asus-uinput group / udev helpers live in
+  `lib/install-components-uinput.sh`; keep both sibling sources wired when changing component
+  activation.

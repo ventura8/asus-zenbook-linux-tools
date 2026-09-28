@@ -6,20 +6,20 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 INSTALL_SHARED_LIB="$REPO_ROOT/lib/install-shared.sh"
 cd "$REPO_ROOT"
 
-if [ ! -f "$INSTALL_SHARED_LIB" ]; then
+if [[ ! -f "$INSTALL_SHARED_LIB" ]]; then
     echo "Missing installer shared helper: $INSTALL_SHARED_LIB" >&2
     exit 1
 fi
 # shellcheck source=../lib/install-shared.sh
 source "$INSTALL_SHARED_LIB"
 
-if [ "${E2E_REAL_ALLOW_SYSTEM_CHANGES:-0}" != "1" ]; then
+if [[ "${E2E_REAL_ALLOW_SYSTEM_CHANGES:-0}" != "1" ]]; then
     echo "Refusing to run real-system end-to-end tests without explicit opt-in." >&2
     echo "Run with: sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh" >&2
     exit 1
 fi
 
-if [ "$EUID" -ne 0 ]; then
+if [[ "$EUID" -ne 0 ]]; then
     echo "Real-system E2E tests require root privileges." >&2
     echo "Run with: sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh" >&2
     exit 1
@@ -30,17 +30,25 @@ if ! command -v coverage &>/dev/null; then
     exit 1
 fi
 
+_real_e2e_cleanup_timeout() {
+    local cleanup_timeout="${ASUS_REAL_E2E_CLEANUP_TIMEOUT_SECS:-90}"
+    case "$cleanup_timeout" in
+        ''|*[!0-9]*) cleanup_timeout=90 ;;
+        *) ;;
+    esac
+    if [[ "$cleanup_timeout" -lt 30 ]]; then
+        cleanup_timeout=30
+    fi
+    printf '%s\n' "$cleanup_timeout"
+    return 0
+}
+
 cleanup_real_e2e() {
     trap - EXIT INT TERM
     local test_rc="$1"
     local cleanup_rc=0
-    local cleanup_timeout="${ASUS_REAL_E2E_CLEANUP_TIMEOUT_SECS:-90}"
-    case "$cleanup_timeout" in
-        ''|*[!0-9]*) cleanup_timeout=90 ;;
-    esac
-    if [ "$cleanup_timeout" -lt 30 ]; then
-        cleanup_timeout=30
-    fi
+    local cleanup_timeout
+    cleanup_timeout="$(_real_e2e_cleanup_timeout)"
     echo "Running post-test cleanup via uninstall.sh..."
     mkdir -p "$REPO_ROOT/reports/distro-logs"
     cleanup_rc=0
@@ -50,9 +58,9 @@ cleanup_real_e2e() {
         || cleanup_rc=$?
     _chown_real_e2e_artifacts
 
-    if [ "$cleanup_rc" -ne 0 ]; then
+    if [[ "$cleanup_rc" -ne 0 ]]; then
         echo "Warning: uninstall cleanup failed with exit code $cleanup_rc." >&2
-        if [ "$test_rc" -eq 0 ]; then
+        if [[ "$test_rc" -eq 0 ]]; then
             exit "$cleanup_rc"
         fi
     fi
@@ -61,10 +69,10 @@ cleanup_real_e2e() {
 }
 
 _chown_real_e2e_artifacts() {
-    [ -n "${SUDO_UID:-}" ] || return 0
-    [ -n "${SUDO_GID:-}" ] || return 0
+    [[ -n "${SUDO_UID:-}" ]] || return 0
+    [[ -n "${SUDO_GID:-}" ]] || return 0
     _asus_soft chown -R "${SUDO_UID}:${SUDO_GID}" "$REPO_ROOT/reports"
-    if [ -f "$REPO_ROOT/.coverage.real-e2e" ]; then
+    if [[ -f "$REPO_ROOT/.coverage.real-e2e" ]]; then
         _asus_soft chown "${SUDO_UID}:${SUDO_GID}" "$REPO_ROOT/.coverage.real-e2e"
     fi
     # coverage.py may also emit numbered companion files for parallel runs.

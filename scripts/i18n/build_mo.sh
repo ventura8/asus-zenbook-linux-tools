@@ -14,7 +14,7 @@ command -v msgfmt >/dev/null 2>&1 || {
 
 python3 "$SCRIPT_DIR/check_catalog_quality.py"
 while IFS= read -r language; do
-    [ -n "$language" ] || continue
+    [[ -n "$language" ]] || continue
     target_dir="$OUTPUT_ROOT/$language/LC_MESSAGES"
     mkdir -p "$target_dir"
     msgfmt --check --check-format \

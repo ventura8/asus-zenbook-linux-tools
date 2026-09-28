@@ -73,6 +73,27 @@ class TestInstallVersionBanner(InstallTestBase):
         self.assertIn("WMI", proc.stdout)
         self.assertIn("choice=", proc.stdout)
 
+    def test_tui_escape_cancels_instead_of_text_fallback(self):
+        """Esc in the ncurses TUI must cancel (status 1), not drop to text selection."""
+        shared = self.repo_root / "lib" / "install-shared.sh"
+        i18n = self.repo_root / "lib" / "asus-i18n.sh"
+        selection = self.repo_root / "lib" / "install-selection.sh"
+        proc = run_bash_c(
+            (
+                f"source {shlex.quote(str(shared))}; "
+                f"source {shlex.quote(str(i18n))}; "
+                f"source {shlex.quote(str(selection))}; "
+                "ASUS_TUI_SCRIPT_KEYS=$'\\x1b' ASUS_DESKTOP_FAMILY=gnome "
+                "_prompt_tui_selection 0 1; "
+                'printf "rc=%s\\n" "$?"'
+            ),
+            timeout=10,
+            log_name="tui-scripted-escape",
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr + proc.stdout)
+        self.assertIn("rc=1", proc.stdout)
+        self.assertIn("Installation cancelled by user.", proc.stdout)
+
     def test_version_matches_pyproject(self):
         """VERSION file must match tool.poetry.version in pyproject.toml."""
         file_version = (self.repo_root / "VERSION").read_text(encoding="utf-8").strip()

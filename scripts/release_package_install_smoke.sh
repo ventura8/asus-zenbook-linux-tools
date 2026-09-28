@@ -9,12 +9,12 @@ _release_appimage_install_smoke() {
     local artifact="$1"
     local magic="" extract_root="" abs_artifact=""
     chmod +x "$artifact"
-    if [ ! -x "$artifact" ]; then
+    if [[ ! -x "$artifact" ]]; then
         printf 'AppImage is not executable: %s\n' "$artifact" >&2
         return 1
     fi
     magic="$(dd if="$artifact" bs=1 skip=8 count=3 2>/dev/null | od -An -tx1 | tr -d ' \n')"
-    if [ "$magic" != "414902" ]; then
+    if [[ "$magic" != "414902" ]]; then
         printf 'AppImage Type 2 magic (offset 8: AI\\x02) not found: %s\n' "$artifact" >&2
         return 1
     fi

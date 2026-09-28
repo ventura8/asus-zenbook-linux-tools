@@ -23,15 +23,16 @@ _link_iso_tools() {
     local -a tools=(
         bash sh cut mkdir cat rm chmod true getent env dirname tail
     )
-    if [ "$#" -gt 0 ]; then
+    if [[ "$#" -gt 0 ]]; then
         tools=("$@")
     fi
     mkdir -p "$iso"
     for tool in "${tools[@]}"; do
         src=$(type -P "$tool" 2>/dev/null || true)
-        [ -n "$src" ] || continue
+        [[ -n "$src" ]] || continue
         ln -sf "$src" "$iso/$tool"
     done
+    return $?
 }
 
 _link_iso_additional_tools() {
@@ -39,14 +40,15 @@ _link_iso_additional_tools() {
     shift
     for tool in "$@"; do
         src=$(type -P "$tool" 2>/dev/null) || src=""
-        [ -n "$src" ] || continue
+        [[ -n "$src" ]] || continue
         ln -sf "$src" "$iso/$tool"
     done
+    return $?
 }
 
 _driver_set_prefix() {
     local owned_name="$1" prefix
-    if [ -n "${DESTDIR:-}" ]; then
+    if [[ -n "${DESTDIR:-}" ]]; then
         prefix="$DESTDIR"
         printf -v "$owned_name" '%s' 0
     else
@@ -59,12 +61,12 @@ _driver_set_prefix() {
 _driver_source_required() {
     local path="$1" label="$2" quiet="${3:-}"
     local status=0
-    if [ "$quiet" = "quiet" ]; then
+    if [[ "$quiet" = "quiet" ]]; then
         source "$path" >/dev/null 2>&1 || status=$?
     else
         source "$path" || status=$?
     fi
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         echo "$label: failed to source ${path#"$REPO_ROOT/"}" >&2
         return 1
     fi
@@ -83,17 +85,19 @@ _driver_bind_required() {
 _restore_or_unset() {
     # Restore exported var from saved value; unset when saved was empty.
     local name="$1" saved="$2"
-    if [ -n "$saved" ]; then
+    if [[ -n "$saved" ]]; then
         printf -v "$name" '%s' "$saved"
         # ${name?} marks intentional nameref export (SC2163).
         export "${name?}"
     else
         unset "$name"
     fi
+    return $?
 }
 
 _exercise_apply_env_assigns() {
     _kcov_shift_leading_env_exports "$@"
+    return $?
 }
 
 _exercise_propagate_after_other_assign() {
@@ -138,12 +142,13 @@ _exercise() {
     propagate="$(_exercise_propagate_status "${KCOV_EXERCISE_RETURN_STATUS:-0}" "$@" "")"
     case "$-" in
         *e*) had_errexit=1 ;;
+        *) ;;
     esac
     set +e
     ( _exercise_apply_env_assigns "$@" )
     status=$?
     _restore_errexit_state "$had_errexit"
-    if [ "$propagate" = "1" ]; then
+    if [[ "$propagate" = "1" ]]; then
         return "$status"
     fi
     return 0
@@ -155,12 +160,13 @@ _expect_bash_snippet_failure() {
     local status=0 had_errexit=0
     case "$-" in
         *e*) had_errexit=1 ;;
+        *) ;;
     esac
     set +e
     bash -o pipefail -c "$snippet" 2>&1 | tee "$log_path" >&2
     status=${PIPESTATUS[0]}
     _restore_errexit_state "$had_errexit"
-    if [ "$status" -eq 0 ]; then
+    if [[ "$status" -eq 0 ]]; then
         echo "$fail_message" >&2
         return 1
     fi

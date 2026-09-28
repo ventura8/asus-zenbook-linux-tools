@@ -6,20 +6,21 @@ _setup_display_backend_tree() {
     mkdir -p "$mock" "$tmp/sys/backlight/asus_screenpad" "$tmp/notif/$(id -u)" \
         "$tmp/bus/$(id -u)" "$tmp/run/user/$(id -u)"
     _driver_bind_required "$tmp/bus/$(id -u)/bus" display_helpers
-    printf '#!/bin/sh\nexit 0\n' > "$mock/ydotool"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/xdotool"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/gnome-control-center"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/systemsettings"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/systemsettings5"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/xfce4-display-settings"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/lxqt-config-monitor"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/systemctl"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/ydotool"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/xdotool"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/gnome-control-center"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/systemsettings"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/systemsettings5"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/xfce4-display-settings"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/lxqt-config-monitor"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/systemctl"
     # Fail-fast D-Bus stub: a listening-but-dead AF_UNIX bus hangs real gdbus/Mutter.
     printf '#!/bin/sh\necho "gdbus: stub fail" >&2\nexit 1\n' > "$mock/gdbus"
     # Mutter helpers require timeout on PATH (fail closed when absent).
     printf '#!/bin/sh\nshift; exec "$@"\n' > "$mock/timeout"
     chmod +x "$mock"/*
     _driver_bind_required "$sock" display_helpers
+    return $?
 }
 
 _export_display_backend_env() {
@@ -34,12 +35,13 @@ _export_display_backend_env() {
     export RUN_USER_ROOT="$tmp/run/user"
     export PATH="$mock:$saved_path"
     # Prefer per-user socket under RUN_USER_ROOT / DBUS_BUS_ROOT.
-    if [ -S "$sock" ]; then
+    if [[ -S "$sock" ]]; then
         ln -sf "$sock" "$RUN_USER_ROOT/$(id -u)/.ydotool_socket"
     fi
     printf '255\n' > "$tmp/sys/backlight/asus_screenpad/brightness"
     # Driver runs as file owner; 644 is sufficient (no privilege drop).
     chmod 644 "$tmp/sys/backlight/asus_screenpad/brightness"
+    return $?
 }
 
 _run_display_backend_ydotool_paths() {
@@ -61,6 +63,7 @@ _run_display_backend_ydotool_paths() {
     ASUS_DISPLAY_MODE_DISABLE_YDOTOOL=1 ASUS_DISPLAY_MODE_FORCE_LOCAL=0 \
         ASUS_DISPLAY_MODE_FORCE_XDOTOOL=1 DISPLAY=:0 XDG_SESSION_TYPE=x11 \
         _soft _trigger_xdotool_display_switch
+    return $?
 }
 
 _run_display_backend_settings_paths() {
@@ -72,6 +75,7 @@ _run_display_backend_settings_paths() {
     ASUS_DESKTOP_FAMILY=cinnamon _soft _open_display_settings
     ASUS_DESKTOP_FAMILY=mate _soft _open_display_settings
     ASUS_DESKTOP_FAMILY=other _soft _open_display_settings
+    return $?
 }
 
 _run_display_backend_screenpad_paths() {
@@ -90,6 +94,7 @@ _run_display_backend_screenpad_paths() {
     mkdir -p "$tmp/state/$(id -u)"
     echo 77 > "$tmp/state/$(id -u)/screenpad_brightness"
     STATE_DIR="$tmp/state" _soft _mutter_screenpad_on_level >/dev/null
+    return $?
 }
 
 _run_display_backend_mutter_paths() {
@@ -105,6 +110,7 @@ _run_display_backend_mutter_paths() {
     _soft _apply_mutter_layout "$(id -un)" "$tmp/bus/$(id -u)/bus" main_only
     _soft _detect_current_mutter_state "$(id -un)" "$tmp/bus/$(id -u)/bus" >/dev/null
     _soft _get_next_profile_info "$(id -un)" "$tmp/bus/$(id -u)/bus" all >/dev/null
+    return $?
 }
 
 _run_display_backend_fallback_paths() {
@@ -124,16 +130,18 @@ _run_display_backend_fallback_paths() {
         ASUS_DESKTOP_FAMILY=xfce _soft _try_fallback_backends
     _soft _is_duplicate_invoke
     _soft _is_duplicate_invoke
+    return $?
 }
 
 _run_display_backend_open_fail_paths() {
     local mock="$1" tmp="$2"
     # Force open-osd failure branches.
-    printf '#!/bin/sh\nexit 1\n' > "$mock/ydotool"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/ydotool"
     ASUS_DISPLAY_MODE_FORCE_LOCAL=1 _soft _open_osd_session_ydotool "$tmp/state-fail" "" ""
-    printf '#!/bin/sh\nexit 1\n' > "$mock/xdotool"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/xdotool"
     ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
         _soft _open_osd_session_xdotool "$tmp/state-fail2" "" ":0"
+    return $?
 }
 
 _run_display_backend_helpers() {
@@ -152,6 +160,7 @@ _run_display_backend_helpers() {
     _run_display_backend_fallback_paths
     _run_display_backend_open_fail_paths "$mock" "$tmp"
     _run_display_backend_cancel_exercises "$ASUS_DISPLAY_MODE_STATE_PREFIX" "$sock" "$tmp"
+    return $?
 }
 
 _run_display_backend_cancel_mark_paths() {
@@ -159,12 +168,13 @@ _run_display_backend_cancel_mark_paths() {
     _soft _mark_osd_cancel_in_progress "$prefix"
     _soft _clear_osd_cancel_flag "$prefix"
     _soft _cancel_osd_session "$prefix"
+    return $?
 }
 
 _run_display_backend_cancel_open_paths() {
     local prefix="$1" sock="$2" tmp="$3" mock="$3/bin"
     # Working ydotool + missing watchdog entry → finalize dismiss path.
-    printf '#!/bin/sh\nexit 0\n' > "$mock/ydotool"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/ydotool"
     chmod +x "$mock/ydotool"
     _soft rm -f "${prefix}.session" "${prefix}.ctx" "${prefix}.cancel"
     _ASUS_DISPLAY_MODE_ENTRY="" BIN_ROOT="$tmp/missing-bin" \
@@ -181,6 +191,7 @@ _run_display_backend_cancel_open_paths() {
     chmod +x "$mock/xdotool"
     ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
         _soft _open_osd_session_xdotool "$prefix" "$(id -un)" ":0"
+    return $?
 }
 
 _run_display_backend_cancel_busy_paths() {
@@ -198,6 +209,7 @@ _run_display_backend_cancel_busy_paths() {
     _soft _write_ctx "$prefix" "$(id -un)" "$sock" "ydotool"
     _soft _mark_osd_cancel_in_progress "$prefix"
     _soft _release_osd_modifiers "$prefix"
+    return $?
 }
 
 _run_display_backend_cancel_exercises() {
@@ -205,4 +217,5 @@ _run_display_backend_cancel_exercises() {
     _run_display_backend_cancel_mark_paths "$prefix"
     _run_display_backend_cancel_open_paths "$prefix" "$sock" "$tmp"
     _run_display_backend_cancel_busy_paths "$prefix" "$sock" "$tmp"
+    return $?
 }

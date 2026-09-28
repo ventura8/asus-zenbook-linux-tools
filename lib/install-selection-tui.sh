@@ -7,6 +7,7 @@ _ASUS_TUI_DEFAULT_ACCENT_RGB="53 132 228"
 _tui_selection_title() {
     _asus_gettextf "ASUS ZenBook Linux Setup %s" "$(_format_display_version)"
     echo
+    return
 }
 
 _tui_wrap_text() {
@@ -24,6 +25,7 @@ _tui_selection_message() {
     # Component details live under each checklist row; keep the header short.
     keys=$(_asus_gettext "Space selects a component. Enter confirms. Esc cancels.")
     _tui_wrap_text "$wrap_width" "$keys"
+    return $?
 }
 
 _tui_python_bin() {
@@ -32,7 +34,7 @@ _tui_python_bin() {
 
 _tui_try_module_candidate() {
     local candidate="$1"
-    [ -f "$candidate" ] || return 1
+    [[ -f "$candidate" ]] || return 1
     printf '%s' "$candidate"
 }
 
@@ -44,7 +46,7 @@ _tui_module_path() {
 
 _tui_desktop_family_hint() {
     local family="${ASUS_DESKTOP_FAMILY:-}"
-    if [ -n "$family" ]; then
+    if [[ -n "$family" ]]; then
         printf '%s' "$family"
         return 0
     fi
@@ -60,11 +62,12 @@ _tui_query_python_accent() {
         "$py" -c \
         'from asus_install_selection_accent import format_accent_rgb, resolve_accent_rgb; import os; print(format_accent_rgb(resolve_accent_rgb(prefer_family=os.environ.get("ASUS_DESKTOP_FAMILY",""))))' \
         2>/dev/null || true
+    return $?
 }
 
 _tui_resolve_accent_rgb() {
     local py mod rgb family
-    if [ -n "${ASUS_TUI_ACCENT_RGB:-}" ]; then
+    if [[ -n "${ASUS_TUI_ACCENT_RGB:-}" ]]; then
         printf '%s' "$ASUS_TUI_ACCENT_RGB"
         return 0
     fi
@@ -87,12 +90,14 @@ _desktop_default_on() {
     else
         echo "OFF"
     fi
+    return
 }
 
 _tui_desktop_cli_flag() {
-    if [ "$(_desktop_default_on)" = "ON" ]; then
+    if [[ "$(_desktop_default_on)" = "ON" ]]; then
         printf '%s\n' --desktop-on
     fi
+    return $?
 }
 
 _run_tui_selection() {
@@ -123,7 +128,6 @@ _run_tui_selection() {
 
 _apply_tui_selection() {
     local choice_tmp="$1"
-    local ui_out_fd="$2"
     local raw_selection parsed normalize_status
 
     raw_selection=$(tr '\n' ',' <"$choice_tmp")
@@ -143,7 +147,7 @@ _handle_tui_selection_error() {
     local choice_tmp="$3"
 
     rm -f "$choice_tmp"
-    if [ "$tui_rc" -eq 1 ]; then
+    if [[ "$tui_rc" -eq 1 ]]; then
         _asus_gettext "Installation cancelled by user." >&"$ui_out_fd"
         echo >&"$ui_out_fd"
         return 1
@@ -156,20 +160,22 @@ _prompt_tui_selection_prepare() {
     _tui_python_bin >/dev/null || return 2
     _tui_module_path >/dev/null || return 2
     _choice_ref=$(mktemp) || return 1
-    [ -n "$_choice_ref" ] || return 1
+    [[ -n "$_choice_ref" ]] || return 1
     return 0
 }
 
 _prompt_tui_selection() {
     local ui_in_fd="$1"
     local ui_out_fd="$2"
-    local choice_tmp tui_rc
+    local choice_tmp tui_rc=0
 
     _prompt_tui_selection_prepare choice_tmp || return $?
-    if _run_tui_selection "$ui_in_fd" "$ui_out_fd" "$choice_tmp"; then
-        _apply_tui_selection "$choice_tmp" "$ui_out_fd"
+    # Capture the TUI status directly: `$?` after `if …; fi` is 0 when the
+    # condition failed, which turned Esc/Cancel (exit 1) into the text fallback.
+    _run_tui_selection "$ui_in_fd" "$ui_out_fd" "$choice_tmp" || tui_rc=$?
+    if [[ "$tui_rc" -eq 0 ]]; then
+        _apply_tui_selection "$choice_tmp"
         return $?
     fi
-    tui_rc=$?
     _handle_tui_selection_error "$tui_rc" "$ui_out_fd" "$choice_tmp"
 }

@@ -2,12 +2,13 @@
 
 _kcov_driver() {
     printf '%s\n' "./scripts/coverage/drivers/$1"
+    return $?
 }
 
 _run_kcov_camera_not_writable() {
     local kcov_root="$1" camera_node="$2" platform_root
     platform_root=$(dirname "$camera_node")
-    if [ "$(id -u)" -eq 0 ] && command -v runuser >/dev/null 2>&1; then
+    if [[ "$(id -u)" -eq 0 ]] && command -v runuser >/dev/null 2>&1; then
         # Root+runuser path cannot use kcov tracing, but must still capture logs and
         # fail fast on unexpected exits (expected: camera node not writable → 1).
         _kcov_expect_direct_run_env "1" "$kcov_root" cam_not_writable \
@@ -26,7 +27,7 @@ _run_kcov_camera_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 1 > "$tmp/c"; chmod 666 "$tmp/c"
         _kcov_expect_run_env "0" "$kcov_root" cam_enabled \
             SYS_PLATFORM_ROOT="$tmp" ASUS_CAMERA_NODE="$tmp/c" ./bin/asus-camera-toggle.sh
@@ -57,7 +58,7 @@ _run_kcov_camera_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/usb/dev1"
         printf '13d3' > "$tmp/usb/dev1/idVendor"
         printf '1234' > "$tmp/usb/dev1/idProduct"
@@ -69,7 +70,7 @@ _run_kcov_camera_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/usb/dev1" "$tmp/usb/dev1:1.0"
         printf '13d3' > "$tmp/usb/dev1/idVendor"
         printf '4321' > "$tmp/usb/dev1/idProduct"
@@ -82,7 +83,7 @@ _run_kcov_camera_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/usb/dev1"
         printf '13d3' > "$tmp/usb/dev1/idVendor"
         printf '1234' > "$tmp/usb/dev1/idProduct"
@@ -95,13 +96,14 @@ _run_kcov_camera_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         ln -s /nonexistent/camera-node "$tmp/c"
         _kcov_expect_run_env "1" "$kcov_root" cam_symlink_unwritable \
             SYS_PLATFORM_ROOT="$tmp" ASUS_CAMERA_NODE="$tmp/c" ./bin/asus-camera-toggle.sh
     )
     _kcov_expect_run_env "0" "$kcov_root" cam_helpers \
         REPO_ROOT="$(pwd)" "$(_kcov_driver camera_helpers.sh)"
+    return $?
 }
 
 _make_fake_powerprofilesctl() {
@@ -126,6 +128,7 @@ case "\$1" in
 esac
 EOF
     chmod +x "$bin_dir/powerprofilesctl"
+    return $?
 }
 
 _run_kcov_fan_scenarios() {
@@ -138,7 +141,7 @@ _run_kcov_fan_scenarios() {
     for mode in 0 1 2; do
         (
             tmp=$(mktemp -d)
-            trap 'rm -rf "$tmp"' EXIT
+            trap _kcov_rm_scenario_tmp EXIT
             echo "$mode" > "$tmp/f"; chmod 666 "$tmp/f"
             _kcov_expect_run_env "0" "$kcov_root" "fan_mode_$mode" \
                 SYS_PLATFORM_ROOT="$tmp" ASUS_FAN_NODE="$tmp/f" ASUS_FAN_USE_PPD=0 \
@@ -147,7 +150,7 @@ _run_kcov_fan_scenarios() {
     done
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 0 > "$tmp/f"; chmod 666 "$tmp/f"
         printf 'balanced\n' > "$tmp/ppd"
         _make_fake_powerprofilesctl "$tmp/bin" "$tmp/ppd"
@@ -157,7 +160,7 @@ _run_kcov_fan_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 1 > "$tmp/f"; chmod 666 "$tmp/f"
         printf 'performance\n' > "$tmp/ppd"
         _make_fake_powerprofilesctl "$tmp/bin" "$tmp/ppd"
@@ -167,7 +170,7 @@ _run_kcov_fan_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 2 > "$tmp/f"; chmod 666 "$tmp/f"
         printf 'power-saver\n' > "$tmp/ppd"
         _make_fake_powerprofilesctl "$tmp/bin" "$tmp/ppd"
@@ -177,7 +180,7 @@ _run_kcov_fan_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 0 > "$tmp/f"; chmod 666 "$tmp/f"
         printf 'balanced\n' > "$tmp/ppd"
         _make_fake_powerprofilesctl "$tmp/bin" "$tmp/ppd" fail
@@ -187,7 +190,7 @@ _run_kcov_fan_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 0 > "$tmp/f"; chmod 666 "$tmp/f"
         printf 'weird-profile\n' > "$tmp/ppd"
         _make_fake_powerprofilesctl "$tmp/bin" "$tmp/ppd"
@@ -197,7 +200,7 @@ _run_kcov_fan_scenarios() {
     )
     (
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         echo 0 > "$tmp/f"; chmod 666 "$tmp/f"
         _kcov_expect_run_env "0" "$kcov_root" fan_ppd_disabled \
             SYS_PLATFORM_ROOT="$tmp" ASUS_FAN_NODE="$tmp/f" \
@@ -212,6 +215,7 @@ _run_kcov_fan_scenarios() {
     )
     _kcov_expect_run_env "0" "$kcov_root" fan_helpers \
         REPO_ROOT="$(pwd)" "$(_kcov_driver fan_helpers.sh)"
+    return $?
 }
 
 # shellcheck source=scripts/coverage/kcov-screenpad-scenarios.sh
@@ -230,7 +234,7 @@ _run_kcov_installed_lib_source_scenarios() {
         mkdir -p "$tmp_root/empty"
         _kcov_make_stub "$tmp_root/loginctl"
         trap 'rm -rf "$tmp_root"' EXIT INT TERM
-        case "$-" in *e*) had_errexit=1 ;; esac
+        case "$-" in *e*) had_errexit=1 ;; *) ;; esac
         _kcov_expect_run_env "$expected_success" "$kcov_root" "${label_prefix}_installed_lib" \
             PATH="$tmp_root:$PATH" \
             ASUS_FORCE_INSTALLED_LIB=1 ASUS_INSTALLED_LIB_DIR="$repo_root/lib" \
@@ -264,155 +268,18 @@ _run_kcov_bin_scenarios() {
     _run_kcov_installed_lib_source_scenarios "$kcov_root" ./bin/asus-control-center.sh cc "1"
     _run_kcov_installed_lib_source_scenarios "$kcov_root" ./bin/asus-display-mode.sh disp "1"
     _run_kcov_display_mode_scenarios "$kcov_root"
+    return $?
 }
 
-_kcov_write_display_mode_py() {
-    local path="$1"
-    cat > "$path" <<'EOF'
-#!/usr/bin/env python3
-import os
-import sys
-args = sys.argv[1:]
-if args[:1] == ["--detect"]:
-    print(os.environ.get("KCOV_DISP_DETECT", ""))
-    raise SystemExit(0)
-if args[:1] == ["--next"]:
-    print(os.environ.get("KCOV_DISP_NEXT", ""))
-    raise SystemExit(0)
-if args[:1] == ["--apply-profile"]:
-    raise SystemExit(0)
-raise SystemExit(1)
-EOF
-    chmod +x "$path"
-}
-
-_kcov_disp_run() {
-    local expected="$1" kcov_root="$2" label="$3" tmp="$4"
-    _kcov_expect_run_env "$expected" "$kcov_root" "$label" PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_DISABLE_YDOTOOL=1 \
-        ASUS_DISPLAY_MODE_DISABLE_XDOTOOL=1 \
-        KCOV_DISP_DETECT="${KCOV_DISP_DETECT:-all}" \
-        KCOV_DISP_NEXT="${KCOV_DISP_NEXT:-main_only:Main Only}" \
-        RUN_USER_ROOT="$tmp/bus" DBUS_BUS_ROOT="$tmp/bus" NOTIF_ID_ROOT="$tmp/notif" \
-        SYS_CLASS_ROOT="$tmp/sys" BIN_ROOT="$tmp/bin" \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-$label" \
-        ./bin/asus-display-mode.sh
-}
-
-_kcov_setup_display_mode_fixture() {
-    local tmp="$1" uid
-    uid="$(id -u)"
-    _make_fake_loginctl_current_user "$tmp"
-    _make_fake_sudo_script "$tmp"
-    mkdir -p "$tmp/bus/$uid" "$tmp/notif/$uid" "$tmp/sys/backlight/asus_screenpad" "$tmp/bin"
-    _kcov_bind_unix_bus "$tmp/bus/$uid/bus"
-    printf '255\n' > "$tmp/sys/backlight/asus_screenpad/brightness"
-    chmod 666 "$tmp/sys/backlight/asus_screenpad/brightness"
-    printf '#!/bin/sh\necho "(uint32 7,)"\n' > "$tmp/gdbus"
-    chmod +x "$tmp/gdbus"
-}
-
-_kcov_run_display_mode_bus_cases() {
-    local kcov_root="$1" tmp="$2"
-    printf '#!/bin/sh\nexit 0\n' > "$tmp/ydotool"
-    chmod +x "$tmp/ydotool"
-    _kcov_expect_run_env "0" "$kcov_root" disp_ydotool_success \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp" \
-        ASUS_DISPLAY_MODE_IDLE_SECS=1 \
-        ./bin/asus-display-mode.sh
-    rm -f "$tmp/ydotool"
-    printf '#!/bin/sh\nexit 0\n' > "$tmp/xdotool"
-    chmod +x "$tmp/xdotool"
-    _kcov_expect_run_env "0" "$kcov_root" disp_xdotool_success \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_DISABLE_YDOTOOL=1 \
-        ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
-        ASUS_DISPLAY_MODE_FORCE_XDOTOOL=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-x11" \
-        ASUS_DISPLAY_MODE_IDLE_SECS=1 \
-        DISPLAY=:0 XDG_SESSION_TYPE=x11 \
-        ./bin/asus-display-mode.sh
-    rm -f "$tmp/xdotool"
-    _kcov_write_display_mode_py "$tmp/bin/asus_display_mode.py"
-    KCOV_DISP_DETECT=all KCOV_DISP_NEXT="main_only:Main Only" \
-        _kcov_disp_run "0" "$kcov_root" disp_mutter_cycle "$tmp"
-    printf '#!/bin/sh\nexit 0\n' > "$tmp/gnome-control-center"
-    chmod +x "$tmp/gnome-control-center"
-    _kcov_expect_run_env "0" "$kcov_root" disp_settings_fallback \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_DISABLE_YDOTOOL=1 \
-        ASUS_DISPLAY_MODE_DISABLE_XDOTOOL=1 \
-        ASUS_DISPLAY_MODE_DISABLE_MUTTER_CYCLE=1 \
-        ASUS_DESKTOP_FAMILY=gnome \
-        RUN_USER_ROOT="$tmp/bus" DBUS_BUS_ROOT="$tmp/bus" \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-settings" \
-        ./bin/asus-display-mode.sh
-    rm -f "$tmp/gnome-control-center"
-    _kcov_expect_run_env "1" "$kcov_root" disp_ydotool_fail \
-        ASUS_DISPLAY_MODE_DISABLE_YDOTOOL=1 \
-        ASUS_DISPLAY_MODE_DISABLE_XDOTOOL=1 \
-        ASUS_DISPLAY_MODE_DISABLE_MUTTER_CYCLE=1 \
-        ASUS_DISPLAY_MODE_DISABLE_SETTINGS=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-ydotool-fail" \
-        ./bin/asus-display-mode.sh
-}
-
-_kcov_run_display_mode_sticky_cases() {
-    local kcov_root="$1" tmp="$2"
-    printf '#!/bin/sh\nexit 0\n' > "$tmp/ydotool"
-    chmod +x "$tmp/ydotool"
-    _kcov_expect_run_env "0" "$kcov_root" disp_sticky_open \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-sticky" \
-        ASUS_DISPLAY_MODE_IDLE_SECS=30 \
-        ASUS_DISPLAY_MODE_DUP_MS=1 \
-        ./bin/asus-display-mode.sh
-    _kcov_expect_run_env "0" "$kcov_root" disp_sticky_cycle \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-sticky" \
-        ASUS_DISPLAY_MODE_IDLE_SECS=30 \
-        ASUS_DISPLAY_MODE_DUP_MS=1 \
-        ./bin/asus-display-mode.sh
-    # Immediate re-invoke should hit duplicate suppression while session inactive.
-    _kcov_expect_run_env "0" "$kcov_root" disp_dup_suppress \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-dup" \
-        ASUS_DISPLAY_MODE_IDLE_SECS=1 \
-        ASUS_DISPLAY_MODE_DUP_MS=60000 \
-        ./bin/asus-display-mode.sh
-    _kcov_expect_run_env "0" "$kcov_root" disp_dup_suppress_hit \
-        PATH="$tmp:$PATH" \
-        ASUS_DISPLAY_MODE_FORCE_LOCAL=1 \
-        ASUS_DISPLAY_MODE_STATE_PREFIX="$tmp/disp-dup" \
-        ASUS_DISPLAY_MODE_IDLE_SECS=1 \
-        ASUS_DISPLAY_MODE_DUP_MS=60000 \
-        ./bin/asus-display-mode.sh
-    rm -f "$tmp/ydotool"
-}
-
-_run_kcov_display_mode_scenarios() {
-    local kcov_root="$1"
-    (
-        local tmp
-        tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
-        _kcov_setup_display_mode_fixture "$tmp"
-        _kcov_run_display_mode_bus_cases "$kcov_root" "$tmp"
-        _kcov_run_display_mode_sticky_cases "$kcov_root" "$tmp"
-    )
-}
+# shellcheck source=scripts/coverage/kcov-display-scenarios.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/kcov-display-scenarios.sh"
 
 _run_kcov_sound_scenarios() {
     local kcov_root="$1"
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/snd" "$tmp/asound"
         _kcov_expect_run_env "1" "$kcov_root" snd_no_card DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" \
             ./bin/asus-sound-fix.sh
@@ -420,7 +287,7 @@ _run_kcov_sound_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/snd" "$tmp/asound/card0"
         touch "$tmp/snd/hwC0D0"
         printf "AD1988\n" > "$tmp/asound/card0/codec#0"
@@ -430,7 +297,7 @@ _run_kcov_sound_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mkdir -p "$tmp/snd" "$tmp/asound/card0" "$tmp/bin" "$tmp/empty-bin"
         touch "$tmp/snd/hwC0D0"
         printf "ALC294\n" > "$tmp/asound/card0/codec#0"
@@ -440,13 +307,14 @@ _run_kcov_sound_scenarios() {
             PATH="$tmp/bin:$PATH" BIN_ROOT="$tmp/empty-bin" \
             DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" \
             "$tmp/asus-sound-fix.sh"
-        _kcov_make_stub "$tmp/bin/hda-verb" 'exit 1'
+        _kcov_make_stub "$tmp/bin/hda-verb" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "1" "$kcov_root" snd_fail_verb PATH="$tmp/bin:$PATH" DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" \
             ./bin/asus-sound-fix.sh
         _kcov_make_stub "$tmp/bin/hda-verb"
         _kcov_expect_run_env "0" "$kcov_root" snd_success PATH="$tmp/bin:$PATH" DEV_SND_ROOT="$tmp/snd" \
             PROC_ASOUND_ROOT="$tmp/asound" ./bin/asus-sound-fix.sh
     )
+    return $?
 }
 
 _run_kcov_sound_helper_scenarios() {
@@ -454,12 +322,12 @@ _run_kcov_sound_helper_scenarios() {
     (
         local tmp driver
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         driver="$(_kcov_driver sound_helpers.sh)"
         mkdir -p "$tmp/snd" "$tmp/asound/card0" "$tmp/bin" "$tmp/dest"
         touch "$tmp/snd/hwC0D0"
         printf "ALC294\n" > "$tmp/asound/card0/codec#0"
-        printf '#!/bin/sh\nexit 0\n' > "$tmp/bin/hda-verb"
+        printf '%s' "$_KCOV_STUB_EXIT0" > "$tmp/bin/hda-verb"
         chmod +x "$tmp/bin/hda-verb"
         _kcov_expect_run_env "0" "$kcov_root" snd_helpers PATH="$tmp/bin:$PATH" \
             DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" SOUND_HELPER_MODE=apply \
@@ -487,12 +355,13 @@ EOF
         _kcov_expect_run_env "0" "$kcov_root" snd_helper_remove_installed_files PATH="$tmp/bin:$PATH" \
             DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" DESTDIR="$tmp/dest" \
             SOUND_HELPER_MODE=remove REPO_ROOT="$(pwd)" "$driver"
-        printf '#!/bin/sh\nexit 0\n' > "$tmp/bin/hda-verb"
+        printf '%s' "$_KCOV_STUB_EXIT0" > "$tmp/bin/hda-verb"
         chmod +x "$tmp/bin/hda-verb"
         _kcov_expect_run_env "0" "$kcov_root" snd_helper_poll_loop PATH="$tmp/bin:$PATH" \
             DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" SOUND_HWDEV_POLL_ATTEMPTS=1 \
             SOUND_HELPER_MODE=apply REPO_ROOT="$(pwd)" "$driver"
     )
+    return $?
 }
 
 _run_kcov_control_center_scenarios() {
@@ -500,23 +369,23 @@ _run_kcov_control_center_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_make_stub "$tmp/loginctl"
         _kcov_expect_run_env "1" "$kcov_root" cc_no_session PATH="$tmp:$PATH" ./bin/asus-control-center.sh
     )
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_script "$tmp"
-        _kcov_make_stub "$tmp/id" 'exit 1'
+        _kcov_make_stub "$tmp/id" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "1" "$kcov_root" cc_invalid_user PATH="$tmp:$PATH" ./bin/asus-control-center.sh
     )
     (
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
         _make_fake_sudo_script "$tmp"
         _kcov_expect_run_env "1" "$kcov_root" cc_no_bus PATH="$tmp:$PATH" \
@@ -532,7 +401,7 @@ _run_kcov_control_center_scenarios() {
             RUN_USER_ROOT="$tmp/bus_root" DBUS_BUS_ROOT="$tmp/bus_root" \
             ASUS_LAUNCH_CHECK_SECS=0.01 ./bin/asus-control-center.sh
 
-        printf '#!/bin/sh\nexit 1\n' > "$tmp/gdbus"
+        printf '%s' "$_KCOV_STUB_EXIT1" > "$tmp/gdbus"
         chmod +x "$tmp/gdbus"
         printf '#!/bin/sh\nsleep 1; exit 0\n' > "$tmp/systemsettings"
         chmod +x "$tmp/systemsettings"
@@ -551,6 +420,7 @@ _run_kcov_control_center_scenarios() {
     _kcov_expect_run_env "1" "$kcov_root" cc_dispatch_missing_lib \
         ASUS_FORCE_INSTALLED_LIB=1 ASUS_INSTALLED_LIB_DIR="/missing-asus-kcov-lib" \
         REPO_ROOT="$(pwd)" "$(_kcov_driver control_center_helpers.sh)"
+    return $?
 }
 
 _run_kcov_screenshot_scenarios() {
@@ -558,14 +428,14 @@ _run_kcov_screenshot_scenarios() {
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _kcov_make_stub "$tmp/loginctl"
         _kcov_expect_run_env "1" "$kcov_root" ss_no_session PATH="$tmp:$PATH" ./bin/asus-screenshot.sh
     )
     (
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_script "$tmp"
         _kcov_expect_run_env "1" "$kcov_root" ss_unknown_uid PATH="$tmp:$PATH" ./bin/asus-screenshot.sh
     )
@@ -573,9 +443,9 @@ _run_kcov_screenshot_scenarios() {
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
-        printf '#!/bin/sh\nexit 0\n' > "$tmp/gdbus"
+        printf '%s' "$_KCOV_STUB_EXIT0" > "$tmp/gdbus"
         chmod +x "$tmp/gdbus"
         _make_fake_sudo_script "$tmp"
         mkdir -p "$tmp/bus_root/$uid"
@@ -583,6 +453,7 @@ _run_kcov_screenshot_scenarios() {
         _kcov_expect_run_env "0" "$kcov_root" ss_success PATH="$tmp:$PATH" \
             RUN_USER_ROOT="$tmp/bus_root" ./bin/asus-screenshot.sh
     )
+    return $?
 }
 
 

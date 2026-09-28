@@ -11,7 +11,7 @@ _asus_i18n_repo_root() {
 
 _asus_resolve_textdomain_dir() {
     local repo_root candidate
-    if [ -n "${TEXTDOMAINDIR:-}" ]; then
+    if [[ -n "${TEXTDOMAINDIR:-}" ]]; then
         printf '%s\n' "$TEXTDOMAINDIR"
         return 0
     fi
@@ -20,7 +20,7 @@ _asus_resolve_textdomain_dir() {
         "${repo_root:+${repo_root}/locale}" \
         "${PREFIX:-}/usr/local/share/locale" \
         "/usr/share/locale"; do
-        [ -d "$candidate" ] || continue
+        [[ -d "$candidate" ]] || continue
         printf '%s\n' "$candidate"
         return 0
     done
@@ -36,6 +36,7 @@ _asus_normalize_ui_language() {
     value=$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]')
     case "$value" in
         jv) value="jw" ;;
+        *) ;;
     esac
     case "$value" in
         [a-z][a-z]|[a-z][a-z][a-z]) printf '%s\n' "$value" ;;
@@ -44,8 +45,8 @@ _asus_normalize_ui_language() {
 }
 
 _asus_test_ui_language() {
-    [ "${ASUS_TEST_MODE:-0}" = "1" ] || return 1
-    [ -n "${ASUS_UI_LANG:-}" ] || return 1
+    [[ "${ASUS_TEST_MODE:-0}" = "1" ]] || return 1
+    [[ -n "${ASUS_UI_LANG:-}" ]] || return 1
     printf '%s\n' "$ASUS_UI_LANG"
 }
 
@@ -60,13 +61,14 @@ _asus_trim_whitespace() {
     value="${value#"${value%%[![:space:]]*}"}"
     value="${value%"${value##*[![:space:]]}"}"
     printf '%s\n' "$value"
+    return $?
 }
 
 _asus_env_value_if_nonempty() {
     local name="$1" value
     value="${!name-}"
     value=$(_asus_trim_whitespace "$value")
-    [ -n "$value" ] || return 1
+    [[ -n "$value" ]] || return 1
     printf '%s\n' "$value"
 }
 
@@ -75,7 +77,7 @@ _asus_first_session_ui_language() {
     for key in LC_ALL LC_MESSAGES LANG LANGUAGE; do
         if value=$(_asus_session_ui_value "$key" "$target_user" 2>/dev/null); then
             value=$(_asus_trim_whitespace "$value")
-            [ -n "$value" ] || continue
+            [[ -n "$value" ]] || continue
             printf '%s\n' "$value"
             return 0
         fi
@@ -100,6 +102,7 @@ _asus_language_prefix_from_locale() {
     locale="${locale%%@*}"
     locale="${locale%%_*}"
     printf '%s\n' "$(printf '%s' "$locale" | tr '[:upper:]' '[:lower:]')"
+    return $?
 }
 
 _asus_locale_charset_part_valid() {
@@ -114,14 +117,15 @@ _asus_locale_charset_part_valid() {
         *.*)
             suffix="${locale#*.}"
             suffix="${suffix%%@*}"
-            [ -n "$suffix" ]
+            [[ -n "$suffix" ]]
             return $?
             ;;
         *@*)
             suffix="${locale#*@}"
-            [ -n "$suffix" ]
+            [[ -n "$suffix" ]]
             return $?
             ;;
+        *) ;;
     esac
     return 0
 }
@@ -134,17 +138,16 @@ _asus_locale_is_utf8_for_language() {
         *) return 1 ;;
     esac
     prefix=$(_asus_language_prefix_from_locale "$value")
-    [ "$prefix" = "$want" ]
+    [[ "$prefix" = "$want" ]]
 }
 
 _asus_env_utf8_locale_for_language() {
     local want="$1" key value
     for key in LC_ALL LC_MESSAGES LANG; do
-        if value=$(_asus_env_value_if_nonempty "$key" 2>/dev/null); then
-            if _asus_locale_is_utf8_for_language "$value" "$want"; then
-                printf '%s\n' "$value"
-                return 0
-            fi
+        if value=$(_asus_env_value_if_nonempty "$key" 2>/dev/null) \
+            && _asus_locale_is_utf8_for_language "$value" "$want"; then
+            printf '%s\n' "$value"
+            return 0
         fi
     done
     return 1
@@ -159,7 +162,7 @@ _asus_locale_a_utf8_for_language() {
             *) continue ;;
         esac
         prefix=$(_asus_language_prefix_from_locale "$line")
-        [ "$prefix" = "$want" ] || continue
+        [[ "$prefix" = "$want" ]] || continue
         printf '%s\n' "$line"
         return 0
     done < <(locale -a 2>/dev/null)
@@ -182,7 +185,7 @@ _asus_utf8_locale_for_language() {
 _asus_lc_messages_for_gettext() {
     local locale="$1" language="$2"
     locale=$(_asus_trim_whitespace "$locale")
-    if [ -z "$locale" ]; then
+    if [[ -z "$locale" ]]; then
         printf '%s\n' "C.UTF-8"
         return 0
     fi
@@ -195,6 +198,7 @@ _asus_lc_messages_for_gettext() {
             printf '%s\n' "$locale"
             return 0
             ;;
+        *) ;;
     esac
     _asus_utf8_locale_for_language "$language"
 }
@@ -216,16 +220,17 @@ _asus_gettext_env() {
     local target_user="${ASUS_I18N_TARGET_USER:-}" locale language locale_for_lookup
     locale=$(_asus_resolve_ui_locale "$target_user")
     language=$(_asus_normalize_ui_language "$locale" 2>/dev/null || true)
-    [ -n "$language" ] || language="en"
+    [[ -n "$language" ]] || language="en"
     locale_for_lookup=$(_asus_lc_messages_for_gettext "$locale" "$language")
     printf '%s\n%s\n' "$language" "$locale_for_lookup"
+    return $?
 }
 
 _asus_gettext() {
     local msgid="$1" language locale translated textdomain_dir env_blob
     # kcov+bash loses caller line attribution after nested gettext helper work.
     # Coverage scenarios set ASUS_I18N_FORCE_MSGID=1; production leaves it unset.
-    if [ "${ASUS_I18N_FORCE_MSGID:-0}" = "1" ] \
+    if [[ "${ASUS_I18N_FORCE_MSGID:-0}" = "1" ]] \
         || ! command -v gettext >/dev/null 2>&1; then
         printf '%s' "$msgid"
         return 0
@@ -254,23 +259,26 @@ _asus_gettextf() {
                 suffix=${format#*%s}
                 format="${prefix}${argument}${suffix}"
                 ;;
+            *) ;;
         esac
     done
     printf '%s' "$format"
+    return $?
 }
 
 _asus_pgettext() {
     local context="$1" msgid="$2" key translated
     key="${context}"$'\004'"${msgid}"
     translated=$(_asus_gettext "$key")
-    [ "$translated" = "$key" ] && translated="$msgid"
+    [[ "$translated" = "$key" ]] && translated="$msgid"
     printf '%s' "$translated"
+    return $?
 }
 
 _asus_ngettext() {
     local singular="$1" plural="$2" count="$3"
     local language locale translated textdomain_dir env_blob
-    if [ "${ASUS_I18N_FORCE_MSGID:-0}" = "1" ] \
+    if [[ "${ASUS_I18N_FORCE_MSGID:-0}" = "1" ]] \
         || ! command -v ngettext >/dev/null 2>&1; then
         _asus_source_plural "$singular" "$plural" "$count"
         return 0
@@ -287,7 +295,7 @@ _asus_ngettext() {
     ); then
         translated=""
     fi
-    if [ -z "$translated" ]; then
+    if [[ -z "$translated" ]]; then
         translated=$(_asus_source_plural "$singular" "$plural" "$count")
     fi
     printf '%s' "$translated"
@@ -295,7 +303,7 @@ _asus_ngettext() {
 
 _asus_source_plural() {
     local singular="$1" plural="$2" count="$3"
-    if [ "$count" -eq 1 ]; then
+    if [[ "$count" -eq 1 ]]; then
         printf '%s' "$singular"
         return 0
     fi

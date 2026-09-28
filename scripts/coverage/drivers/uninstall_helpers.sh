@@ -7,6 +7,9 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_UN_SHELL_KB_SCHEMA="org.gnome.shell.keybindings"
+readonly _KCOV_UN_SCREENSHOT_KEY="show-screenshot-ui"
+
 _driver_source_i18n || exit 1
 
 # shellcheck source=scripts/coverage/gates.sh
@@ -34,7 +37,7 @@ export PREFIX BIN_DIR LIB_DIR SYS_DIR HOOK_DIR STATE_DIR BUS_ROOT SYSTEMCTL \
     SKIP_PKG_REMOVE INSTALL_COMMAND_TIMEOUT INSTALL_SKIP_TIMEOUT_WRAPPER
 
 _uninstall_stop_tee() {
-    if [ -n "${_UNINSTALL_TEE_PID:-}" ]; then
+    if [[ -n "${_UNINSTALL_TEE_PID:-}" ]]; then
         _soft kill "$_UNINSTALL_TEE_PID" 2>/dev/null
         _soft wait "$_UNINSTALL_TEE_PID" 2>/dev/null
         _UNINSTALL_TEE_PID=""
@@ -42,8 +45,9 @@ _uninstall_stop_tee() {
 }
 
 _uninstall_remove_if_set() {
-    [ -n "${1:-}" ] || return 0
-    rm -rf "$1"
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
+    rm -rf "$target_path"
 }
 
 _uninstall_driver_cleanup() {
@@ -51,7 +55,7 @@ _uninstall_driver_cleanup() {
     _uninstall_remove_if_set "${mock_bin:-}"
     _uninstall_remove_if_set "${_UNINSTALL_TEE_DIR:-}"
     _uninstall_remove_if_set "${_UNINSTALL_MISSING_LIBS:-}"
-    if [ "${_UN_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_UN_PREFIX_OWNED:-0}" = 1 ]]; then
         rm -rf "$PREFIX"
     fi
 }
@@ -91,7 +95,7 @@ _source_uninstall_helpers() {
     _UNINSTALL_TEE_PID=$!
     # shellcheck source=uninstall.sh
     source "$REPO_ROOT/uninstall.sh" >"$_UNINSTALL_TEE_FIFO" 2>&1 || source_status=$?
-    if [ "$source_status" -ne 0 ]; then
+    if [[ "$source_status" -ne 0 ]]; then
         echo "uninstall_helpers: sourcing uninstall.sh failed with status $source_status" >&2
         return 1
     fi
@@ -250,14 +254,14 @@ _seed_uninstall_backup_bus() {
 _run_uninstall_restore_helpers() {
     _seed_uninstall_backup_bus
     _exercise _restore_schema_file "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid/orig_show_screenshot_ui" \
-        "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     _exercise _restore_schema_file "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid/missing_file" \
-        "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     : > "$STATE_DIR/$uid/empty_val"
     _exercise _restore_schema_file "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid/empty_val" \
-        "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     _exercise restore_gnome_keybinding_schema "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid" \
-        "orig_show_screenshot_ui" "org.gnome.shell.keybindings" "show-screenshot-ui" >/dev/null
+        "orig_show_screenshot_ui" "$_KCOV_UN_SHELL_KB_SCHEMA" "$_KCOV_UN_SCREENSHOT_KEY" >/dev/null
     _exercise _reset_gnome_custom_bindings "$uname_cur" "$BUS_ROOT/$uid/bus" >/dev/null
     _exercise _restore_primary_keybindings "$uname_cur" "$BUS_ROOT/$uid/bus" "$STATE_DIR/$uid" >/dev/null
     # Optional-key skip path when backup file is absent (modern GNOME without switch-video-mode).
@@ -274,7 +278,7 @@ _run_uninstall_restore_helpers() {
 _uninstall_restore_shortcuts_cleanup() {
     local cleanup_path="$1" cleanup_backup="$2"
     PATH="$cleanup_path"
-    if [ -n "$cleanup_backup" ] && [ -f "$cleanup_backup" ]; then
+    if [[ -n "$cleanup_backup" ]] && [[ -f "$cleanup_backup" ]]; then
         cp "$cleanup_backup" "$mock_bin/gsettings"
         chmod +x "$mock_bin/gsettings" 2>/dev/null
         rm -f "$cleanup_backup"
@@ -282,7 +286,7 @@ _uninstall_restore_shortcuts_cleanup() {
 }
 
 _backup_uninstall_gsettings_stub() {
-    if [ -f "$mock_bin/gsettings" ]; then
+    if [[ -f "$mock_bin/gsettings" ]]; then
         gsettings_backup=$(mktemp)
         cp "$mock_bin/gsettings" "$gsettings_backup"
         chmod --reference="$mock_bin/gsettings" "$gsettings_backup" 2>/dev/null \
@@ -293,13 +297,13 @@ _backup_uninstall_gsettings_stub() {
 _run_uninstall_no_session_restore() {
     local saved_path="$1"
     local saved_user="${USER-}" saved_sudo_user="${SUDO_USER-}" had_sudo_user=0
-    [ "${SUDO_USER+x}" = "x" ] && had_sudo_user=1
+    [[ "${SUDO_USER+x}" = "x" ]] && had_sudo_user=1
     SUDO_USER=root USER=root _soft restore_gnome_shortcuts "$NO_SESSION_USER" "" >/dev/null
     # Fallback user with empty uid path: SUDO_USER unset and who empty.
     unset SUDO_USER
     USER=""
     _soft restore_gnome_shortcuts "$NO_SESSION_USER" "" >/dev/null
-    if [ "$had_sudo_user" = 1 ]; then
+    if [[ "$had_sudo_user" = 1 ]]; then
         SUDO_USER="$saved_sudo_user"
     else
         unset SUDO_USER

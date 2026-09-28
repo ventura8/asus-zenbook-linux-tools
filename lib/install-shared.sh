@@ -1,52 +1,63 @@
 #!/usr/bin/env bash
 
+# Strip leading zeros from a digits-only string so [[ -lt ]] / $(( )) read it as
+# decimal, not octal ("08" errors, "0150" is 104). Plain parameter expansion,
+# not $((10#x)): SonarQube's shell parser rejects the base prefix as a syntax error.
+_asus_decimal() {
+    local digits="$1"
+    digits="${digits#"${digits%%[!0]*}"}"
+    printf '%s\n' "${digits:-0}"
+    return 0
+}
+
 check_root() {
     local skip_raw=0 effective_raw="$EUID"
     local skip_check=0 effective_uid
     # Test-only overrides: honor SKIP_ROOT_CHECK / EFFECTIVE_UID_OVERRIDE only in ASUS_TEST_MODE.
-    if [ "${ASUS_TEST_MODE:-0}" = "1" ]; then
+    if [[ "${ASUS_TEST_MODE:-0}" = "1" ]]; then
         skip_raw="${SKIP_ROOT_CHECK:-0}"
         effective_raw="${EFFECTIVE_UID_OVERRIDE:-$EUID}"
     fi
     case "$skip_raw" in
         ''|*[!0-9]*) skip_check=0 ;;
-        *) skip_check="$skip_raw" ;;
+        *) skip_check=$(_asus_decimal "$skip_raw") ;;
     esac
     case "$effective_raw" in
         ''|*[!0-9]*) effective_uid="$EUID" ;;
-        *) effective_uid="$effective_raw" ;;
+        *) effective_uid=$(_asus_decimal "$effective_raw") ;;
     esac
     _require_effective_root "$skip_check" "$effective_uid"
+    return $?
 }
 
 _require_effective_root() {
     local skip_check="$1" effective_uid="$2"
-    if [ "$skip_check" -ne 1 ] && [ "$effective_uid" -ne 0 ]; then
+    if [[ "$skip_check" -ne 1 ]] && [[ "$effective_uid" -ne 0 ]]; then
         echo "Please run as root (use sudo)." >&2
         exit 1
     fi
 }
 
 _asus_is_staged_install() {
-    if [ "${ASUS_PORTABLE_HOST_INSTALL:-0}" = "1" ]; then
+    if [[ "${ASUS_PORTABLE_HOST_INSTALL:-0}" = "1" ]]; then
         return 1
     fi
-    if [ -n "${DESTDIR:-}" ] || [ -n "${PREFIX:-}" ]; then
+    if [[ -n "${DESTDIR:-}" ]] || [[ -n "${PREFIX:-}" ]]; then
         return 0
     fi
     return 1
 }
 
 _install_resolve_session_bus_root() {
-    if [ -n "${BUS_ROOT:-}" ]; then
+    if [[ -n "${BUS_ROOT:-}" ]]; then
         printf '%s\n' "$BUS_ROOT"
         return 0
     fi
-    if [ -n "${DBUS_BUS_ROOT:-}" ]; then
+    if [[ -n "${DBUS_BUS_ROOT:-}" ]]; then
         printf '%s\n' "$DBUS_BUS_ROOT"
         return 0
     fi
-    if [ -n "${RUN_USER_ROOT:-}" ]; then
+    if [[ -n "${RUN_USER_ROOT:-}" ]]; then
         printf '%s\n' "$RUN_USER_ROOT"
         return 0
     fi
@@ -58,16 +69,16 @@ _resolve_version_file() {
     local -a candidates=()
     shared_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-    if [ -n "${INSTALL_SOURCE_DIR:-}" ]; then
+    if [[ -n "${INSTALL_SOURCE_DIR:-}" ]]; then
         candidates+=("${INSTALL_SOURCE_DIR}/VERSION")
     fi
-    if [ -n "${SCRIPT_DIR:-}" ]; then
+    if [[ -n "${SCRIPT_DIR:-}" ]]; then
         candidates+=("${SCRIPT_DIR}/VERSION")
     fi
     candidates+=("${shared_dir}/VERSION")
 
     for candidate in "${candidates[@]}"; do
-        if [ -f "$candidate" ]; then
+        if [[ -f "$candidate" ]]; then
             printf '%s\n' "$candidate"
             return 0
         fi
@@ -84,7 +95,7 @@ _read_project_version() {
     IFS= read -r version <"$version_file" || true
     version="${version#"${version%%[![:space:]]*}"}"
     version="${version%"${version##*[![:space:]]}"}"
-    if [ -z "$version" ]; then
+    if [[ -z "$version" ]]; then
         printf '%s\n' "unknown"
         return 0
     fi
@@ -99,6 +110,7 @@ _format_display_version() {
         v*) printf '%s\n' "$version" ;;
         *) printf 'v%s\n' "$version" ;;
     esac
+    return $?
 }
 
 print_setup_banner() {
@@ -111,6 +123,7 @@ print_setup_banner() {
         printf '      %s\n' "$(_asus_gettext "Hardware features for your Linux desktop")"
         echo "=================================================="
     } >&"$out_fd"
+    return
 }
 
 _asus_soft() {
@@ -124,8 +137,10 @@ _install_command_timeout_max() {
             echo "Invalid INSTALL_COMMAND_TIMEOUT_MAX: ${max_raw:-<empty>}" >&2
             return 1
             ;;
+        *) ;;
     esac
-    if [ "$max_raw" -lt 1 ]; then
+    max_raw=$(_asus_decimal "$max_raw")
+    if [[ "$max_raw" -lt 1 ]]; then
         max_raw=1
     fi
     printf '%s\n' "$max_raw"
@@ -133,37 +148,47 @@ _install_command_timeout_max() {
 
 _clamp_install_command_timeout() {
     local timeout_secs="$1" timeout_max="$2"
-    if [ "$timeout_secs" -lt 1 ]; then
+    if [[ "$timeout_secs" -lt 1 ]]; then
         printf '1\n'
-    elif [ "$timeout_secs" -gt "$timeout_max" ]; then
+    elif [[ "$timeout_secs" -gt "$timeout_max" ]]; then
         printf '%s\n' "$timeout_max"
     else
         printf '%s\n' "$timeout_secs"
     fi
+    return $?
+}
+
+_effective_install_command_timeout() {
+    # Validate + clamp a requested timeout; prints the effective seconds.
+    local requested_timeout_secs="$1" timeout_max timeout_secs
+    case "$requested_timeout_secs" in
+        '' | *[!0-9]*)
+            echo "Invalid install command timeout: ${requested_timeout_secs:-<empty>}" >&2
+            return 1
+            ;;
+        *) ;;
+    esac
+    requested_timeout_secs=$(_asus_decimal "$requested_timeout_secs")
+    if ! timeout_max=$(_install_command_timeout_max); then
+        return 1
+    fi
+    timeout_secs="$(_clamp_install_command_timeout "$requested_timeout_secs" "$timeout_max")"
+    if [[ "$timeout_secs" != "$requested_timeout_secs" ]]; then
+        echo "Warning: install command timeout clamped from" \
+            "${requested_timeout_secs}s to ${timeout_secs}s" >&2
+    fi
+    printf '%s\n' "$timeout_secs"
+    return 0
 }
 
 _run_command_with_timeout() {
     local timeout_secs="$1"
-    local kill_after_secs timeout_max requested_timeout_secs
+    local kill_after_secs
     shift
 
-    case "$timeout_secs" in
-        '' | *[!0-9]*)
-            echo "Invalid install command timeout: ${timeout_secs:-<empty>}" >&2
-            return 1
-            ;;
-    esac
-    if ! timeout_max=$(_install_command_timeout_max); then
-        return 1
-    fi
-    requested_timeout_secs="$timeout_secs"
-    timeout_secs="$(_clamp_install_command_timeout "$timeout_secs" "$timeout_max")"
-    if [ "$timeout_secs" != "$requested_timeout_secs" ]; then
-        echo "Warning: install command timeout clamped from" \
-            "${requested_timeout_secs}s to ${timeout_secs}s" >&2
-    fi
+    timeout_secs="$(_effective_install_command_timeout "$timeout_secs")" || return 1
 
-    if [ "${INSTALL_SKIP_TIMEOUT_WRAPPER:-0}" = "1" ]; then
+    if [[ "${INSTALL_SKIP_TIMEOUT_WRAPPER:-0}" = "1" ]]; then
         "$@"
         return $?
     fi
@@ -200,7 +225,7 @@ _install_run_as_user() {
     local user="$1"
     shift
     local timeout_secs="${INSTALL_COMMAND_TIMEOUT:-15}"
-    if [ "$(id -un 2>/dev/null)" = "$user" ]; then
+    if [[ "$(id -un 2>/dev/null)" = "$user" ]]; then
         _run_command_with_timeout "$timeout_secs" "$@"
         return $?
     fi
@@ -209,13 +234,13 @@ _install_run_as_user() {
 
 _try_echo_existing_file() {
     local path="$1"
-    [ -f "$path" ] || return 1
+    [[ -f "$path" ]] || return 1
     printf '%s\n' "$path"
 }
 
 _try_echo_lib_under_dir() {
     local dir="$1" helper_name="$2"
-    [ -n "$dir" ] || return 1
+    [[ -n "$dir" ]] || return 1
     _try_echo_existing_file "${dir}/${helper_name}"
 }
 
@@ -240,63 +265,73 @@ _resolve_script_lib_path() {
 _resolve_session_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-session.sh" "session helper"
+    return $?
 }
 
 _resolve_common_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-common.sh" "common helper"
+    return $?
 }
 
 _resolve_bootstrap_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-bootstrap.sh" "bootstrap helper"
+    return $?
 }
 
 _resolve_display_mutter_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-display-mutter.sh" "display mutter helper"
+    return $?
 }
 
 _resolve_display_state_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-display-state.sh" "display state helper"
+    return $?
 }
 
 _resolve_display_watchdog_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-display-watchdog.sh" "display watchdog helper"
+    return $?
 }
 
 _resolve_display_osd_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-display-osd.sh" "display osd helper"
+    return $?
 }
 
 _resolve_notif_icons_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-notif-icons.sh" "notification icon helper"
+    return $?
 }
 
 _resolve_i18n_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-i18n.sh" "i18n helper"
+    return $?
 }
 
 _resolve_screenpad_helper_path() {
     local script_dir="$1"
     _resolve_script_lib_path "$script_dir" "asus-screenpad.sh" "screenpad helper"
+    return $?
 }
 
 _source_asus_session_from_dir() {
     local dir="$1"
-    [ -f "$dir/asus-session.sh" ] || return 1
+    [[ -f "$dir/asus-session.sh" ]] || return 1
     # shellcheck source=lib/asus-session.sh
     source "$dir/asus-session.sh"
 }
 
 _try_source_asus_session_from_optional_dir() {
     local dir="$1"
-    [ -n "$dir" ] || return 1
+    [[ -n "$dir" ]] || return 1
     _source_asus_session_from_dir "$dir"
 }
 
@@ -311,6 +346,7 @@ _source_session_helper() {
 _cleanup_staged_lib_file() {
     local staging_path="$1"
     rm -f "$staging_path"
+    return $?
 }
 
 _stage_resolved_lib_copy() {
@@ -322,7 +358,7 @@ _stage_resolved_lib_copy() {
         _cleanup_staged_lib_file "$staging_path"
         return 1
     fi
-    if [ ! -e "$staging_path" ]; then
+    if [[ ! -e "$staging_path" ]]; then
         echo "  ✗ Staged library copy missing after copy: $staging_path" >&2
         _cleanup_staged_lib_file "$staging_path"
         return 1
@@ -338,12 +374,14 @@ _canonical_install_path() {
         canonical=$(readlink -f -- "$path") || canonical="$path"
     fi
     printf '%s\n' "$canonical"
+    return $?
 }
 
 _install_lib_paths_match() {
     local source_path="$1" dest_path="$2"
-    [ ! -L "$dest_path" ] &&
-        [ "$(_canonical_install_path "$source_path")" = "$(_canonical_install_path "$dest_path")" ]
+    [[ ! -L "$dest_path" ]] &&
+        [[ "$(_canonical_install_path "$source_path")" = "$(_canonical_install_path "$dest_path")" ]]
+    return $?
 }
 
 _install_staged_lib_file() {
@@ -446,7 +484,7 @@ _install_screenpad_helper() {
 
 _reject_empty_or_root_path() {
     local path="$1" msg="$2"
-    if [ -z "$path" ] || [ "$path" = "/" ]; then
+    if [[ -z "$path" ]] || [[ "$path" = "/" ]]; then
         echo "$msg" >&2
         return 1
     fi
@@ -467,7 +505,7 @@ _is_safe_config_dir_under_state() {
 
 _is_safe_config_dir() {
     local config_dir="$1" canonical state_canonical
-    if [ -z "${STATE_DIR:-}" ]; then
+    if [[ -z "${STATE_DIR:-}" ]]; then
         echo "Warning: refusing to remove config_dir: STATE_DIR is empty" >&2
         return 1
     fi
@@ -492,7 +530,7 @@ _install_plan_progress_steps() {
     local choice="$1"
     local total=1
     INSTALL_STEP_CURRENT=0
-    if [ "${SKIP_PKG_INSTALL:-0}" != "1" ]; then
+    if [[ "${SKIP_PKG_INSTALL:-0}" != "1" ]]; then
         total=$((total + 1))
     fi
     if _install_choice_includes_desktop "$choice"; then
@@ -500,6 +538,7 @@ _install_plan_progress_steps() {
     fi
     INSTALL_STEP_TOTAL=$total
     export INSTALL_STEP_CURRENT INSTALL_STEP_TOTAL
+    return $?
 }
 
 _install_print_next_step() {
@@ -508,4 +547,5 @@ _install_print_next_step() {
     INSTALL_STEP_CURRENT=$((${INSTALL_STEP_CURRENT:-0} + 1))
     printf '[%s/%s] %s\n' "$INSTALL_STEP_CURRENT" \
         "${INSTALL_STEP_TOTAL:-$INSTALL_STEP_CURRENT}" "$label"
+    return $?
 }

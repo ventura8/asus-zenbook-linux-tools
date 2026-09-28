@@ -32,36 +32,36 @@ msgid_plural "%d external displays only"
 msgstr[0] ""
 msgstr[1] ""
 
-#: lib/install-gnome.sh:282 lib/install-kde.sh:169 lib/install-kde.sh:258
+#: lib/install-gnome.sh:297 lib/install-kde.sh:179 lib/install-kde.sh:270
 msgid "ASUS Display Mode"
 msgstr ""
 
-#: lib/install-kde.sh:171 lib/install-kde.sh:260
+#: lib/install-kde.sh:181 lib/install-kde.sh:272
 msgid "ASUS Screenshot"
 msgstr ""
 
-#: lib/asus-common.sh:349
+#: lib/asus-common.sh:358
 msgid "ASUS ZenBook"
 msgstr ""
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:110
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:112
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr ""
 
-#: install.sh:308
+#: install.sh:311
 msgid "ASUS ZenBook Linux Tools is ready to use."
 msgstr ""
 
-#: lib/install-gnome.sh:292 lib/install-kde.sh:170 lib/install-kde.sh:259
+#: lib/install-gnome.sh:307 lib/install-kde.sh:180 lib/install-kde.sh:271
 msgid "ASUS ZenBook Settings"
 msgstr ""
 
-#: lib/install-selection.sh:163
+#: lib/install-selection.sh:169
 msgid "ASUS ZenBook hardware features are installed as optional components."
 msgstr ""
 
-#: lib/install-selection.sh:175
+#: lib/install-selection.sh:181
 msgid ""
 "Adds Display Toggle, MyASUS Settings, and Share keyboard shortcuts for "
 "GNOME, KDE Plasma, XFCE, LXQt, Cinnamon, or MATE."
@@ -72,15 +72,15 @@ msgstr ""
 msgid "All displays (%s)"
 msgstr ""
 
-#: lib/asus-display-mutter.sh:83
+#: lib/asus-display-mutter.sh:84
 msgid "All displays (Main + ScreenPad)"
 msgstr ""
 
-#: lib/install-selection.sh:166
+#: lib/install-selection.sh:172
 msgid "Available components:"
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:93 bin/asus-fan-toggle.sh:96
+#: bin/asus-fan-toggle.sh:103 bin/asus-fan-toggle.sh:106
 msgid "Balanced"
 msgstr ""
 
@@ -96,44 +96,44 @@ msgstr ""
 msgid "Camera privacy"
 msgstr ""
 
-#: install.sh:275
+#: install.sh:278
 msgid "Choose components"
 msgstr ""
 
-#: lib/install-cinnamon.sh:285
+#: lib/install-cinnamon.sh:299
 msgid "Cinnamon shortcuts configured."
 msgstr ""
 
-#: lib/install-selection.sh:243
+#: lib/install-selection.sh:253
 msgid "Components [default: all]:"
 msgstr ""
 
-#: lib/install-gnome.sh:557
+#: lib/install-gnome.sh:580
 #, sh-format
 msgid "Configure GNOME shortcuts for %s"
 msgstr ""
 
-#: lib/install-kde.sh:327
+#: lib/install-kde.sh:339
 #, sh-format
 msgid "Configure KDE Plasma shortcuts for %s"
 msgstr ""
 
-#: lib/install-cinnamon.sh:268
+#: lib/install-cinnamon.sh:281
 #, sh-format
 msgid "Configuring Cinnamon shortcuts for %s..."
 msgstr ""
 
-#: lib/install-lxqt.sh:572
+#: lib/install-lxqt.sh:361
 #, sh-format
 msgid "Configuring LXQt Global Keys for %s..."
 msgstr ""
 
-#: lib/install-mate.sh:192
+#: lib/install-mate.sh:198
 #, sh-format
 msgid "Configuring MATE shortcuts for %s..."
 msgstr ""
 
-#: lib/install-xfce.sh:171
+#: lib/install-xfce.sh:177
 #, sh-format
 msgid "Configuring XFCE shortcuts for %s..."
 msgstr ""
@@ -143,43 +143,43 @@ msgstr ""
 msgid "Current display layout"
 msgstr ""
 
-#: lib/asus-display-mutter.sh:146
+#: lib/asus-display-mutter.sh:148
 msgid "Display mode"
 msgstr ""
 
-#: lib/install-selection.sh:188
+#: lib/install-selection.sh:195
 msgid "Enter component numbers or names, separated by commas."
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:229
+#: bin/asus-fan-toggle.sh:244
 msgid "Fan profile"
 msgstr ""
 
-#: lib/install-gnome.sh:514
+#: lib/install-gnome.sh:537
 msgid "GNOME ASUS Window Swap extension installed."
 msgstr ""
 
-#: lib/install-gnome.sh:565
+#: lib/install-gnome.sh:588
 msgid "GNOME shortcuts configured."
 msgstr ""
 
-#: lib/install-shared.sh:111
+#: lib/install-shared.sh:113
 msgid "Hardware features for your Linux desktop"
 msgstr ""
 
-#: install.sh:302
+#: install.sh:305
 msgid "Install scripts and services"
 msgstr ""
 
-#: lib/install-os-detection.sh:565
+#: lib/install-os-detection.sh:584
 msgid "Install system dependencies"
 msgstr ""
 
-#: lib/install-selection-tui.sh:147
+#: lib/install-selection-tui.sh:151
 msgid "Installation cancelled by user."
 msgstr ""
 
-#: install.sh:307
+#: install.sh:310
 msgid "Installation complete."
 msgstr ""
 
@@ -188,40 +188,40 @@ msgstr ""
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr ""
 
-#: lib/install-selection.sh:169
+#: lib/install-selection.sh:175
 msgid ""
 "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/"
 "Performance, camera privacy, and window swap across monitors."
 msgstr ""
 
-#: lib/install-selection.sh:173
+#: lib/install-selection.sh:179
 msgid ""
 "Installs the speaker amplifier fix and a suspend/resume hook so supported "
 "ZenBook audio recovers after boot and after sleep."
 msgstr ""
 
-#: lib/install-selection.sh:171
+#: lib/install-selection.sh:177
 msgid ""
 "Installs the touchpad Share gesture listener so a top-left corner tap opens "
 "your desktop screenshot tool (GNOME, Spectacle, and peers)."
 msgstr ""
 
-#: lib/install-selection.sh:197
+#: lib/install-selection.sh:205
 #, sh-format
 msgid ""
 "Invalid selection: %s. Enter numbers (1,2,3,4), component names, all, or "
 "none."
 msgstr ""
 
-#: lib/install-kde.sh:309
+#: lib/install-kde.sh:321
 msgid "KDE Plasma shortcuts configured."
 msgstr ""
 
-#: lib/install-lxqt.sh:586
+#: lib/install-lxqt.sh:376
 msgid "LXQt Global Keys configured."
 msgstr ""
 
-#: lib/install-mate.sh:209
+#: lib/install-mate.sh:216
 msgid "MATE shortcuts configured."
 msgstr ""
 
@@ -230,51 +230,51 @@ msgstr ""
 msgid "Main display"
 msgstr ""
 
-#: lib/asus-display-mutter.sh:81
+#: lib/asus-display-mutter.sh:82
 msgid "Main display only"
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:230
+#: bin/asus-fan-toggle.sh:245
 #, sh-format
 msgid "Mode: %s"
 msgstr ""
 
-#: install.sh:281
+#: install.sh:284
 msgid "No components were selected. Nothing was installed."
 msgstr ""
 
-#: bin/asus-screenpad-toggle.sh:64
+#: bin/asus-screenpad-toggle.sh:67
 msgctxt "ScreenPad backlight state"
 msgid "Off"
 msgstr ""
 
-#: bin/asus-screenpad-toggle.sh:68
+#: bin/asus-screenpad-toggle.sh:71
 msgctxt "ScreenPad backlight state"
 msgid "On"
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:94
+#: bin/asus-fan-toggle.sh:104
 msgid "Performance (Boost)"
 msgstr ""
 
-#: lib/install-selection.sh:190
+#: lib/install-selection.sh:197
 msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:95
+#: bin/asus-fan-toggle.sh:105
 msgid "Quiet (Silent)"
 msgstr ""
 
-#: bin/asus-screenpad-toggle.sh:72
+#: bin/asus-screenpad-toggle.sh:75
 msgid "ScreenPad backlight"
 msgstr ""
 
-#: lib/asus-screenpad.sh:456
+#: lib/asus-screenpad.sh:530
 msgid "ScreenPad brightness"
 msgstr ""
 
-#: lib/asus-display-mutter.sh:82
+#: lib/asus-display-mutter.sh:83
 msgid "ScreenPad only"
 msgstr ""
 
@@ -285,60 +285,60 @@ msgid ""
 "not be installed."
 msgstr ""
 
-#: lib/install-selection.sh:164
+#: lib/install-selection.sh:170
 msgid "Select only what you use to avoid unnecessary services and shortcuts."
 msgstr ""
 
-#: lib/install-gnome.sh:333
+#: lib/install-gnome.sh:348
 msgid ""
 "Shortcuts registered for Print/Super-Shift-s, XF86Launch1/XF86Tools, and "
 "XF86Display (F8 left unchanged)."
 msgstr ""
 
-#: lib/install-components.sh:543
+#: lib/install-components.sh:429
 msgid "Sound fix installed with a suspend and resume hook."
 msgstr ""
 
-#: lib/install-selection-tui.sh:25
+#: lib/install-selection-tui.sh:26
 msgid "Space selects a component. Enter confirms. Esc cancels."
 msgstr ""
 
-#: lib/install-selection.sh:186
+#: lib/install-selection.sh:193
 msgid "Text selection mode."
 msgstr ""
 
-#: lib/install-selection.sh:177
+#: lib/install-selection.sh:183
 msgid "The interface language follows your desktop session."
 msgstr ""
 
-#: lib/install-os-detection.sh:566
+#: lib/install-os-detection.sh:585
 msgid ""
 "This can take a few minutes while packages are downloaded and installed."
 msgstr ""
 
-#: lib/install-components.sh:425
+#: lib/install-components.sh:309
 msgid ""
 "Touchpad Share gesture listener installed (active state not verified in this "
 "environment)."
 msgstr ""
 
-#: lib/install-components.sh:420
+#: lib/install-components.sh:304
 msgid "Touchpad Share gesture listener installed and active."
 msgstr ""
 
-#: lib/install-components.sh:68
+#: lib/install-components.sh:90
 msgid ""
 "WMI Hotkey daemon installed (active state not verified in this environment)."
 msgstr ""
 
-#: lib/install-components.sh:63
+#: lib/install-components.sh:85
 msgid "WMI Hotkey daemon installed and active."
 msgstr ""
 
-#: lib/install-selection.sh:161
+#: lib/install-selection.sh:167
 msgid "Why this dialog?"
 msgstr ""
 
-#: lib/install-xfce.sh:186
+#: lib/install-xfce.sh:193
 msgid "XFCE shortcuts configured."
 msgstr ""

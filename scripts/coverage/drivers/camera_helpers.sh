@@ -8,7 +8,7 @@ cd "$REPO_ROOT" || exit 1
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
 tmp=$(mktemp -d)
-trap 'rm -rf "$tmp"' EXIT
+trap _kcov_rm_scenario_tmp EXIT
 mkdir -p "$tmp/platform" "$tmp/icons" "$tmp/theme/Adwaita/symbolic/status"
 printf '1\n' > "$tmp/platform/camera"
 chmod 666 "$tmp/platform/camera"

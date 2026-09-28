@@ -14,8 +14,9 @@ VERSION="$(tr -d '[:space:]' < "${REPO_ROOT}/VERSION")"
 source "${SCRIPT_DIR}/release_package_kinds.sh"
 
 _require_tool() {
-    command -v "$1" >/dev/null 2>&1 || {
-        printf 'Missing required tool: %s\n' "$1" >&2
+    local tool="$1"
+    command -v "$tool" >/dev/null 2>&1 || {
+        printf 'Missing required tool: %s\n' "$tool" >&2
         return 1
     }
 }
@@ -24,7 +25,7 @@ _require_exact_one_glob() {
     local label="$1"
     shift
     local matches=("$@")
-    if [ "${#matches[@]}" -ne 1 ]; then
+    if [[ "${#matches[@]}" -ne 1 ]]; then
         printf 'Expected exactly one %s file, found %s\n' "$label" "${#matches[@]}" >&2
         printf '%s\n' "${matches[@]}" >&2
         return 1

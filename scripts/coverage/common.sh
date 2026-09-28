@@ -1,6 +1,23 @@
 #!/usr/bin/env bash
 
+# Fixed tool PATH for socket-bind helpers so isolated driver PATHs still resolve
+# mktemp/mv/stat/python3. Plain assignment (not readonly): this file is re-sourced.
+_KCOV_SAFE_TOOL_PATH="/usr/bin:/bin"
+# Shared stub-script bodies for kcov scenarios and drivers (write with
+# printf '%s' "$_KCOV_STUB_EXIT0" > "$path").
+_KCOV_STUB_EXIT0=$'#!/bin/sh\nexit 0\n'
+_KCOV_STUB_EXIT1=$'#!/bin/sh\nexit 1\n'
+# Failing command body for _kcov_make_stub.
+_KCOV_STUB_BODY_FAIL='exit 1'
+
 _soft() { "$@" || return 0; }
+
+_kcov_rm_scenario_tmp() {
+    # EXIT-trap cleanup for scenario subshells that keep their temp dir in `tmp`
+    # (resolved by dynamic scope when the trap fires).
+    rm -rf "${tmp:-}"
+    return $?
+}
 
 _soft_expect() {
     local allowed="$1" status=0
@@ -16,13 +33,14 @@ _kcov_record_scenario_failure() {
     # Append one failure line for end-of-suite fail-closed checks.
     local kind="$1" detail="$2"
     local fail_file="${KCOV_SCENARIO_FAIL_FILE:-}"
-    [ -n "$fail_file" ] || return 0
+    [[ -n "$fail_file" ]] || return 0
     printf '%s\t%s\n' "$kind" "$detail" >>"$fail_file" || true
 }
 
 _kcov_fail_file_has_entries() {
     local fail_file="${KCOV_SCENARIO_FAIL_FILE:-}"
-    [ -n "$fail_file" ] && [ -s "$fail_file" ]
+    [[ -n "$fail_file" ]] && [[ -s "$fail_file" ]]
+    return $?
 }
 
 _kcov_bind_path_is_safe() {
@@ -32,8 +50,9 @@ _kcov_bind_path_is_safe() {
             echo "Warning: refusing to bind over system runtime path $bus_path" >&2
             return 1
             ;;
+        *) ;;
     esac
-    if [ -e "$bus_path" ] && [ ! -S "$bus_path" ]; then
+    if [[ -e "$bus_path" ]] && [[ ! -S "$bus_path" ]]; then
         echo "Warning: refusing to remove non-socket path $bus_path" >&2
         return 1
     fi
@@ -41,10 +60,10 @@ _kcov_bind_path_is_safe() {
 
 _kcov_socket_owner_is_safe() {
     local bus_path="$1" owner
-    local safe_path="/usr/bin:/bin"
-    if [ -S "$bus_path" ]; then
+    local safe_path="$_KCOV_SAFE_TOOL_PATH"
+    if [[ -S "$bus_path" ]]; then
         owner=$(PATH="$safe_path" stat -c '%u' "$bus_path" 2>/dev/null) || owner=""
-        if [ -n "$owner" ] && [ "$owner" != "$(id -u)" ]; then
+        if [[ -n "$owner" ]] && [[ "$owner" != "$(id -u)" ]]; then
             echo "Warning: refusing to remove socket owned by uid $owner: $bus_path" >&2
             return 1
         fi
@@ -53,17 +72,18 @@ _kcov_socket_owner_is_safe() {
 
 _kcov_bind_warning() {
     local bus_path="$1" sock_tmp="$2"
-    echo "Warning: AF_UNIX bind failed for $bus_path (staging path length: ${#sock_tmp})" >&2
+    echo "Warning: AF_UNIX bind failed for $bus_path (staging path length: ${#sock_tmp})" >&2 || return
+    return 0
 }
 
 _kcov_create_socket_stage() {
     local bus_path="$1" parent stage_dir
-    local safe_path="/usr/bin:/bin"
+    local safe_path="$_KCOV_SAFE_TOOL_PATH"
     case "$bus_path" in
         */*) parent="${bus_path%/*}" ;;
         *) parent="." ;;
     esac
-    [ -n "$parent" ] || parent="/"
+    [[ -n "$parent" ]] || parent="/"
     stage_dir=$(PATH="$safe_path" mktemp -d "$parent/.kcov-bus.XXXXXX" 2>/dev/null) || {
         _kcov_bind_warning "$bus_path" "$bus_path"
         return 1
@@ -78,9 +98,9 @@ _kcov_create_socket_stage() {
 
 _kcov_create_staged_socket() {
     local bus_path="$1" sock_dir="$2" sock_tmp
-    local safe_path="/usr/bin:/bin"
+    local safe_path="$_KCOV_SAFE_TOOL_PATH"
     sock_tmp="$sock_dir/sock"
-    if [ -z "$sock_tmp" ] || [ "${#sock_tmp}" -ge 108 ]; then
+    if [[ -z "$sock_tmp" ]] || [[ "${#sock_tmp}" -ge 108 ]]; then
         PATH="$safe_path" rm -rf "$sock_dir"
         _kcov_bind_warning "$bus_path" "$sock_tmp"
         return 1
@@ -96,7 +116,7 @@ _kcov_create_staged_socket() {
 
 _kcov_move_staged_socket() {
     local bus_path="$1" sock_dir="$2" sock_tmp="$2/sock"
-    local safe_path="/usr/bin:/bin"
+    local safe_path="$_KCOV_SAFE_TOOL_PATH"
     if ! PATH="$safe_path" mv -f "$sock_tmp" "$bus_path"; then
         PATH="$safe_path" rm -rf "$sock_dir"
         _kcov_bind_warning "$bus_path" "$sock_tmp"
@@ -125,10 +145,11 @@ _kcov_bind_unix_bus() {
 
 _bind_unix_socket_path() {
     _kcov_bind_unix_bus "$@"
+    return $?
 }
 
 _kcov_repo_root_from_source() {
-    [ -n "${BASH_SOURCE[0]:-}" ] || return 1
+    [[ -n "${BASH_SOURCE[0]:-}" ]] || return 1
     (cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd) || return 1
 }
 
@@ -136,7 +157,7 @@ _kcov_repo_root() {
     # Memoize in KCOV_REPO_ROOT in the caller shell; subshells from $(...) cannot
     # persist assignments made here, so callers must assign: KCOV_REPO_ROOT="$(_kcov_repo_root)".
     local resolved
-    if [ -n "${KCOV_REPO_ROOT:-}" ]; then
+    if [[ -n "${KCOV_REPO_ROOT:-}" ]]; then
         printf '%s\n' "$KCOV_REPO_ROOT"
         return 0
     fi
@@ -158,9 +179,10 @@ _kcov_clamp_run_timeout() {
             printf '45\n'
             return 0
             ;;
+        *) ;;
     esac
     # Values below 1 intentionally clamp to 45 (same ceiling as >45), not to 1.
-    if [ "$timeout_secs" -lt 1 ] || [ "$timeout_secs" -gt 45 ]; then
+    if [[ "$timeout_secs" -lt 1 ]] || [[ "$timeout_secs" -gt 45 ]]; then
         echo "Warning: KCOV_RUN_TIMEOUT_SECS=${timeout_secs} outside 1–45; clamping to 45" >&2
         printf '45\n'
         return 0
@@ -206,14 +228,16 @@ _kcov_run() {
 }
 
 _kcov_shift_leading_env_exports() {
-    local assign_key
-    while [ "$#" -gt 0 ] && [[ "$1" == *=* ]]; do
-        assign_key="${1%%=*}"
+    local assign_key arg
+    while [[ "$#" -gt 0 ]]; do
+        arg="$1"
+        [[ "$arg" == *=* ]] || break
+        assign_key="${arg%%=*}"
         [[ "$assign_key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || break
-        export "${assign_key}=${1#*=}"
+        export "${assign_key}=${arg#*=}"
         shift
     done
-    if [ "$#" -eq 0 ]; then
+    if [[ "$#" -eq 0 ]]; then
         echo "kcov env-shift: no command remaining after leading assignments" >&2
         return 127
     fi
@@ -222,10 +246,12 @@ _kcov_shift_leading_env_exports() {
 
 _export_leading_env_assigns() {
     _kcov_shift_leading_env_exports "$@"
+    return $?
 }
 
 _run_with_optional_env() {
-    if [ "$#" -gt 0 ] && [ "$1" = "env" ]; then
+    local first_arg="${1:-}"
+    if [[ "$#" -gt 0 ]] && [[ "$first_arg" = "env" ]]; then
         shift
         ( _export_leading_env_assigns "$@" )
         return $?
@@ -235,11 +261,12 @@ _run_with_optional_env() {
 
 _restore_errexit_state() {
     local had_errexit="$1"
-    if [ "$had_errexit" -eq 1 ]; then
+    if [[ "$had_errexit" -eq 1 ]]; then
         set -e
     else
         set +e
     fi
+    return $?
 }
 
 _kcov_expect_exit() {
@@ -249,13 +276,14 @@ _kcov_expect_exit() {
     local had_errexit=0
     case "$-" in
         *e*) had_errexit=1 ;;
+        *) ;;
     esac
     set +e
     _run_with_optional_env "$@"
     status=$?
     # One retry on SIGKILL (137): under --full parallel load, install_all kcov
     # can be OOM-killed even within the 45s cap. Do not retry 124 (true timeout).
-    if [ "$status" -eq 137 ]; then
+    if [[ "$status" -eq 137 ]]; then
         echo "  ! kcov scenario killed (exit 137); retrying once..." >&2
         _run_with_optional_env "$@"
         status=$?
@@ -267,9 +295,11 @@ _kcov_expect_exit() {
             _kcov_record_scenario_failure "timeout" "exit $status"
             return 1
             ;;
+        *) ;;
     esac
     case ",${expected_csv}," in
         *,"$status",*) return 0 ;;
+        *) ;;
     esac
     echo "  ✗ Unexpected kcov scenario exit: got $status, expected one of [$expected_csv]" >&2
     _kcov_record_scenario_failure "unexpected" "got $status expected [$expected_csv]"
@@ -280,18 +310,23 @@ _kcov_expect_run() {
     local expected_csv="$1" kcov_root="$2" label="$3"
     shift 3
     _kcov_expect_exit "$expected_csv" _kcov_run "$kcov_root" "$label" "$@"
+    return $?
 }
 
 _kcov_expect_run_env() {
     local expected_csv="$1" kcov_root="$2" label="$3"
     shift 3
     local -a env_pairs
+    local env_arg
     env_pairs=()
-    while [ "$#" -gt 0 ] && [[ "$1" == *=* ]]; do
-        env_pairs+=("$1")
+    while [[ "$#" -gt 0 ]]; do
+        env_arg="$1"
+        [[ "$env_arg" == *=* ]] || break
+        env_pairs+=("$env_arg")
         shift
     done
     _kcov_expect_exit "$expected_csv" env "${env_pairs[@]}" _kcov_run "$kcov_root" "$label" "$@"
+    return $?
 }
 
 _kcov_expect_direct_run_env() {
@@ -300,15 +335,18 @@ _kcov_expect_direct_run_env() {
     local expected_csv="$1" kcov_root="$2" label="$3"
     shift 3
     local -a env_pairs
-    local status log_file timeout_secs
+    local env_arg status log_file timeout_secs
     local had_errexit=0
     env_pairs=()
-    while [ "$#" -gt 0 ] && [[ "$1" == *=* ]]; do
-        env_pairs+=("$1")
+    while [[ "$#" -gt 0 ]]; do
+        env_arg="$1"
+        [[ "$env_arg" == *=* ]] || break
+        env_pairs+=("$env_arg")
         shift
     done
     case "$-" in
         *e*) had_errexit=1 ;;
+        *) ;;
     esac
     mkdir -p "$kcov_root/logs"
     log_file="$kcov_root/logs/${label}.log"
@@ -323,15 +361,23 @@ _kcov_expect_direct_run_env() {
     status=$?
     _restore_errexit_state "$had_errexit"
     echo "    - direct scenario: $label (exit: $status, log: $log_file)"
+    _kcov_check_direct_status "$status" "$expected_csv" "$label" "$log_file"
+    return $?
+}
+
+_kcov_check_direct_status() {
+    local status="$1" expected_csv="$2" label="$3" log_file="$4"
     case "$status" in
         124|137)
             echo "  ✗ Direct scenario timed out/killed: exit $status (log: $log_file)" >&2
             _kcov_record_scenario_failure "direct-timeout" "$label exit $status"
             return 1
             ;;
+        *) ;;
     esac
     case ",${expected_csv}," in
         *,"$status",*) return 0 ;;
+        *) ;;
     esac
     echo "  ✗ Unexpected direct scenario exit: got $status, expected one of [$expected_csv]" >&2
     echo "    log: $log_file" >&2
@@ -344,6 +390,7 @@ _make_fake_loginctl_script() {
     KCOV_REPO_ROOT="$(_kcov_repo_root)"
     repo_root="$KCOV_REPO_ROOT"
     python3 "$repo_root/tools/make_fake_loginctl.py" "$@"
+    return $?
 }
 
 _make_fake_loginctl_current_user() {
@@ -351,6 +398,7 @@ _make_fake_loginctl_current_user() {
     local tmp="$1"
     _make_fake_loginctl_script --current-user "$tmp"
     _make_fake_id_current_user "$tmp"
+    return $?
 }
 
 _make_fake_id_current_user() {
@@ -395,10 +443,11 @@ _kcov_isolated_bin_dir() {
         printf ls "$@"
     do
         src=$(type -P "$tool" 2>/dev/null || true)
-        if [ -n "$src" ] && [ -x "$src" ]; then
+        if [[ -n "$src" ]] && [[ -x "$src" ]]; then
             ln -sf "$src" "$dest/$tool"
         fi
     done
+    return $?
 }
 
 _write_sudo_stub() {
@@ -424,10 +473,13 @@ done
 exec "$@"
 EOF
     chmod +x "$mock/sudo"
+    return $?
 }
 
 _make_fake_sudo_script() {
-    _write_sudo_stub "$1"
+    local mock_dir="$1"
+    _write_sudo_stub "$mock_dir"
+    return $?
 }
 
 _make_fake_gsettings_script() {
@@ -442,26 +494,29 @@ esac
 exit 0
 EOF
     chmod +x "$tmp/gsettings"
+    return $?
 }
 
 _kcov_make_stub() {
     local path="$1" body="${2:-exit 0}"
     printf '#!/bin/sh\n%s\n' "$body" > "$path"
     chmod +x "$path"
+    return $?
 }
 
 _link_kcov_tool() {
     local iso_tmp="$1" tool="$2" tool_path
     tool_path=$(type -P "$tool" 2>/dev/null || true)
-    if [ -n "$tool_path" ] && [ -f "$tool_path" ] && [ -x "$tool_path" ]; then
+    if [[ -n "$tool_path" ]] && [[ -f "$tool_path" ]] && [[ -x "$tool_path" ]]; then
         ln -sf "$tool_path" "$iso_tmp/$tool"
     fi
+    return $?
 }
 
 _copy_kcov_env_files() {
     local tmp="$1" iso_tmp="$2" entry
     for entry in "$tmp/"*; do
-        [ -f "$entry" ] || continue
+        [[ -f "$entry" ]] || continue
         cp "$entry" "$iso_tmp/" || return 1
     done
 }
@@ -470,9 +525,9 @@ _setup_isolated_kcov_env() {
     local tmp="$1" iso_tmp="$2" tool
     _copy_kcov_env_files "$tmp" "$iso_tmp" || return 1
     for tool in sh bash env cat echo cut head tr grep test [ dirname basename mktemp rm mkdir hda-verb; do
-        if [ "$tool" = "hda-verb" ]; then
+        if [[ "$tool" = "hda-verb" ]]; then
             if ! type -P "$tool" >/dev/null 2>&1; then
-                printf '#!/bin/sh\nexit 0\n' > "$iso_tmp/$tool"
+                printf '%s' "$_KCOV_STUB_EXIT0" > "$iso_tmp/$tool"
                 chmod +x "$iso_tmp/$tool"
             fi
         else

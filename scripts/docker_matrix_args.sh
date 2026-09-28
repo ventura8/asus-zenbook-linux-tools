@@ -27,45 +27,49 @@ Options:
                     Also accepted via env ASUS_CI_DE_FAMILY. Always-on CI full-DE job
                     uses this; local --distro + --de-family is for debug.
 EOF
+    return $?
 }
 
 _handle_distro_arg() {
-    if [[ -z "$2" || "$2" == --* ]]; then
+    local image="$2"
+    if [[ -z "$image" || "$image" == --* ]]; then
         echo "--distro requires an image argument" >&2
         exit 1
     fi
-    SELECTED_DISTROS+=("$2")
+    SELECTED_DISTROS+=("$image")
 }
 
 _handle_distro_family_arg() {
-    if [[ -z "$2" || "$2" == --* ]]; then
+    local family="$2"
+    if [[ -z "$family" || "$family" == --* ]]; then
         echo "--distro-family requires debian|rhel|suse-arch" >&2
         exit 1
     fi
-    case "$2" in
-        debian|rhel|suse-arch) _append_distro_family "$2" ;;
+    case "$family" in
+        debian|rhel|suse-arch) _append_distro_family "$family" ;;
         *)
-            echo "Unsupported --distro-family: $2 (use debian|rhel|suse-arch)" >&2
+            echo "Unsupported --distro-family: $family (use debian|rhel|suse-arch)" >&2
             exit 1
             ;;
     esac
 }
 
 _handle_de_family_arg() {
-    if [[ -z "$2" || "$2" == --* ]]; then
+    local de_family="$2"
+    if [[ -z "$de_family" || "$de_family" == --* ]]; then
         echo "--de-family requires gnome|kde|xfce|lxqt|cinnamon|mate" >&2
         exit 1
     fi
-    case "$2" in
+    case "$de_family" in
         gnome|kde|xfce|lxqt|cinnamon|mate)
             # Consumed by run_docker_matrix.sh after this file is sourced.
-            export DE_FAMILY="$2"
+            export DE_FAMILY="$de_family"
             # Local --de-family implies full-DE smoke CLI/schema probes (CI sets both).
             ASUS_CI_FULL_DE="${ASUS_CI_FULL_DE:-1}"
             export ASUS_CI_FULL_DE
             ;;
         *)
-            echo "Unsupported --de-family: $2" >&2
+            echo "Unsupported --de-family: $de_family" >&2
             exit 1
             ;;
     esac
@@ -78,11 +82,13 @@ _handle_unknown_arg() {
 }
 
 _handle_mode_arg() {
-    if [[ "$1" == "--parallel" ]]; then
+    local mode_flag="$1"
+    if [[ "$mode_flag" == "--parallel" ]]; then
         export PARALLEL=1
     else
         export PARALLEL=0
     fi
+    return $?
 }
 
 _handle_output_switch_arg() {
@@ -102,17 +108,19 @@ _handle_output_switch_arg() {
 }
 
 _handle_mode_switch_arg() {
-    case "$1" in
+    local arg="$1"
+    case "$arg" in
         --compat-only) COMPAT_ONLY=1 ;;
         --coverage-gate) RUN_COVERAGE_GATE=1 ;;
-        --parallel|--serial) _handle_mode_arg "$1" ;;
+        --parallel|--serial) _handle_mode_arg "$arg" ;;
         *) return 1 ;;
     esac
 }
 
 _handle_switch_arg() {
-    _handle_output_switch_arg "$1" && return 0
-    _handle_mode_switch_arg "$1"
+    local arg="$1"
+    _handle_output_switch_arg "$arg" && return 0
+    _handle_mode_switch_arg "$arg"
 }
 
 _is_valued_matrix_flag() {
@@ -123,31 +131,35 @@ _is_valued_matrix_flag() {
 }
 
 _dispatch_valued_flag() {
-    case "$1" in
-        --distro) _handle_distro_arg "$1" "$2" ;;
-        --distro-family) _handle_distro_family_arg "$1" "$2" ;;
-        --de-family) _handle_de_family_arg "$1" "$2" ;;
+    local flag="$1" value="$2"
+    case "$flag" in
+        --distro) _handle_distro_arg "$flag" "$value" ;;
+        --distro-family) _handle_distro_family_arg "$flag" "$value" ;;
+        --de-family) _handle_de_family_arg "$flag" "$value" ;;
         *) return 1 ;;
     esac
     return 0
 }
 
 _process_arg() {
-    if _handle_switch_arg "$1"; then
+    local arg="$1" value="${2:-}"
+    if _handle_switch_arg "$arg"; then
         return
     fi
-    if _dispatch_valued_flag "$1" "${2:-}"; then
+    if _dispatch_valued_flag "$arg" "$value"; then
         return
     fi
-    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    if [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
         usage
         exit 0
     fi
-    _handle_unknown_arg "$1"
+    _handle_unknown_arg "$arg"
 }
 
 _matrix_arg_has_value() {
-    [ "$#" -ge 2 ] && [[ "$2" != --* ]]
+    local next="${2:-}"
+    [[ "$#" -ge 2 ]] && [[ "$next" != --* ]]
+    return $?
 }
 
 _matrix_valued_shift_count() {
@@ -160,21 +172,24 @@ _matrix_valued_shift_count() {
 }
 
 parse_args() {
-    local shift_n
+    local shift_n arg next
     while [[ $# -gt 0 ]]; do
-        if _is_valued_matrix_flag "$1"; then
+        arg="$1"
+        next="${2:-}"
+        if _is_valued_matrix_flag "$arg"; then
             shift_n="$(_matrix_valued_shift_count "$@")"
             if [[ "$shift_n" -eq 2 ]]; then
-                _process_arg "$1" "$2"
+                _process_arg "$arg" "$next"
             else
-                _process_arg "$1" ""
+                _process_arg "$arg" ""
             fi
             shift "$shift_n"
             continue
         fi
-        _process_arg "$1"
+        _process_arg "$arg"
         shift
     done
+    return $?
 }
 
 _validate_selected_distros() {

@@ -4,13 +4,13 @@
 _source_bootstrap_helper() {
     local script_dir installed_lib
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    if [ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ] \
-        && [ -f "$script_dir/../lib/asus-bootstrap.sh" ]; then
+    if [[ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ]] \
+        && [[ -f "$script_dir/../lib/asus-bootstrap.sh" ]]; then
         . "$script_dir/../lib/asus-bootstrap.sh"
         return 0
     fi
     installed_lib="${ASUS_INSTALLED_LIB_DIR:-/usr/local/lib/asus-zenbook-linux-tools}"
-    if [ -f "$installed_lib/asus-bootstrap.sh" ]; then
+    if [[ -f "$installed_lib/asus-bootstrap.sh" ]]; then
         . "$installed_lib/asus-bootstrap.sh"
         return 0
     fi
@@ -19,7 +19,7 @@ _source_bootstrap_helper() {
 }
 
 _source_display_mutter_helper() {
-    if [ ! -f "$_ASUS_LIB_DIR/asus-display-mutter.sh" ]; then
+    if [[ ! -f "$_ASUS_LIB_DIR/asus-display-mutter.sh" ]]; then
         echo "Error: Missing lib/asus-display-mutter.sh" >&2
         return 1
     fi
@@ -31,6 +31,7 @@ _normalize_display_timing_env() {
     [[ "$_OSD_IDLE_SECS" =~ ^[0-9]+$ ]] || _OSD_IDLE_SECS=2
     [[ "$_DUP_WINDOW_MS" =~ ^[0-9]+$ ]] || _DUP_WINDOW_MS=50
     [[ "$_FLOCK_WAIT_SECS" =~ ^[0-9]+$ ]] || _FLOCK_WAIT_SECS=5
+    return $?
 }
 
 _source_initial_display_helpers() {
@@ -42,7 +43,7 @@ _source_initial_display_helpers() {
 _validate_display_mode_modules() {
     local display_lib
     for display_lib in asus-display-state.sh asus-display-watchdog.sh asus-display-osd.sh; do
-        if [ ! -f "$_ASUS_LIB_DIR/$display_lib" ]; then
+        if [[ ! -f "$_ASUS_LIB_DIR/$display_lib" ]]; then
             echo "Error: Missing lib/$display_lib" >&2
             return 1
         fi
@@ -51,7 +52,7 @@ _validate_display_mode_modules() {
 
 _source_initial_display_helpers || exit 1
 # Optional: persisted ScreenPad brightness for Mutter layout restore.
-if [ -f "${_ASUS_LIB_DIR}/asus-screenpad.sh" ]; then
+if [[ -f "${_ASUS_LIB_DIR}/asus-screenpad.sh" ]]; then
     # shellcheck source=lib/asus-screenpad.sh
     . "${_ASUS_LIB_DIR}/asus-screenpad.sh"
 fi
@@ -122,24 +123,35 @@ _release_display_mode_lock() {
     # permanently redirect the shell's stderr and swallow the final Error line.
     flock -u 9 2>/dev/null || true
     exec 9>&- || true
+    return $?
+}
+
+_suppress_duplicate_display_invoke() {
+    # Sticky OSD cycles must not be delayed by duplicate suppression.
+    local prefix="$1"
+    if ! _session_is_active "$prefix" && _is_duplicate_invoke; then
+        _log_display_mode "Duplicate suppress (user=$(whoami))"
+        _release_display_mode_lock
+        return 0
+    fi
+    return 1
 }
 
 main() {
+    local mode_arg="${1:-}"
     local prefix status
-    case "${1:-}" in
+    case "$mode_arg" in
         --internal-watchdog|--cancel-osd)
-            _handle_internal_mode "$1"
+            _handle_internal_mode "$mode_arg"
             status=$?
             return "$status"
             ;;
+        *) ;;
     esac
     _display_state_prefix >/dev/null
     prefix="$_ASUS_DISPLAY_MODE_PREFIX_CACHE"
     _acquire_display_mode_lock "$prefix" || return 1
-    # Sticky OSD cycles must not be delayed by duplicate suppression.
-    if ! _session_is_active "$prefix" && _is_duplicate_invoke; then
-        _log_display_mode "Duplicate suppress (user=$(whoami))"
-        _release_display_mode_lock
+    if _suppress_duplicate_display_invoke "$prefix"; then
         return 0
     fi
     _log_display_mode "Invoked by user=$(whoami) (UID=$UID)"
@@ -154,6 +166,6 @@ main() {
     return 1
 }
 
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
     main "$@"
 fi

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Cinnamon custom keybindings for the DESKTOP install component (gsettings).
 
+# Cinnamon media-keys schema / key cleared before binding XF86Display.
+_ASUS_CINNAMON_MEDIA_KEYS_SCHEMA="org.cinnamon.desktop.keybindings.media-keys"
+_ASUS_CINNAMON_VIDEO_OUTPUTS_KEY="video-outputs"
+
 # slot|binding_array|name|command|backup_basename
 _cinnamon_shortcut_table() {
     local display control screenshot
@@ -13,12 +17,14 @@ _cinnamon_shortcut_table() {
         "$control"
     printf "asus-screenshot|['<Super><Shift>s']|%s|/usr/local/bin/asus-screenshot.sh|orig_cinnamon_super_shift_s\n" \
         "$screenshot"
+    return $?
 }
 
 _cinnamon_custom_schema() {
     local slot="$1"
     printf '%s\n' \
         "org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/${slot}/"
+    return $?
 }
 
 _cinnamon_atomic_write() {
@@ -45,11 +51,12 @@ _cinnamon_write_state_file() {
 _cinnamon_mark_absent() {
     local dest="$1"
     _cinnamon_atomic_write "${dest}.absent" ""
+    return $?
 }
 
 _cinnamon_backup_key() {
     local user="$1" bus="$2" schema="$3" key="$4" dest="$5" val
-    [ -f "$dest" ] && return 0
+    [[ -f "$dest" ]] && return 0
     if val=$(_user_gsettings "$user" "$bus" get "$schema" "$key" 2>/dev/null); then
         _cinnamon_atomic_write "$dest" "$val" || return 1
         return 0
@@ -59,7 +66,7 @@ _cinnamon_backup_key() {
 
 _cinnamon_backup_slot() {
     local user="$1" bus="$2" slot="$3" dest="$4" schema val
-    if [ -f "$dest" ] || [ -f "${dest}.absent" ]; then
+    if [[ -f "$dest" ]] || [[ -f "${dest}.absent" ]]; then
         return 0
     fi
     schema=$(_cinnamon_custom_schema "$slot")
@@ -71,7 +78,8 @@ _cinnamon_backup_slot() {
 }
 
 _cinnamon_optional_slot_value() {
-    _user_gsettings "$1" "$2" get "$3" "$4" 2>/dev/null || return 0
+    local user="$1" bus="$2" schema="$3" key="$4"
+    _user_gsettings "$user" "$bus" get "$schema" "$key" 2>/dev/null || return 0
 }
 
 _cinnamon_write_slot_backup() {
@@ -93,16 +101,16 @@ _cinnamon_write_slot_backup() {
 _cinnamon_backup_video_outputs() {
     local user="$1" bus="$2" config_dir="$3"
     if _gsettings_key_exists "$user" "$bus" \
-        "org.cinnamon.desktop.keybindings.media-keys" "video-outputs"; then
+        "$_ASUS_CINNAMON_MEDIA_KEYS_SCHEMA" "$_ASUS_CINNAMON_VIDEO_OUTPUTS_KEY"; then
         _cinnamon_backup_key "$user" "$bus" \
-            "org.cinnamon.desktop.keybindings.media-keys" "video-outputs" \
+            "$_ASUS_CINNAMON_MEDIA_KEYS_SCHEMA" "$_ASUS_CINNAMON_VIDEO_OUTPUTS_KEY" \
             "$config_dir/orig_cinnamon_video_outputs" || return 1
     fi
 }
 
 _cinnamon_backup_table_row() {
     local user="$1" bus="$2" config_dir="$3" slot="$4" backup="$5"
-    [ -n "$slot" ] || return 0
+    [[ -n "$slot" ]] || return 0
     _cinnamon_backup_slot "$user" "$bus" "$slot" "$config_dir/$backup"
 }
 
@@ -134,7 +142,7 @@ _cinnamon_apply_bindings() {
     current=$(_cinnamon_current_custom_list "$user" "$bus_addr")
     merged=$(_merge_custom_keybindings "$current" \
         "asus-display-mode" "asus-control-center" "asus-screenshot")
-    [ -n "$merged" ] || return 1
+    [[ -n "$merged" ]] || return 1
     _user_gsettings "$user" "$bus_addr" \
         set org.cinnamon.desktop.keybindings custom-list "$merged" || return 1
     while IFS='|' read -r slot binding name cmd backup; do
@@ -145,54 +153,58 @@ _cinnamon_apply_bindings() {
 }
 
 _cinnamon_current_custom_list() {
-    _user_gsettings "$1" "$2" get org.cinnamon.desktop.keybindings custom-list 2>/dev/null \
+    local user="$1" bus="$2"
+    _user_gsettings "$user" "$bus" get org.cinnamon.desktop.keybindings custom-list 2>/dev/null \
         || echo "[]"
+    return $?
 }
 
 _cinnamon_apply_table_row() {
     local user="$1" bus_addr="$2" slot="$3" binding="$4" name="$5" cmd="$6"
-    [ -n "$slot" ] || return 0
+    [[ -n "$slot" ]] || return 0
     _cinnamon_set_slot "$user" "$bus_addr" "$slot" "$binding" "$name" "$cmd"
 }
 
 _cinnamon_clear_video_outputs() {
     local user="$1" bus="$2" bus_addr="$3"
     if _gsettings_key_exists "$user" "$bus" \
-        "org.cinnamon.desktop.keybindings.media-keys" "video-outputs"; then
+        "$_ASUS_CINNAMON_MEDIA_KEYS_SCHEMA" "$_ASUS_CINNAMON_VIDEO_OUTPUTS_KEY"; then
         _asus_soft _user_gsettings "$user" "$bus_addr" \
-            set org.cinnamon.desktop.keybindings.media-keys video-outputs "[]"
+            set "$_ASUS_CINNAMON_MEDIA_KEYS_SCHEMA" "$_ASUS_CINNAMON_VIDEO_OUTPUTS_KEY" "[]"
     fi
+    return $?
 }
 
 _cinnamon_restore_key_file() {
     local user="$1" bus="$2" schema="$3" key="$4" dest="$5" val
-    [ -f "${dest}.absent" ] && return 0
-    [ -f "$dest" ] || return 0
+    [[ -f "${dest}.absent" ]] && return 0
+    [[ -f "$dest" ]] || return 0
     val=$(cat "$dest" 2>/dev/null || true)
-    [ -n "$val" ] || return 0
+    [[ -n "$val" ]] || return 0
     _user_gsettings "$user" "$bus" set "$schema" "$key" "$val"
 }
 
 _cinnamon_restore_slot() {
-    local user="$1" bus="$2" slot="$3" dest="$4" schema line key val
+    local user="$1" bus="$2" slot="$3" dest="$4" schema
     schema=$(_cinnamon_custom_schema "$slot")
-    if [ -f "${dest}.absent" ]; then
+    if [[ -f "${dest}.absent" ]]; then
         _asus_soft _user_gsettings "$user" "$bus" reset-recursively "$schema"
         return 0
     fi
-    [ -f "$dest" ] || return 0
+    [[ -f "$dest" ]] || return 0
     _cinnamon_restore_slot_file "$user" "$bus" "$schema" "$dest"
 }
 
 _cinnamon_restore_slot_file() {
     local user="$1" bus="$2" schema="$3" dest="$4" line key val
-    while IFS= read -r line || [ -n "$line" ]; do
+    while IFS= read -r line || [[ -n "$line" ]]; do
         key=${line%%=*}
         val=${line#*=}
         case "$key" in
             binding|command|name)
                 _user_gsettings "$user" "$bus" set "$schema" "$key" "$val" || return 1
                 ;;
+            *) ;;
         esac
     done < "$dest"
 }
@@ -226,20 +238,20 @@ _cinnamon_restore_global_keys() {
         "org.cinnamon.desktop.keybindings" "custom-list" \
         "$config_dir/orig_cinnamon_custom_list" || failed=1
     _cinnamon_restore_key_file "$user" "$bus_path" \
-        "org.cinnamon.desktop.keybindings.media-keys" "video-outputs" \
+        "$_ASUS_CINNAMON_MEDIA_KEYS_SCHEMA" "$_ASUS_CINNAMON_VIDEO_OUTPUTS_KEY" \
         "$config_dir/orig_cinnamon_video_outputs" || failed=1
     return "$failed"
 }
 
 _cinnamon_restore_table_row() {
     local user="$1" bus_path="$2" config_dir="$3" slot="$4" backup="$5"
-    [ -n "$slot" ] || return 0
+    [[ -n "$slot" ]] || return 0
     _cinnamon_restore_slot "$user" "$bus_path" "$slot" "$config_dir/$backup"
 }
 
 _cinnamon_finish_restore() {
     local config_dir="$1" failed="$2"
-    if [ "$failed" -eq 0 ]; then
+    if [[ "$failed" -eq 0 ]]; then
         _cinnamon_clear_config_dir "$config_dir"
         return $?
     fi
@@ -265,13 +277,15 @@ _set_cinnamon_keybindings() {
 }
 
 _cinnamon_print_configure_progress() {
-    _install_print_next_step "$(_asus_gettextf "Configuring Cinnamon shortcuts for %s..." "$1")"
+    local target_user="$1"
+    _install_print_next_step "$(_asus_gettextf "Configuring Cinnamon shortcuts for %s..." "$target_user")"
+    return $?
 }
 
 configure_cinnamon_component() {
     local info target_user user_id bus_path config_dir
     info=$(_resolve_user_bus_info)
-    if [ -z "$info" ]; then
+    if [[ -z "$info" ]]; then
         echo "  ✗ Cinnamon configuration failed: desktop D-Bus session not found." >&2
         return 1
     fi

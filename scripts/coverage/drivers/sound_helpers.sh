@@ -18,7 +18,7 @@ mkdir -p "$(dirname "$_SOUND_HELPERS_LOG")"
 
 _sound_helpers_report_flush() {
     local flush_status="$1"
-    if [ "$flush_status" -eq 0 ]; then
+    if [[ "$flush_status" -eq 0 ]]; then
         return 0
     fi
     echo "sound_helpers: tee flush failed with status $flush_status" >&3
@@ -26,10 +26,10 @@ _sound_helpers_report_flush() {
 
 _sound_helpers_remove_tee_dir() {
     local flush_status="$1" rm_status=0
-    if [ -n "${_SOUND_TEE_DIR:-}" ]; then
+    if [[ -n "${_SOUND_TEE_DIR:-}" ]]; then
         rm -rf "$_SOUND_TEE_DIR" || rm_status=$?
     fi
-    if [ "$flush_status" -eq 0 ] && [ "$rm_status" -ne 0 ]; then
+    if [[ "$flush_status" -eq 0 ]] && [[ "$rm_status" -ne 0 ]]; then
         printf '%s\n' "$rm_status"
     else
         printf '%s\n' "$flush_status"
@@ -40,7 +40,7 @@ _sound_helpers_flush_tee() {
     local entry_status=$? flush_status=0
     exec 1>&- 2>&-
     exec 2>&3
-    if [ -n "${_SOUND_TEE_PID:-}" ]; then
+    if [[ -n "${_SOUND_TEE_PID:-}" ]]; then
         wait "$_SOUND_TEE_PID" || flush_status=$?
     fi
     flush_status="$(_sound_helpers_remove_tee_dir "$flush_status")"
@@ -66,7 +66,7 @@ trap '_sound_helpers_flush_tee' EXIT
 # shellcheck source=bin/asus-sound-fix.sh
 source "$REPO_ROOT/bin/asus-sound-fix.sh" >/dev/null 2>&1
 
-if [ -z "${DEV_SND_ROOT:-}" ]; then
+if [[ -z "${DEV_SND_ROOT:-}" ]]; then
     echo "DEV_SND_ROOT is required for the sound coverage driver" >&3
     exit 1
 fi
@@ -105,11 +105,11 @@ _run_sound_fallback_mode() {
     printf 'import sys\nsys.exit(0)\n' > "$_SOUND_FALLBACK_ISOLATED/bin/asus_hda_verb.py"
     for tool in bash sed grep dirname basename; do
         src="$(type -P "$tool" 2>/dev/null || true)"
-        [ -n "$src" ] || continue
+        [[ -n "$src" ]] || continue
         ln -s "$src" "$_SOUND_FALLBACK_ISOLATED/path/$tool"
     done
     py="$(type -P python3 2>/dev/null || true)"
-    if [ -n "$py" ]; then
+    if [[ -n "$py" ]]; then
         ln -s "$py" "$_SOUND_FALLBACK_ISOLATED/path/python3"
     fi
     _exercise env PATH="$_SOUND_FALLBACK_ISOLATED/path" \
@@ -127,7 +127,7 @@ _sound_remove_prepare_tree() {
         "${prefix}/etc/systemd/system" \
         "${prefix}/lib/systemd/system-sleep" \
         "${prefix}/var/lib/asus-zenbook-linux-tools"
-    printf '#!/bin/sh\nexit 0\n' > "$ctl"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$ctl"
     chmod +x "$ctl"
 }
 
@@ -157,7 +157,7 @@ _sound_remove_export_dirs() {
 
 _run_sound_remove_mode() {
     local status=0 owned_dest saved_destdir="" had_destdir=0 prefix ctl
-    if [ -v DESTDIR ]; then
+    if [[ -v DESTDIR ]]; then
         had_destdir=1
         saved_destdir="$DESTDIR"
     fi
@@ -175,7 +175,7 @@ _run_sound_remove_mode() {
     _sound_remove_export_dirs "$prefix" "$ctl"
     _exercise remove_installed_files >/dev/null 2>&1 || status=$?
     rm -rf "$owned_dest"
-    if [ "$had_destdir" -eq 1 ]; then
+    if [[ "$had_destdir" -eq 1 ]]; then
         export DESTDIR="$saved_destdir"
     else
         unset DESTDIR

@@ -9,13 +9,14 @@ _smoke_write_secondary_family_stubs() {
         mate) _smoke_write_mate_stubs "$mock_bin" "$gset_log" ;;
         *) _smoke_fail "unknown desktop family for smoke: $family" ;;
     esac
+    return $?
 }
 
 _smoke_write_family_stubs() {
     local family="$1" mock_bin="$2" gset_log="$3" kde_log="$4" xfce_log="$5"
     # FULL_DE: fail closed when curated image should have real CLIs; stubs still
     # drive install/uninstall wiring asserts under the mock PATH.
-    if [ "${ASUS_CI_FULL_DE:-}" = "1" ]; then
+    if [[ "${ASUS_CI_FULL_DE:-}" = "1" ]]; then
         _smoke_require_full_de_clis "$family"
     fi
     case "$family" in
@@ -24,6 +25,7 @@ _smoke_write_family_stubs() {
         xfce) _smoke_write_xfce_stubs "$mock_bin" "$xfce_log" ;;
         *) _smoke_write_secondary_family_stubs "$@" ;;
     esac
+    return $?
 }
 
 _smoke_assert_secondary_family_installed() {
@@ -32,7 +34,9 @@ _smoke_assert_secondary_family_installed() {
         lxqt) _smoke_assert_lxqt_installed "$dest" "$home_dir" "$uid" ;;
         cinnamon) _smoke_assert_cinnamon_installed "$dest" "$uid" "$gset_log" ;;
         mate) _smoke_assert_mate_installed "$dest" "$uid" "$gset_log" ;;
+        *) ;;
     esac
+    return $?
 }
 
 _smoke_assert_family_installed() {
@@ -44,6 +48,7 @@ _smoke_assert_family_installed() {
         xfce) _smoke_assert_xfce_installed "$dest" "$uid" "$xfce_log" ;;
         *) _smoke_assert_secondary_family_installed "$@" ;;
     esac
+    return $?
 }
 
 _smoke_assert_secondary_family_uninstalled() {
@@ -52,7 +57,9 @@ _smoke_assert_secondary_family_uninstalled() {
         lxqt) _smoke_assert_lxqt_uninstalled "$dest" "$home_dir" "$uid" ;;
         cinnamon) _smoke_assert_cinnamon_uninstalled "$dest" "$uid" "$gset_log" ;;
         mate) _smoke_assert_mate_uninstalled "$dest" "$uid" "$gset_log" ;;
+        *) ;;
     esac
+    return $?
 }
 
 _smoke_assert_family_uninstalled() {
@@ -64,4 +71,5 @@ _smoke_assert_family_uninstalled() {
         xfce) _smoke_assert_xfce_uninstalled "$dest" "$uid" "$xfce_log" ;;
         *) _smoke_assert_secondary_family_uninstalled "$@" ;;
     esac
+    return $?
 }

@@ -9,6 +9,7 @@ _print_distro_log() {
     printf '  FAILURE LOG: %s\n' "$name"
     printf '%s\n\n' "══════════════════════════════════════"
     cat "$log"
+    return $?
 }
 
 _print_failure_details() {
@@ -17,10 +18,14 @@ _print_failure_details() {
     for idx in "${__failing_indices[@]}"; do
         _print_distro_log "${__names[$idx]}" "${__logs[$idx]}"
     done
+    return $?
 }
 
 _parallel_report_done() {
-    _parallel_report_done_job "$1" "$2" "$3" "$4" "$5" _print_distro_log
+    local done_pid="$1" code="$2" pids_name="$3" names_name="$4" logs_name="$5"
+    _parallel_report_done_job "$done_pid" "$code" "$pids_name" "$names_name" "$logs_name" \
+        _print_distro_log
+    return $?
 }
 
 _collect_parallel_results() {
@@ -31,7 +36,7 @@ _collect_parallel_results() {
     local -a log_copies=("${_logs[@]}")
     local done_pid="" code=0 report_status=0
 
-    while [ "${#pid_copies[@]}" -gt 0 ]; do
+    while [[ "${#pid_copies[@]}" -gt 0 ]]; do
         done_pid=""
         set +e
         wait -n -p done_pid "${pid_copies[@]}"
@@ -39,11 +44,11 @@ _collect_parallel_results() {
         _parallel_report_done "$done_pid" "$code" pid_copies name_copies log_copies
         report_status=$?
         set -e
-        if [ "$report_status" -eq 1 ]; then
+        if [[ "$report_status" -eq 1 ]]; then
             _kill_pgid_list "${pid_copies[@]}"
             return 1
         fi
-        if [ "$report_status" -eq 2 ]; then
+        if [[ "$report_status" -eq 2 ]]; then
             break
         fi
     done
@@ -55,15 +60,17 @@ _run_targets_dry() {
     for image in "$@"; do
         run_target "$image"
     done
+    return $?
 }
 
 _restore_buildx_skip_prune() {
     local had_skip_prune="$1" saved_skip_prune="$2"
-    if [ "$had_skip_prune" = 1 ]; then
+    if [[ "$had_skip_prune" = 1 ]]; then
         DOCKER_BUILDX_SKIP_PRUNE="$saved_skip_prune"
     else
         unset DOCKER_BUILDX_SKIP_PRUNE
     fi
+    return $?
 }
 
 run_targets_parallel() {
@@ -74,7 +81,7 @@ run_targets_parallel() {
     fi
     # Parallel buildx jobs can race with local cache pruning/removal.
     local had_skip_prune=0 saved_skip_prune=""
-    if [ "${DOCKER_BUILDX_SKIP_PRUNE+x}" = "x" ]; then
+    if [[ "${DOCKER_BUILDX_SKIP_PRUNE+x}" = "x" ]]; then
         had_skip_prune=1
         saved_skip_prune="$DOCKER_BUILDX_SKIP_PRUNE"
     fi
@@ -121,6 +128,7 @@ _print_target_distros() {
         distro_name="${distro_name%%:*}"
         echo "- $distro_name -> $image"
     done
+    return
 }
 
 _matrix_log_slug_for_image() {
@@ -141,6 +149,7 @@ _matrix_capture_run_target_status() {
     local had_errexit=0 rt_status=0 tee_status=0
     case "$-" in
         *e*) had_errexit=1 ;;
+        *) ;;
     esac
     set +e
     run_target "$image" 2>&1 | tee "$log"
@@ -148,24 +157,26 @@ _matrix_capture_run_target_status() {
     local -a _mcs_pipe=("${PIPESTATUS[@]}")
     rt_status=${_mcs_pipe[0]:-1}
     tee_status=${_mcs_pipe[1]:-1}
-    if [ "$rt_status" -ne 0 ]; then
+    if [[ "$rt_status" -ne 0 ]]; then
         _mcs_status=$rt_status
-    elif [ "$tee_status" -ne 0 ]; then
+    elif [[ "$tee_status" -ne 0 ]]; then
         _mcs_status=$tee_status
     else
         _mcs_status=0
     fi
-    if [ "$had_errexit" -eq 1 ]; then
+    if [[ "$had_errexit" -eq 1 ]]; then
         set -e
     fi
+    return $?
 }
 
 _matrix_fail_closed_on_kcov_log() {
     local image="$1" log="$2" code="$3"
     case "$code" in
         ''|*[!0-9]*) return 1 ;;
+        *) ;;
     esac
-    if [ "$code" -eq 0 ] && grep -Fq 'kcov scenario suite failed' "$log" 2>/dev/null; then
+    if [[ "$code" -eq 0 ]] && grep -Fq 'kcov scenario suite failed' "$log" 2>/dev/null; then
         echo "  ✗ $image log reports kcov suite failure but process exit was 0" >&2
         return 1
     fi

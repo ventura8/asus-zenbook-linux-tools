@@ -4,9 +4,11 @@
 
 SYS_CLASS_ROOT="${SYS_CLASS_ROOT:-/sys/class}"
 ASUS_WINDOW_SWAP_EXT_UUID="${ASUS_WINDOW_SWAP_EXT_UUID:-asus-window-swap@ventura8.github.com}"
+# Replace-in-place notification tag / notif-id state key for brightness feedback.
+_ASUS_SCREENPAD_BRIGHTNESS_TAG="screenpad-brightness"
 
 find_screenpad_node() {
-    if [ -n "${ASUS_SCREENPAD_NODE:-}" ]; then
+    if [[ -n "${ASUS_SCREENPAD_NODE:-}" ]]; then
         echo "$ASUS_SCREENPAD_NODE"
         return 0
     fi
@@ -20,6 +22,7 @@ _read_screenpad_value() {
     value=$(cat "$node" 2>/dev/null || echo 0)
     [[ "$value" =~ ^[0-9]+$ ]] || value=0
     echo "$value"
+    return
 }
 
 _read_screenpad_max_value() {
@@ -31,14 +34,16 @@ _read_screenpad_max_value() {
         max_value=255
     fi
     echo "$max_value"
+    return
 }
 
 _screenpad_brightness_state_file() {
     local user_id
     user_id=$(id -u "$(_resolve_notif_target_user 2>/dev/null || true)" 2>/dev/null || true)
-    [ -n "$user_id" ] || user_id="0"
+    [[ -n "$user_id" ]] || user_id="0"
     printf '%s/%s/screenpad_brightness\n' \
         "${STATE_DIR:-/var/lib/asus-zenbook-linux-tools}" "$user_id"
+    return $?
 }
 
 _save_screenpad_brightness() {
@@ -53,7 +58,7 @@ _save_screenpad_brightness() {
 _load_screenpad_brightness() {
     local state_file value
     state_file=$(_screenpad_brightness_state_file)
-    [ -f "$state_file" ] || return 1
+    [[ -f "$state_file" ]] || return 1
     value=$(_soft cat "$state_file")
     [[ "$value" =~ ^[1-9][0-9]*$ ]] || return 1
     printf '%s\n' "$value"
@@ -62,30 +67,47 @@ _load_screenpad_brightness() {
 _valid_screenpad_brightness_from_file() {
     # Print the positive integer stored in a readable state file, else fail.
     # Bounded to 9 digits: anything longer is corrupt (max_brightness is far
-    # smaller) and would overflow the `[ -lt ]` comparisons in the clamp.
+    # smaller) and would overflow the `[[ -lt ]]` comparisons in the clamp.
     local file="$1" value
-    [ -f "$file" ] && [ -r "$file" ] || return 1
+    [[ -f "$file" ]] && [[ -r "$file" ]] || return 1
     value=$(cat "$file" 2>/dev/null) || return 1
     [[ "$value" =~ ^[1-9][0-9]{0,8}$ ]] || return 1
     printf '%s\n' "$value"
 }
 
-_newest_valid_screenpad_brightness() {
-    # Newest readable, well-formed per-user state file (boot has no session
-    # user to resolve yet); skips unreadable/empty/malformed candidates.
+_screenpad_state_mtime() {
+    # Validated numeric mtime so the caller's [[ -gt ]] never sees free text.
+    local file="$1" mtime
+    mtime=$(stat -c %Y "$file" 2>/dev/null) || return 1
+    [[ "$mtime" =~ ^[0-9]+$ ]] || return 1
+    printf '%s\n' "$mtime"
+    return 0
+}
+
+_scan_newest_screenpad_brightness() {
+    # Prints the newest valid value (empty when none); -1 lets mtime 0 win.
     local root="${STATE_DIR:-/var/lib/asus-zenbook-linux-tools}"
-    local f value best_value="" best_mtime=0 mtime
+    local f value best_value="" best_mtime=-1 mtime
     for f in "$root"/*/screenpad_brightness; do
         value=$(_valid_screenpad_brightness_from_file "$f") || continue
-        mtime=$(stat -c %Y "$f" 2>/dev/null) || continue
-        [[ "$mtime" =~ ^[0-9]+$ ]] || continue
-        if [ -z "$best_value" ] || [ "$mtime" -gt "$best_mtime" ]; then
+        mtime=$(_screenpad_state_mtime "$f") || continue
+        if [[ "$mtime" -gt "$best_mtime" ]]; then
             best_value="$value"
             best_mtime="$mtime"
         fi
     done
-    [ -n "$best_value" ] || return 1
+    printf '%s' "$best_value"
+    return 0
+}
+
+_newest_valid_screenpad_brightness() {
+    # Newest readable, well-formed per-user state file (boot has no session
+    # user to resolve yet); skips unreadable/empty/malformed candidates.
+    local best_value
+    best_value=$(_scan_newest_screenpad_brightness)
+    [[ -n "$best_value" ]] || return 1
     printf '%s\n' "$best_value"
+    return 0
 }
 
 _load_screenpad_brightness_any_user() {
@@ -95,7 +117,7 @@ _load_screenpad_brightness_any_user() {
     # stale root file would otherwise shadow the newest per-user state.
     local user value
     user=$(_resolve_notif_target_user 2>/dev/null || true)
-    if [ -n "$user" ] && value=$(_load_screenpad_brightness 2>/dev/null); then
+    if [[ -n "$user" ]] && value=$(_load_screenpad_brightness 2>/dev/null); then
         printf '%s\n' "$value"
         return 0
     fi
@@ -104,37 +126,39 @@ _load_screenpad_brightness_any_user() {
 
 _screenpad_symbolic_icon_name() {
     local state="$1"
-    if [ "$state" = "on" ]; then
+    if [[ "$state" = "on" ]]; then
         printf '%s\n' "asus-screenpad-on-symbolic"
     else
         printf '%s\n' "asus-screenpad-toggle-symbolic"
     fi
+    return $?
 }
 
 _screenpad_symbolic_svg_candidates() {
     local name="$1" lib_dir installed_share
     lib_dir="${_ASUS_LIB_DIR:-${_ASUS_COMMON_DIR:-}}"
-    if [ -z "${PREFIX:-}" ]; then
+    if [[ -z "${PREFIX:-}" ]]; then
         installed_share="/usr/local/share"
     else
         installed_share="${PREFIX%/}/usr/local/share"
     fi
-    if [ -n "${ASUS_SCREENPAD_ICON_DIR:-}" ]; then
+    if [[ -n "${ASUS_SCREENPAD_ICON_DIR:-}" ]]; then
         printf '%s\n' "$ASUS_SCREENPAD_ICON_DIR/$name.svg"
     fi
-    if [ -n "$lib_dir" ]; then
+    if [[ -n "$lib_dir" ]]; then
         printf '%s\n' "$lib_dir/../assets/icons/$name.svg"
     fi
     printf '%s\n' \
         "$installed_share/icons/hicolor/scalable/apps/$name.svg" \
         "$installed_share/asus-zenbook-linux-tools/icons/$name.svg"
+    return $?
 }
 
 _find_screenpad_template_svg() {
     local state="$1" name candidate
     name=$(_screenpad_symbolic_icon_name "$state")
     while IFS= read -r candidate; do
-        if [ -n "$candidate" ] && [ -f "$candidate" ]; then
+        if [[ -n "$candidate" ]] && [[ -f "$candidate" ]]; then
             printf '%s\n' "$candidate"
             return 0
         fi
@@ -151,7 +175,7 @@ _resolve_screenpad_notification_icon() {
     }
     icon=$(_resolve_tinted_template_icon "$src" "asus-screenpad-$state" "$name")
     # File-path tint result, or a theme glyph that actually exists.
-    if [[ "$icon" == /* ]] && [ -f "$icon" ]; then
+    if [[ "$icon" == /* ]] && [[ -f "$icon" ]]; then
         printf '%s\n' "$icon"
         return 0
     fi
@@ -165,21 +189,23 @@ _resolve_screenpad_notification_icon() {
 _screenpad_step_size() {
     local max_val="$1" step
     step=$((max_val / 10))
-    [ "$step" -ge 1 ] || step=1
+    [[ "$step" -ge 1 ]] || step=1
     printf '%s\n' "$step"
+    return $?
 }
 
 _clamp_screenpad_brightness() {
     local value="$1" max_val="$2"
     [[ "$value" =~ ^[0-9]+$ ]] || value=0
     [[ "$max_val" =~ ^[0-9]+$ ]] || max_val=0
-    if [ "$value" -lt 1 ]; then
+    if [[ "$value" -lt 1 ]]; then
         value=1
     fi
-    if [ "$value" -gt "$max_val" ]; then
+    if [[ "$value" -gt "$max_val" ]]; then
         value="$max_val"
     fi
     printf '%s\n' "$value"
+    return $?
 }
 
 _screenpad_write_verified() {
@@ -192,7 +218,7 @@ _screenpad_write_verified() {
         echo "Error: Failed to read ScreenPad brightness from $node" >&2
         return 1
     }
-    if [ "$read_back" != "$new_val" ]; then
+    if [[ "$read_back" != "$new_val" ]]; then
         echo "Error: ScreenPad brightness verify failed on $node (expected $new_val, got $read_back)" >&2
         return 1
     fi
@@ -206,7 +232,7 @@ _write_screenpad_brightness() {
 
 _screenpad_level_fraction() {
     local curr="$1" max_val="$2"
-    if [ "$max_val" -le 0 ]; then
+    if [[ "$max_val" -le 0 ]]; then
         printf '0.0000\n'
         return 0
     fi
@@ -216,7 +242,7 @@ _screenpad_level_fraction() {
 
 _screenpad_percent() {
     local curr="$1" max_val="$2"
-    if [ "$max_val" -le 0 ]; then
+    if [[ "$max_val" -le 0 ]]; then
         printf '0\n'
         return 0
     fi
@@ -240,7 +266,7 @@ _screenpad_load_notif_fields() {
         read -r user_id
         read -r bus_addr
     } < <(_prepare_user_notification_context) || return 1
-    [ -n "$user" ] && [ -n "$user_id" ] && [ -n "$bus_addr" ] || return 1
+    [[ -n "$user" ]] && [[ -n "$user_id" ]] && [[ -n "$bus_addr" ]] || return 1
     printf '%s\n' "$user" "$user_id" "$bus_addr"
 }
 
@@ -261,20 +287,23 @@ _screenpad_session_run() {
     shift 4
     _run_as_user "$user" env XDG_RUNTIME_DIR="$bus_root/$user_id" \
         DBUS_SESSION_BUS_ADDRESS="$bus_addr" "$@"
+    return $?
 }
 
 _screenpad_osd_timeout_secs() {
     local osd_timeout="${ASUS_SCREENPAD_OSD_TIMEOUT_SECS:-2}"
     case "$osd_timeout" in
         ''|*[!0-9]*|0) osd_timeout=2 ;;
+        *) ;;
     esac
     printf '%s\n' "$osd_timeout"
+    return $?
 }
 
 _call_screenpad_shell_show_osd() {
     local user="$1" user_id="$2" bus_addr="$3" bus_root="$4" level="$5"
     local osd_timeout="${6:-}"
-    if [ -z "$osd_timeout" ]; then
+    if [[ -z "$osd_timeout" ]]; then
         osd_timeout="$(_screenpad_osd_timeout_secs)"
     fi
     _screenpad_session_run "$user" "$user_id" "$bus_addr" "$bus_root" \
@@ -283,6 +312,7 @@ _call_screenpad_shell_show_osd() {
         --object-path /org/gnome/Shell/Extensions/AsusWindowSwap \
         --method org.gnome.Shell.Extensions.AsusWindowSwap.ShowOsd \
         "display-brightness-symbolic" "$level" >/dev/null 2>&1
+    return $?
 }
 
 _prime_screenpad_window_swap_extension() {
@@ -307,7 +337,7 @@ _retry_screenpad_shell_show_osd() {
             "$level" 1; then
             return 0
         fi
-        [ "$_i" -lt 3 ] && sleep 0.1
+        [[ "$_i" -lt 3 ]] && sleep 0.1
     done
     return 1
 }
@@ -341,6 +371,7 @@ _call_screenpad_osd_gdbus() {
     osd_timeout="$(_screenpad_osd_timeout_secs)"
     _screenpad_session_run "$user" "$user_id" "$bus_addr" "$bus_root" \
         timeout "$osd_timeout" gdbus call --session "$@" >/dev/null 2>&1
+    return $?
 }
 
 _try_show_screenpad_plasma_osd() {
@@ -390,11 +421,11 @@ _try_show_screenpad_cinnamon_osd() {
 _screenpad_resolve_family() {
     local user="${1:-}" family
     family="${ASUS_DESKTOP_FAMILY:-}"
-    if [ -n "$family" ]; then
+    if [[ -n "$family" ]]; then
         printf '%s\n' "$family"
         return 0
     fi
-    [ -n "$user" ] || return 1
+    [[ -n "$user" ]] || return 1
     asus_desktop_family "$user" 2>/dev/null
 }
 
@@ -423,10 +454,10 @@ _screenpad_value_hint_notify() {
     {
         read -r id_file
         read -r prev_id
-    } < <(_prepare_notif_id_state "$user_id" "screenpad-brightness") || return 1
+    } < <(_prepare_notif_id_state "$user_id" "$_ASUS_SCREENPAD_BRIGHTNESS_TAG") || return 1
     res=$(_call_screenpad_value_notify "$user" "$user_id" "$bus_addr" "$bus_root" \
         "$prev_id" "$icon" "ScreenPad Brightness" "${percent}%" \
-        "screenpad-brightness" "$percent") || return 1
+        "$_ASUS_SCREENPAD_BRIGHTNESS_TAG" "$percent") || return 1
     _soft _save_notif_id "$res" "$id_file"
     return 0
 }
@@ -447,7 +478,7 @@ _try_show_screenpad_lxqt_osd() {
         read -r bus_root
     } < <(_screenpad_read_notif_context) || return 1
     family=$(_screenpad_resolve_family "$user") || return 1
-    [ "$family" = "lxqt" ] || return 1
+    [[ "$family" = "lxqt" ]] || return 1
     _screenpad_value_hint_notify "$percent" "$user" "$user_id" "$bus_addr" "$bus_root"
 }
 
@@ -465,7 +496,7 @@ _try_show_screenpad_mate_osd() {
         read -r bus_root
     } < <(_screenpad_read_notif_context) || return 1
     family=$(_screenpad_resolve_family "$user") || return 1
-    [ "$family" = "mate" ] || return 1
+    [[ "$family" = "mate" ]] || return 1
     _screenpad_value_hint_notify "$percent" "$user" "$user_id" "$bus_addr" "$bus_root"
 }
 
@@ -497,5 +528,5 @@ _notify_screenpad_brightness() {
     # XFCE and other DEs: replace-in-place notify is the OSD stand-in.
     icon=$(_resolve_screenpad_notification_icon "on")
     _send_user_notification "$(_asus_gettext "ScreenPad brightness")" "${percent}%" \
-        "$icon" "screenpad-brightness" "screenpad-brightness" "$icon"
+        "$icon" "$_ASUS_SCREENPAD_BRIGHTNESS_TAG" "$_ASUS_SCREENPAD_BRIGHTNESS_TAG" "$icon"
 }

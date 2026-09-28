@@ -11,6 +11,7 @@ fi
 exit 0
 EOF
     chmod +x "$tmp/systemctl"
+    return $?
 }
 
 _make_fake_systemctl_inactive_script() {
@@ -23,6 +24,7 @@ fi
 exit 0
 EOF
     chmod +x "$tmp/systemctl-inactive"
+    return $?
 }
 
 _setup_mock_install_env() {
@@ -38,6 +40,7 @@ _setup_mock_install_env() {
     mkdir -p "$tmp/bus_root/$uid" "$tmp/dest/usr/local/bin"
     _kcov_make_stub "$tmp/dest/usr/local/bin/asus-sound-fix.sh"
     _kcov_bind_unix_bus "$tmp/bus_root/$uid/bus"
+    return $?
 }
 
 # install.sh/uninstall.sh stay under kcov with short timeouts so product shell
@@ -53,6 +56,7 @@ _kcov_install_fast_env() {
         "INSTALL_ASSUME_UNIT_ACTIVE=1" \
         "SOUND_FIX_PROBE_TIMEOUT=1" \
         "SOUND_HWDEV_POLL_ATTEMPTS=1"
+    return $?
 }
 
 _seed_gnome_backup_state() {
@@ -63,7 +67,8 @@ _seed_gnome_backup_state() {
     echo "['Print']" > "$state_dir/orig_show_screenshot_ui"
     echo "['XF86Launch1']" > "$state_dir/orig_control_center"
     echo "['<Super>p']" > "$state_dir/orig_switch_video_mode"
-    echo "['<Super>p']" > "$state_dir/orig_switch_monitor"
+    echo "['<Super>p']" > "$state_dir/orig_switch_monitor" || return
+    return 0
 }
 
 _run_kcov_install_base_runs() {
@@ -92,6 +97,7 @@ _run_kcov_install_base_runs() {
         ./install.sh
     _kcov_expect_run_env "0" "$kcov_root" install_reexec_helpers \
         REPO_ROOT="$(pwd)" "$(_kcov_driver install_reexec_helpers.sh)"
+    return $?
 }
 
 _run_kcov_install_fail_runs_1() {
@@ -108,6 +114,7 @@ _run_kcov_install_fail_runs_1() {
     _kcov_expect_run_env "1" "$kcov_root" install_sound_fail \
         "${fast_env[@]}" NONINTERACTIVE_CHOICE="SOUND" DESTDIR="$tmp/dest" SYSTEMCTL_CMD="false" \
         ./install.sh
+    return $?
 }
 
 _run_kcov_install_fail_runs_2() {
@@ -122,13 +129,16 @@ _run_kcov_install_fail_runs_2() {
         "${fast_env[@]}" NONINTERACTIVE_CHOICE="GNOME" DESTDIR="$tmp/dest" \
         DBUS_BUS_ROOT="$tmp/bus_root" SYSTEMCTL_CMD="true" PATH="$tmp:$PATH" FAIL_GSETTINGS=1 \
         ./install.sh
+    return $?
 }
 
 _run_kcov_install_runs() {
-    _run_kcov_install_base_runs "$1" "$2"
-    _run_kcov_install_fail_runs_1 "$1" "$2"
-    _run_kcov_install_fail_runs_2 "$1" "$2"
-    _run_kcov_install_deps_and_selection_runs "$1" "$2"
+    local kcov_root="$1" tmp="$2"
+    _run_kcov_install_base_runs "$kcov_root" "$tmp"
+    _run_kcov_install_fail_runs_1 "$kcov_root" "$tmp"
+    _run_kcov_install_fail_runs_2 "$kcov_root" "$tmp"
+    _run_kcov_install_deps_and_selection_runs "$kcov_root" "$tmp"
+    return $?
 }
 
 _run_kcov_uninstall_runs() {
@@ -203,6 +213,7 @@ EOF
         INSTALL_SKIP_TIMEOUT_WRAPPER=1 INSTALL_OS_ID=ubuntu INSTALL_OS_ID_LIKE=debian \
         PATH="$tmp:$PATH" DESTDIR="$tmp/dest_deps" DBUS_BUS_ROOT="$tmp/bus_root" \
         SYSTEMCTL_CMD="$tmp/systemctl-inactive" ./uninstall.sh
+    return $?
 }
 
 _run_kcov_install_uninstall_scenarios() {
@@ -210,11 +221,12 @@ _run_kcov_install_uninstall_scenarios() {
         local kcov_root="$1"
         local tmp
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _setup_mock_install_env "$tmp"
         _run_kcov_install_runs "$kcov_root" "$tmp"
         _run_kcov_uninstall_runs "$kcov_root" "$tmp"
     )
+    return $?
 }
 
 _run_kcov_install_deps_and_selection_runs() {
@@ -242,7 +254,7 @@ _run_kcov_install_deps_and_selection_runs() {
         NONINTERACTIVE_CHOICE="1,4" DESTDIR="$tmp/dest2" DBUS_BUS_ROOT="$tmp/bus_root" \
         SYSTEMCTL_CMD="$tmp/systemctl" ./install.sh
     # Missing packages + successful installer command.
-    _kcov_make_stub "$mock/dpkg" 'exit 1'
+    _kcov_make_stub "$mock/dpkg" "$_KCOV_STUB_BODY_FAIL"
     _kcov_make_stub "$mock/apt-get"
     _kcov_expect_run_env "0" "$kcov_root" install_deps_install_cmd \
         ASUS_TEST_MODE=1 SKIP_ROOT_CHECK=1 SKIP_PKG_INSTALL=0 INSTALL_COMMAND_TIMEOUT=1 \
@@ -263,13 +275,14 @@ _run_kcov_install_deps_and_selection_runs() {
         DEV_SND_ROOT="$tmp/snd" PROC_ASOUND_ROOT="$tmp/asound" \
         DESTDIR="$tmp/dest3" DBUS_BUS_ROOT="$tmp/bus_root" SYSTEMCTL_CMD="$tmp/systemctl" \
         ./install.sh
+    return $?
 }
 
 _run_kcov_os_detection_helpers() {
     (
         local kcov_root="$1" tmp mock
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         mock="$tmp/pkgmock"
         mkdir -p "$mock"
         _kcov_make_stub "$mock/dpkg"
@@ -283,12 +296,13 @@ _run_kcov_os_detection_helpers() {
         _kcov_expect_run_env "0" "$kcov_root" os_detect_helpers \
             PATH="$mock:$PATH" REPO_ROOT="$(pwd)" "$(_kcov_driver os_detect_helpers.sh)"
         # Missing packages + installer command path.
-        _kcov_make_stub "$mock/dpkg" 'exit 1'
-        _kcov_make_stub "$mock/rpm" 'exit 1'
-        _kcov_make_stub "$mock/pacman" 'exit 1'
+        _kcov_make_stub "$mock/dpkg" "$_KCOV_STUB_BODY_FAIL"
+        _kcov_make_stub "$mock/rpm" "$_KCOV_STUB_BODY_FAIL"
+        _kcov_make_stub "$mock/pacman" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "0" "$kcov_root" os_detect_helpers_missing \
             PATH="$mock:$PATH" REPO_ROOT="$(pwd)" "$(_kcov_driver os_detect_helpers.sh)"
     )
+    return $?
 }
 
 _run_kcov_selection_helpers() {
@@ -303,13 +317,14 @@ _run_kcov_selection_helpers() {
             ASUS_TUI_SCRIPT_KEYS=' j j j \n' REPO_ROOT="$(pwd)" \
             "$(_kcov_driver selection_helpers.sh)"
     )
+    return $?
 }
 
 _run_kcov_shared_common_helpers() {
     (
         local kcov_root="$1" tmp uid
         tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         uid="$(id -u)"
         mkdir -p "$tmp/bus/$uid"
         _kcov_bind_unix_bus "$tmp/bus/$uid/bus"
@@ -323,7 +338,7 @@ _run_kcov_shared_common_helpers() {
         _kcov_expect_run_env "0" "$kcov_root" shared_install_helpers \
             ASUS_TEST_MODE=1 SKIP_ROOT_CHECK=1 INSTALL_COMMAND_TIMEOUT=1 INSTALL_SKIP_TIMEOUT_WRAPPER=1 \
             REPO_ROOT="$(pwd)" "$(_kcov_driver shared_helpers.sh)"
-        _kcov_make_stub "$tmp/gdbus" 'exit 1'
+        _kcov_make_stub "$tmp/gdbus" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "0" "$kcov_root" common_notify_fallback \
             PATH="$tmp:$PATH" RUN_USER_ROOT="$tmp/bus" KCOV_BUS_ROOT="$tmp/bus" REPO_ROOT="$(pwd)" \
             "$(_kcov_driver common_helpers.sh)"
@@ -352,6 +367,7 @@ _run_kcov_shared_common_helpers() {
             INSTALL_COMMAND_TIMEOUT=1 INSTALL_SKIP_TIMEOUT_WRAPPER=1 \
             "$(_kcov_driver uninstall_helpers.sh)"
     )
+    return $?
 }
 
 _run_kcov_display_source_helpers() {
@@ -367,12 +383,14 @@ _run_kcov_display_source_helpers() {
     _kcov_expect_run_env "0" "$kcov_root" disp_source_backend \
         REPO_ROOT="$(pwd)" ASUS_KCOV_DISPLAY_SLICE=backend \
         "$(_kcov_driver display_helpers.sh)"
+    return $?
 }
 
 _run_kcov_session_helpers() {
     local kcov_root="$1"
     _kcov_expect_run_env "0" "$kcov_root" session_helpers \
         REPO_ROOT="$(pwd)" "$(_kcov_driver session_helpers.sh)"
+    return $?
 }
 
 _run_kcov_desktop_install_helpers() {
@@ -405,6 +423,7 @@ _run_kcov_desktop_install_helpers() {
             REPO_ROOT="$(pwd)" DESTDIR="$gnome_dest" \
             "$(_kcov_driver gnome_helpers.sh)"
     )
+    return $?
 }
 
 _run_kcov_product_lib_helpers() {
@@ -415,6 +434,7 @@ _run_kcov_product_lib_helpers() {
     _run_kcov_display_source_helpers "$kcov_root"
     _run_kcov_session_helpers "$kcov_root"
     _run_kcov_desktop_install_helpers "$kcov_root"
+    return $?
 }
 
 _run_kcov_screenshot_family_scenarios() {
@@ -423,9 +443,9 @@ _run_kcov_screenshot_family_scenarios() {
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
-        _kcov_make_stub "$tmp/gdbus" 'exit 1'
+        _kcov_make_stub "$tmp/gdbus" "$_KCOV_STUB_BODY_FAIL"
         _kcov_make_stub "$tmp/ydotool"
         printf '#!/bin/sh\necho ["Print"]\n' > "$tmp/gsettings"; chmod +x "$tmp/gsettings"
         _kcov_make_stub "$tmp/systemctl"
@@ -442,7 +462,7 @@ _run_kcov_screenshot_family_scenarios() {
             DISPLAY=:0 ./bin/asus-screenshot.sh
         rm -f "$tmp/ydotool.sock"
         # Keep a failing ydotool stub so PATH does not fall through to a real one.
-        _kcov_make_stub "$tmp/ydotool" 'exit 1'
+        _kcov_make_stub "$tmp/ydotool" "$_KCOV_STUB_BODY_FAIL"
         _kcov_expect_run_env "0" "$kcov_root" ss_gnome_xdotool PATH="$tmp:$PATH" \
             RUN_USER_ROOT="$tmp/bus_root" ASUS_DESKTOP_FAMILY=gnome \
             DISPLAY=:0 ./bin/asus-screenshot.sh
@@ -456,7 +476,7 @@ _run_kcov_screenshot_family_scenarios() {
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
         # First gdbus ShowScreenshotUI fails; second InteractiveScreenshot succeeds.
         cat > "$tmp/gdbus" <<'EOF'
@@ -479,7 +499,7 @@ EOF
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
         _kcov_make_stub "$tmp/spectacle" 'sleep 1; exit 0'
         _make_fake_sudo_script "$tmp"
@@ -492,7 +512,7 @@ EOF
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
         _kcov_make_stub "$tmp/xfce4-screenshooter" 'sleep 1; exit 0'
         _make_fake_sudo_script "$tmp"
@@ -505,7 +525,7 @@ EOF
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
         _kcov_make_stub "$tmp/screengrab" 'sleep 1; exit 0'
         _make_fake_sudo_script "$tmp"
@@ -518,7 +538,7 @@ EOF
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
         # Preferred kde path fails (no spectacle); fall back to gnome dbus.
         _kcov_make_stub "$tmp/gdbus"
@@ -532,9 +552,9 @@ EOF
         local tmp uid
         tmp=$(mktemp -d)
         uid="$(id -u)"
-        trap 'rm -rf "$tmp"' EXIT
+        trap _kcov_rm_scenario_tmp EXIT
         _make_fake_loginctl_current_user "$tmp"
-        _kcov_make_stub "$tmp/gdbus" 'exit 1'
+        _kcov_make_stub "$tmp/gdbus" "$_KCOV_STUB_BODY_FAIL"
         _make_fake_sudo_script "$tmp"
         mkdir -p "$tmp/bus_root/$uid"
         _kcov_bind_unix_bus "$tmp/bus_root/$uid/bus"
@@ -542,6 +562,7 @@ EOF
             RUN_USER_ROOT="$tmp/bus_root" ASUS_DESKTOP_FAMILY=other \
             ASUS_SCREENSHOT_DISABLE_KEYCHORD=1 ./bin/asus-screenshot.sh
     )
+    return $?
 }
 
 # shellcheck source=scripts/coverage/kcov-install-scenarios-desktop.sh

@@ -44,6 +44,7 @@ _asus_manifest_bin_basenames() {
         asus_display_mode_core.py \
         asus_display_mode_layout.py \
         asus_display_mode_profiles.py
+    return $?
 }
 
 _asus_manifest_wmi_src_relpaths() {
@@ -82,6 +83,7 @@ _asus_manifest_wmi_src_relpaths() {
         bin/asus_display_mode_core.py \
         bin/asus_display_mode_layout.py \
         bin/asus_display_mode_profiles.py
+    return $?
 }
 
 _asus_manifest_wmi_chmod_relpaths() {
@@ -95,6 +97,7 @@ _asus_manifest_wmi_chmod_relpaths() {
         bin/asus-fan-toggle.sh \
         bin/asus-camera-toggle.sh \
         bin/asus-display-mode.sh
+    return $?
 }
 
 _asus_manifest_lib_basenames() {
@@ -109,6 +112,7 @@ _asus_manifest_lib_basenames() {
         asus-display-watchdog.sh \
         asus-display-osd.sh \
         asus-screenpad.sh
+    return $?
 }
 
 _asus_manifest_sys_unit_basenames() {
@@ -116,6 +120,7 @@ _asus_manifest_sys_unit_basenames() {
         asus-hotkey-daemon.service \
         asus-touchpad-share.service \
         asus-sound-fix.service
+    return $?
 }
 
 _asus_manifest_desktop_basenames() {
@@ -123,6 +128,7 @@ _asus_manifest_desktop_basenames() {
         asus-display-mode.desktop \
         asus-control-center.desktop \
         asus-screenshot.desktop
+    return $?
 }
 
 _asus_manifest_icon_basenames() {
@@ -135,25 +141,27 @@ _asus_manifest_icon_basenames() {
         asus-screenpad-on.svg \
         asus-screenpad-toggle.png \
         asus-screenpad-on.png
+    return $?
 }
 
 _asus_manifest_share_root() {
     printf '%s\n' "${PREFIX:-}/usr/local/share"
+    return $?
 }
 
 _asus_remove_manifest_bin_files() {
     local -n _failed_ref="$1"
     local name
-    [ -n "${BIN_DIR:-}" ] || return 0
+    [[ -n "${BIN_DIR:-}" ]] || return 0
     while IFS= read -r name; do
-        [ -n "$name" ] || continue
+        [[ -n "$name" ]] || continue
         rm -f "$BIN_DIR/$name" || _failed_ref=1
     done < <(_asus_manifest_bin_basenames)
 }
 
 _asus_remove_bin_bytecode() {
     # Daemon/TUI imports can leave __pycache__ beside installed modules.
-    if [ -z "${BIN_DIR:-}" ] || [ ! -d "$BIN_DIR" ]; then
+    if [[ -z "${BIN_DIR:-}" ]] || [[ ! -d "$BIN_DIR" ]]; then
         return 0
     fi
     find "$BIN_DIR" -type d -name '__pycache__' -prune -exec rm -rf {} +
@@ -162,9 +170,9 @@ _asus_remove_bin_bytecode() {
 _asus_remove_manifest_lib_files() {
     local -n _failed_ref="$1"
     local name
-    [ -n "${LIB_DIR:-}" ] || return 0
+    [[ -n "${LIB_DIR:-}" ]] || return 0
     while IFS= read -r name; do
-        [ -n "$name" ] || continue
+        [[ -n "$name" ]] || continue
         rm -f "$LIB_DIR/$name" || _failed_ref=1
     done < <(_asus_manifest_lib_basenames)
 }
@@ -176,20 +184,22 @@ _asus_nullglob_push() {
         _ASUS_NULLGLOB_SAVED=0
         shopt -s nullglob
     fi
+    return $?
 }
 
 _asus_nullglob_pop() {
-    if [ "${_ASUS_NULLGLOB_SAVED:-1}" -eq 0 ]; then
+    if [[ "${_ASUS_NULLGLOB_SAVED:-1}" -eq 0 ]]; then
         shopt -u nullglob
     fi
     unset _ASUS_NULLGLOB_SAVED
+    return $?
 }
 
 _asus_remove_legacy_lib_install_helpers() {
     # Older installs may have copied installer helpers into LIB_DIR; remove leftovers.
     local -n _failed_ref="$1"
     local path
-    [ -d "${LIB_DIR:-}" ] || return 0
+    [[ -d "${LIB_DIR:-}" ]] || return 0
     _asus_nullglob_push
     for path in "$LIB_DIR"/install-*.sh; do
         rm -f "$path" || _failed_ref=1
@@ -200,9 +210,9 @@ _asus_remove_legacy_lib_install_helpers() {
 _asus_remove_manifest_sys_files() {
     local -n _failed_ref="$1"
     local name
-    [ -n "${SYS_DIR:-}" ] || return 0
+    [[ -n "${SYS_DIR:-}" ]] || return 0
     while IFS= read -r name; do
-        [ -n "$name" ] || continue
+        [[ -n "$name" ]] || continue
         rm -f "$SYS_DIR/$name" || _failed_ref=1
     done < <(_asus_manifest_sys_unit_basenames)
 }
@@ -215,15 +225,17 @@ _asus_remove_manifest_locale_files() {
         rm -f "$catalog" || _failed_ref=1
     done
     _asus_nullglob_pop
+    return $?
 }
 
 _asus_remove_manifest_desktop_files() {
     local -n _failed_ref="$1"
     local share="$2" name
     while IFS= read -r name; do
-        [ -n "$name" ] || continue
+        [[ -n "$name" ]] || continue
         rm -f "$share/applications/$name" || _failed_ref=1
     done < <(_asus_manifest_desktop_basenames)
+    return $?
 }
 
 _asus_remove_one_manifest_icon() {
@@ -238,22 +250,27 @@ _asus_remove_one_manifest_icon() {
             ;;
     esac
     rm -f "$share/asus-zenbook-linux-tools/icons/$name" || _failed_ref=1
+    return $?
 }
 
 _asus_remove_manifest_icon_files() {
-    local -n _failed_ref="$1"
+    local failed_var_name="$1"
+    local -n _failed_ref="$failed_var_name"
     local share="$2" name
     while IFS= read -r name; do
-        [ -n "$name" ] || continue
-        _asus_remove_one_manifest_icon "$1" "$share" "$name"
+        [[ -n "$name" ]] || continue
+        _asus_remove_one_manifest_icon "$failed_var_name" "$share" "$name"
     done < <(_asus_manifest_icon_basenames)
+    return $?
 }
 
 _asus_remove_manifest_share_files() {
-    local -n _failed_ref="$1"
+    local failed_var_name="$1"
+    local -n _failed_ref="$failed_var_name"
     local share
     share=$(_asus_manifest_share_root)
-    _asus_remove_manifest_desktop_files "$1" "$share"
-    _asus_remove_manifest_icon_files "$1" "$share"
-    _asus_remove_manifest_locale_files "$1" "$share"
+    _asus_remove_manifest_desktop_files "$failed_var_name" "$share"
+    _asus_remove_manifest_icon_files "$failed_var_name" "$share"
+    _asus_remove_manifest_locale_files "$failed_var_name" "$share"
+    return $?
 }

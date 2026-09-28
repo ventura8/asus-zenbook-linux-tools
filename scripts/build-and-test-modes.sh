@@ -2,7 +2,7 @@
 # Mode dispatch helpers for build-and-test.sh (sourced).
 
 _BUILD_MODES_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [ -z "${_DOCKER_UTILS_LOADED:-}" ]; then
+if [[ -z "${_DOCKER_UTILS_LOADED:-}" ]]; then
     # shellcheck source=scripts/docker-utils.sh
     source "${_BUILD_MODES_SCRIPT_DIR}/docker-utils.sh"
     _DOCKER_UTILS_LOADED=1
@@ -14,6 +14,7 @@ _parallel_gate_labels=()
 _reset_parallel_gate_workers() {
     _parallel_gate_pids=()
     _parallel_gate_labels=()
+    return $?
 }
 
 _pipeline_mode_from_flag_primary() {
@@ -79,6 +80,7 @@ _fill_mode_steps_coverage() {
             MODE_STEPS=(step_coverage_merge)
             return 0
             ;;
+        *) ;;
     esac
     return 1
 }
@@ -112,7 +114,8 @@ _fill_mode_steps() {
 }
 
 _get_step_total() {
-    if ! _fill_mode_steps "$1"; then
+    local mode="$1"
+    if ! _fill_mode_steps "$mode"; then
         return 1
     fi
     echo "${#MODE_STEPS[@]}"
@@ -124,6 +127,7 @@ _is_container_only_mode() {
     # coverage-merge-only is host-allowed (merge exported shards; no product tests).
     case "$MODE" in
         tests-only|compat-only|kcov-only|python-coverage-only) return 0 ;;
+        *) ;;
     esac
     return 1
 }
@@ -140,14 +144,14 @@ _run_lint_wave_in_docker() {
 _with_buildx_skip_prune() {
     # Parallel docker buildx jobs can race with local cache pruning/removal.
     local had_skip_prune=0 saved_skip_prune="" status=0
-    if [ "${DOCKER_BUILDX_SKIP_PRUNE+x}" = "x" ]; then
+    if [[ "${DOCKER_BUILDX_SKIP_PRUNE+x}" = "x" ]]; then
         had_skip_prune=1
         saved_skip_prune="$DOCKER_BUILDX_SKIP_PRUNE"
     fi
     export DOCKER_BUILDX_SKIP_PRUNE=1
     "$@"
     status=$?
-    if [ "$had_skip_prune" = 1 ]; then
+    if [[ "$had_skip_prune" = 1 ]]; then
         DOCKER_BUILDX_SKIP_PRUNE="$saved_skip_prune"
     else
         unset DOCKER_BUILDX_SKIP_PRUNE
@@ -157,16 +161,17 @@ _with_buildx_skip_prune() {
 
 _parallel_lint_waves_skip_prune() {
     _with_buildx_skip_prune "$@"
+    return $?
 }
 
 _prune_buildx_cache_after_parallel() {
     local cache_dir="${DOCKER_BUILD_CACHE_DIR:-$REPO_ROOT/.cache/docker-buildx}"
     _docker_prune_buildx_local_cache "$cache_dir" "$cache_dir" || true
+    return $?
 }
 
 step_lint_waves_parallel() {
     # Host: cheap ∥ heavy lint containers. Inside a lint image: run-lints.sh only.
-    local cheap_status=0 heavy_status=0 cheap_pid heavy_pid
     start_step "Running lint waves in Docker (cheap ∥ heavy)..."
     _ensure_distro_logs_dir
     if is_container_runtime; then
@@ -188,7 +193,7 @@ _step_lint_waves_parallel_host() {
     heavy_pid=$!
     _wait_bg_status "$cheap_pid" "lint-cheap" cheap_status
     _wait_bg_status "$heavy_pid" "lint-heavy" heavy_status
-    if [ "$cheap_status" -ne 0 ] || [ "$heavy_status" -ne 0 ]; then
+    if [[ "$cheap_status" -ne 0 ]] || [[ "$heavy_status" -ne 0 ]]; then
         echo "  ✗ Docker lint gate failed." >&2
         exit 1
     fi
@@ -215,8 +220,6 @@ step_preflight_clean_build_trees() {
 
 step_lint_and_deb_parallel() {
     # Mirror CI: lint cheap ∥ lint heavy ∥ deb-package (deb uses nocheck — no host tests).
-    local cheap_status=0 heavy_status=0 deb_status=0
-    local cheap_pid heavy_pid deb_pid
     start_step "Running lint waves ∥ Debian package smoke in parallel..."
     _ensure_distro_logs_dir
     if is_container_runtime; then
@@ -242,12 +245,12 @@ _step_lint_and_deb_parallel_host() {
     _wait_bg_status "$cheap_pid" "lint-cheap" cheap_status
     _wait_bg_status "$heavy_pid" "lint-heavy" heavy_status
     _wait_bg_status "$deb_pid" "deb-package" deb_status
-    if [ "$cheap_status" -ne 0 ] || [ "$heavy_status" -ne 0 ]; then
+    if [[ "$cheap_status" -ne 0 ]] || [[ "$heavy_status" -ne 0 ]]; then
         echo "  ✗ Docker lint gate failed." >&2
         _kill_bg_pids "$deb_pid"
         exit 1
     fi
-    if [ "$deb_status" -ne 0 ]; then
+    if [[ "$deb_status" -ne 0 ]]; then
         echo "  ✗ Debian package smoke failed." >&2
         exit 1
     fi
@@ -277,18 +280,21 @@ _start_release_smoke_worker() {
     ' bash "$REPO_ROOT" "$log_path" "$skip_host_deps" "$@" &
     _parallel_gate_pids+=("$!")
     _parallel_gate_labels+=("$label")
+    return $?
 }
 
 _step_post_lint_release_native_worker() {
     _start_release_smoke_worker "$DISTRO_LOG_DIR/release-package-native-smoke.log" 1 \
         "release-package-native-smoke" \
         rpm-fedora-44 rpm-rocky-10 rpm-opensuse-tw arch
+    return $?
 }
 
 _step_post_lint_release_portable_worker() {
     _start_release_smoke_worker "$DISTRO_LOG_DIR/release-package-portable-smoke.log" 0 \
         "release-package-portable-smoke" \
         appimage flatpak snap
+    return $?
 }
 
 _wait_bg_status() {
@@ -299,13 +305,15 @@ _wait_bg_status() {
     code=$?
     set -e
     printf -v "$status_ref" '%s' "$code"
-    if [ "$code" -ne 0 ]; then
+    if [[ "$code" -ne 0 ]]; then
         echo "  ✗ Failed: $label" >&2
     fi
+    return $?
 }
 
 _kill_bg_pids() {
     _kill_pgid_list "$@"
+    return $?
 }
 
 _wait_bg_handle_done() {
@@ -313,10 +321,10 @@ _wait_bg_handle_done() {
     local -n _wb_pids="$1" _wb_labels="$2"
     local done_pid="$3" code="$4" i=0
     for i in "${!_wb_pids[@]}"; do
-        if [ "${_wb_pids[$i]}" != "$done_pid" ]; then
+        if [[ "${_wb_pids[$i]}" != "$done_pid" ]]; then
             continue
         fi
-        if [ "$code" -ne 0 ]; then
+        if [[ "$code" -ne 0 ]]; then
             echo "  ✗ Failed: ${_wb_labels[$i]}" >&2
             unset "_wb_pids[i]" "_wb_labels[i]"
             _wb_pids=("${_wb_pids[@]}")
@@ -341,13 +349,13 @@ _wait_bg_jobs_fail_fast() {
     local -a labels=("${_parallel_gate_labels[@]}")
     local done_pid="" code=0
 
-    while [ "${#pids[@]}" -gt 0 ]; do
+    while [[ "${#pids[@]}" -gt 0 ]]; do
         done_pid=""
         set +e
         wait -n -p done_pid "${pids[@]}"
         code=$?
         set -e
-        if [ -z "$done_pid" ]; then
+        if [[ -z "$done_pid" ]]; then
             echo "  ✗ wait -n returned without a completed PID" >&2
             _kill_bg_pids "${pids[@]}"
             return 1
@@ -370,11 +378,12 @@ _start_compat_family_workers() {
         _parallel_gate_pids+=("$!")
         _parallel_gate_labels+=("compat-family-${family}")
     done
+    return $?
 }
 
 _chown_coverage_shards_dir_if_sudo() {
     local shards_dir="$1"
-    if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "$SUDO_USER" != root ]; then
+    if [[ "$(id -u)" -eq 0 ]] && [[ -n "${SUDO_USER:-}" ]] && [[ "$SUDO_USER" != root ]]; then
         chown "$SUDO_USER:" "$shards_dir" || return 1
     fi
     return 0
@@ -410,6 +419,7 @@ _start_coverage_matrix_shards() {
             _parallel_gate_labels+=("coverage-${mode}-${shard}")
         done
     done
+    return $?
 }
 
 _run_post_lint_gates_workers() {
@@ -418,6 +428,7 @@ _run_post_lint_gates_workers() {
     _start_coverage_matrix_shards
     _start_compat_family_workers
     _wait_bg_jobs_fail_fast
+    return $?
 }
 
 step_post_lint_gates_parallel() {
@@ -446,6 +457,7 @@ _run_coverage_merge_host() {
         unset ASUS_COVERAGE_SHARD || true
         step_coverage_merge 2>&1 | tee "$DISTRO_LOG_DIR/coverage-merge.log"
     )
+    return $?
 }
 
 step_coverage_merge_host() {
@@ -462,6 +474,7 @@ step_coverage_merge_host() {
 _run_coverage_parallel_shards() {
     _start_coverage_matrix_shards
     _wait_bg_jobs_fail_fast
+    return $?
 }
 
 step_coverage_parallel() {
@@ -485,6 +498,7 @@ step_coverage_parallel() {
 _run_compat_family_workers_wait() {
     _start_compat_family_workers
     _wait_bg_jobs_fail_fast
+    return $?
 }
 
 step_compat_family_matrices() {

@@ -2,13 +2,19 @@
 # GNOME configuration helper for install.sh
 # Extracted to maintain modularity and line limits
 
+# gsettings schemas / keys touched by the GNOME shortcut backup + apply path.
+_ASUS_GNOME_MEDIA_KEYS_SCHEMA="org.gnome.settings-daemon.plugins.media-keys"
+_ASUS_GNOME_MUTTER_KEYS_SCHEMA="org.gnome.mutter.keybindings"
+_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY="switch-video-mode"
+_ASUS_GNOME_SWITCH_MONITOR_KEY="switch-monitor"
+
 # Parse/emit gsettings "as" arrays via GLib.Variant (no string scratch parsers).
 _gsettings_python3_with_gi() {
     # Prefer PATH python3 when it has gi; else fall back to /usr/bin/python3
     # (Poetry venvs often shadow system python3 without PyGObject).
     local candidate
     for candidate in "$(command -v python3 2>/dev/null || true)" /usr/bin/python3; do
-        [ -n "$candidate" ] && [ -x "$candidate" ] || continue
+        [[ -n "$candidate" ]] && [[ -x "$candidate" ]] || continue
         if "$candidate" -c 'import gi' >/dev/null 2>&1; then
             printf '%s\n' "$candidate"
             return 0
@@ -84,24 +90,28 @@ PY
 _merge_custom_keybindings() {
     local current="$1"
     shift
-    [ -n "$current" ] || current="[]"
+    [[ -n "$current" ]] || current="[]"
     _gsettings_as_array_op merge "$current" "$@"
+    return $?
 }
 
 _ensure_keybinding_path() {
     local merged="$1" path="$2"
     _gsettings_as_array_op merge "$merged" "$path"
+    return $?
 }
 
 _drop_keybinding_path() {
     local merged="$1" path="$2"
     _gsettings_as_array_op drop "$merged" "$path"
+    return $?
 }
 
 _user_gsettings() {
     local user="$1" bus="$2"
     shift 2
     _run_as_user_on_session_bus "$user" "$bus" gsettings "$@"
+    return $?
 }
 
 _run_as_user_on_session_bus() {
@@ -122,6 +132,7 @@ _run_as_user_on_session_bus() {
         DBUS_SESSION_BUS_ADDRESS="$bus_addr" \
         XDG_RUNTIME_DIR="$runtime" \
         "$@"
+    return $?
 }
 
 _gsettings_key_exists() {
@@ -133,7 +144,7 @@ _gsettings_key_exists() {
 
 backup_gnome_keybinding() {
     local user="$1" bus="$2" key_schema="$3" key_name="$4" dest_file="$5"
-    if [ -f "$dest_file" ]; then
+    if [[ -f "$dest_file" ]]; then
         _read_existing_gnome_backup "$dest_file"
         return
     fi
@@ -154,12 +165,13 @@ backup_gnome_keybinding() {
 }
 
 _read_existing_gnome_backup() {
-    cat "$1" 2>/dev/null || return 0
+    local backup_file="$1"
+    cat "$backup_file" 2>/dev/null || return 0
 }
 
 _gsettings_set_key() {
     local user="$1" bus="$2" schema="$3" key="$4" value="$5"
-    [ -n "$value" ] || {
+    [[ -n "$value" ]] || {
         echo "  ✗ Refusing empty gsettings set for $schema/$key." >&2
         return 1
     }
@@ -168,7 +180,7 @@ _gsettings_set_key() {
 
 _gsettings_restore_key() {
     local user="$1" bus="$2" schema="$3" key="$4" value="$5" label="$6"
-    [ -n "$value" ] || return 0
+    [[ -n "$value" ]] || return 0
     if _gsettings_set_key "$user" "$bus" "$schema" "$key" "$value"; then
         return 0
     fi
@@ -179,16 +191,17 @@ _gsettings_restore_key() {
 _restore_optional_gsettings_value() {
     local user="$1" bus="$2" schema="$3" key="$4" value="$5"
     _gsettings_restore_key "$user" "$bus" "$schema" "$key" "$value" "$key"
+    return $?
 }
 
 _restore_custom_keybindings_file() {
     local user="$1" bus="$2" config_dir="$3"
     local orig_custom=""
-    [ -f "$config_dir/orig_custom_keybindings" ] || return 0
+    [[ -f "$config_dir/orig_custom_keybindings" ]] || return 0
     orig_custom=$(cat "$config_dir/orig_custom_keybindings" 2>/dev/null || true)
-    [ -n "$orig_custom" ] || return 0
+    [[ -n "$orig_custom" ]] || return 0
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings" "$orig_custom" \
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "custom-keybindings" "$orig_custom" \
         "custom-keybindings"
 }
 
@@ -198,7 +211,7 @@ rollback_gnome_shortcuts() {
     _gsettings_restore_key "$user" "$bus" \
         "org.gnome.shell.keybindings" "show-screenshot-ui" "$orig_ss" "show-screenshot-ui" || failed=1
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.settings-daemon.plugins.media-keys" "control-center" "$orig_ctrl" "control-center" || failed=1
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "control-center" "$orig_ctrl" "control-center" || failed=1
     _rollback_gnome_optional_shortcuts "$user" "$bus" "$config_dir" \
         "$orig_vm" "$orig_sm" || failed=1
     return "$failed"
@@ -208,16 +221,17 @@ _rollback_gnome_optional_shortcuts() {
     local user="$1" bus="$2" config_dir="$3" orig_vm="$4" orig_sm="$5"
     local failed=0
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode" "$orig_vm" "switch-video-mode" || failed=1
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" "$orig_vm" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" || failed=1
     _restore_custom_keybindings_file "$user" "$bus" "$config_dir" || failed=1
     _gsettings_restore_key "$user" "$bus" \
-        "org.gnome.mutter.keybindings" "switch-monitor" "$orig_sm" "switch-monitor" || failed=1
+        "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" "$orig_sm" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" || failed=1
     return "$failed"
 }
 
 _gsettings_set_optional_path() {
     local user="$1" bus_addr="$2" schema="$3" key="$4" value="$5"
     _asus_soft _user_gsettings "$user" "$bus_addr" set "$schema" "$key" "$value"
+    return $?
 }
 
 _reset_native_display_binding() {
@@ -225,18 +239,19 @@ _reset_native_display_binding() {
     local bus_path="${bus_addr#unix:path=}"
     local schema
 
-    if _gsettings_key_exists "$user" "$bus_path" "org.gnome.mutter.keybindings" "switch-monitor"; then
+    if _gsettings_key_exists "$user" "$bus_path" "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY"; then
         _gsettings_set_optional_path "$user" "$bus_addr" \
-            "org.gnome.mutter.keybindings" "switch-monitor" "['<Super>p']"
+            "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" "['<Super>p']"
     fi
 
-    if _gsettings_key_exists "$user" "$bus_path" "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode"; then
+    if _gsettings_key_exists "$user" "$bus_path" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY"; then
         _gsettings_set_optional_path "$user" "$bus_addr" \
-            "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode" "[]"
+            "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" "[]"
     fi
 
     schema="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/asus-display-mode-superp/"
     _gsettings_set_optional_path "$user" "$bus_addr" "$schema" "binding" "''"
+    return $?
 }
 
 _set_custom_binding_slot() {
@@ -252,7 +267,7 @@ _set_display_keybinding() {
     local bus_addr="unix:path=$bus" current merged
     _reset_native_display_binding "$user" "$bus_addr"
     current=$(_user_gsettings "$user" "$bus_addr" \
-        get org.gnome.settings-daemon.plugins.media-keys custom-keybindings 2>/dev/null || echo "[]")
+        get "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" custom-keybindings 2>/dev/null || echo "[]")
     merged=$(_merge_custom_keybindings "$current" \
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/asus-display-mode-xf86display/" \
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/myasus-1/" \
@@ -265,11 +280,11 @@ _set_display_keybinding() {
     # Drop legacy F8 → display-mode binding so F8 stays stock.
     merged=$(_drop_keybinding_path "$merged" \
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/asus-display-mode-f8/")
-    if [ -z "$merged" ]; then
+    if [[ -z "$merged" ]]; then
         return 1
     fi
     _user_gsettings "$user" "$bus_addr" \
-        set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+        set "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" custom-keybindings \
         "$merged" 2>/dev/null || return 1
     _set_display_binding_slots "$user" "$bus_addr"
 }
@@ -296,7 +311,7 @@ _set_myasus_keybindings() {
             2>/dev/null || failed=$((failed + 1))
         idx=$((idx + 1))
     done
-    if [ "$failed" -gt 0 ]; then
+    if [[ "$failed" -gt 0 ]]; then
         echo "  ! Warning: failed to configure $failed MyASUS shortcut(s)." >&2
     fi
     return 0
@@ -308,7 +323,7 @@ _set_gnome_keybindings() {
     _gsettings_set_key "$user" "$bus" org.gnome.shell.keybindings show-screenshot-ui \
         "['Print', '<Super><Shift>s', '<Super><Shift>S']" || err=1
 
-    _gsettings_set_key "$user" "$bus" org.gnome.settings-daemon.plugins.media-keys control-center \
+    _gsettings_set_key "$user" "$bus" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" control-center \
         "['XF86Launch1', 'XF86Tools', 'XF86Launch2', 'XF86Launch3', 'XF86Launch4', 'XF86ControlCenter', 'XF86MyComputer', 'XF86Explorer', 'XF86VendorHome', 'XF86LaunchA']" || err=1
 
     _set_myasus_keybindings "$user" "$bus"
@@ -342,24 +357,28 @@ apply_gnome_shortcuts() {
 _resolve_target_user_for_bus() {
     local target_user
     target_user=$(find_active_session_user 2>/dev/null || true)
-    [ -z "$target_user" ] && target_user="${SUDO_USER:-}"
-    [ -z "$target_user" ] && target_user=$(whoami 2>/dev/null || true)
+    [[ -z "$target_user" ]] && target_user="${SUDO_USER:-}"
+    [[ -z "$target_user" ]] && target_user=$(whoami 2>/dev/null || true)
     printf '%s\n' "$target_user"
+    return $?
 }
 
 _resolve_user_id_for_bus() {
     local target_user="$1"
     id -u "$target_user" 2>/dev/null || true
+    return $?
 }
 
 _resolve_bus_path_for_user() {
     local user_id="$1"
     printf '%s/%s/bus\n' "$(_install_resolve_session_bus_root)" "$user_id"
+    return $?
 }
 
 _has_bus_socket_for_user() {
     local user_id="$1" bus_path="$2"
-    [ -n "$user_id" ] && [ -S "$bus_path" ]
+    [[ -n "$user_id" ]] && [[ -S "$bus_path" ]]
+    return $?
 }
 
 _resolve_user_bus_info() {
@@ -383,14 +402,14 @@ _apply_gnome_config() {
     local target_user="$1" bus_path="$2" config_dir="$3"
     local orig_ss orig_ctrl orig_vm="" orig_sm=""
     orig_ss=$(backup_gnome_keybinding "$target_user" "$bus_path" "org.gnome.shell.keybindings" "show-screenshot-ui" "$config_dir/orig_show_screenshot_ui")
-    orig_ctrl=$(backup_gnome_keybinding "$target_user" "$bus_path" "org.gnome.settings-daemon.plugins.media-keys" "control-center" "$config_dir/orig_control_center")
+    orig_ctrl=$(backup_gnome_keybinding "$target_user" "$bus_path" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "control-center" "$config_dir/orig_control_center")
     orig_vm=$(_backup_optional_gnome_key "$target_user" "$bus_path" \
-        "org.gnome.settings-daemon.plugins.media-keys" "switch-video-mode" "$config_dir/orig_switch_video_mode")
+        "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_VIDEO_MODE_KEY" "$config_dir/orig_switch_video_mode")
     orig_sm=$(_backup_optional_gnome_key "$target_user" "$bus_path" \
-        "org.gnome.mutter.keybindings" "switch-monitor" "$config_dir/orig_switch_monitor")
-    backup_gnome_keybinding "$target_user" "$bus_path" "org.gnome.settings-daemon.plugins.media-keys" "custom-keybindings" "$config_dir/orig_custom_keybindings" >/dev/null || true
+        "$_ASUS_GNOME_MUTTER_KEYS_SCHEMA" "$_ASUS_GNOME_SWITCH_MONITOR_KEY" "$config_dir/orig_switch_monitor")
+    backup_gnome_keybinding "$target_user" "$bus_path" "$_ASUS_GNOME_MEDIA_KEYS_SCHEMA" "custom-keybindings" "$config_dir/orig_custom_keybindings" >/dev/null || true
 
-    if [ -f "$config_dir/orig_show_screenshot_ui" ] && [ -f "$config_dir/orig_control_center" ]; then
+    if [[ -f "$config_dir/orig_show_screenshot_ui" ]] && [[ -f "$config_dir/orig_control_center" ]]; then
         apply_gnome_shortcuts "$target_user" "$bus_path" "$orig_ss" "$orig_ctrl" "$orig_vm" "$config_dir" "$orig_sm"
         return $?
     fi
@@ -403,28 +422,31 @@ ASUS_GNOME_WINDOW_SWAP_UUID="asus-window-swap@ventura8.github.com"
 
 _gnome_window_swap_extension_src() {
     local root="${INSTALL_SOURCE_DIR:-}"
-    if [ -z "$root" ] && [ -n "${BASH_SOURCE[0]:-}" ]; then
+    if [[ -z "$root" ]] && [[ -n "${BASH_SOURCE[0]:-}" ]]; then
         root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
     fi
     printf '%s\n' "$root/gnome/$ASUS_GNOME_WINDOW_SWAP_UUID"
+    return $?
 }
 
 _gsettings_enabled_ext_add() {
     local current="$1" uuid="$2"
     _gsettings_as_array_op merge "$current" "$uuid"
+    return $?
 }
 
 _gsettings_enabled_ext_remove() {
     local current="$1" uuid="$2"
     _gsettings_as_array_op drop "$current" "$uuid"
+    return $?
 }
 
 _gnome_mark_extension_enabled() {
     local user="$1" bus="$2" uuid="$3" current next
     current=$(_user_gsettings "$user" "$bus" get org.gnome.shell enabled-extensions 2>/dev/null) || return 1
     next=$(_gsettings_enabled_ext_add "$current" "$uuid")
-    [ -n "$next" ] || return 1
-    [ "$next" = "$current" ] && return 0
+    [[ -n "$next" ]] || return 1
+    [[ "$next" = "$current" ]] && return 0
     _user_gsettings "$user" "$bus" set org.gnome.shell enabled-extensions "$next"
 }
 
@@ -432,14 +454,14 @@ _gnome_mark_extension_disabled() {
     local user="$1" bus="$2" uuid="$3" current next
     current=$(_user_gsettings "$user" "$bus" get org.gnome.shell enabled-extensions 2>/dev/null) || return 0
     next=$(_gsettings_enabled_ext_remove "$current" "$uuid")
-    [ -n "$next" ] || return 0
-    [ "$next" = "$current" ] && return 0
+    [[ -n "$next" ]] || return 0
+    [[ "$next" = "$current" ]] && return 0
     _user_gsettings "$user" "$bus" set org.gnome.shell enabled-extensions "$next" || true
 }
 
 _gnome_disable_extension_cli() {
     local target_user="$1" bus="$2" uuid="$3"
-    if [ -n "$bus" ]; then
+    if [[ -n "$bus" ]]; then
         _asus_soft _run_as_user_on_session_bus "$target_user" "$bus" \
             gnome-extensions disable "$uuid"
         return 0
@@ -460,18 +482,19 @@ _gnome_copy_window_swap_extension_files() {
         mkdir -p "$dest"
         cp -a "$src/extension.js" "$src/metadata.json" "$dest/"
     ' _ "$src" "$home_dir" "$uuid"
+    return $?
 }
 
 _gnome_hint_wayland_extension_reload() {
     local target_user="$1"
-    [ "$(asus_session_type "$target_user" 2>/dev/null || true)" = "wayland" ] || return 0
+    [[ "$(asus_session_type "$target_user" 2>/dev/null || true)" = "wayland" ]] || return 0
     echo "  → On Wayland, log out and back in before the extension is active in Shell."
 }
 
 _gnome_resolve_user_home() {
     local target_user="$1" home_dir
     home_dir=$(getent passwd "$target_user" | cut -d: -f6 || true)
-    [ -n "$home_dir" ] || {
+    [[ -n "$home_dir" ]] || {
         echo "  ✗ Failed to resolve home directory for $target_user." >&2
         return 1
     }
@@ -493,8 +516,8 @@ _gnome_enable_window_swap_extension() {
 
 _gnome_window_swap_extension_src_ok() {
     local src="$1"
-    [ -f "$src/metadata.json" ] || return 1
-    [ -f "$src/extension.js" ]
+    [[ -f "$src/metadata.json" ]] || return 1
+    [[ -f "$src/extension.js" ]]
 }
 
 _install_gnome_window_swap_extension() {
@@ -518,7 +541,7 @@ _install_gnome_window_swap_extension() {
 remove_gnome_window_swap_extension() {
     local target_user="$1" bus="${2:-}" uuid="$ASUS_GNOME_WINDOW_SWAP_UUID" home_dir
     home_dir=$(_gnome_resolve_user_home "$target_user") || return 0
-    if [ -n "$bus" ]; then
+    if [[ -n "$bus" ]]; then
         _asus_soft _gnome_mark_extension_disabled "$target_user" "$bus" "$uuid"
     fi
     _gnome_disable_extension_cli "$target_user" "$bus" "$uuid"
@@ -545,7 +568,7 @@ _gnome_write_desktop_family_state() {
 configure_gnome_component() {
     local info target_user user_id bus_path
     info=$(_resolve_user_bus_info)
-    if [ -z "$info" ]; then
+    if [[ -z "$info" ]]; then
         echo "  ✗ GNOME configuration failed: desktop D-Bus session not found." >&2
         return 1
     fi
@@ -567,7 +590,9 @@ configure_gnome_component() {
 }
 
 _gnome_install_optional_window_swap() {
-    if ! _install_gnome_window_swap_extension "$1" "$2"; then
+    local target_user="$1" bus="$2"
+    if ! _install_gnome_window_swap_extension "$target_user" "$bus"; then
         echo "  ⚠ ASUS Window Swap GNOME extension not enabled (Wayland swap may need 2 presses)." >&2
     fi
+    return $?
 }

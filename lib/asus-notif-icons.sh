@@ -5,11 +5,11 @@
 _notif_gsettings_value() {
     local schema="$1" key="$2" user value
     user=$(_resolve_notif_target_user 2>/dev/null || true)
-    [ -n "$user" ] || return 1
+    [[ -n "$user" ]] || return 1
     value=$(_run_as_user "$user" gsettings get "$schema" "$key" 2>/dev/null) || return 1
     value="${value#\'}"
     value="${value%\'}"
-    [ -n "$value" ] || return 1
+    [[ -n "$value" ]] || return 1
     printf '%s\n' "$value"
 }
 
@@ -17,12 +17,12 @@ _notif_shell_css_candidates() {
     local theme scheme
     theme=$(_soft _notif_gsettings_value org.gnome.desktop.interface gtk-theme)
     scheme=$(_soft _notif_gsettings_value org.gnome.desktop.interface color-scheme)
-    if [ -n "$theme" ]; then
+    if [[ -n "$theme" ]]; then
         printf '%s\n' \
             "/usr/share/gnome-shell/theme/$theme/gnome-shell.css" \
             "/usr/share/themes/$theme/gnome-shell/gnome-shell.css"
     fi
-    if [ "$scheme" = "prefer-dark" ] || [[ "$theme" == *-dark ]]; then
+    if [[ "$scheme" = "prefer-dark" ]] || [[ "$theme" == *-dark ]]; then
         printf '%s\n' \
             "/usr/share/gnome-shell/theme/Yaru-dark/gnome-shell.css" \
             "/usr/share/themes/Yaru-dark/gnome-shell/gnome-shell.css"
@@ -30,11 +30,14 @@ _notif_shell_css_candidates() {
     printf '%s\n' \
         "/usr/share/gnome-shell/theme/Yaru/gnome-shell.css" \
         "/usr/share/themes/Yaru/gnome-shell/gnome-shell.css"
+    return $?
 }
 
 _css_line_message_header_starts() {
+    local line="$1"
     local pattern='\.message[[:space:]]+\.message-header[[:space:]]*\{'
-    [[ "$1" =~ $pattern ]]
+    [[ "$line" =~ $pattern ]]
+    return $?
 }
 
 _css_line_color() {
@@ -45,7 +48,7 @@ _css_line_color() {
 
 _css_message_header_color_from_line() {
     local line="$1" in_header="$2"
-    [ "$in_header" -eq 1 ] || return 1
+    [[ "$in_header" -eq 1 ]] || return 1
     _css_line_color "$line"
 }
 
@@ -71,7 +74,7 @@ _extract_css_message_header_color() {
     # Emitting-app name uses .message-header color (message-source-title inherits it).
     local css_file="$1" line color in_header=0
     local -a lines
-    [ -f "$css_file" ] || return 1
+    [[ -f "$css_file" ]] || return 1
     mapfile -t lines < "$css_file" || return 1
     for line in "${lines[@]}"; do
         in_header=$(_css_message_header_state_before "$line" "$in_header")
@@ -97,8 +100,8 @@ _is_valid_notif_color() {
 
 _notif_override_app_name_color() {
     local color="${ASUS_NOTIF_APP_NAME_COLOR:-}"
-    [ -n "$color" ] || color="${ASUS_SCREENPAD_APP_NAME_COLOR:-}"
-    [ -n "$color" ] || color="${ASUS_CAMERA_APP_NAME_COLOR:-}"
+    [[ -n "$color" ]] || color="${ASUS_SCREENPAD_APP_NAME_COLOR:-}"
+    [[ -n "$color" ]] || color="${ASUS_CAMERA_APP_NAME_COLOR:-}"
     _is_valid_notif_color "$color" || return 1
     printf '%s\n' "$color"
 }
@@ -106,7 +109,7 @@ _notif_override_app_name_color() {
 _notif_css_app_name_color() {
     local color css_file
     while IFS= read -r css_file; do
-        [ -n "$css_file" ] || continue
+        [[ -n "$css_file" ]] || continue
         color=$(_extract_css_message_header_color "$css_file") || true
         if _is_valid_notif_color "$color"; then
             printf '%s\n' "$color"
@@ -118,6 +121,7 @@ _notif_css_app_name_color() {
 
 _notification_app_name_color() {
     _notif_override_app_name_color || _notif_css_app_name_color
+    return $?
 }
 
 _TINT_SVG_TMP=""
@@ -125,14 +129,14 @@ _TINT_SVG_TMP=""
 _prepare_tint_svg_temp() {
     local src="$1" dest="$2" color="$3"
     _is_valid_notif_color "$color" || return 1
-    [ -f "$src" ] || return 1
+    [[ -f "$src" ]] || return 1
     _TINT_SVG_TMP=$(mktemp "${dest}.XXXXXX") || return 1
 }
 
 _render_tinted_svg() {
     local src="$1" tmp="$2" color="$3"
     if ! sed -e "s/stroke=\"[^\"]*\"/stroke=\"$color\"/g" "$src" >"$tmp" \
-        || [ ! -s "$tmp" ]; then
+        || [[ ! -s "$tmp" ]]; then
         rm -f "$tmp"
         return 1
     fi
@@ -153,8 +157,9 @@ _tint_svg_stroke() {
 _notif_tinted_icon_path() {
     local stem="$1" user_id
     user_id=$(id -u "$(_resolve_notif_target_user 2>/dev/null || true)" 2>/dev/null || true)
-    [ -n "$user_id" ] || user_id="0"
+    [[ -n "$user_id" ]] || user_id="0"
     printf '%s/%s/%s.svg\n' "${NOTIF_ID_ROOT:-/run/asus-zenbook-notif}" "$user_id" "$stem"
+    return $?
 }
 
 _theme_icon_svg_candidates() {
@@ -169,12 +174,13 @@ _theme_icon_svg_candidates() {
         "$root/Yaru/scalable/devices/${name}.svg" \
         "$root/hicolor/scalable/status/${name}.svg" \
         "$root/hicolor/scalable/apps/${name}.svg"
+    return $?
 }
 
 _theme_icon_exists() {
     local name="$1" candidate
     while IFS= read -r candidate; do
-        [ -n "$candidate" ] && [ -f "$candidate" ] && return 0
+        [[ -n "$candidate" ]] && [[ -f "$candidate" ]] && return 0
     done < <(_theme_icon_svg_candidates "$name")
     return 1
 }
@@ -182,7 +188,7 @@ _theme_icon_exists() {
 _resolve_tinted_template_icon() {
     # Tint template SVG to message-header (app name) color; return file path.
     local template="$1" stem="$2" fallback="$3" color dest parent
-    [ -f "$template" ] || {
+    [[ -f "$template" ]] || {
         printf '%s\n' "$fallback"
         return 0
     }

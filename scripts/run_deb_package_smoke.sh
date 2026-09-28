@@ -8,8 +8,9 @@ ARTIFACTS_DIR="${ASUS_DEB_ARTIFACTS_DIR:-$REPO_ROOT/artifacts}"
 PACKAGE_NAME="${ASUS_DEB_PACKAGE_NAME:-asus-zenbook-linux-tools}"
 
 _require_tool() {
-    command -v "$1" >/dev/null 2>&1 || {
-        printf 'Missing required tool: %s\n' "$1" >&2
+    local tool="$1"
+    command -v "$tool" >/dev/null 2>&1 || {
+        printf 'Missing required tool: %s\n' "$tool" >&2
         return 1
     }
 }
@@ -18,7 +19,7 @@ _require_exact_one_glob() {
     local label="$1"
     shift
     local matches=("$@")
-    if [ "${#matches[@]}" -ne 1 ]; then
+    if [[ "${#matches[@]}" -ne 1 ]]; then
         printf 'Expected exactly one %s file, found %s\n' "$label" "${#matches[@]}" >&2
         printf '%s\n' "${matches[@]}" >&2
         return 1
@@ -39,7 +40,7 @@ _apt_install_local_deb() {
 }
 
 _install_packaging_deps() {
-    if [ "${SKIP_DEB_PKG_DEPS:-0}" = "1" ]; then
+    if [[ "${SKIP_DEB_PKG_DEPS:-0}" = "1" ]]; then
         return 0
     fi
     sudo apt-get update
@@ -69,7 +70,7 @@ _remove_prior_package_debs() {
         "$ARTIFACTS_DIR/${PACKAGE_NAME}_"*.deb
     )
     shopt -u nullglob
-    if [ "${#leftovers[@]}" -eq 0 ]; then
+    if [[ "${#leftovers[@]}" -eq 0 ]]; then
         return 0
     fi
     rm -f "${leftovers[@]}"
@@ -80,7 +81,7 @@ _prepare_build_writable_dirs() {
     # Always clear prior packaging trees (root-owned leftovers block dh_clean).
     _cleanup_debian_build_tree
     _remove_prior_package_debs
-    if [ "$(id -u)" -ne 0 ] || [ -z "${SUDO_USER:-}" ] || [ "$SUDO_USER" = root ]; then
+    if [[ "$(id -u)" -ne 0 ]] || [[ -z "${SUDO_USER:-}" ]] || [[ "$SUDO_USER" = root ]]; then
         return 0
     fi
     chown -R "$SUDO_USER:" "$REPO_ROOT/reports/distro-logs" "$ARTIFACTS_DIR"
@@ -99,7 +100,7 @@ _build_unsigned_deb() {
     # Always set nocheck (debian/rules skips override_dh_auto_test).
     export DEB_BUILD_OPTIONS="${DEB_BUILD_OPTIONS:+$DEB_BUILD_OPTIONS }nocheck"
     _prepare_build_writable_dirs
-    if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "$SUDO_USER" != root ]; then
+    if [[ "$(id -u)" -eq 0 ]] && [[ -n "${SUDO_USER:-}" ]] && [[ "$SUDO_USER" != root ]]; then
         _build_as_sudo_user
         return 0
     fi
@@ -131,7 +132,7 @@ _artifact_deb_path() {
 _smoke_rel_deb_path() {
     local artifact_deb="$1" rel_path
     rel_path="${artifact_deb#"$REPO_ROOT"/}"
-    if [ "$rel_path" = "$artifact_deb" ]; then
+    if [[ "$rel_path" = "$artifact_deb" ]]; then
         printf '%s\n' "$artifact_deb"
         return 0
     fi
@@ -142,12 +143,12 @@ _smoke_plant_share_bytecode() {
     local cache="/usr/share/asus-zenbook-linux-tools/bin/__pycache__"
     sudo mkdir -p "$cache"
     echo 'planted' | sudo tee "$cache/asus_i18n.cpython-314.pyc" >/dev/null
-    [ -f "$cache/asus_i18n.cpython-314.pyc" ]
+    [[ -f "$cache/asus_i18n.cpython-314.pyc" ]]
 }
 
 _smoke_assert_no_share_bytecode() {
     local cache="/usr/share/asus-zenbook-linux-tools/bin/__pycache__"
-    if [ -e "$cache" ]; then
+    if [[ -e "$cache" ]]; then
         printf 'Expected no leftover %s after upgrade\n' "$cache" >&2
         return 1
     fi
@@ -155,7 +156,7 @@ _smoke_assert_no_share_bytecode() {
 
 _smoke_assert_share_gone() {
     local share="/usr/share/asus-zenbook-linux-tools"
-    if [ -e "$share" ]; then
+    if [[ -e "$share" ]]; then
         printf 'Expected %s removed after purge\n' "$share" >&2
         ls -laR "$share" >&2 || true
         return 1
@@ -199,7 +200,7 @@ main() {
     _require_tool dpkg-checkbuilddeps
     _require_tool dpkg-deb
     _require_tool sudo
-    if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "$SUDO_USER" != root ]; then
+    if [[ "$(id -u)" -eq 0 ]] && [[ -n "${SUDO_USER:-}" ]] && [[ "$SUDO_USER" != root ]]; then
         _require_tool runuser
     fi
     cd "$REPO_ROOT"

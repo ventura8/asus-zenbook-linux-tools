@@ -7,8 +7,10 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_CH_TINT_COLOR="#123456"
+
 _setup_common_bus_root() {
-    if [ -n "${KCOV_BUS_ROOT:-}" ]; then
+    if [[ -n "${KCOV_BUS_ROOT:-}" ]]; then
         BUS_ROOT="$KCOV_BUS_ROOT"
     else
         BUS_ROOT=$(mktemp -d)
@@ -17,7 +19,7 @@ _setup_common_bus_root() {
 }
 
 _ensure_common_bus_socket() {
-    if [ -S "$BUS_ROOT/$(id -u)/bus" ]; then
+    if [[ -S "$BUS_ROOT/$(id -u)/bus" ]]; then
         return 0
     fi
     _driver_bind_required "$BUS_ROOT/$(id -u)/bus" common_helpers
@@ -36,14 +38,14 @@ _other_existing_user() {
     local cur candidate
     cur="$(id -un)"
     for candidate in nobody daemon www-data sshd; do
-        if [ "$candidate" != "$cur" ] && getent passwd "$candidate" >/dev/null 2>&1; then
+        if [[ "$candidate" != "$cur" ]] && getent passwd "$candidate" >/dev/null 2>&1; then
             printf '%s\n' "$candidate"
             return 0
         fi
     done
     echo "Warning: no non-root passwd candidate for kcov privilege-drop paths" \
         "(current user=$cur)." >&2
-    if [ "$cur" = "root" ]; then
+    if [[ "$cur" = "root" ]]; then
         return 1
     fi
     printf '%s\n' "$cur"
@@ -61,7 +63,7 @@ _run_common_other_user_priv_paths() {
     no_priv=$(mktemp -d)
     for tool in bash sh true id getent env; do
         src=$(command -v "$tool" 2>/dev/null) || src=""
-        [ -n "$src" ] || continue
+        [[ -n "$src" ]] || continue
         ln -sf "$src" "$no_priv/$tool"
     done
     _exercise PATH="$no_priv" _run_as_user "$other" true >/dev/null
@@ -78,7 +80,7 @@ _run_common_notify_paths() {
     # can safely use saved_path and mock here.
     trap 'export PATH="$saved_path"; rm -rf "$mock"' RETURN
     printf '#!/bin/sh\necho 99\n' > "$mock/notify-send"
-    printf '#!/bin/sh\nexit 1\n' > "$mock/gdbus"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/gdbus"
     cat > "$mock/runuser" <<'EOF'
 #!/bin/sh
 while [ "$#" -gt 0 ]; do
@@ -105,7 +107,7 @@ EOF
     export PATH="$mock:$PATH"
     _exercise _check_node /etc/hostname >/dev/null
     _exercise _check_node /missing-asus-node >/dev/null
-    printf '#!/bin/sh\nexit 0\n' > "$mock/loginctl"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/loginctl"
     chmod +x "$mock/loginctl"
     _exercise RUN_USER_ROOT="$BUS_ROOT" PATH="$mock:$saved_path" _resolve_notif_target_user >/dev/null
     missing_notif_root=$(mktemp -d "$BUS_ROOT/missing-notif.XXXXXX")
@@ -130,7 +132,7 @@ EOF
         "cam" "tag" "icon" "title" "msg" >/dev/null
     _exercise _run_as_user "$(id -un)" true >/dev/null
     _exercise _run_as_user "asus-missing-user-$$" true >/dev/null
-    if [ -n "$other" ]; then
+    if [[ -n "$other" ]]; then
         _run_common_other_user_priv_paths "$other" "$mock"
     fi
     _exercise _write_notif_id_file "9" "$BUS_ROOT/$uid/.asus_notif_write.id" >/dev/null
@@ -182,7 +184,7 @@ _run_notif_icon_color_valid_paths() {
 }
 
 _run_notif_icon_override_paths() {
-    ASUS_NOTIF_APP_NAME_COLOR='#123456' _soft _notif_override_app_name_color >/dev/null
+    ASUS_NOTIF_APP_NAME_COLOR="$_KCOV_CH_TINT_COLOR" _soft _notif_override_app_name_color >/dev/null
     _soft unset ASUS_NOTIF_APP_NAME_COLOR
     ASUS_SCREENPAD_APP_NAME_COLOR='#1234' _soft _notif_override_app_name_color >/dev/null
     _soft unset ASUS_SCREENPAD_APP_NAME_COLOR
@@ -193,11 +195,11 @@ _run_notif_icon_override_paths() {
 
 _run_notif_icon_tint_paths() {
     local tmp="$1" src="$2" dest="$3" theme_root="$4"
-    _soft _prepare_tint_svg_temp "$tmp/missing.svg" "$dest" '#123456'
+    _soft _prepare_tint_svg_temp "$tmp/missing.svg" "$dest" "$_KCOV_CH_TINT_COLOR"
     _soft _prepare_tint_svg_temp "$src" "$dest" invalid
-    _soft _tint_svg_stroke "$src" "$dest" '#123456'
+    _soft _tint_svg_stroke "$src" "$dest" "$_KCOV_CH_TINT_COLOR"
     : > "$tmp/empty.svg"
-    _soft _render_tinted_svg "$tmp/empty.svg" "$tmp/empty-tinted.svg" '#123456'
+    _soft _render_tinted_svg "$tmp/empty.svg" "$tmp/empty-tinted.svg" "$_KCOV_CH_TINT_COLOR"
     _soft _notif_tinted_icon_path "asus-test" >/dev/null
     ASUS_ICON_THEME_ROOT="$theme_root"
     _soft _theme_icon_exists camera-photo-symbolic
@@ -282,7 +284,7 @@ EOF
 
 _restore_asus_lib_dir() {
     local had_lib_dir="$1" saved_lib_dir="$2"
-    if [ "$had_lib_dir" = 1 ]; then
+    if [[ "$had_lib_dir" = 1 ]]; then
         _ASUS_LIB_DIR="$saved_lib_dir"
     else
         unset _ASUS_LIB_DIR
@@ -291,7 +293,7 @@ _restore_asus_lib_dir() {
 
 _run_missing_common_path() {
     local saved_lib_dir had_lib_dir=0 missing_lib
-    if [ -n "${_ASUS_LIB_DIR+set}" ]; then
+    if [[ -n "${_ASUS_LIB_DIR+set}" ]]; then
         saved_lib_dir="$_ASUS_LIB_DIR"
         had_lib_dir=1
     fi
@@ -306,7 +308,7 @@ _run_missing_common_path() {
 _run_source_common_failure_path() {
     # File exists but sourcing fails → bootstrap error lines after the existence check.
     local tmp saved_lib_dir had_lib_dir=0
-    if [ -n "${_ASUS_LIB_DIR+set}" ]; then
+    if [[ -n "${_ASUS_LIB_DIR+set}" ]]; then
         saved_lib_dir="$_ASUS_LIB_DIR"
         had_lib_dir=1
     fi
@@ -355,6 +357,25 @@ _run_common_near_miss_paths() {
     _soft _asus_session_launch_env env_out "$(id -un)" "$uid" \
         "$bus_root" "unix:path=$bus_root/$uid/bus" >/dev/null
     _soft test "${#env_out[@]}" -gt 0
+    _run_common_notif_id_near_misses "$bus_root" "$uid"
+}
+
+_run_common_notif_id_near_misses() {
+    # Same-shell notif-id helpers (the _exercise calls below run in subshells).
+    local bus_root="$1" uid="$2" missing="/nonexistent-kcov-notif-$$" empty_bus
+    _soft _extract_notif_id "(uint32 7,)" >/dev/null
+    _soft _write_notif_id_temp 7 "$missing/tmp"
+    _soft _commit_notif_id "$missing/tmp" "$missing/id"
+    mkdir -p "$bus_root/$uid"
+    echo 5 > "$bus_root/$uid/.asus_notif_near.id"
+    _soft _read_notif_id_file "$bus_root/$uid/.asus_notif_near.id" >/dev/null
+    empty_bus=$(mktemp -d)
+    mkdir -p "$empty_bus/$uid"
+    BUS_ROOT="$empty_bus" _soft _prepare_user_notification_context >/dev/null
+    BUS_ROOT="$empty_bus" NOTIF_ID_ROOT="$empty_bus" \
+        _soft _send_user_notification "t" "m" "icon" "near" "tag" "" >/dev/null
+    rm -rf "$empty_bus"
+    return 0
 }
 
 _try_first_notif_empty_bus() {

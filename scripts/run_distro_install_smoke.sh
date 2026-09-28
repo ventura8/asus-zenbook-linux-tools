@@ -49,7 +49,7 @@ _smoke_fail() {
 }
 
 _smoke_in_container() {
-    [ -f /.dockerenv ] || [ -f /run/.containerenv ]
+    [[ -f /.dockerenv ]] || [[ -f /run/.containerenv ]]
 }
 
 _required_pkgs_for_family() {
@@ -115,7 +115,7 @@ _smoke_resolve_suse_evdev_pkg() {
     local ver pkg
     ver=$(python3 -c 'import sys; print(f"{sys.version_info.major}{sys.version_info.minor}")' \
         2>/dev/null || true)
-    [ -n "$ver" ] || { printf '%s\n' "python3-evdev"; return 0; }
+    [[ -n "$ver" ]] || { printf '%s\n' "python3-evdev"; return 0; }
     pkg="python${ver}-evdev"
     _smoke_suse_evdev_from_rpm "$pkg"
 }
@@ -217,6 +217,7 @@ _pkg_is_installed() {
 _assert_supported_smoke_family() {
     case "$1" in
         debian|redhat|suse|arch) return 0 ;;
+        *) ;;
     esac
     _smoke_fail "unsupported OS family for smoke: ${1:-unknown}"
 }
@@ -234,7 +235,7 @@ _check_one_required_pkg() {
 _scan_required_packages() {
     local family="$1" pkg pkg_gap=0
     while IFS= read -r pkg; do
-        [ -n "$pkg" ] || continue
+        [[ -n "$pkg" ]] || continue
         _check_one_required_pkg "$family" "$pkg" || pkg_gap=1
     done < <(_required_pkgs_for_family "$family")
     return "$pkg_gap"
@@ -253,7 +254,7 @@ _verify_product_shell_syntax() {
     _smoke_log "Syntax-checking product shell scripts"
     # Same product set as kcov gates (all bin/lib *.sh plus installers); no maxdepth.
     while IFS= read -r path; do
-        [ -n "$path" ] || continue
+        [[ -n "$path" ]] || continue
         bash -n "$path" || _smoke_fail "bash -n failed for $path"
     done < <(
         find bin lib -type f -name '*.sh' | LC_ALL=C sort
@@ -287,7 +288,7 @@ PY
 _verify_desktop_family_string() {
     local input="$1" expected="$2" got
     got=$(asus_desktop_family_from_string "$input")
-    [ "$got" = "$expected" ] \
+    [[ "$got" = "$expected" ]] \
         || _smoke_fail "expected $expected for $input, got $got"
 }
 
@@ -300,7 +301,7 @@ _verify_session_desktop_family() {
     _verify_desktop_family_string "X-Cinnamon" cinnamon
     _verify_desktop_family_string "MATE" mate
     got=$(ASUS_DESKTOP_FAMILY=gnome asus_desktop_family "")
-    [ "$got" = "gnome" ] || _smoke_fail "ASUS_DESKTOP_FAMILY override failed"
+    [[ "$got" = "gnome" ]] || _smoke_fail "ASUS_DESKTOP_FAMILY override failed"
 }
 
 _probe_helper_fails_closed() {
@@ -309,7 +310,7 @@ _probe_helper_fails_closed() {
     helper_out=$(PATH="$mock_bin:$PATH" ASUS_DESKTOP_FAMILY="$family" \
         "$helper_path" 2>&1) || helper_status=$?
     printf '%s\n' "$helper_out" | tee -a "$smoke_probe_log"
-    if [ "$helper_status" -eq 0 ]; then
+    if [[ "$helper_status" -eq 0 ]]; then
         _smoke_fail "$label unexpectedly succeeded without a session"
     fi
     if ! printf '%s\n' "$helper_out" | grep -Fq "No active graphical session found"; then
@@ -338,7 +339,7 @@ EOF
     _probe_helper_fails_closed kde bin/asus-control-center.sh "$smoke_probe_log" \
         "asus-control-center.sh" "$mock_bin"
     trap - EXIT
-    if [ -n "$prev_exit_trap" ]; then
+    if [[ -n "$prev_exit_trap" ]]; then
         eval "$prev_exit_trap"
     fi
     rm -rf "$tmp"
@@ -379,7 +380,7 @@ EOF
 
 _have_bin_asset() {
     local bin="$1" rel="$2"
-    if [ -e "$bin/$rel" ]; then
+    if [[ -e "$bin/$rel" ]]; then
         return 0
     fi
     echo "[distro-compat-smoke] missing installed asset: $bin/$rel" >&2
@@ -388,9 +389,9 @@ _have_bin_asset() {
 
 _assert_core_lib_and_unit() {
     local dest="$1"
-    [ -f "$dest/usr/local/lib/asus-zenbook-linux-tools/asus-session.sh" ] || return 1
-    [ -f "$dest/usr/local/lib/asus-zenbook-linux-tools/asus-i18n.sh" ] || return 1
-    [ -f "$dest/etc/systemd/system/asus-hotkey-daemon.service" ] || return 1
+    [[ -f "$dest/usr/local/lib/asus-zenbook-linux-tools/asus-session.sh" ]] || return 1
+    [[ -f "$dest/usr/local/lib/asus-zenbook-linux-tools/asus-i18n.sh" ]] || return 1
+    [[ -f "$dest/etc/systemd/system/asus-hotkey-daemon.service" ]] || return 1
     return 0
 }
 
@@ -407,7 +408,7 @@ _assert_installed_wmi_assets() {
     if ! _assert_core_lib_and_unit "$dest"; then
         asset_gap=1
     fi
-    if [ "$asset_gap" -ne 0 ]; then
+    if [[ "$asset_gap" -ne 0 ]]; then
         echo "[distro-compat-smoke] install did not deploy expected WMI/TOUCHPAD assets" >&2
         return 1
     fi
@@ -416,13 +417,13 @@ _assert_installed_wmi_assets() {
 
 _assert_uninstalled() {
     local dest="$1"
-    if [ -e "$dest/usr/local/bin/asus-hotkey-daemon.py" ]; then
+    if [[ -e "$dest/usr/local/bin/asus-hotkey-daemon.py" ]]; then
         _smoke_fail "uninstall left asus-hotkey-daemon.py behind"
     fi
-    if [ -e "$dest/usr/local/bin/asus-touchpad-share.py" ]; then
+    if [[ -e "$dest/usr/local/bin/asus-touchpad-share.py" ]]; then
         _smoke_fail "uninstall left asus-touchpad-share.py behind"
     fi
-    if [ -e "$dest/etc/systemd/system/asus-hotkey-daemon.service" ]; then
+    if [[ -e "$dest/etc/systemd/system/asus-hotkey-daemon.service" ]]; then
         _smoke_fail "uninstall left hotkey unit behind"
     fi
 }

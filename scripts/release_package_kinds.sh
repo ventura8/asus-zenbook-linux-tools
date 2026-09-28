@@ -14,7 +14,7 @@ _require_exact_one_glob() {
     local label="$1"
     shift
     local matches=("$@")
-    if [ "${#matches[@]}" -ne 1 ]; then
+    if [[ "${#matches[@]}" -ne 1 ]]; then
         printf 'Expected exactly one %s file, found %s\n' "$label" "${#matches[@]}" >&2
         printf '%s\n' "${matches[@]}" >&2
         return 1
@@ -45,7 +45,7 @@ _release_docker_rm() {
     local repo_root="$1"
     shift
     local paths=("$@") rel_paths=() path rel=""
-    if [ "${#paths[@]}" -eq 0 ]; then
+    if [[ "${#paths[@]}" -eq 0 ]]; then
         return 0
     fi
     for path in "${paths[@]}"; do
@@ -65,7 +65,7 @@ _release_wipe_dir_contents() {
     local rel=""
     local host_uid="" host_gid=""
     rel="$(_release_repo_relative_path "$repo_root" "$target_dir")"
-    if [ -z "$rel" ] || [ "$rel" = "." ] || [[ "$rel" == /* ]]; then
+    if [[ -z "$rel" ]] || [[ "$rel" = "." ]] || [[ "$rel" == /* ]]; then
         printf 'Wipe target must resolve inside the repository (got: %s)\n' \
             "${rel:-<empty>}" >&2
         return 1
@@ -87,6 +87,7 @@ _release_docker_rm_rpm_build_trees() {
         -w /workspace \
         alpine:3.20 \
         sh -c 'rm -rf /workspace/.rpm-build /workspace/.rpm-build-*'
+    return $?
 }
 
 _release_docker_rm_arch_staging() {
@@ -94,6 +95,7 @@ _release_docker_rm_arch_staging() {
     _release_docker_rm "$repo_root" \
         "${repo_root}/packaging/arch/pkg" \
         "${repo_root}/packaging/arch/src"
+    return $?
 }
 
 _release_docker_rm_portable_staging() {
@@ -106,12 +108,13 @@ _release_docker_rm_portable_staging() {
         "${repo_root}/packaging/snap/parts" \
         "${repo_root}/packaging/snap/stage" \
         "${repo_root}/packaging/snap/prime"
+    return $?
 }
 
 _release_pkg_kind_is_valid() {
     local kind="$1" entry=""
     for entry in "${RELEASE_PACKAGE_KINDS[@]}"; do
-        if [ "$entry" = "$kind" ]; then
+        if [[ "$entry" = "$kind" ]]; then
             return 0
         fi
     done
@@ -120,15 +123,15 @@ _release_pkg_kind_is_valid() {
 
 _release_pkg_rpm_artifact_glob() {
     local kind="$1"
-    if [ "$kind" = "rpm-rocky-10" ]; then
+    if [[ "$kind" = "rpm-rocky-10" ]]; then
         printf '%s\n' 'asus-zenbook-linux-tools-*.el10.noarch.rpm'
         return 0
     fi
-    if [ "$kind" = "rpm-fedora-44" ]; then
+    if [[ "$kind" = "rpm-fedora-44" ]]; then
         printf '%s\n' 'asus-zenbook-linux-tools-*fc44*.rpm'
         return 0
     fi
-    if [ "$kind" = "rpm-opensuse-tw" ]; then
+    if [[ "$kind" = "rpm-opensuse-tw" ]]; then
         printf '%s\n' 'asus-zenbook-linux-tools-*-1.noarch.rpm'
         return 0
     fi
@@ -159,7 +162,7 @@ _release_pkg_artifact_glob() {
         _release_pkg_rpm_artifact_glob "$kind"
         return $?
     fi
-    if [ "$kind" = "arch" ]; then
+    if [[ "$kind" = "arch" ]]; then
         printf '%s\n' 'asus-zenbook-linux-tools-*.pkg.tar.*'
         return 0
     fi
@@ -174,7 +177,7 @@ _release_pkg_validate_artifact() {
     while IFS= read -r -d '' file; do
         matches+=("$file")
     done < <(find "$artifacts_dir" -maxdepth 1 -type f -name "$glob" -print0 2>/dev/null || true)
-    if [ "${#matches[@]}" -ne 1 ]; then
+    if [[ "${#matches[@]}" -ne 1 ]]; then
         printf 'Expected exactly one %s artifact in %s, found %s\n' \
             "$kind" "$artifacts_dir" "${#matches[@]}" >&2
         printf '%s\n' "${matches[@]}" >&2

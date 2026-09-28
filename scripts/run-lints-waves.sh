@@ -20,11 +20,11 @@ _run_lint_wave() {
         wait "$pid"
         step_status=$?
         set -e
-        if [ "$step_status" -ne 0 ]; then
+        if [[ "$step_status" -ne 0 ]]; then
             status=1
         fi
     done
-    if [ "$status" -ne 0 ]; then
+    if [[ "$status" -ne 0 ]]; then
         echo "  ✗ Lint wave '$wave_name' failed." >&2
         return 1
     fi
@@ -42,15 +42,19 @@ _lint_wave_mode() {
     esac
 }
 
+_run_all_lint_waves() {
+    _run_lint_wave "cheap-checks" "${LINT_WAVE1_STEPS[@]}" || return 1
+    _run_lint_wave "heavy-checks" "${LINT_WAVE2_STEPS[@]}"
+    return $?
+}
+
 _run_selected_lint_waves() {
     local mode
     mode="$(_lint_wave_mode)" || return 1
     case "$mode" in
         cheap) _run_lint_wave "cheap-checks" "${LINT_WAVE1_STEPS[@]}" ;;
         heavy) _run_lint_wave "heavy-checks" "${LINT_WAVE2_STEPS[@]}" ;;
-        all)
-            _run_lint_wave "cheap-checks" "${LINT_WAVE1_STEPS[@]}" || return 1
-            _run_lint_wave "heavy-checks" "${LINT_WAVE2_STEPS[@]}"
-            ;;
+        all) _run_all_lint_waves ;;
+        *) ;;
     esac
 }

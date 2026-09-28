@@ -7,6 +7,8 @@ cd "$REPO_ROOT" || exit 1
 # shellcheck source=scripts/coverage/drivers/kcov_driver_common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
+readonly _KCOV_COMP_HOTKEY_UNIT="asus-hotkey-daemon.service"
+
 _driver_source_i18n || exit 1
 
 # shellcheck source=lib/install-shared.sh
@@ -29,7 +31,7 @@ _driver_source_required "$REPO_ROOT/lib/install-components.sh" components_helper
 PREFIX="${DESTDIR:-$(mktemp -d "${TMPDIR:-/tmp}/asus-kcov-comp.XXXXXX")}"
 _COMP_PREFIX_OWNED=0
 _COMP_OWNED_PREFIX_PATH=""
-if [ -z "${DESTDIR:-}" ]; then
+if [[ -z "${DESTDIR:-}" ]]; then
     _COMP_PREFIX_OWNED=1
     _COMP_OWNED_PREFIX_PATH="$PREFIX"
     trap 'if [ "${_COMP_PREFIX_OWNED:-0}" = 1 ]; then rm -rf "${_COMP_OWNED_PREFIX_PATH:-}"; fi' EXIT
@@ -60,17 +62,17 @@ _run_component_predicates() {
 }
 
 _run_unit_ops() {
-    _exercise _run_unit_management_ops_common "asus-hotkey-daemon.service" restart >/dev/null
-    _exercise _run_unit_management_ops_unverified "asus-hotkey-daemon.service" restart >/dev/null
-    _exercise INSTALL_ASSUME_UNIT_ACTIVE=1 _is_systemd_unit_active "asus-hotkey-daemon.service" >/dev/null
+    _exercise _run_unit_management_ops_common "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
+    _exercise _run_unit_management_ops_unverified "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
+    _exercise INSTALL_ASSUME_UNIT_ACTIVE=1 _is_systemd_unit_active "$_KCOV_COMP_HOTKEY_UNIT" >/dev/null
 }
 
 _run_fail_systemctl_ops() {
-    [ -n "${KCOV_FAIL_SYSTEMCTL:-}" ] || return 0
+    [[ -n "${KCOV_FAIL_SYSTEMCTL:-}" ]] || return 0
     local saved_systemctl="${SYSTEMCTL:-}"
     SYSTEMCTL="$KCOV_FAIL_SYSTEMCTL"
-    _exercise _run_unit_management_ops_common "asus-hotkey-daemon.service" restart >/dev/null
-    _exercise _install_unit "$REPO_ROOT" "asus-hotkey-daemon.service" restart 1 >/dev/null
+    _exercise _run_unit_management_ops_common "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
+    _exercise _install_unit "$REPO_ROOT" "$_KCOV_COMP_HOTKEY_UNIT" restart 1 >/dev/null
     SYSTEMCTL="$saved_systemctl"
 }
 
@@ -80,7 +82,7 @@ _run_component_deploys() {
     _exercise deploy_sound_component "$REPO_ROOT" >/dev/null
     _exercise INSTALL_ASSUME_UNIT_ACTIVE=0 SYSTEMCTL="${KCOV_FAIL_SYSTEMCTL:-$SYSTEMCTL}" \
         deploy_wmi_component "$REPO_ROOT" >/dev/null
-    _exercise _install_unit "/missing-src" "asus-hotkey-daemon.service" restart 0 >/dev/null
+    _exercise _install_unit "/missing-src" "$_KCOV_COMP_HOTKEY_UNIT" restart 0 >/dev/null
     _exercise run_installer_selected_components "WMI" "$REPO_ROOT" >/dev/null
     _exercise run_installer_selected_components "" "$REPO_ROOT" >/dev/null
     _exercise _deploy_selected_component DESKTOP "$REPO_ROOT" >/dev/null
@@ -125,12 +127,12 @@ _comp_var_was_exported() {
 _comp_restore_env_var() {
     # Restore saved value; unexport when it was not originally exported.
     local name="$1" was_exported="$2" saved_ref="$3"
-    if [ -n "${!saved_ref+set}" ]; then
+    if [[ -n "${!saved_ref+set}" ]]; then
         printf -v "$name" '%s' "${!saved_ref}"
     else
         unset "$name"
     fi
-    if [ "$was_exported" != 1 ]; then
+    if [[ "$was_exported" != 1 ]]; then
         # ${name?} keeps shellcheck SC2163 quiet for dynamic unexport.
         _soft export -n "${name?}" 2>/dev/null
     fi
@@ -142,7 +144,7 @@ _comp_save_env_var() {
     local var_name="$1" had_name="$2" saved_name="$3"
     printf -v "$had_name" '%s' 0
     unset "$saved_name"
-    if [ -n "${!var_name+set}" ]; then
+    if [[ -n "${!var_name+set}" ]]; then
         printf -v "$saved_name" '%s' "${!var_name}"
         if _comp_var_was_exported "$var_name"; then
             printf -v "$had_name" '%s' 1
@@ -156,7 +158,7 @@ _comp_restore_kde_xfce_env() {
     _comp_restore_env_var PREFIX "${_COMP_HAD_PREFIX:-0}" _COMP_SAVED_PREFIX
     _comp_restore_env_var SUDO_CMD "${_COMP_HAD_SUDO:-0}" _COMP_SAVED_SUDO
     _comp_restore_env_var BUS_ROOT "${_COMP_HAD_BUS:-0}" _COMP_SAVED_BUS
-    if [ -n "${_COMP_KDE_XFCE_TMP:-}" ]; then
+    if [[ -n "${_COMP_KDE_XFCE_TMP:-}" ]]; then
         rm -rf "$_COMP_KDE_XFCE_TMP"
     fi
     unset _COMP_KDE_XFCE_TMP _COMP_SAVED_PATH _COMP_SAVED_STATE_DIR _COMP_SAVED_PREFIX \
@@ -181,9 +183,9 @@ _run_kde_xfce_direct() {
     user="$(id -un)"
     STATE_DIR="$_COMP_KDE_XFCE_TMP/state"
     mkdir -p "$mock" "$STATE_DIR/$uid" "$PREFIX/usr/local/share/applications"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/kwriteconfig6"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/qdbus"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/pkill"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/kwriteconfig6"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/qdbus"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/pkill"
     # Get → exit 1 (absent); set/create/remove → exit 0 so configure can apply bindings.
     cat > "$mock/xfconf-query" <<'EOF'
 #!/bin/sh
@@ -254,12 +256,13 @@ _run_uinput_locale_ydotool_exercises() {
     saved_prefix="${PREFIX:-}"
     saved_path="$PATH"
     saved_state="${STATE_DIR:-}"
-    if [ -n "${DESTDIR+x}" ]; then
+    if [[ -n "${DESTDIR+x}" ]]; then
         saved_destdir="$DESTDIR"
         saved_destdir_was_set=1
         saved_destdir_was_exported=0
         case "$(declare -p DESTDIR 2>/dev/null)" in
             "declare -x "*) saved_destdir_was_exported=1 ;;
+            *) ;;
         esac
     else
         saved_destdir=""
@@ -285,10 +288,10 @@ if [ "\$1" = "-nG" ]; then
 fi
 exec /usr/bin/id "\$@"
 EOF
-    printf '#!/bin/sh\nexit 0\n' > "$mock/groupadd"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/usermod"
-    printf '#!/bin/sh\nexit 1\n' > "$mock/gpasswd"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/udevadm"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/groupadd"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/usermod"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/gpasswd"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/udevadm"
     chmod +x "$mock"/*
     PATH="$mock:$saved_path"
     STATE_DIR="$mock/state"
@@ -328,15 +331,15 @@ fi
 exec /usr/bin/id "\$@"
 EOF
     chmod +x "$mock/id"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/usermod"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/usermod"
     _exercise _add_user_to_uinput_group "$user" >/dev/null
-    printf '#!/bin/sh\nexit 1\n' > "$mock/usermod"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/usermod"
     _exercise _add_user_to_uinput_group "$user" >/dev/null
-    printf '#!/bin/sh\nexit 1\n' > "$mock/groupadd"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/groupadd"
     _exercise _ensure_uinput_group >/dev/null
     _exercise INSTALL_ASSUME_UNIT_ACTIVE=1 _report_wmi_unit_result >/dev/null
     _exercise INSTALL_ASSUME_UNIT_ACTIVE=0 _report_wmi_unit_result >/dev/null
-    _exercise _run_unit_management_ops_unverified "asus-hotkey-daemon.service" restart >/dev/null
+    _exercise _run_unit_management_ops_unverified "$_KCOV_COMP_HOTKEY_UNIT" restart >/dev/null
     # Missing units helper path (sibling file absent beside a temp copy).
     units_tmp=$(mktemp -d)
     cat > "$units_tmp/install-components.sh" <<'EOF'
@@ -392,7 +395,7 @@ EOF
     unset DESTDIR
     PREFIX=""
     export PREFIX
-    printf '#!/bin/sh\nexit 0\n' > "$mock/ydotool"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/ydotool"
     chmod +x "$mock/ydotool"
     # _reload_uinput_udev_rule real branch (not staged, udevadm present).
     _exercise _reload_uinput_udev_rule >/dev/null
@@ -412,10 +415,10 @@ if [ "$1" = "passwd" ]; then
 fi
 exit 1
 EOF
-    printf '#!/bin/sh\nexit 1\n' > "$mock/groupadd"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/groupadd"
     _exercise _ensure_uinput_group >/dev/null
     # groupadd success when group is absent.
-    printf '#!/bin/sh\nexit 0\n' > "$mock/groupadd"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/groupadd"
     _exercise _ensure_uinput_group >/dev/null
     # Revoke record ready when group is missing (drops record).
     printf '%s\n' "$user" > "$STATE_DIR/asus-uinput-group-users"
@@ -441,12 +444,12 @@ if [ "\$1" = "-nG" ]; then
 fi
 exec /usr/bin/id "\$@"
 EOF
-    printf '#!/bin/sh\nexit 0\n' > "$mock/usermod"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/usermod"
     _exercise _add_user_to_uinput_group "$user" >/dev/null
-    printf '#!/bin/sh\nexit 1\n' > "$mock/usermod"
+    printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/usermod"
     _exercise _add_user_to_uinput_group "$user" >/dev/null
     # Successful revoke clears record (lines 115/117).
-    printf '#!/bin/sh\nexit 0\n' > "$mock/gpasswd"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/gpasswd"
     printf '%s\n' "$user" > "$STATE_DIR/asus-uinput-group-users"
     cat > "$mock/id" <<EOF
 #!/bin/sh
@@ -462,7 +465,8 @@ EOF
     touch "$mock/systemd/ydotoold.service" "$mock/systemd/ydotool.service"
     _comp_saved_unit_exists=$(declare -f _systemd_system_unit_exists)
     _systemd_system_unit_exists() {
-        [ -f "$mock/systemd/$1" ]
+        local unit_name="$1"
+        [[ -f "$mock/systemd/$unit_name" ]]
     }
     _exercise _enable_ydotool_system_units >/dev/null
     eval "$_comp_saved_unit_exists"
@@ -473,6 +477,13 @@ EOF
         mv "$units" "$units.__kcov_hide"
         trap 'mv "$units.__kcov_hide" "$units"' EXIT
         _soft _source_install_component_unit_helpers
+    )
+    # Missing uinput helper sibling on the live product file path.
+    (
+        uinput_helpers="$REPO_ROOT/lib/install-components-uinput.sh"
+        mv "$uinput_helpers" "$uinput_helpers.__kcov_hide"
+        trap 'mv "$uinput_helpers.__kcov_hide" "$uinput_helpers"' EXIT
+        _soft _source_install_component_uinput_helpers
     )
     # Touchpad / sound report helpers (force inactive via non-printing systemctl).
     _exercise SYSTEMCTL=/bin/true INSTALL_ASSUME_UNIT_ACTIVE=1 \

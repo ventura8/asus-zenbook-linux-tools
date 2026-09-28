@@ -11,6 +11,7 @@ _sentinel_pkgs_for_family() {
         _assert_pkg_available "$family" "$pkg" || continue
         printf '%s\n' "$pkg"
     done
+    return $?
 }
 
 _SMOKE_APT_GET_OPTS=(
@@ -25,6 +26,7 @@ _remove_pkg_debian() {
         sudo -n env DEBIAN_FRONTEND=noninteractive apt-get \
         "${_SMOKE_APT_GET_OPTS[@]}" \
         remove -y --purge "$pkg" </dev/null
+    return $?
 }
 
 _remove_pkg_rpm() {
@@ -42,6 +44,7 @@ _remove_pkg_arch() {
     local pkg="$1"
     _smoke_log_command "pacman remove $pkg" \
         sudo -n pacman -R --noconfirm "$pkg" </dev/null
+    return $?
 }
 
 _remove_pkg() {
@@ -67,19 +70,21 @@ _purge_one_sentinel() {
 _purge_sentinels() {
     local family="$1" sentinel_list="$2" pkg
     while IFS= read -r pkg; do
-        [ -n "$pkg" ] || continue
+        [[ -n "$pkg" ]] || continue
         _purge_one_sentinel "$family" "$pkg"
     done <<< "$sentinel_list"
+    return $?
 }
 
 _assert_sentinels_installed() {
     local family="$1" sentinel_list="$2" pkg
     while IFS= read -r pkg; do
-        [ -n "$pkg" ] || continue
+        [[ -n "$pkg" ]] || continue
         _pkg_is_installed "$family" "$pkg" \
             || _smoke_fail "install.sh did not install sentinel package $pkg"
         _smoke_log "  ✓ install restored $pkg"
     done <<< "$sentinel_list"
+    return $?
 }
 
 _live_soft() { "$@" || return 0; }
@@ -88,33 +93,36 @@ _read_live_installed_packages_record() {
     local record="$1"
     # Live install runs under sudo, so DESTDIR state may be root-owned; read via
     # sudo when the smoke process cannot open the file.
-    if [ -r "$record" ]; then
+    if [[ -r "$record" ]]; then
         cat "$record"
     elif sudo -n test -f "$record" 2>/dev/null; then
         sudo -n cat "$record"
     else
         _smoke_fail "missing installed-packages record at $record"
     fi
+    return $?
 }
 
 _assert_record_has_sentinels() {
     local record="$1" sentinel_list="$2" pkg record_body
     record_body="$(_read_live_installed_packages_record "$record")"
     while IFS= read -r pkg; do
-        [ -n "$pkg" ] || continue
+        [[ -n "$pkg" ]] || continue
         printf '%s\n' "$record_body" | grep -Fqx "$pkg" \
             || _smoke_fail "installed-packages missing newly installed $pkg"
     done <<< "$sentinel_list"
+    return $?
 }
 
 _assert_sentinels_removed() {
     local family="$1" sentinel_list="$2" pkg
     while IFS= read -r pkg; do
-        [ -n "$pkg" ] || continue
+        [[ -n "$pkg" ]] || continue
         _pkg_is_installed "$family" "$pkg" \
             && _smoke_fail "uninstall left sentinel package $pkg installed"
         _smoke_log "  ✓ uninstall removed $pkg"
     done <<< "$sentinel_list"
+    return $?
 }
 
 _reinstall_pkg() {
@@ -145,7 +153,7 @@ _reinstall_pkg() {
 _restore_sentinels_best_effort() {
     local family="$1" sentinel_list="$2" pkg restore_rc=0
     while IFS= read -r pkg; do
-        [ -n "$pkg" ] || continue
+        [[ -n "$pkg" ]] || continue
         _pkg_is_installed "$family" "$pkg" && continue
         _smoke_log "  restoring $pkg after smoke"
         _reinstall_pkg "$family" "$pkg" || restore_rc=1
@@ -163,17 +171,18 @@ _live_pkg_install() {
         DESTDIR="$dest" DBUS_BUS_ROOT="$bus_root" \
         SYSTEMCTL_CMD="$mock_bin/systemctl" \
         ./install.sh
+    return $?
 }
 
 # Mirror flake retries for live install (zypper/dnf CDN resets).
 _live_pkg_install_with_retry() {
     local attempt=1
-    while [ "$attempt" -le 3 ]; do
+    while [[ "$attempt" -le 3 ]]; do
         if _live_pkg_install "$@"; then
             return 0
         fi
         attempt=$((attempt + 1))
-        [ "$attempt" -le 3 ] || break
+        [[ "$attempt" -le 3 ]] || break
         _smoke_log "  retrying live install.sh (attempt ${attempt}/3)"
         sleep 5
     done
@@ -189,13 +198,15 @@ _live_pkg_uninstall() {
         DESTDIR="$dest" DBUS_BUS_ROOT="$bus_root" \
         SYSTEMCTL_CMD="$mock_bin/systemctl" \
         ./uninstall.sh
+    return $?
 }
 
 _live_cycle_remove_tmp() {
     local tmp="$1"
-    if [ -n "$tmp" ]; then
+    if [[ -n "$tmp" ]]; then
         sudo -n rm -rf "$tmp" || _live_soft rm -rf "$tmp"
     fi
+    return $?
 }
 
 _live_cycle_fail() {
@@ -205,10 +216,11 @@ _live_cycle_fail() {
     _LIVE_CYCLE_FAMILY=""
     _LIVE_CYCLE_TMP=""
     _LIVE_CYCLE_SENTINELS=""
-    if [ "$restore_rc" -ne 0 ]; then
+    if [[ "$restore_rc" -ne 0 ]]; then
         _smoke_fail "failed to restore sentinel packages after smoke error ($msg)"
     fi
     _smoke_fail "$msg"
+    return $?
 }
 
 _LIVE_CYCLE_FAMILY=""
@@ -218,28 +230,28 @@ _LIVE_CYCLE_SAVED_EXIT_TRAP=""
 
 _live_cycle_restore_sentinels_on_exit() {
     local restore_rc=0
-    if [ -n "$_LIVE_CYCLE_FAMILY" ]; then
-        if ! _restore_sentinels_best_effort "$_LIVE_CYCLE_FAMILY" "$_LIVE_CYCLE_SENTINELS"; then
-            restore_rc=1
-            _smoke_log "Warning: failed to restore sentinel packages during live-cycle cleanup" >&2
-        fi
+    if [[ -n "$_LIVE_CYCLE_FAMILY" ]] \
+        && ! _restore_sentinels_best_effort "$_LIVE_CYCLE_FAMILY" "$_LIVE_CYCLE_SENTINELS"; then
+        restore_rc=1
+        _smoke_log "Warning: failed to restore sentinel packages during live-cycle cleanup" >&2
     fi
     return "$restore_rc"
 }
 
 _live_cycle_remove_tmp_on_exit() {
-    if [ -n "$_LIVE_CYCLE_TMP" ]; then
-        if [ -n "$_LIVE_CYCLE_FAMILY" ]; then
+    if [[ -n "$_LIVE_CYCLE_TMP" ]]; then
+        if [[ -n "$_LIVE_CYCLE_FAMILY" ]]; then
             sudo -n rm -rf "$_LIVE_CYCLE_TMP" || _live_soft rm -rf "$_LIVE_CYCLE_TMP"
         else
             _live_soft rm -rf "$_LIVE_CYCLE_TMP"
         fi
     fi
+    return $?
 }
 
 _live_cycle_restore_prior_exit_trap() {
     local saved_trap="$1" saved_body=""
-    [ -n "$saved_trap" ] || return 0
+    [[ -n "$saved_trap" ]] || return 0
     # Run prior EXIT body first; re-eval of trap -p only reinstalls.
     if [[ $saved_trap =~ ^trap\ --\ \'(.*)\'\ EXIT$ ]]; then
         saved_body="${BASH_REMATCH[1]}"
@@ -265,8 +277,9 @@ _live_cycle_require_sudo_and_sentinels() {
     local sentinel_list="$1"
     sudo -n true >/dev/null 2>&1 \
         || _smoke_fail "container smoke needs passwordless sudo for live package install/remove"
-    [ -n "$sentinel_list" ] \
+    [[ -n "$sentinel_list" ]] \
         || _smoke_fail "no sentinel packages available for live install/remove"
+    return $?
 }
 
 _live_cycle_install_phase() {
@@ -280,6 +293,7 @@ _live_cycle_install_phase() {
             "$sentinel_list"
     _assert_sentinels_installed "$family" "$sentinel_list"
     _assert_record_has_sentinels "$record" "$sentinel_list"
+    return $?
 }
 
 _live_cycle_uninstall_phase() {
@@ -289,12 +303,13 @@ _live_cycle_uninstall_phase() {
             "$sentinel_list"
     _assert_uninstalled "$dest"
     _assert_sentinels_removed "$family" "$sentinel_list"
+    return $?
 }
 
 _run_live_pkg_install_uninstall_cycle() {
     local family="$1" tmp dest mock_bin bus_root record sentinel_list
     sentinel_list=$(_sentinel_pkgs_for_family "$family")
-    if [ -z "$sentinel_list" ]; then
+    if [[ -z "$sentinel_list" ]]; then
         # Rocky/Alma (and similar) may lack xdotool/ydotool RPMs entirely.
         _smoke_log "Skipping live package mutation (no xdotool/ydotool packaged here)"
         return 0

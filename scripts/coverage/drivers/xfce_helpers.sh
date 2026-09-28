@@ -68,15 +68,16 @@ _run_xfce_helper_paths() {
 
 _driver_set_prefix _XFCE_PREFIX_OWNED
 _xfce_rm_if_set() {
-    [ -n "${1:-}" ] || return 0
-    /bin/rm -rf "$1"
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
+    /bin/rm -rf "$target_path"
 }
 
 _xfce_driver_cleanup() {
     _xfce_rm_if_set "${mock:-}"
     _xfce_rm_if_set "${iso:-}"
     _xfce_rm_if_set "${_XFCE_EMPTY_BUS:-}"
-    if [ "${_XFCE_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_XFCE_PREFIX_OWNED:-0}" = 1 ]]; then
         _xfce_rm_if_set "${PREFIX:-}"
     fi
 }
@@ -133,7 +134,7 @@ PATH="$iso"
 _soft_expect 1 configure_xfce_component
 PATH="$mock:$iso"
 
-printf '#!/bin/sh\nexit 1\n' > "$mock/xfconf-query"
+printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/xfconf-query"
 mkdir -p "$STATE_DIR/$uid"
 _seed_xfce_restore_state "$STATE_DIR/$uid"
 _soft_expect 1 restore_xfce_shortcuts "$user" "$STATE_DIR/$uid"

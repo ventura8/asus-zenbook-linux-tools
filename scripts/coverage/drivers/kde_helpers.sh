@@ -10,18 +10,19 @@ source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 _driver_source_i18n || exit 1
 
 _kde_rm_if_set() {
-    [ -n "${1:-}" ] || return 0
-    /bin/rm -rf "$1"
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
+    /bin/rm -rf "$target_path"
 }
 
 _kde_driver_cleanup() {
     _kde_rm_if_set "${mock:-}"
     _kde_rm_if_set "${iso:-}"
-    if [ "${_KDE_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_KDE_PREFIX_OWNED:-0}" = 1 ]]; then
         _kde_rm_if_set "${PREFIX:-}"
         return 0
     fi
-    if [ "${_KDE_BUS_OWNED:-0}" = 1 ]; then
+    if [[ "${_KDE_BUS_OWNED:-0}" = 1 ]]; then
         _kde_rm_if_set "${BUS_ROOT:-}"
     fi
 }
@@ -29,7 +30,7 @@ trap '_kde_driver_cleanup' EXIT
 
 _write_kde_stubs() {
     local mock="$1"
-    printf '#!/bin/sh\nexit 0\n' > "$mock/kwriteconfig6"
+    printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/kwriteconfig6"
     # Return a prior binding so kscreen backup covers the non-absent write path.
     printf '#!/bin/sh\nprintf "Meta+P\\n"\nexit 0\n' > "$mock/kreadconfig6"
     cat > "$mock/qdbus" <<'EOF'
@@ -69,7 +70,7 @@ _run_kde_reconfigure_failure_paths() {
 
 _setup_kde_bus_root() {
     BUS_ROOT="${BUS_ROOT:-${DBUS_BUS_ROOT:-${RUN_USER_ROOT:-}}}"
-    if [ -z "$BUS_ROOT" ] || ! mkdir -p "$BUS_ROOT" 2>/dev/null; then
+    if [[ -z "$BUS_ROOT" ]] || ! mkdir -p "$BUS_ROOT" 2>/dev/null; then
         BUS_ROOT="$PREFIX/run/user"
         mkdir -p "$BUS_ROOT"
         _KDE_BUS_OWNED=1
@@ -78,7 +79,7 @@ _setup_kde_bus_root() {
 
 _remove_kde_owned_bus_socket() {
     local uid="$1"
-    if [ "${_KDE_BUS_OWNED:-0}" = 1 ]; then
+    if [[ "${_KDE_BUS_OWNED:-0}" = 1 ]]; then
         rm -f "$BUS_ROOT/$uid/bus"
     fi
 }
@@ -138,11 +139,11 @@ PATH="$iso"
 _soft_expect 1 configure_kde_component
 
 PATH="$mock:$iso"
-printf '#!/bin/sh\nexit 1\n' > "$mock/kwriteconfig6"
+printf '%s' "$_KCOV_STUB_EXIT1" > "$mock/kwriteconfig6"
 _soft_expect 1 configure_kde_component
 
 rm -f "$mock/kwriteconfig6"
-printf '#!/bin/sh\nexit 0\n' > "$mock/kwriteconfig5"
+printf '%s' "$_KCOV_STUB_EXIT0" > "$mock/kwriteconfig5"
 chmod +x "$mock/kwriteconfig5"
 _soft_expect 0 _kde_kwriteconfig_bin >/dev/null
 _soft_expect 0 configure_kde_component

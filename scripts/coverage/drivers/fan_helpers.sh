@@ -8,7 +8,7 @@ cd "$REPO_ROOT" || exit 1
 source "$(dirname "${BASH_SOURCE[0]}")/kcov_driver_common.sh"
 
 tmp=$(mktemp -d)
-trap 'rm -rf "$tmp"' EXIT
+trap _kcov_rm_scenario_tmp EXIT
 mkdir -p "$tmp/platform"
 printf '0\n' > "$tmp/platform/throttle_thermal_policy"
 chmod 666 "$tmp/platform/throttle_thermal_policy"

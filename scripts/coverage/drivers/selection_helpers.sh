@@ -172,7 +172,7 @@ _run_selection_missing_python() {
     _selection_track_temp_dir "$no_py"
     for tool in bash sh tr mktemp rm cat cut head fold; do
         tool_path=$(type -P "$tool" 2>/dev/null || true)
-        if [ -n "$tool_path" ]; then
+        if [[ -n "$tool_path" ]]; then
             ln -sf "$tool_path" "$no_py/$tool"
         fi
     done
@@ -211,7 +211,7 @@ _selection_link_tools() {
     local tool tool_path
     for tool in "$@"; do
         tool_path=$(type -P "$tool" 2>/dev/null || true)
-        if [ -n "$tool_path" ]; then
+        if [[ -n "$tool_path" ]]; then
             ln -sf "$tool_path" "$dest/$tool"
         fi
     done

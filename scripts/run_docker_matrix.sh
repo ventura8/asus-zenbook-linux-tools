@@ -84,7 +84,8 @@ _kill_active_pids() {
 }
 
 _kill_pid_if_running() {
-    _kill_pgid_if_running "$1"
+    local pid="$1"
+    _kill_pgid_if_running "$pid"
 }
 
 _remove_active_containers() {
@@ -111,7 +112,7 @@ _matrix_exit_handler() {
     local exit_status="$1"
     trap - EXIT
     _kill_active_pids
-    if [ "$exit_status" -ne 0 ]; then
+    if [[ "$exit_status" -ne 0 ]]; then
         _remove_active_containers
     fi
     exit "$exit_status"
@@ -135,12 +136,13 @@ _resolve_distro_image() {
 
 _distro_family_images() {
     # Print family member images (one per line). Unknown family → exit 1.
-    case "$1" in
+    local family="$1"
+    case "$family" in
         debian) printf '%s\n' "${DISTRO_FAMILY_DEBIAN[@]}" ;;
         rhel) printf '%s\n' "${DISTRO_FAMILY_RHEL[@]}" ;;
         suse-arch) printf '%s\n' "${DISTRO_FAMILY_SUSE_ARCH[@]}" ;;
         *)
-            echo "Unsupported distro family: $1 (use debian|rhel|suse-arch)" >&2
+            echo "Unsupported distro family: $family (use debian|rhel|suse-arch)" >&2
             return 1
             ;;
     esac
@@ -248,13 +250,13 @@ _matrix_setup_env_exports() {
     _de_ref=""
     _full_ref=""
     _runtime_ref=""
-    if [ -n "$DE_FAMILY" ]; then
+    if [[ -n "$DE_FAMILY" ]]; then
         _de_ref="export ASUS_CI_DE_FAMILY=\"${DE_FAMILY}\""
     fi
-    if [ "${ASUS_CI_FULL_DE:-}" = "1" ]; then
+    if [[ "${ASUS_CI_FULL_DE:-}" = "1" ]]; then
         _full_ref="export ASUS_CI_FULL_DE=1"
     fi
-    if [ "${ASUS_CI_FULL_DE:-}" = "1" ] && [ -n "$DE_FAMILY" ]; then
+    if [[ "${ASUS_CI_FULL_DE:-}" = "1" ]] && [[ -n "$DE_FAMILY" ]]; then
         _runtime_ref="$(_matrix_runtime_de_install_snippet)"
     fi
 }
@@ -334,7 +336,7 @@ build_repo_image() {
     # F1: never bake DE into the image; cache key is distro-only (shared with stub lanes).
     cache_key=$(echo "$resolved" | tr '/:' '__')
     echo "Building test image $tag from $dockerfile_path"
-    if [ -n "$DE_FAMILY" ]; then
+    if [[ -n "$DE_FAMILY" ]]; then
         echo "  runtime ASUS_CI_DE_FAMILY=$DE_FAMILY (not baked into image)"
     fi
     ASUS_CI_DE_FAMILY="" docker_build_with_buildx_or_build \
@@ -394,7 +396,7 @@ run_target() {
         dockerfile_path=$(dockerfile_for_distro "$image")
         tag=$(tag_for_distro "$image")
         echo "[dry-run] Would build $tag from $dockerfile_path"
-        if [ -n "$DE_FAMILY" ]; then
+        if [[ -n "$DE_FAMILY" ]]; then
             echo "[dry-run] ASUS_CI_DE_FAMILY=$DE_FAMILY (runtime install-de-family)"
         fi
         if [[ "$COMPAT_ONLY" -eq 1 ]]; then

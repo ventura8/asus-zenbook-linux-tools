@@ -17,6 +17,7 @@ _xfce_run_query() {
     esac
     _install_run_as_user "$user" env DBUS_SESSION_BUS_ADDRESS="$bus_addr" XDG_RUNTIME_DIR="$runtime" \
         xfconf-query "$@" </dev/null
+    return $?
 }
 
 _xfce_write_backup_value() {
@@ -68,15 +69,17 @@ _xfce_shortcut_table() {
 /commands/custom/<Super>F12|orig_xfce_super_f12|/usr/local/bin/asus-control-center.sh
 /commands/custom/<Super><Shift>s|orig_xfce_super_shift_s|/usr/local/bin/asus-screenshot.sh
 EOF
+    return $?
 }
 
 _xfce_backup_value_or_absent() {
     local dest="$1" val="$2"
-    if [ -n "$val" ]; then
+    if [[ -n "$val" ]]; then
         _xfce_write_backup_value "$dest" "$val"
     else
         _xfce_mark_backup_absent "$dest"
     fi
+    return $?
 }
 
 _xfce_backup_from_query() {
@@ -98,7 +101,7 @@ _xfce_backup_from_query() {
 
 _xfce_backup_binding() {
     local user="$1" bus_path="$2" path="$3" dest="$4" val status
-    if [ -f "$dest" ] || [ -f "${dest}.absent" ]; then
+    if [[ -f "$dest" ]] || [[ -f "${dest}.absent" ]]; then
         return 0
     fi
     # Probe xfconf before interpreting a per-path query (skip backup if channel unavailable).
@@ -114,9 +117,9 @@ _xfce_require_backup_files() {
     local config_dir="$1"
     local path backup_name command dest
     while IFS='|' read -r path backup_name command; do
-        [ -n "$backup_name" ] || continue
+        [[ -n "$backup_name" ]] || continue
         dest="$config_dir/$backup_name"
-        if [ ! -f "$dest" ] && [ ! -f "${dest}.absent" ]; then
+        if [[ ! -f "$dest" ]] && [[ ! -f "${dest}.absent" ]]; then
             echo "  ✗ XFCE configuration failed: backup missing for $backup_name." >&2
             return 1
         fi
@@ -138,22 +141,24 @@ _xfce_set_command_binding() {
 _xfce_backup_marker() {
     local config_dir="$1"
     _xfce_write_state_file "$config_dir/desktop_family" "xfce" "desktop_family"
+    return $?
 }
 
 _xfce_backup_all_bindings() {
     local user="$1" bus_path="$2" config_dir="$3"
     local path backup_name command
     while IFS='|' read -r path backup_name command; do
-        [ -n "$path" ] || continue
+        [[ -n "$path" ]] || continue
         _xfce_backup_binding "$user" "$bus_path" "$path" "$config_dir/$backup_name"
     done < <(_xfce_shortcut_table)
+    return $?
 }
 
 _xfce_apply_all_bindings() {
     local user="$1" bus_path="$2"
     local path backup_name command
     while IFS='|' read -r path backup_name command; do
-        [ -n "$path" ] || continue
+        [[ -n "$path" ]] || continue
         _xfce_set_command_binding "$user" "$bus_path" "$path" "$command" || return 1
     done < <(_xfce_shortcut_table)
     return 0
@@ -168,7 +173,9 @@ _set_xfce_keybindings() {
 }
 
 _xfce_print_configure_progress() {
-    _install_print_next_step "$(_asus_gettextf "Configuring XFCE shortcuts for %s..." "$1")"
+    local target_user="$1"
+    _install_print_next_step "$(_asus_gettextf "Configuring XFCE shortcuts for %s..." "$target_user")"
+    return $?
 }
 
 configure_xfce_component() {
@@ -195,7 +202,7 @@ configure_xfce_component() {
 
 _xfce_component_precheck() {
     local info="$1"
-    if [ -z "$info" ]; then
+    if [[ -z "$info" ]]; then
         echo "  ✗ XFCE configuration failed: desktop D-Bus session not found." >&2
         return 1
     fi
@@ -226,21 +233,23 @@ _xfce_restore_absent() {
     local user="$1" bus_path="$2" path="$3"
     _xfce_run_query "$user" "$bus_path" -c xfce4-keyboard-shortcuts -p "$path" -r \
         >/dev/null 2>&1
+    return $?
 }
 
 _xfce_restore_value() {
     local user="$1" bus_path="$2" path="$3" val="$4"
     _xfce_run_query "$user" "$bus_path" -c xfce4-keyboard-shortcuts -p "$path" -s "$val" \
         >/dev/null 2>&1
+    return $?
 }
 
 _xfce_restore_one() {
     local user="$1" bus_path="$2" path="$3" backup="$4" val
-    if [ -f "${backup}.absent" ]; then
+    if [[ -f "${backup}.absent" ]]; then
         _xfce_restore_absent "$user" "$bus_path" "$path"
         return $?
     fi
-    if [ ! -f "$backup" ]; then
+    if [[ ! -f "$backup" ]]; then
         echo "  ! Warning: XFCE restore skipped for $path: backup and .absent marker both missing." >&2
         return 0
     fi
@@ -250,9 +259,9 @@ _xfce_restore_one() {
 
 _xfce_resolve_restore_bus() {
     local config_dir="$1" bus_path user_id
-    if [ -f "$config_dir/xfce_bus_path" ]; then
+    if [[ -f "$config_dir/xfce_bus_path" ]]; then
         bus_path=$(cat "$config_dir/xfce_bus_path" 2>/dev/null || true)
-        [ -n "$bus_path" ] && { printf '%s\n' "$bus_path"; return 0; }
+        [[ -n "$bus_path" ]] && { printf '%s\n' "$bus_path"; return 0; }
     fi
     user_id=$(basename "$config_dir")
     printf '%s/%s/bus\n' "$(_install_resolve_session_bus_root)" "$user_id"
@@ -263,7 +272,7 @@ restore_xfce_shortcuts() {
     local path backup_name command
     bus_path=$(_xfce_resolve_restore_bus "$config_dir")
     while IFS='|' read -r path backup_name command; do
-        [ -n "$path" ] || continue
+        [[ -n "$path" ]] || continue
         _xfce_restore_one "$user" "$bus_path" "$path" \
             "$config_dir/$backup_name" || failed=1
     done < <(_xfce_shortcut_table)
@@ -273,7 +282,7 @@ restore_xfce_shortcuts() {
 
 _xfce_finish_restore() {
     local config_dir="$1" failed="$2"
-    if [ "$failed" -ne 0 ]; then
+    if [[ "$failed" -ne 0 ]]; then
         echo "Warning: failed to fully restore XFCE shortcuts; preserving backup directory." >&2
         return 1
     fi

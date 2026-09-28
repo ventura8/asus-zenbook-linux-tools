@@ -38,15 +38,16 @@ EOF
 
 _driver_set_prefix _MATE_PREFIX_OWNED
 _mate_rm_if_set() {
-    [ -n "${1:-}" ] || return 0
-    /bin/rm -rf "$1"
+    local target_path="${1:-}"
+    [[ -n "$target_path" ]] || return 0
+    /bin/rm -rf "$target_path"
 }
 _mate_cleanup() {
     _mate_rm_if_set "${mock:-}"
     _mate_rm_if_set "${iso:-}"
     _mate_rm_if_set "${glog:-}"
     _mate_rm_if_set "${empty_bus:-}"
-    if [ "${_MATE_PREFIX_OWNED:-0}" = 1 ]; then
+    if [[ "${_MATE_PREFIX_OWNED:-0}" = 1 ]]; then
         _mate_rm_if_set "${PREFIX:-}"
     fi
 }
@@ -110,6 +111,22 @@ _soft_expect 1 configure_mate_component
 BUS_ROOT="$saved_bus_root"
 export BUS_ROOT
 _exercise _mate_shortcut_table >/dev/null
+# Same-shell failure paths (kcov drops attribution inside _exercise subshells).
+# A read-only destination directory lets the .tmp write succeed but the mv fail.
+mkdir -p "$STATE_DIR/ro-dest"
+chmod 555 "$STATE_DIR/ro-dest"
+_soft_expect 1 _mate_atomic_write "$STATE_DIR/ro-dest" "value"
+_soft_expect 1 _mate_write_slot_backup "$user" "$BUS_ROOT/$uid/bus" \
+    "$(_mate_custom_schema test)" "$STATE_DIR/ro-dest" "<Super>x"
+_soft_expect 1 _mate_write_slot_backup "$user" "$BUS_ROOT/$uid/bus" \
+    "$(_mate_custom_schema test)" "$STATE_DIR/missing/slot" "<Super>x"
+mkdir -p "$STATE_DIR/markers/target_user"
+chmod 555 "$STATE_DIR/markers/target_user"
+_soft_expect 1 _mate_write_markers "$STATE_DIR/markers" "$user"
+chmod 755 "$STATE_DIR/ro-dest" "$STATE_DIR/markers/target_user"
+printf 'binding=<Super>x\nunknown=ignored\n' > "$STATE_DIR/existing/restore"
+_soft_expect 0 _mate_restore_slot_file "$user" "$BUS_ROOT/$uid/bus" \
+    "$(_mate_custom_schema test)" "$STATE_DIR/existing/restore"
 _soft restore_mate_shortcuts "$user" "$STATE_DIR/$uid"
 _soft _mate_write_state_file "/proc/self/nonexistent-dir/state" "x" "kcov"
 

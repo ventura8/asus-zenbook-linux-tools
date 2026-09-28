@@ -60,7 +60,7 @@ _lxd_run() {
 }
 
 _ubuntu_version_id() {
-    if [ -r /etc/os-release ]; then
+    if [[ -r /etc/os-release ]]; then
         (
             # shellcheck source=/dev/null
             . /etc/os-release
@@ -70,7 +70,7 @@ _ubuntu_version_id() {
 }
 
 _os_release_id() {
-    if [ -r /etc/os-release ]; then
+    if [[ -r /etc/os-release ]]; then
         (
             # shellcheck source=/dev/null
             . /etc/os-release
@@ -95,9 +95,9 @@ _ensure_snapcraft_installed() {
 _snap_skip_lxd_setup() {
     local host_id="" host_ver=""
     host_id="$(_os_release_id)"
-    [ "$host_id" = ubuntu ] || return 1
+    [[ "$host_id" = ubuntu ]] || return 1
     host_ver="$(_ubuntu_version_id)"
-    [ "$host_ver" = "24.04" ]
+    [[ "$host_ver" = "24.04" ]]
 }
 
 _ensure_lxd_profile_ready() {

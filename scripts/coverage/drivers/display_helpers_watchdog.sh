@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Display kcov watchdog helpers (sourced by display_helpers.sh).
 
+# Sticky-OSD injection tool name recorded in fixture ctx files.
+_KCOV_DISP_WD_YDOTOOL="ydotool"
+
 _wait_for_display_watchdog_exit() {
     local wd_pid="$1"
     local _
@@ -12,11 +15,12 @@ _wait_for_display_watchdog_exit() {
         echo "display_helpers: watchdog PID $wd_pid still alive after fallback wait" \
             "(cmdline unreadable; possible detached leak)" >&2
     fi
+    return $?
 }
 
 _stop_display_watchdog_if_owned() {
     local wd_pid="$1"
-    if [ -r "/proc/$wd_pid/cmdline" ] && tr '\0' ' ' < "/proc/$wd_pid/cmdline" \
+    if [[ -r "/proc/$wd_pid/cmdline" ]] && tr '\0' ' ' < "/proc/$wd_pid/cmdline" \
         | grep -q 'asus-display-mode'; then
         _soft kill "$wd_pid" 2>/dev/null
         return 0
@@ -26,13 +30,15 @@ _stop_display_watchdog_if_owned() {
 
 _display_watchdog_pid_is_live() {
     local wd_pid="$1"
-    [ -n "$wd_pid" ] && [[ "$wd_pid" =~ ^[0-9]+$ ]] \
+    [[ -n "$wd_pid" ]] && [[ "$wd_pid" =~ ^[0-9]+$ ]] \
         && kill -0 "$wd_pid" 2>/dev/null
+    return $?
 }
 
 _display_watchdog_pid_is_missing() {
     local wd_pid="$1" prefix="$2"
-    [ -z "$wd_pid" ] && [ ! -f "${prefix}.wd.pid" ]
+    [[ -z "$wd_pid" ]] && [[ ! -f "${prefix}.wd.pid" ]]
+    return $?
 }
 
 _cleanup_display_watchdog_process() {
@@ -43,15 +49,17 @@ _cleanup_display_watchdog_process() {
         echo "display_helpers: no watchdog PID returned and ${prefix}.wd.pid absent" \
             "(possible detached watchdog leak)" >&2
     fi
+    return $?
 }
 
 _resolve_spawned_display_watchdog_pid() {
     local iso="$1" prefix="$2" wd_pid
     wd_pid=$(PATH="$iso" _spawn_detached_watchdog "$prefix") || wd_pid=""
-    if [ -z "$wd_pid" ] && [ -f "${prefix}.wd.pid" ]; then
+    if [[ -z "$wd_pid" ]] && [[ -f "${prefix}.wd.pid" ]]; then
         wd_pid=$(cat "${prefix}.wd.pid" 2>/dev/null) || wd_pid=""
     fi
     printf '%s\n' "$wd_pid"
+    return $?
 }
 
 _hold_display_mode_flock_briefly() {
@@ -59,6 +67,7 @@ _hold_display_mode_flock_briefly() {
     (
         _open_display_mode_flock_fd "$prefix" && flock 9 && sleep "$secs" && exec 9>&-
     ) &
+    return $?
 }
 
 _run_display_watchdog_helper_exercises() {
@@ -66,6 +75,7 @@ _run_display_watchdog_helper_exercises() {
     _run_display_watchdog_release_exercises "$tmp" "$fake_sock"
     _run_display_watchdog_spawn_exercises "$tmp" "$prefix" "$fake_sock"
     _run_display_state_cache_exercises "$tmp" "$prefix"
+    return $?
 }
 
 _run_display_watchdog_expiry_paths() {
@@ -82,6 +92,7 @@ _run_display_watchdog_expiry_paths() {
     _soft _watchdog_lock_sleep_attempt 1
     _soft _watchdog_lock_sleep_attempt 5
     _soft _watchdog_force_release "$prefix_wd"
+    return $?
 }
 
 _run_display_watchdog_force_release_paths() {
@@ -91,16 +102,17 @@ _run_display_watchdog_force_release_paths() {
     sleep 0.05
     _soft _watchdog_force_release "$prefix_wd"
     _soft wait
-    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "ydotool"
+    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _mark_osd_cancel_in_progress "$prefix_wd"
     _soft _watchdog_release_if_idle "$prefix_wd"
     _soft _release_osd_modifiers "$prefix_wd"
-    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "ydotool"
+    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _dismiss_osd_modifiers "$prefix_wd"
     _soft _write_ctx "$prefix_wd" "$(id -un)" ":0" "xdotool"
     _soft _dismiss_osd_modifiers "$prefix_wd"
     _soft _clear_stuck_non_super_modifiers "$(id -un)" ":0" "xdotool"
-    _soft _clear_stuck_non_super_modifiers "$(id -un)" "$fake_sock" "ydotool"
+    _soft _clear_stuck_non_super_modifiers "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
+    return $?
 }
 
 _run_display_watchdog_retry_poll_paths() {
@@ -119,6 +131,7 @@ _run_display_watchdog_retry_poll_paths() {
     _soft _watchdog_poll_tick "$prefix_wd"
     printf '0\n' > "${prefix_wd}.session"
     _soft _watchdog_poll_tick "$prefix_wd"
+    return $?
 }
 
 _run_display_watchdog_poll_loop_paths() {
@@ -132,13 +145,14 @@ _run_display_watchdog_poll_loop_paths() {
     _OSD_IDLE_SECS=0
     _soft _watchdog_poll_loop "$prefix_wd"
     _soft rm -f "${prefix_wd}.session"
-    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "ydotool"
+    _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _watchdog_release_session_or_ctx "$prefix_wd"
     _soft rm -f "${prefix_wd}.session"
     ASUS_DISPLAY_MODE_WATCHDOG_PREFIX="" _soft _run_internal_watchdog
     printf '0\n' > "${prefix_wd}.session"
     _OSD_IDLE_SECS=0
     ASUS_DISPLAY_MODE_WATCHDOG_PREFIX="$prefix_wd" _soft _run_internal_watchdog
+    return $?
 }
 
 _run_display_watchdog_release_exercises() {
@@ -151,6 +165,7 @@ _run_display_watchdog_release_exercises() {
     _run_display_watchdog_force_release_paths "$prefix_wd" "$fake_sock"
     _run_display_watchdog_retry_poll_paths "$prefix_wd"
     _run_display_watchdog_poll_loop_paths "$prefix_wd" "$fake_sock"
+    return $?
 }
 
 _run_display_watchdog_stale_lock_paths() {
@@ -172,6 +187,7 @@ _run_display_watchdog_stale_lock_paths() {
     _soft _acquire_watchdog_lock "${prefix_wd}.wd.lock3" "${prefix_wd}.wd.pid"
     _soft rmdir "${prefix_wd}.wd.lock3" 2>/dev/null
     _soft _wait_watchdog_pid_file "${prefix_wd}.missing.wd.pid"
+    return $?
 }
 
 _kill_watchdog_if_live() {
@@ -179,6 +195,7 @@ _kill_watchdog_if_live() {
     if _display_watchdog_pid_is_live "${wd_pid:-}"; then
         _soft kill -9 "$wd_pid" 2>/dev/null
     fi
+    return $?
 }
 
 _run_display_watchdog_spawn_iso_paths() {
@@ -197,6 +214,7 @@ _run_display_watchdog_spawn_iso_paths() {
     _soft rm -rf "${prefix_wd}.wd.lock"
     _ASUS_DISPLAY_MODE_ENTRY="" BIN_ROOT="$tmp/missing-bin" \
         _soft _spawn_detached_watchdog "$prefix_wd" >/dev/null
+    return $?
 }
 
 _run_display_watchdog_ensure_paths() {
@@ -206,12 +224,13 @@ _run_display_watchdog_ensure_paths() {
     : > "${prefix}.ctx"
     export _ASUS_DISPLAY_MODE_ENTRY="$REPO_ROOT/bin/asus-display-mode.sh"
     _soft _ensure_watchdog "$prefix"
-    if [ -f "${prefix}.wd.pid" ]; then
+    if [[ -f "${prefix}.wd.pid" ]]; then
         wd_pid=$(cat "${prefix}.wd.pid" 2>/dev/null) || wd_pid=""
         _cleanup_display_watchdog_process "${wd_pid:-}" "$prefix"
         _kill_watchdog_if_live "${wd_pid:-}"
     fi
     _soft rm -f "${prefix}.wd.pid" "${prefix}.session" "${prefix}.ctx" "${prefix}.cancel"
+    return $?
 }
 
 _run_display_watchdog_spawn_exercises() {
@@ -221,6 +240,7 @@ _run_display_watchdog_spawn_exercises() {
     _run_display_watchdog_spawn_iso_paths "$tmp" "$prefix" "$prefix_wd"
     _run_display_watchdog_ensure_paths "$prefix"
     : "$fake_sock"
+    return $?
 }
 
 _run_display_state_cache_exercises() {
@@ -236,4 +256,5 @@ _run_display_state_cache_exercises() {
     _soft_expect 0 _display_state_prefix >/dev/null
     _soft_expect 0 _display_state_prefix >/dev/null
     export ASUS_DISPLAY_MODE_STATE_PREFIX="$prefix"
+    return $?
 }

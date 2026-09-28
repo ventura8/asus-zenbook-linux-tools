@@ -7,8 +7,9 @@ POT_PATH="$REPO_ROOT/po/asus-zenbook-linux-tools.pot"
 DOMAIN="asus-zenbook-linux-tools"
 
 _require_tool() {
-    command -v "$1" >/dev/null 2>&1 || {
-        printf 'Missing required gettext tool: %s\n' "$1" >&2
+    local tool="$1"
+    command -v "$tool" >/dev/null 2>&1 || {
+        printf 'Missing required gettext tool: %s\n' "$tool" >&2
         return 1
     }
 }
@@ -125,7 +126,7 @@ _fail_catalog_msg() {
 
 _compare_catalog_template() {
     local generated="$1"
-    if [ ! -f "$POT_PATH" ]; then
+    if [[ ! -f "$POT_PATH" ]]; then
         _fail_catalog_msg \
             'Catalog template missing; run scripts/i18n/extract_pot.sh and commit it.'
         return 1
@@ -158,11 +159,11 @@ main() {
     _require_tool xgettext
     _require_tool msgcat
     _collect_sources
-    if [ "$mode" = "--check" ]; then
+    if [[ "$mode" = "--check" ]]; then
         _check_current_catalog
         return $?
     fi
-    if [ -n "$mode" ]; then
+    if [[ -n "$mode" ]]; then
         printf 'Usage: %s [--check]\n' "$0" >&2
         return 2
     fi

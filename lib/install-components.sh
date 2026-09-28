@@ -4,7 +4,7 @@ _source_install_component_unit_helpers() {
     local helper_dir helper
     helper_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     helper="$helper_dir/install-components-units.sh"
-    if [ ! -f "$helper" ]; then
+    if [[ ! -f "$helper" ]]; then
         echo "Missing installer unit helper: $helper" >&2
         return 1
     fi
@@ -14,9 +14,30 @@ _source_install_component_unit_helpers() {
 
 _source_install_component_unit_helpers || return 1
 
+_source_install_component_uinput_helpers() {
+    local helper_dir helper
+    helper_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    helper="$helper_dir/install-components-uinput.sh"
+    if [[ ! -f "$helper" ]]; then
+        echo "Missing installer uinput helper: $helper" >&2
+        return 1
+    fi
+    # shellcheck source=lib/install-components-uinput.sh
+    . "$helper"
+}
+
+_source_install_component_uinput_helpers || return 1
+
+_install_component_print_ok() {
+    local message="$1"
+    printf '  ✓ %s\n' "$message"
+    return $?
+}
+
 _should_use_strict_component_mode() {
     local strict="$1"
-    [ "${STRICT_COMPONENTS:-0}" = "1" ] || [ "$strict" = "1" ]
+    [[ "${STRICT_COMPONENTS:-0}" = "1" ]] || [[ "$strict" = "1" ]]
+    return $?
 }
 
 _install_unit() {
@@ -56,15 +77,16 @@ _copy_install_relpaths() {
 _is_systemd_unit_active() {
     local unit_name="$1"
     _run_command_with_timeout "${INSTALL_COMMAND_TIMEOUT:-5}" "$SYSTEMCTL" is-active "$unit_name" 2>/dev/null | grep -qx 'active'
+    return $?
 }
 
 _report_wmi_unit_result() {
     if _is_systemd_unit_active "asus-hotkey-daemon.service"; then
-        printf '  ✓ %s\n' "$(_asus_gettext "WMI Hotkey daemon installed and active.")"
+        _install_component_print_ok "$(_asus_gettext "WMI Hotkey daemon installed and active.")"
         return 0
     fi
-    if [ "${INSTALL_ASSUME_UNIT_ACTIVE:-0}" = "1" ]; then
-        printf '  ✓ %s\n' "$(_asus_gettext \
+    if [[ "${INSTALL_ASSUME_UNIT_ACTIVE:-0}" = "1" ]]; then
+        _install_component_print_ok "$(_asus_gettext \
             "WMI Hotkey daemon installed (active state not verified in this environment).")"
         return 0
     fi
@@ -76,155 +98,13 @@ _resolve_ydotool_session_user() {
     local target_user
     target_user=$(find_active_session_user || true)
     echo "${target_user:-${SUDO_USER:-${USER:-}}}"
-}
-
-_uinput_group_users_record_path() {
-    printf '%s/asus-uinput-group-users\n' "${STATE_DIR:?}"
-}
-
-_legacy_input_group_users_record_path() {
-    printf '%s/input-group-users\n' "${STATE_DIR:?}"
-}
-
-_record_uinput_group_user() {
-    local target_user="$1" record
-    [ -n "$target_user" ] || return 0
-    mkdir -p "$STATE_DIR" || return 0
-    record=$(_uinput_group_users_record_path)
-    if grep -qxF "$target_user" "$record" 2>/dev/null; then
-        return 0
-    fi
-    printf '%s\n' "$target_user" >> "$record" || return 0
-}
-
-_user_in_exact_group() {
-    local username="$1" group_name="$2" token
-    for token in $(id -nG "$username" 2>/dev/null); do
-        [ "$token" = "$group_name" ] && return 0
-    done
-    return 1
-}
-
-_revoke_uinput_group_members_from_record() {
-    local record="$1" group_name="$2" revoke_failed=0 target_user
-    if ! _uinput_revoke_record_ready "$record" "$group_name"; then
-        return 0
-    fi
-    while IFS= read -r target_user; do
-        _revoke_one_uinput_group_member "$target_user" "$group_name" || revoke_failed=1
-    done < "$record"
-    if [ "$revoke_failed" -eq 0 ]; then
-        rm -f "$record"
-    fi
-    return "$revoke_failed"
-}
-
-_uinput_revoke_record_ready() {
-    local record="$1" group_name="$2"
-    [ -f "$record" ] || return 1
-    if ! getent group "$group_name" >/dev/null 2>&1; then
-        rm -f "$record"
-        return 1
-    fi
-}
-
-_revoke_one_uinput_group_member() {
-    local target_user="$1" group_name="$2"
-    [ -n "$target_user" ] || return 0
-    _user_in_exact_group "$target_user" "$group_name" || return 0
-    if ! gpasswd -d "$target_user" "$group_name" >/dev/null 2>&1; then
-        echo "  ! Warning: could not remove $target_user from group $group_name." >&2
-        return 1
-    fi
-}
-
-revoke_uinput_group_members() {
-    local revoke_failed=0
-    _revoke_uinput_group_members_from_record "$(_uinput_group_users_record_path)" "asus-uinput" || revoke_failed=1
-    _revoke_uinput_group_members_from_record "$(_legacy_input_group_users_record_path)" "input" || revoke_failed=1
-    return "$revoke_failed"
-}
-
-revoke_input_group_members() {
-    revoke_uinput_group_members
-}
-
-_resolve_uinput_rule_source() {
-    local src_dir="$1" repo_root
-    src_dir="${src_dir:-${INSTALL_SOURCE_DIR:-}}"
-    if [ -z "$src_dir" ]; then
-        repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-        src_dir="$repo_root"
-    fi
-    printf '%s/udev/99-asus-uinput.rules\n' "$src_dir"
-}
-
-_ensure_uinput_group() {
-    _asus_is_staged_install && return 0
-    if ! getent group asus-uinput >/dev/null 2>&1; then
-        if ! groupadd -r asus-uinput 2>/dev/null; then
-            echo "  ! Warning: could not create group asus-uinput." >&2
-            return 0
-        fi
-    fi
-}
-
-_reload_uinput_udev_rule() {
-    if ! _asus_is_staged_install && command -v udevadm >/dev/null 2>&1; then
-        _asus_soft udevadm control --reload-rules
-        _asus_soft udevadm trigger --subsystem-match=misc --name-match=uinput
-    fi
-}
-
-_install_uinput_udev_rule() {
-    local rule_src rule_dest
-    rule_src=$(_resolve_uinput_rule_source "${1:-}")
-    if [ ! -f "$rule_src" ]; then
-        echo "  ! Warning: missing udev rule $rule_src; /dev/uinput access may fail." >&2
-        return 0
-    fi
-    echo "  Adding group asus-uinput and udev rule for /dev/uinput."
-    echo "  Group members may write /dev/uinput and inject synthetic input;" \
-        "uninstall revokes recorded users from the group."
-    _ensure_uinput_group
-    rule_dest="${PREFIX:-}/etc/udev/rules.d/99-asus-uinput.rules"
-    mkdir -p "$(dirname "$rule_dest")"
-    if ! cp "$rule_src" "$rule_dest"; then
-        echo "  ! Warning: could not install udev rule to $rule_dest." >&2
-        return 0
-    fi
-    _reload_uinput_udev_rule
-    return 0
-}
-
-_uinput_user_can_be_added() {
-    local target_user="$1"
-    [ -n "$target_user" ] || return 0
-    _asus_is_staged_install && return 0
-    getent group asus-uinput >/dev/null 2>&1 || return 0
-    return 1
-}
-
-_add_user_to_uinput_group() {
-    local target_user="$1"
-    if _uinput_user_can_be_added "$target_user"; then
-        return 0
-    fi
-    if _user_in_exact_group "$target_user" asus-uinput; then
-        return 0
-    fi
-    if usermod -aG asus-uinput "$target_user" 2>/dev/null; then
-        _record_uinput_group_user "$target_user"
-        return 0
-    fi
-    echo "  ! Warning: could not add $target_user to group asus-uinput; ydotool may be degraded." >&2
-    return 0
+    return
 }
 
 _soft_systemctl() {
     local timeout_value="${INSTALL_COMMAND_TIMEOUT:-5}" log_file
     log_file=$(mktemp 2>/dev/null) || log_file=""
-    if [ -z "$log_file" ] || [ ! -e "$log_file" ]; then
+    if [[ -z "$log_file" ]] || [[ ! -e "$log_file" ]]; then
         echo "  ! Warning: could not create temporary log file for systemctl $* (best-effort ydotool units)." >&2
         return 0
     fi
@@ -244,7 +124,7 @@ _systemd_system_unit_exists() {
         "${PREFIX:-}/etc/systemd/system/$unit" \
         /usr/lib/systemd/system/"$unit" \
         /lib/systemd/system/"$unit"; do
-        [ -f "$candidate" ] && return 0
+        [[ -f "$candidate" ]] && return 0
     done
     return 1
 }
@@ -256,6 +136,7 @@ _enable_ydotool_system_units() {
     if _systemd_system_unit_exists ydotool.service; then
         _soft_systemctl enable --now ydotool.service
     fi
+    return $?
 }
 
 _enable_ydotoold_if_available() {
@@ -273,11 +154,11 @@ _enable_ydotoold_if_available() {
 _enable_ydotool_user_unit() {
     local target_user="$1" user_id bus_root runtime bus_path
     user_id=$(id -u "$target_user" 2>/dev/null)
-    [ -n "$user_id" ] || return 1
+    [[ -n "$user_id" ]] || return 1
     bus_root="$(_install_resolve_session_bus_root)"
     runtime="$bus_root/$user_id"
     bus_path="$runtime/bus"
-    [ -d "$runtime" ] && [ -S "$bus_path" ] || return 1
+    [[ -d "$runtime" ]] && [[ -S "$bus_path" ]] || return 1
     _install_run_as_user "$target_user" env XDG_RUNTIME_DIR="$runtime" \
         DBUS_SESSION_BUS_ADDRESS="unix:path=$bus_path" \
         systemctl --user enable --now ydotool
@@ -296,6 +177,7 @@ configure_desktop_component() {
     family="${ASUS_DESKTOP_FAMILY:-$(asus_desktop_family 2>/dev/null)}"
     configure_fn="${_DESKTOP_CONFIGURE_FN_BY_FAMILY[$family]-configure_gnome_component}"
     "$configure_fn"
+    return $?
 }
 
 _compile_one_locale_catalog() {
@@ -319,7 +201,7 @@ _require_locale_build_inputs() {
         echo "  ✗ gettext msgfmt is unavailable; UI catalogs cannot be installed." >&2
         return 1
     fi
-    [ -f "$supported_file" ] || {
+    [[ -f "$supported_file" ]] || {
         echo "  ✗ Missing po/SUPPORTED_LANGUAGES." >&2
         return 1
     }
@@ -329,9 +211,9 @@ _compile_supported_locale_catalogs() {
     local src_dir="$1" locale_root="$2" supported_file po_file language
     supported_file="$src_dir/po/SUPPORTED_LANGUAGES"
     while IFS= read -r language; do
-        [ -n "$language" ] || continue
+        [[ -n "$language" ]] || continue
         po_file="$src_dir/po/$language.po"
-        [ -f "$po_file" ] || {
+        [[ -f "$po_file" ]] || {
             echo "  ✗ Missing gettext catalog: $po_file" >&2
             return 1
         }
@@ -341,7 +223,7 @@ _compile_supported_locale_catalogs() {
 
 _install_javanese_locale_alias() {
     local locale_root="$1" catalog="asus-zenbook-linux-tools.mo"
-    if [ -f "$locale_root/jw/LC_MESSAGES/$catalog" ]; then
+    if [[ -f "$locale_root/jw/LC_MESSAGES/$catalog" ]]; then
         mkdir -p "$locale_root/jv/LC_MESSAGES" || return 1
         cp "$locale_root/jw/LC_MESSAGES/$catalog" \
             "$locale_root/jv/LC_MESSAGES/$catalog" || return 1
@@ -350,7 +232,7 @@ _install_javanese_locale_alias() {
 
 _deploy_locale_catalogs() {
     local src_dir="$1" locale_root
-    [ -d "$src_dir/po" ] || return 0
+    [[ -d "$src_dir/po" ]] || return 0
     _require_locale_build_inputs "$src_dir" || return 1
     locale_root="${PREFIX:-}/usr/local/share/locale"
     _compile_supported_locale_catalogs "$src_dir" "$locale_root" || return 1
@@ -369,7 +251,7 @@ _deploy_wmi_binaries() {
     for relpath in ${wmi_chmod_rels[@]+"${wmi_chmod_rels[@]}"}; do
         wmi_bins+=("$BIN_DIR/${relpath##*/}")
     done
-    if [ "${#wmi_bins[@]}" -gt 0 ]; then
+    if [[ "${#wmi_bins[@]}" -gt 0 ]]; then
         chmod +x ${wmi_bins[@]+"${wmi_bins[@]}"} || return 1
     fi
 }
@@ -419,11 +301,11 @@ deploy_wmi_component() {
 
 _report_touchpad_unit_result() {
     if _is_systemd_unit_active "asus-touchpad-share.service"; then
-        printf '  ✓ %s\n' "$(_asus_gettext "Touchpad Share gesture listener installed and active.")"
+        _install_component_print_ok "$(_asus_gettext "Touchpad Share gesture listener installed and active.")"
         return 0
     fi
-    if [ "${INSTALL_ASSUME_UNIT_ACTIVE:-0}" = "1" ]; then
-        printf '  ✓ %s\n' "$(_asus_gettext \
+    if [[ "${INSTALL_ASSUME_UNIT_ACTIVE:-0}" = "1" ]]; then
+        _install_component_print_ok "$(_asus_gettext \
             "Touchpad Share gesture listener installed (active state not verified in this environment).")"
         return 0
     fi
@@ -436,7 +318,7 @@ deploy_touchpad_component() {
     _copy_install_relpaths "$src_dir" "$BIN_DIR/" \
         bin/asus-touchpad-share.py bin/asus_touchpad_share.py bin/asus_touchpad_share_bounds.py bin/asus_common.py \
         shared_imports.py bin/asus-screenshot.sh || return 1
-    if [ -n "${BIN_DIR:-}" ]; then
+    if [[ -n "${BIN_DIR:-}" ]]; then
         chmod +x "$BIN_DIR/asus-touchpad-share.py" "$BIN_DIR/asus_touchpad_share.py" \
             "$BIN_DIR/asus-screenshot.sh" || return 1
     fi
@@ -452,9 +334,10 @@ deploy_touchpad_component() {
 rollback_sound_component() {
     _run_command_with_timeout "${INSTALL_COMMAND_TIMEOUT:-5}" "$SYSTEMCTL" disable --now asus-sound-fix.service 2>/dev/null || true
     _run_command_with_timeout "${INSTALL_COMMAND_TIMEOUT:-5}" "$SYSTEMCTL" daemon-reload 2>/dev/null || true
-    if [ -n "${HOOK_DIR:-}" ]; then
+    if [[ -n "${HOOK_DIR:-}" ]]; then
         rm -f "$HOOK_DIR/asus-sound-fix"
     fi
+    return $?
 }
 
 create_suspend_hook() {
@@ -467,13 +350,13 @@ case "\$1" in
         ;;
 esac
 EOF
-    if [ -n "${HOOK_DIR:-}" ]; then
+    if [[ -n "${HOOK_DIR:-}" ]]; then
         chmod +x "$HOOK_DIR/asus-sound-fix" || return 1
     fi
 }
 
 _chmod_sound_bins() {
-    [ -n "${BIN_DIR:-}" ] || return 0
+    [[ -n "${BIN_DIR:-}" ]] || return 0
     chmod +x "$BIN_DIR/asus-sound-fix.sh" "$BIN_DIR/asus_hda_verb.py"
 }
 
@@ -489,9 +372,10 @@ deploy_sound_component() {
 }
 
 _remove_sound_suspend_hook() {
-    if [ -n "${HOOK_DIR:-}" ]; then
+    if [[ -n "${HOOK_DIR:-}" ]]; then
         rm -f "$HOOK_DIR/asus-sound-fix"
     fi
+    return $?
 }
 
 _sound_activation_failed() {
@@ -542,19 +426,22 @@ _activate_sound_component() {
     fi
     _enable_sound_service_or_rollback "$log_file" || return 1
     _probe_sound_fix_or_rollback "$probe_timeout" || return 1
-    printf '  ✓ %s\n' "$(_asus_gettext "Sound fix installed with a suspend and resume hook.")"
+    _install_component_print_ok "$(_asus_gettext "Sound fix installed with a suspend and resume hook.")"
 }
 
 _enable_sound_service() {
+    local log_file="$1"
     _run_command_with_timeout "${INSTALL_COMMAND_TIMEOUT:-5}" "$SYSTEMCTL" \
-        enable --now asus-sound-fix.service >"$1" 2>&1
+        enable --now asus-sound-fix.service >"$log_file" 2>&1
+    return $?
 }
 
 _print_nonempty_sound_log() {
     local log_file="$1"
-    if [ -s "$log_file" ]; then
+    if [[ -s "$log_file" ]]; then
         cat "$log_file" >&2
     fi
+    return $?
 }
 
 _is_component_selected() {
@@ -585,13 +472,12 @@ run_installer_selected_components() {
     choice=${choice//GNOME/DESKTOP}
 
     for component in WMI TOUCHPAD SOUND DESKTOP; do
-        if _is_component_selected "$choice" "$component"; then
-            if ! _deploy_selected_component "$component" "$script_dir"; then
-                had_failure=1
-            fi
+        if _is_component_selected "$choice" "$component" \
+            && ! _deploy_selected_component "$component" "$script_dir"; then
+            had_failure=1
         fi
     done
 
-    [ "$had_failure" -eq 0 ] && return 0
+    [[ "$had_failure" -eq 0 ]] && return 0
     return 1
 }

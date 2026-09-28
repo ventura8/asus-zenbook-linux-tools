@@ -102,6 +102,15 @@ class TestAsusFanToggle(unittest.TestCase):
             self.assertEqual(proc.returncode, 0)
             self.assertEqual(read_node_content(node), "0")
 
+    def test_zero_padded_mode_reads_as_decimal(self):
+        """A zero-padded fan mode ("08") clamps to 2 as decimal, then wraps to 0."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            node = create_writable_node(tmpdir, "throttle_thermal_policy", "08\n")
+            proc = run_shell_script(SCRIPT, env=_fan_env(tmpdir, ASUS_FAN_NODE=node))
+            self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+            self.assertNotIn("value too great for base", proc.stderr)
+            self.assertEqual(read_node_content(node), "0")
+
     def test_whitespace_in_node_normalized(self):
         """Fan mode read from node with extra whitespace is normalized correctly."""
         with tempfile.TemporaryDirectory() as tmpdir:

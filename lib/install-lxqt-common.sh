@@ -12,20 +12,23 @@ _lxqt_shortcut_table() {
     printf 'Meta%%2BP|orig_lxqt_meta_p|%s|/usr/local/bin/asus-display-mode.sh\n' "$display"
     printf 'Meta%%2BF12|orig_lxqt_meta_f12|%s|/usr/local/bin/asus-control-center.sh\n' "$control"
     printf 'Meta%%2BShift%%2BS|orig_lxqt_meta_shift_s|%s|/usr/local/bin/asus-screenshot.sh\n' "$screenshot"
+    return $?
 }
 
 _lxqt_user_home() {
     local user="$1" home_dir
     home_dir=$(getent passwd "$user" | cut -d: -f6 || true)
-    [ -n "$home_dir" ] || return 1
-    [ -d "$home_dir" ] || return 1
+    [[ -n "$home_dir" ]] || return 1
+    [[ -d "$home_dir" ]] || return 1
     printf '%s\n' "$home_dir"
 }
 
 _lxqt_conf_path() {
     printf '%s/.config/lxqt/globalkeyshortcuts.conf\n' "$1"
+    return $?
 }
 
 _lxqt_rm_tmp() {
     rm -f "$@"
+    return $?
 }

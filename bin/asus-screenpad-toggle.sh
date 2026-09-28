@@ -4,13 +4,13 @@
 _source_bootstrap_helper() {
     local script_dir installed_lib
     script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    if [ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ] \
-        && [ -f "$script_dir/../lib/asus-bootstrap.sh" ]; then
+    if [[ "${ASUS_FORCE_INSTALLED_LIB:-0}" != "1" ]] \
+        && [[ -f "$script_dir/../lib/asus-bootstrap.sh" ]]; then
         . "$script_dir/../lib/asus-bootstrap.sh"
         return 0
     fi
     installed_lib="${ASUS_INSTALLED_LIB_DIR:-/usr/local/lib/asus-zenbook-linux-tools}"
-    if [ -f "$installed_lib/asus-bootstrap.sh" ]; then
+    if [[ -f "$installed_lib/asus-bootstrap.sh" ]]; then
         . "$installed_lib/asus-bootstrap.sh"
         return 0
     fi
@@ -19,7 +19,7 @@ _source_bootstrap_helper() {
 }
 
 _source_screenpad_helper() {
-    if [ -f "${_ASUS_LIB_DIR}/asus-screenpad.sh" ]; then
+    if [[ -f "${_ASUS_LIB_DIR}/asus-screenpad.sh" ]]; then
         # shellcheck source=lib/asus-screenpad.sh
         . "${_ASUS_LIB_DIR}/asus-screenpad.sh"
         return 0
@@ -38,6 +38,7 @@ _apply_screenpad_off() {
         echo "Warning: failed to save ScreenPad brightness before off ($curr)." >&2
     fi
     _screenpad_write_verified "$node" 0
+    return $?
 }
 
 _apply_screenpad_on() {
@@ -47,11 +48,13 @@ _apply_screenpad_on() {
         ''|*[!0-9]*|0)
             restore="$max_val"
             ;;
+        *) ;;
     esac
-    if [ "$restore" -gt "$max_val" ]; then
+    if [[ "$restore" -gt "$max_val" ]]; then
         restore="$max_val"
     fi
     _screenpad_write_verified "$node" "$restore"
+    return $?
 }
 
 _toggle_screenpad_val() {
@@ -59,7 +62,7 @@ _toggle_screenpad_val() {
     local curr status_text max_val icon state
     curr=$(_read_screenpad_value "$node")
     max_val=$(_read_screenpad_max_value "$node")
-    if [ "$curr" -gt 0 ]; then
+    if [[ "$curr" -gt 0 ]]; then
         _apply_screenpad_off "$node" "$curr" || return 1
         status_text=$(_asus_pgettext "ScreenPad backlight state" "Off")
         state="off"
@@ -76,12 +79,12 @@ _toggle_screenpad_val() {
 main() {
     local node
     node=$(find_screenpad_node || true)
-    if [ -z "$node" ]; then
+    if [[ -z "$node" ]]; then
         echo "Error: No ScreenPad control node found." >&2
         return 1
     fi
 
-    if [ ! -w "$node" ]; then
+    if [[ ! -w "$node" ]]; then
         echo "Error: ScreenPad control node is not writable: $node" >&2
         return 1
     fi
@@ -89,6 +92,6 @@ main() {
     _toggle_screenpad_val "$node"
 }
 
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
     main "$@"
 fi

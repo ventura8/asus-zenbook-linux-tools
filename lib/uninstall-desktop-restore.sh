@@ -4,7 +4,7 @@
 _restore_desktop_shortcuts_generic() {
     local label="$1" lib="$2" restore_fn="$3" target_user="$4" config_dir="$5"
     local kde_cleanup="${6:-0}"
-    if [ ! -f "$lib" ]; then
+    if [[ ! -f "$lib" ]]; then
         echo "Missing installer ${label} helper: $lib" >&2
         return 1
     fi
@@ -34,6 +34,7 @@ _source_desktop_restore_lib() {
             ;;
         *) _source_desktop_restore_lib_secondary "$lib" ;;
     esac
+    return $?
 }
 
 _source_desktop_restore_lib_secondary() {
@@ -56,7 +57,7 @@ _source_desktop_restore_lib_secondary() {
 
 _cleanup_kde_restore_dir() {
     local kde_cleanup="$1" config_dir="$2"
-    if [ "$kde_cleanup" = "1" ]; then
+    if [[ "$kde_cleanup" = "1" ]]; then
         _is_safe_config_dir "$config_dir" || return 1
         rm -rf "$config_dir"
     fi
@@ -66,30 +67,35 @@ _restore_kde_desktop_shortcuts() {
     local target_user="$1" config_dir="$2"
     _restore_desktop_shortcuts_generic "KDE" "$SCRIPT_DIR/lib/install-kde.sh" \
         restore_kde_shortcuts "$target_user" "$config_dir" 1
+    return $?
 }
 
 _restore_xfce_desktop_shortcuts() {
     local target_user="$1" config_dir="$2"
     _restore_desktop_shortcuts_generic "XFCE" "$SCRIPT_DIR/lib/install-xfce.sh" \
         restore_xfce_shortcuts "$target_user" "$config_dir" 0
+    return $?
 }
 
 _restore_lxqt_desktop_shortcuts() {
     local target_user="$1" config_dir="$2"
     _restore_desktop_shortcuts_generic "LXQt" "$SCRIPT_DIR/lib/install-lxqt.sh" \
         restore_lxqt_shortcuts "$target_user" "$config_dir" 0
+    return $?
 }
 
 _restore_cinnamon_desktop_shortcuts() {
     local target_user="$1" config_dir="$2"
     _restore_desktop_shortcuts_generic "Cinnamon" "$SCRIPT_DIR/lib/install-cinnamon.sh" \
         restore_cinnamon_shortcuts "$target_user" "$config_dir" 0
+    return $?
 }
 
 _restore_mate_desktop_shortcuts() {
     local target_user="$1" config_dir="$2"
     _restore_desktop_shortcuts_generic "MATE" "$SCRIPT_DIR/lib/install-mate.sh" \
         restore_mate_shortcuts "$target_user" "$config_dir" 0
+    return $?
 }
 
 declare -gA _DESKTOP_RESTORE_FN_BY_FAMILY=(
@@ -102,14 +108,14 @@ declare -gA _DESKTOP_RESTORE_FN_BY_FAMILY=(
 
 _restore_by_desktop_family() {
     local family="$1" target_user="$2" user_id="$3" config_dir="$4" restore_fn=""
-    if [ -n "$family" ]; then
+    if [[ -n "$family" ]]; then
         restore_fn="${_DESKTOP_RESTORE_FN_BY_FAMILY[$family]-}"
     fi
-    if [ -n "$restore_fn" ]; then
+    if [[ -n "$restore_fn" ]]; then
         "$restore_fn" "$target_user" "$config_dir"
         return $?
     fi
-    if [ "$family" != gnome ] && [ -n "$family" ]; then
+    if [[ "$family" != gnome ]] && [[ -n "$family" ]]; then
         echo "Warning: Unknown desktop_family '$family'; attempting GNOME restore." >&2
     fi
     restore_gnome_shortcuts "$target_user" "$user_id"
