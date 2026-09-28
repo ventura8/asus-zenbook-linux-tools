@@ -80,8 +80,12 @@ def osd_session_active():
 
 
 def _display_mode_cancel_osd_timeout_secs():
-    """Return bounded timeout for synchronous display-mode --cancel-osd."""
-    return _bounded_float_env("ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS", 0.5, 0.1, 1.0)
+    """Return bounded timeout for synchronous display-mode --cancel-osd.
+
+    Defaults to the 1.0s cap: a kill mid-dismiss left Super latched and a stale
+    ``.cancel`` marker (the helper measured ~0.4-0.8s on a loaded UX582HS).
+    """
+    return _bounded_float_env("ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS", 1.0, 0.1, 1.0)
 
 
 def run_cancel_display_osd():

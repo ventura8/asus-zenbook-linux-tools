@@ -1623,13 +1623,25 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Super (cross-device Esc+Super-up races: apply selection or re-open OSD).
   `_handle_internal_mode --cancel-osd` returns `_cancel_osd_session` status (not
   forced 0) so lock-open failures propagate to the hotkey daemon. Cancel helper
-  timeout caps at **1.0s** (`ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS`, default
-  0.5).
+  timeout defaults to the **1.0s** cap (`ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS`,
+  clamped 0.1–1.0; it runs on a worker thread, so the budget costs no event-thread
+  latency). The old 0.5s default killed `--cancel-osd` mid-dismiss on the UX582HS
+  (~0.4–0.8s), leaving Super latched (a later key then became a Super chord and
+  Mutter changed the layout) and a stale `.cancel`.
   `_dismiss_osd_modifiers` sets `${prefix}.cancel` and drops `.session` before
   injecting Esc so idle watchdog `_release_osd_modifiers` (apply) cannot race Esc
   cancel; while `.cancel` is set the idle watchdog must not apply-release Super or
-  tear down `.ctx` (only `--cancel-osd` dismiss clears markers). Brief sleep between
-  treating Super-up as apply before Esc dismisses. The hotkey daemon arms a
+  tear down `.ctx` (only `--cancel-osd` dismiss clears markers). The dismiss is
+  **one** injection per backend: ydotool `key -d 2 1:1 1:0 125:0 126:0 42:0 54:0
+  29:0 97:0 56:0 100:0`; xdotool `key Escape keyup Super_L Super_R Shift_L …`
+  (never `--clearmodifiers`: it releases Super *before* Escape, which applies).
+  GNOME Shell's `SwitcherPopup` destroys itself synchronously on the Esc press
+  (`fadeAndDestroy`, no `switch_config`), and events on one device arrive in
+  order, so no sleep is needed before Super-up. `_osd_cancel_in_progress` drops a
+  `.cancel` older than `_OSD_CANCEL_STALE_SECS` (3s): a killed cancel must not
+  block the idle watchdog forever (that left later sessions with Super held). An
+  idle Super release *applies* the popup's highlighted mode (native Super+P
+  behaviour). The hotkey daemon arms a
   ~450ms display-mode dispatch cooldown after Esc cancel, releases AT-proxy
   Super/Shift/Ctrl/Alt ups (ydotool holds sticky Super separately), and clears
   buffered firmware Super+P so a echoed chord cannot

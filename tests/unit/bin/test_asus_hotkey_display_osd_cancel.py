@@ -135,6 +135,19 @@ class TestAsusHotkeyDisplayOsdCancel(unittest.TestCase):
         ):
             _call("_run_cancel_display_osd")
 
+    def test_cancel_osd_timeout_defaults_to_cap(self):
+        """--cancel-osd gets the full 1.0s cap by default; overrides stay clamped."""
+        with patch("asus_hotkey_daemon_osd._subprocess_run") as run:
+            run.return_value = MagicMock(returncode=0, stderr="")
+            with patch.dict(os.environ, {}, clear=False):
+                os.environ.pop("ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS", None)
+                _call("_run_cancel_display_osd")
+            self.assertEqual(run.call_args.kwargs["timeout"], 1.0)
+            for raw, expected in (("0.3", 0.3), ("5", 1.0), ("0", 0.1), ("bogus", 1.0)):
+                with patch.dict(os.environ, {"ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS": raw}):
+                    _call("_run_cancel_display_osd")
+                self.assertEqual(run.call_args.kwargs["timeout"], expected, raw)
+
 
 def _is_key_release_write(call) -> bool:
     """Return True when *call* is an EV_KEY release write."""

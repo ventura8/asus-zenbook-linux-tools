@@ -105,6 +105,10 @@ _run_display_watchdog_force_release_paths() {
     _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _mark_osd_cancel_in_progress "$prefix_wd"
     _soft _watchdog_release_if_idle "$prefix_wd"
+    # Stale .cancel (left by a killed --cancel-osd) is dropped, not honoured.
+    _soft touch -d '-60 seconds' "${prefix_wd}.cancel"
+    _soft _osd_cancel_in_progress "$prefix_wd"
+    _soft _mark_osd_cancel_in_progress "$prefix_wd"
     _soft _release_osd_modifiers "$prefix_wd"
     _soft _write_ctx "$prefix_wd" "$(id -un)" "$fake_sock" "$_KCOV_DISP_WD_YDOTOOL"
     _soft _dismiss_osd_modifiers "$prefix_wd"
