@@ -3,6 +3,11 @@ asus-zenbook-linux-tools (1.0.9) resolute; urgency=medium
   * SonarQube Cloud cleanup of the shell code base (behaviour-preserving):
     [[ ]] tests, explicit returns, default case arms, named locals, hoisted
     constants, helper extractions (CCN <= 5) and file splits (<= 600 lines).
+  * Esc on the Display Toggle OSD dismisses it without applying the layout:
+    one ordered ydotool/xdotool injection (no --clearmodifiers), stale .cancel
+    markers expire after 3s, and the daemon's cancel timeout defaults to 1.0s.
+  * asus-sound-fix.sh and asus-screenpad-brightness.sh avoid $((10#x)) so
+    SonarQube can parse them.
   * Zero-padded numbers (08, 0150) are read as decimal again in the install
     command timeout clamps, the test-mode root check and the fan profile value.
   * Esc/Cancel in the installer component checklist aborts the install instead
