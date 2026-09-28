@@ -92,6 +92,9 @@ trap 'cleanup_real_e2e "$?"' EXIT
 trap '_cleanup_real_e2e_on_signal' INT TERM
 
 export E2E_TEST_TIMEOUT="${E2E_TEST_TIMEOUT:-20}"
+# Runs under sudo: without this, root-owned tests/**/__pycache__ lands in the
+# checkout and the next non-root dh_clean (deb smoke) fails with EACCES.
+export PYTHONDONTWRITEBYTECODE=1
 
 echo "Running real-system end-to-end tests (timeout ${E2E_TEST_TIMEOUT}s)..."
 mkdir -p "$REPO_ROOT/reports/distro-logs"

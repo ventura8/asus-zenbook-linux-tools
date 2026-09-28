@@ -6,7 +6,7 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.8`, displayed as `v1.0.8`). After bumping `VERSION`, run
+  (currently `1.0.9`, displayed as `v1.0.9`). After bumping `VERSION`, run
   `scripts/sync_poetry_version.sh` (also invoked from `step_version_sync` and
   `install-poetry-deps.sh`) so `pyproject.toml` `tool.poetry.version` matches; do not hand-edit
   the poetry version. PKGBUILD, RPM `%version`, and Snap `adopt-info` read `VERSION` at build time
@@ -352,10 +352,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     also reads a leading `0` as octal (`08` errors, `0150` is 104, unlike `[ ]`), so
     normalise zero-padded digit strings after that check by stripping leading zeros
     with parameter expansion (`_asus_decimal` in `lib/install-shared.sh`, inline in
-    `_normalize_fan_value`). Do **not** use `$((10#$x))`: SonarQube's shell parser
-    reports it as a syntax error and silently skips the whole file (the scanner log
-    shows `WARN Syntax error in …`; `bin/asus-sound-fix.sh` and
-    `bin/asus-screenpad-brightness.sh` still use it). New `*)` arms
+    `_normalize_fan_value`, `_screenpad_decimal`, `_sound_hda_nid_valid`). Do **not**
+    use `$((10#$x))`: SonarQube's shell parser reports it as a syntax error and
+    silently skips the whole file (the scanner log shows `WARN Syntax error in …`;
+    `bin/asus-sound-fix.sh` and `bin/asus-screenpad-brightness.sh` were never
+    analysed until v1.0.9 removed it). New `*)` arms
     count toward CCN — extract a helper rather than exceed A-rank.
   - JavaScript: Clean `eslint` on `gnome/**/*.js` (flat config `eslint.config.mjs`; no inline
     `eslint-disable`). GNOME Shell globals such as `global` are declared in the config.
@@ -578,7 +579,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
-  `.coverage.real-e2e.*` after runs under sudo. `tests/e2e/real/` must keep its
+  `.coverage.real-e2e.*` after runs under sudo; it exports `PYTHONDONTWRITEBYTECODE=1`
+  so no root-owned `__pycache__` lands in the checkout (that broke the next
+  non-root `dh_clean` in deb smoke). `tests/e2e/real/` must keep its
   `__init__.py` (discover `-t .` refuses a non-package start dir). `coverage` must
   be importable and on `PATH` as root; for a user-site install pass
   `sudo env PATH=… PYTHONPATH=<user site-packages> E2E_REAL_ALLOW_SYSTEM_CHANGES=1 …`.
@@ -1241,8 +1244,13 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Modern GNOME may lack `switch-video-mode`; forcing `gsettings reset` on a missing key
   fails the whole uninstall. `_gsettings_key_exists` must capture `list-keys` then
   `grep -Fxq` via here-string (not `list-keys | grep -q`): under `set -o pipefail`,
-  early `grep -q` exit SIGPIPEs the writer (exit 141) when the key is present. Always restore `orig_switch_monitor` when present because
-  install may have rewritten Mutter `switch-monitor`.
+  early `grep -q` exit SIGPIPEs the writer (exit 141) when the key is present.
+  The same applies everywhere under `pipefail`: never `printf|echo … | grep -q`;
+  use `grep -q … <<< "$x"` (uninstall `_is_systemctl_transport_unavailable` /
+  `_is_absent_unit_error` intermittently failed container uninstall smoke under
+  load; `tests/unit/shell/test_pipefail_grep_matches.py` pins it with ~1 MiB input).
+  Always restore `orig_switch_monitor` when present because install may have
+  rewritten Mutter `switch-monitor`.
   `_restore_schema_file` uses `gsettings set` for non-empty backups and `gsettings reset`
   when the backup file is missing **or empty**.
   When the fallback user is the `NO_SESSION_USER` sentinel, keep that username but set
@@ -1622,13 +1630,25 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Super (cross-device Esc+Super-up races: apply selection or re-open OSD).
   `_handle_internal_mode --cancel-osd` returns `_cancel_osd_session` status (not
   forced 0) so lock-open failures propagate to the hotkey daemon. Cancel helper
-  timeout caps at **1.0s** (`ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS`, default
-  0.5).
+  timeout defaults to the **1.0s** cap (`ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS`,
+  clamped 0.1–1.0; it runs on a worker thread, so the budget costs no event-thread
+  latency). The old 0.5s default killed `--cancel-osd` mid-dismiss on the UX582HS
+  (~0.4–0.8s), leaving Super latched (a later key then became a Super chord and
+  Mutter changed the layout) and a stale `.cancel`.
   `_dismiss_osd_modifiers` sets `${prefix}.cancel` and drops `.session` before
   injecting Esc so idle watchdog `_release_osd_modifiers` (apply) cannot race Esc
   cancel; while `.cancel` is set the idle watchdog must not apply-release Super or
-  tear down `.ctx` (only `--cancel-osd` dismiss clears markers). Brief sleep between
-  treating Super-up as apply before Esc dismisses. The hotkey daemon arms a
+  tear down `.ctx` (only `--cancel-osd` dismiss clears markers). The dismiss is
+  **one** injection per backend: ydotool `key -d 2 1:1 1:0 125:0 126:0 42:0 54:0
+  29:0 97:0 56:0 100:0`; xdotool `key Escape keyup Super_L Super_R Shift_L …`
+  (never `--clearmodifiers`: it releases Super *before* Escape, which applies).
+  GNOME Shell's `SwitcherPopup` destroys itself synchronously on the Esc press
+  (`fadeAndDestroy`, no `switch_config`), and events on one device arrive in
+  order, so no sleep is needed before Super-up. `_osd_cancel_in_progress` drops a
+  `.cancel` older than `_OSD_CANCEL_STALE_SECS` (3s): a killed cancel must not
+  block the idle watchdog forever (that left later sessions with Super held). An
+  idle Super release *applies* the popup's highlighted mode (native Super+P
+  behaviour). The hotkey daemon arms a
   ~450ms display-mode dispatch cooldown after Esc cancel, releases AT-proxy
   Super/Shift/Ctrl/Alt ups (ydotool holds sticky Super separately), and clears
   buffered firmware Super+P so a echoed chord cannot

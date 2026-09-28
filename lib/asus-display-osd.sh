@@ -6,7 +6,7 @@ _ASUS_DISPLAY_OSD_XDOTOOL="xdotool"
 
 _resolve_user_id() {
     local user="$1"
-    if echo "$user" | grep -Eq '^[0-9]+$'; then
+    if grep -Eq '^[0-9]+$' <<< "$user"; then
         echo "$user"
         return 0
     fi
@@ -75,6 +75,12 @@ _release_osd_modifiers() {
 _dismiss_osd_modifiers() {
     # Esc cancel: Esc tap then Super-up on the *same* injection backend that holds
     # Super. Cross-device Esc (AT proxy) + ydotool Super-up races and can apply.
+    # One injection call per backend: the hotkey daemon kills --cancel-osd after
+    # ASUS_DISPLAY_MODE_CANCEL_OSD_TIMEOUT_SECS (0.5s, cap 1.0s), and four
+    # runuser+ydotool round-trips (~0.8s) were killed before Super-up / flag
+    # cleanup, leaving Super latched and a stale .cancel. Events on one device
+    # arrive in order and GNOME's SwitcherPopup destroys itself synchronously on
+    # the Esc press, so the following Super release no longer applies a layout.
     local prefix="$1" active_user target backend
     if ! _read_ctx "$prefix" active_user target backend; then
         _osd_cleanup_marker_files "$prefix"
@@ -85,27 +91,19 @@ _dismiss_osd_modifiers() {
     _mark_osd_cancel_in_progress "$prefix"
     _soft rm -f "${prefix}.session"
     if [[ "$backend" = "$_ASUS_DISPLAY_OSD_XDOTOOL" ]]; then
-        _soft _xdotool_cmd "$active_user" "${target:-:0}" key --clearmodifiers Escape
-        _osd_cancel_pause
-        _soft _xdotool_cmd "$active_user" "${target:-:0}" keyup Super_L Super_R
-        _soft _xdotool_cmd "$active_user" "${target:-:0}" keyup \
-            Shift_L Shift_R Control_L Control_R Alt_L Alt_R
+        # No --clearmodifiers: it releases Super *before* Escape, which applies.
+        _soft _xdotool_cmd "$active_user" "${target:-:0}" key Escape \
+            keyup Super_L Super_R Shift_L Shift_R Control_L Control_R Alt_L Alt_R
     else
-        # KEY_ESC=1; Super L/R = 125/126 (same device stream as sticky Super-down).
-        _soft _ydotool_key "$active_user" "$target" 1:1 1:0
-        _osd_cancel_pause
-        _soft _ydotool_key "$active_user" "$target" 125:0 126:0
-        _soft _ydotool_key "$active_user" "$target" 42:0 54:0 29:0 97:0 56:0 100:0
-        _osd_cancel_pause
-        _soft _ydotool_key "$active_user" "$target" 42:0 54:0 29:0 97:0 56:0 100:0
+        # KEY_ESC=1; Super L/R = 125/126 (same device stream as sticky Super-down);
+        # then Shift/Ctrl/Alt L+R ups. -d 2: ydotool's default 12ms per event
+        # made the 10-event dismiss ~120ms of the daemon's cancel budget.
+        _soft _ydotool_key "$active_user" "$target" -d 2 \
+            1:1 1:0 125:0 126:0 42:0 54:0 29:0 97:0 56:0 100:0
     fi
     _osd_cleanup_marker_files "$prefix"
     _clear_osd_cancel_flag "$prefix"
-}
-
-_osd_cancel_pause() {
-    sleep 0.05 2>/dev/null || sleep 1
-    return $?
+    return 0
 }
 
 _clear_stuck_non_super_modifiers() {

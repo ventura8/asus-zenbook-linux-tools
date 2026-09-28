@@ -79,7 +79,9 @@ _source_desktop_restore_helper || exit 1
 
 _is_absent_unit_error() {
     local message="$1"
-    printf '%s\n' "$message" | grep -Eqi 'not loaded|not-found|not found|does not exist|No such file|could not be found|Unit .* not found'
+    # Here-string: `printf | grep -q` can SIGPIPE (141) under pipefail and fail a match.
+    grep -Eqi 'not loaded|not-found|not found|does not exist|No such file|could not be found|Unit .* not found' <<< "$message"
+    return $?
 }
 
 _UNINSTALL_SYSTEMCTL_TEMPS=()
@@ -190,8 +192,11 @@ _report_service_inactive_status() {
 
 _is_systemctl_transport_unavailable() {
     local message="$1"
-    printf '%s\n' "$message" | grep -Eqi \
-        'System has not been booted with systemd|Failed to connect to bus|Failed to get D-Bus connection'
+    # Here-string (see _is_absent_unit_error); a SIGPIPE'd pipe failed CI under load.
+    grep -Eqi \
+        'System has not been booted with systemd|Failed to connect to bus|Failed to get D-Bus connection' \
+        <<< "$message"
+    return $?
 }
 
 _systemctl_is_usable() {

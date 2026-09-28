@@ -197,5 +197,16 @@ _run_sound_mode_helpers() {
     esac
 }
 
+_run_sound_nid_helpers() {
+    # Same-shell (kcov attribution): decimal, zero-padded, hex, oversized, invalid.
+    local nid
+    for nid in 32 08 0256 0x20 0x100 bogus; do
+        SOUND_HDA_NID="$nid" _soft _sound_hda_nid_valid
+    done
+    SOUND_HDA_NID=bogus _soft _validate_sound_hda_nid
+    return 0
+}
+
 _run_sound_probe_helpers
+_run_sound_nid_helpers
 _run_sound_mode_helpers

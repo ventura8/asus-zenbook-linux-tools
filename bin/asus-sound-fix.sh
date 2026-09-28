@@ -7,13 +7,17 @@ PROC_ASOUND="${PROC_ASOUND_ROOT:-/proc/asound}"
 # Default 75 attempts × 0.2s sleep ≈ 15s hwdev poll budget.
 SOUND_HWDEV_POLL_ATTEMPTS="${SOUND_HWDEV_POLL_ATTEMPTS:-75}"
 SOUND_HDA_NID="${SOUND_HDA_NID:-0x20}"
+# System alsa-tools helper name (also the sentinel for "use the system binary").
+_SOUND_HDA_VERB_CMD="hda-verb"
+_SOUND_DEFAULT_POLL_ATTEMPTS=75
 
 _sound_hwdev_poll_attempts() {
     if [[ "$SOUND_HWDEV_POLL_ATTEMPTS" =~ ^[1-9][0-9]*$ ]]; then
         printf '%s\n' "$SOUND_HWDEV_POLL_ATTEMPTS"
         return 0
     fi
-    printf '75\n'
+    printf '%s\n' "$_SOUND_DEFAULT_POLL_ATTEMPTS"
+    return 0
 }
 
 _sound_hda_nid_valid() {
@@ -21,14 +25,18 @@ _sound_hda_nid_valid() {
     if [[ "$nid" =~ ^0[xX]([0-9a-fA-F]+)$ ]]; then
         hex_digits="${BASH_REMATCH[1]}"
         # Reject oversized hex before $((nid)) (mirror camera USB-class guard).
-        [ "${#hex_digits}" -le 2 ] || return 1
+        [[ "${#hex_digits}" -le 2 ]] || return 1
         value=$((nid))
     elif [[ "$nid" =~ ^[0-9]+$ ]]; then
-        value=$((10#$nid))
+        # Strip leading zeros so arithmetic reads decimal, not octal. Parameter
+        # expansion, not $((10#x)): SonarQube's shell parser rejects the base prefix.
+        value="${nid#"${nid%%[!0]*}"}"
+        value="${value:-0}"
     else
         return 1
     fi
-    [ "$value" -ge 0 ] && [ "$value" -le 255 ]
+    [[ "$value" -ge 0 ]] && [[ "$value" -le 255 ]]
+    return $?
 }
 
 _validate_sound_hda_nid() {
@@ -42,19 +50,21 @@ _validate_sound_hda_nid() {
 
 _get_codec_file() {
     local dev="$1"
-    [ ! -e "$dev" ] && return 1
+    [[ ! -e "$dev" ]] && return 1
     local parsed card_num device_num
     parsed=$(echo "$dev" | sed -n 's/.*hwC\([0-9]\+\)D\([0-9]\+\).*/\1 \2/p')
     card_num=${parsed%% *}
     device_num=${parsed#* }
-    [ -n "$card_num" ] && [ -n "$device_num" ] && echo "$PROC_ASOUND/card$card_num/codec#$device_num"
+    [[ -n "$card_num" ]] && [[ -n "$device_num" ]] && echo "$PROC_ASOUND/card$card_num/codec#$device_num"
+    return $?
 }
 
 check_codec_match() {
     local dev="$1"
     local codec_file
     codec_file=$(_get_codec_file "$dev")
-    [ -n "$codec_file" ] && [ -f "$codec_file" ] && grep -qiE 'ALC294|Cirrus' "$codec_file" 2>/dev/null
+    [[ -n "$codec_file" ]] && [[ -f "$codec_file" ]] && grep -qiE 'ALC294|Cirrus' "$codec_file" 2>/dev/null
+    return $?
 }
 
 find_sound_hwdev() {
@@ -71,7 +81,7 @@ poll_sound_hwdev() {
     for ((attempt = 1; attempt <= max_attempts; attempt += 1)); do
         local hwdev
         hwdev=$(find_sound_hwdev) && { echo "$hwdev"; return 0; }
-        [ "$attempt" -lt "$max_attempts" ] && sleep 0.2
+        [[ "$attempt" -lt "$max_attempts" ]] && sleep 0.2
     done
     return 1
 }
@@ -80,37 +90,41 @@ SOUND_STATE_DIR="${ASUS_SOUND_STATE_DIR:-/var/lib/asus-zenbook-linux-tools}"
 
 _sound_verb_err_dir() {
     local dir="$SOUND_STATE_DIR"
-    if mkdir -p "$dir" 2>/dev/null && [ -w "$dir" ]; then
+    if mkdir -p "$dir" 2>/dev/null && [[ -w "$dir" ]]; then
         printf '%s\n' "$dir"
         return 0
     fi
     printf '%s\n' "${TMPDIR:-/tmp}"
+    return 0
 }
 
 _sound_bin_root() {
     # As root, ignore attacker-controlled BIN_ROOT; only approved install paths.
-    if [ "${EUID:-$(id -u)}" -eq 0 ]; then
+    if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
         printf '%s\n' "/usr/local/bin"
         return 0
     fi
     printf '%s\n' "${BIN_ROOT:-/usr/local/bin}"
+    return 0
 }
 
 _run_system_hda_verb() {
     local hwdev="$1" verb_code="$2" verb_param="$3" nid="$4" err_sys="$5"
-    if [ -n "$err_sys" ]; then
+    if [[ -n "$err_sys" ]]; then
         hda-verb "$hwdev" "$nid" "$verb_code" "$verb_param" >/dev/null 2>"$err_sys"
     else
         hda-verb "$hwdev" "$nid" "$verb_code" "$verb_param" >/dev/null
     fi
+    return $?
 }
 
 _resolve_explicit_python_hda_helper() {
     local verb_bin="$1"
-    [ "$verb_bin" != "hda-verb" ] || return 1
-    [ -f "$verb_bin" ] || return 1
+    [[ "$verb_bin" != "$_SOUND_HDA_VERB_CMD" ]] || return 1
+    [[ -f "$verb_bin" ]] || return 1
     command -v python3 >/dev/null 2>&1 || return 1
     printf '%s\n' "$verb_bin"
+    return 0
 }
 
 _locate_bundled_python_hda_helper() {
@@ -118,7 +132,7 @@ _locate_bundled_python_hda_helper() {
     here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     bin_root=$(_sound_bin_root)
     for candidate in "$here/asus_hda_verb.py" "$bin_root/asus_hda_verb.py"; do
-        [ -f "$candidate" ] || continue
+        [[ -f "$candidate" ]] || continue
         printf '%s\n' "$candidate"
         return 0
     done
@@ -128,6 +142,7 @@ _locate_bundled_python_hda_helper() {
 _find_bundled_python_hda_helper() {
     command -v python3 >/dev/null 2>&1 || return 1
     _locate_bundled_python_hda_helper
+    return $?
 }
 
 _resolve_python_hda_helper() {
@@ -135,30 +150,32 @@ _resolve_python_hda_helper() {
     if _resolve_explicit_python_hda_helper "$verb_bin"; then
         return 0
     fi
-    [ "$verb_bin" = "hda-verb" ] || return 1
+    [[ "$verb_bin" = "$_SOUND_HDA_VERB_CMD" ]] || return 1
     _find_bundled_python_hda_helper
+    return $?
 }
 
 _run_python_hda_verb() {
     local py_helper="$1" hwdev="$2" verb_code="$3" verb_param="$4" nid="$5" err_py="$6"
-    if [ -n "$err_py" ]; then
+    if [[ -n "$err_py" ]]; then
         python3 "$py_helper" "$hwdev" "$nid" "$verb_code" "$verb_param" >/dev/null 2>"$err_py"
     else
         python3 "$py_helper" "$hwdev" "$nid" "$verb_code" "$verb_param" >/dev/null
     fi
+    return $?
 }
 
 _emit_hda_verb_stderr() {
     local err_sys="$1" err_py="$2"
-    [ -n "$err_sys" ] && [ -s "$err_sys" ] && cat "$err_sys" >&2
-    [ -n "$err_py" ] && [ -s "$err_py" ] && cat "$err_py" >&2
+    [[ -n "$err_sys" ]] && [[ -s "$err_sys" ]] && cat "$err_sys" >&2
+    [[ -n "$err_py" ]] && [[ -s "$err_py" ]] && cat "$err_py" >&2
     return 0
 }
 
 _cleanup_hda_verb_temps() {
     local err_sys="$1" err_py="$2"
-    [ -n "$err_sys" ] && rm -f "$err_sys"
-    [ -n "$err_py" ] && rm -f "$err_py"
+    [[ -n "$err_sys" ]] && rm -f "$err_sys"
+    [[ -n "$err_py" ]] && rm -f "$err_py"
     return 0
 }
 
@@ -170,7 +187,7 @@ _try_system_hda_verb() {
     _sys_err=$(mktemp "${err_dir}/asus-sound-verb-sys.XXXXXX" 2>/dev/null) || _sys_err=""
     _run_system_hda_verb "$hwdev" "$verb_code" "$verb_param" "$nid" "$_sys_err"
     rc=$?
-    if [ "$rc" -eq 0 ]; then
+    if [[ "$rc" -eq 0 ]]; then
         _cleanup_hda_verb_temps "$_sys_err" ""
         _sys_err=""
         return 0
@@ -185,6 +202,7 @@ _try_python_hda_verb() {
     py_helper=$(_resolve_python_hda_helper "$verb_bin") || return 1
     _py_err=$(mktemp "${err_dir}/asus-sound-verb-py.XXXXXX" 2>/dev/null) || _py_err=""
     _run_python_hda_verb "$py_helper" "$hwdev" "$verb_code" "$verb_param" "$nid" "$_py_err"
+    return $?
 }
 
 _run_one_hda_verb() {
@@ -196,7 +214,7 @@ _run_one_hda_verb() {
     fi
     _try_python_hda_verb "$verb_bin" "$hwdev" "$verb_code" "$verb_param" "$nid" err_py "$err_dir"
     rc=$?
-    if [ "$rc" -eq 0 ]; then
+    if [[ "$rc" -eq 0 ]]; then
         _cleanup_hda_verb_temps "$err_sys" "$err_py"
         return 0
     fi
@@ -207,11 +225,12 @@ _run_one_hda_verb() {
 
 _format_hda_verb_cmd() {
     local verb_bin="$1" hwdev="$2" verb_code="$3" verb_param="$4" nid="${5:-$SOUND_HDA_NID}"
-    if [ "$verb_bin" = "hda-verb" ]; then
+    if [[ "$verb_bin" = "$_SOUND_HDA_VERB_CMD" ]]; then
         printf 'hda-verb "%s" %s %s %s' "$hwdev" "$nid" "$verb_code" "$verb_param"
         return 0
     fi
     printf 'python3 "%s" "%s" %s %s %s' "$verb_bin" "$hwdev" "$nid" "$verb_code" "$verb_param"
+    return 0
 }
 
 _run_hda_verbs() {
@@ -226,14 +245,16 @@ _run_hda_verbs() {
             return 1
         }
     done
+    return 0
 }
 
 _resolve_hda_verb_bin() {
     if command -v hda-verb >/dev/null 2>&1; then
-        printf '%s\n' hda-verb
+        printf '%s\n' "$_SOUND_HDA_VERB_CMD"
         return 0
     fi
     _find_bundled_python_hda_helper
+    return $?
 }
 
 apply_hda_verbs() {
@@ -256,9 +277,10 @@ main() {
 
     apply_hda_verbs "$hwdev" || return 1
     echo "ASUS ZenBook sound verbs applied successfully to $hwdev."
+    return 0
 }
 
-if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
     main "$@"
     exit $?
 fi

@@ -136,10 +136,30 @@ _osd_cancel_flag_path() {
     return $?
 }
 
-_osd_cancel_in_progress() {
-    local prefix="$1"
-    [[ -f "$(_osd_cancel_flag_path "$prefix")" ]]
+# A --cancel-osd killed by the hotkey daemon's timeout (<=1s) can leave .cancel
+# behind; after this many seconds it is stale and must not block the idle
+# watchdog (which would otherwise never release a later sticky session).
+_OSD_CANCEL_STALE_SECS=3
+
+_osd_cancel_flag_is_stale() {
+    local flag="$1" mtime now
+    mtime=$(stat -c %Y "$flag" 2>/dev/null) || return 1
+    now=$(date +%s)
+    # Digits only: [[ -ge ]] would evaluate free text as arithmetic.
+    [[ "$mtime" =~ ^[0-9]+$ ]] && [[ "$now" =~ ^[0-9]+$ ]] || return 1
+    [[ $((now - mtime)) -ge "$_OSD_CANCEL_STALE_SECS" ]]
     return $?
+}
+
+_osd_cancel_in_progress() {
+    local prefix="$1" flag
+    flag="$(_osd_cancel_flag_path "$prefix")"
+    [[ -f "$flag" ]] || return 1
+    if _osd_cancel_flag_is_stale "$flag"; then
+        _soft rm -f "$flag"
+        return 1
+    fi
+    return 0
 }
 
 _mark_osd_cancel_in_progress() {
