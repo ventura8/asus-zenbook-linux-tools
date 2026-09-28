@@ -1248,8 +1248,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   The same applies everywhere under `pipefail`: never `printf|echo … | grep -q`;
   use `grep -q … <<< "$x"` (uninstall `_is_systemctl_transport_unavailable` /
   `_is_absent_unit_error` intermittently failed container uninstall smoke under
-  load; `tests/unit/shell/test_pipefail_grep_matches.py` pins it with ~1 MiB input). Always restore `orig_switch_monitor` when present because
-  install may have rewritten Mutter `switch-monitor`.
+  load; `tests/unit/shell/test_pipefail_grep_matches.py` pins it with ~1 MiB input).
+  Always restore `orig_switch_monitor` when present because install may have
+  rewritten Mutter `switch-monitor`.
   `_restore_schema_file` uses `gsettings set` for non-empty backups and `gsettings reset`
   when the backup file is missing **or empty**.
   When the fallback user is the `NO_SESSION_USER` sentinel, keep that username but set
