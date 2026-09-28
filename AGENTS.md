@@ -1694,7 +1694,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `bin/asus-display-mode.sh` bootstrap/main/lock paths; session covers watchdog +
   state; backend covers OSD/Mutter/settings. Prefer same-shell calls (not
   `_exercise` subshells) for product lines under kcov — nested `_exercise` often
-  drops attribution; put critical same-shell work early in each slice. Do not call
+  drops attribution; put critical same-shell work early in each slice. Adding
+  `return $?` / `*) ;;` lines makes them executable for kcov, so a function reached
+  only via `_exercise` can dip a file under 90% (`common_helpers`
+  `_run_common_notif_id_near_misses` and the `mate_helpers` read-only-dir mv
+  failures are the same-shell fix). Do not call
   blocking `_run_internal_watchdog` under kcov;
   stub `gdbus` fail-fast in the backend slice (listening-but-dead AF_UNIX hangs).
   `_ensure_watchdog` RETURN traps must expand `lock_dir` when armed (not deferred

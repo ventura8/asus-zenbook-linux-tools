@@ -357,6 +357,25 @@ _run_common_near_miss_paths() {
     _soft _asus_session_launch_env env_out "$(id -un)" "$uid" \
         "$bus_root" "unix:path=$bus_root/$uid/bus" >/dev/null
     _soft test "${#env_out[@]}" -gt 0
+    _run_common_notif_id_near_misses "$bus_root" "$uid"
+}
+
+_run_common_notif_id_near_misses() {
+    # Same-shell notif-id helpers (the _exercise calls below run in subshells).
+    local bus_root="$1" uid="$2" missing="/nonexistent-kcov-notif-$$" empty_bus
+    _soft _extract_notif_id "(uint32 7,)" >/dev/null
+    _soft _write_notif_id_temp 7 "$missing/tmp"
+    _soft _commit_notif_id "$missing/tmp" "$missing/id"
+    mkdir -p "$bus_root/$uid"
+    echo 5 > "$bus_root/$uid/.asus_notif_near.id"
+    _soft _read_notif_id_file "$bus_root/$uid/.asus_notif_near.id" >/dev/null
+    empty_bus=$(mktemp -d)
+    mkdir -p "$empty_bus/$uid"
+    BUS_ROOT="$empty_bus" _soft _prepare_user_notification_context >/dev/null
+    BUS_ROOT="$empty_bus" NOTIF_ID_ROOT="$empty_bus" \
+        _soft _send_user_notification "t" "m" "icon" "near" "tag" "" >/dev/null
+    rm -rf "$empty_bus"
+    return 0
 }
 
 _try_first_notif_empty_bus() {
