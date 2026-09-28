@@ -16,6 +16,7 @@ _kcov_rm_scenario_tmp() {
     # EXIT-trap cleanup for scenario subshells that keep their temp dir in `tmp`
     # (resolved by dynamic scope when the trap fires).
     rm -rf "${tmp:-}"
+    return $?
 }
 
 _soft_expect() {
