@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# Strip leading zeros from a digits-only string so [[ -lt ]] / $(( )) read it as
+# decimal, not octal ("08" errors, "0150" is 104). Plain parameter expansion,
+# not $((10#x)): SonarQube's shell parser rejects the base prefix as a syntax error.
+_asus_decimal() {
+    local digits="$1"
+    digits="${digits#"${digits%%[!0]*}"}"
+    printf '%s\n' "${digits:-0}"
+    return 0
+}
+
 check_root() {
     local skip_raw=0 effective_raw="$EUID"
     local skip_check=0 effective_uid
@@ -10,11 +20,11 @@ check_root() {
     fi
     case "$skip_raw" in
         ''|*[!0-9]*) skip_check=0 ;;
-        *) skip_check=$((10#$skip_raw)) ;;
+        *) skip_check=$(_asus_decimal "$skip_raw") ;;
     esac
     case "$effective_raw" in
         ''|*[!0-9]*) effective_uid="$EUID" ;;
-        *) effective_uid=$((10#$effective_raw)) ;;
+        *) effective_uid=$(_asus_decimal "$effective_raw") ;;
     esac
     _require_effective_root "$skip_check" "$effective_uid"
     return $?
@@ -129,8 +139,7 @@ _install_command_timeout_max() {
             ;;
         *) ;;
     esac
-    # Force base 10: [[ -lt ]] would read zero-padded values ("08") as octal.
-    max_raw=$((10#$max_raw))
+    max_raw=$(_asus_decimal "$max_raw")
     if [[ "$max_raw" -lt 1 ]]; then
         max_raw=1
     fi
@@ -159,7 +168,7 @@ _effective_install_command_timeout() {
             ;;
         *) ;;
     esac
-    requested_timeout_secs=$((10#$requested_timeout_secs))
+    requested_timeout_secs=$(_asus_decimal "$requested_timeout_secs")
     if ! timeout_max=$(_install_command_timeout_max); then
         return 1
     fi
