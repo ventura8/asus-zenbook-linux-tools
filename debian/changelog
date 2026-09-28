@@ -1,3 +1,18 @@
+asus-zenbook-linux-tools (1.0.9) resolute; urgency=medium
+
+  * SonarQube Cloud cleanup of the shell code base (behaviour-preserving):
+    [[ ]] tests, explicit returns, default case arms, named locals, hoisted
+    constants, helper extractions (CCN <= 5) and file splits (<= 600 lines).
+  * Zero-padded numbers (08, 0150) are read as decimal again in the install
+    command timeout clamps, the test-mode root check and the fan profile value.
+  * Esc/Cancel in the installer component checklist aborts the install instead
+    of falling back to the text prompt.
+  * tests/e2e/real is a package again so run_real_e2e.sh discovers its tests;
+    kcov coverage kept at >= 90% for asus-common and install-mate.
+  * Hardware-validated on the ZenBook Pro Duo UX582HS (Ubuntu 26.04, GNOME).
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Mon, 28 Sep 2026 18:38:37 +0300
+
 asus-zenbook-linux-tools (1.0.8) resolute; urgency=medium
 
   * Hardened bin/asus_hda_verb.py: the hwdep device path from the command line
