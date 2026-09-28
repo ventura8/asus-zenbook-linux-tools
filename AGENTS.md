@@ -348,7 +348,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     inside `[[ ]]`, `-eq`/`-lt`/… evaluate operands as arithmetic expressions (a value
     like `a[$(cmd)]` executes), so any operand read from env, files, sysfs or command
     output must pass a `^[0-9]+$` check first (`_screenpad_state_mtime`,
-    `_docker_lock_grace_secs`, `_lock_is_duplicate` are the patterns). New `*)` arms
+    `_docker_lock_grace_secs`, `_lock_is_duplicate` are the patterns). Arithmetic
+    also reads a leading `0` as octal (`08` errors, `0150` is 104, unlike `[ ]`), so
+    normalise zero-padded digit strings with `$((10#$x))` after that check
+    (`_install_command_timeout_max`, `check_root`, `_normalize_fan_value`). New `*)` arms
     count toward CCN — extract a helper rather than exceed A-rank.
   - JavaScript: Clean `eslint` on `gnome/**/*.js` (flat config `eslint.config.mjs`; no inline
     `eslint-disable`). GNOME Shell globals such as `global` are declared in the config.

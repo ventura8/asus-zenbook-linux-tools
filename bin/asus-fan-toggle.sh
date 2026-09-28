@@ -88,6 +88,8 @@ _normalize_fan_value() {
     local value
     value="$(printf '%s' "$1" | tr -d '[:space:]')"
     if [[ "$value" =~ ^[0-9]+$ ]]; then
+        # Force base 10: [[ -gt ]] would read zero-padded values ("08") as octal.
+        value=$((10#$value))
         if [[ "$value" -gt 2 ]]; then
             value=2
         fi

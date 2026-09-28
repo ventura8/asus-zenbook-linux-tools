@@ -398,6 +398,40 @@ class TestInstallSharedHelpers(InstallTestBase):
         proc = run_bash_c(script, timeout=10)
         self.assertEqual(proc.returncode, 0, msg=proc.stderr)
 
+    def _effective_timeout(self, requested: str, timeout_max: str):
+        """Run _effective_install_command_timeout with INSTALL_COMMAND_TIMEOUT_MAX set."""
+        shared_q = shlex.quote(str(self.repo_root / "lib" / "install-shared.sh"))
+        script = (
+            f"set -euo pipefail; source {shared_q}; "
+            f"INSTALL_COMMAND_TIMEOUT_MAX={shlex.quote(timeout_max)} "
+            f"_effective_install_command_timeout {shlex.quote(requested)}"
+        )
+        return run_bash_c(script, timeout=10)
+
+    def test_install_command_timeout_reads_zero_padded_values_as_decimal(self) -> None:
+        """Zero-padded timeouts clamp as decimal, not octal ("08" / "0150")."""
+        proc = self._effective_timeout("15", "08")
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        self.assertEqual(proc.stdout.strip(), "8")
+        self.assertNotIn("value too great for base", proc.stderr)
+
+        proc = self._effective_timeout("0150", "120")
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+        self.assertEqual(proc.stdout.strip(), "120")
+        self.assertIn("clamped from 150s to 120s", proc.stderr)
+
+    def test_check_root_reads_zero_padded_override_uid_as_decimal(self) -> None:
+        """EFFECTIVE_UID_OVERRIDE=08 is uid 8 (non-root), not an octal parse error."""
+        shared_q = shlex.quote(str(self.repo_root / "lib" / "install-shared.sh"))
+        script = (
+            f"source {shared_q}; "
+            "ASUS_TEST_MODE=1 SKIP_ROOT_CHECK=00 EFFECTIVE_UID_OVERRIDE=08 check_root"
+        )
+        proc = run_bash_c(script, timeout=10)
+        self.assertEqual(proc.returncode, 1, msg=proc.stderr)
+        self.assertIn("Please run as root", proc.stderr)
+        self.assertNotIn("value too great for base", proc.stderr)
+
 
 class TestInstallSourceSmoke(InstallTestBase):
     """Smoke tests for sourcing install.sh without executing main."""

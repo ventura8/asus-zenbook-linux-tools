@@ -10,11 +10,11 @@ check_root() {
     fi
     case "$skip_raw" in
         ''|*[!0-9]*) skip_check=0 ;;
-        *) skip_check="$skip_raw" ;;
+        *) skip_check=$((10#$skip_raw)) ;;
     esac
     case "$effective_raw" in
         ''|*[!0-9]*) effective_uid="$EUID" ;;
-        *) effective_uid="$effective_raw" ;;
+        *) effective_uid=$((10#$effective_raw)) ;;
     esac
     _require_effective_root "$skip_check" "$effective_uid"
     return $?
@@ -129,6 +129,8 @@ _install_command_timeout_max() {
             ;;
         *) ;;
     esac
+    # Force base 10: [[ -lt ]] would read zero-padded values ("08") as octal.
+    max_raw=$((10#$max_raw))
     if [[ "$max_raw" -lt 1 ]]; then
         max_raw=1
     fi
@@ -157,6 +159,7 @@ _effective_install_command_timeout() {
             ;;
         *) ;;
     esac
+    requested_timeout_secs=$((10#$requested_timeout_secs))
     if ! timeout_max=$(_install_command_timeout_max); then
         return 1
     fi
