@@ -579,7 +579,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
-  `.coverage.real-e2e.*` after runs under sudo. `tests/e2e/real/` must keep its
+  `.coverage.real-e2e.*` after runs under sudo; it exports `PYTHONDONTWRITEBYTECODE=1`
+  so no root-owned `__pycache__` lands in the checkout (that broke the next
+  non-root `dh_clean` in deb smoke). `tests/e2e/real/` must keep its
   `__init__.py` (discover `-t .` refuses a non-package start dir). `coverage` must
   be importable and on `PATH` as root; for a user-site install pass
   `sudo env PATH=… PYTHONPATH=<user site-packages> E2E_REAL_ALLOW_SYSTEM_CHANGES=1 …`.
