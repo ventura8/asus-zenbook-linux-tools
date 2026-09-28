@@ -128,6 +128,20 @@ class TestAsusScreenpadBrightness(unittest.TestCase):
             self.assertEqual(proc.returncode, 0)
             self.assertEqual(read_node_content(node), "200")
 
+    def test_set_zero_padded_values_read_as_decimal(self):
+        """Zero-padded raw and percent values are decimal, not octal ("08", "050%")."""
+        for arg, expected in (("08", "8"), ("050%", "128"), ("0200", "200")):
+            with self.subTest(arg=arg), tempfile.TemporaryDirectory() as tmpdir:
+                node = _node_with_max(tmpdir, "10\n", "0255")
+                proc = run_shell_script(
+                    SCRIPT,
+                    args=["set", arg],
+                    env=_brightness_env(tmpdir, ASUS_SCREENPAD_NODE=node),
+                )
+                self.assertEqual(proc.returncode, 0, msg=proc.stderr)
+                self.assertNotIn("value too great for base", proc.stderr)
+                self.assertEqual(read_node_content(node), expected)
+
     def test_restore_reapplies_persisted_level_without_session_user(self):
         """restore reads the newest per-user state file even with no session user (boot)."""
         with tempfile.TemporaryDirectory() as tmpdir:

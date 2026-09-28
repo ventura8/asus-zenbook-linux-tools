@@ -352,10 +352,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
     also reads a leading `0` as octal (`08` errors, `0150` is 104, unlike `[ ]`), so
     normalise zero-padded digit strings after that check by stripping leading zeros
     with parameter expansion (`_asus_decimal` in `lib/install-shared.sh`, inline in
-    `_normalize_fan_value`). Do **not** use `$((10#$x))`: SonarQube's shell parser
-    reports it as a syntax error and silently skips the whole file (the scanner log
-    shows `WARN Syntax error in …`; `bin/asus-sound-fix.sh` and
-    `bin/asus-screenpad-brightness.sh` still use it). New `*)` arms
+    `_normalize_fan_value`, `_screenpad_decimal`, `_sound_hda_nid_valid`). Do **not**
+    use `$((10#$x))`: SonarQube's shell parser reports it as a syntax error and
+    silently skips the whole file (the scanner log shows `WARN Syntax error in …`;
+    `bin/asus-sound-fix.sh` and `bin/asus-screenpad-brightness.sh` were never
+    analysed until v1.0.9 removed it). New `*)` arms
     count toward CCN — extract a helper rather than exceed A-rank.
   - JavaScript: Clean `eslint` on `gnome/**/*.js` (flat config `eslint.config.mjs`; no inline
     `eslint-disable`). GNOME Shell globals such as `global` are declared in the config.

@@ -290,6 +290,19 @@ class TestAsusSoundFixUnit(unittest.TestCase):
         self.assertNotIn("Could not find sound card containing ALC294/Cirrus codec", proc.stderr)
         self.assertNotIn("hda-verb is not installed", proc.stderr)
 
+    def test_zero_padded_decimal_nid_reads_as_decimal(self):
+        """Zero-padded decimal SOUND_HDA_NID is decimal (not octal) and still range-checked."""
+        cases = {"08": 0, "0032": 0, "0255": 0, "0256": 1, "0x20": 0, "0x100": 1, "abc": 1}
+        for nid, expected in cases.items():
+            with self.subTest(nid=nid):
+                command = (
+                    f"source {shlex.quote(str(SCRIPT))} >/dev/null 2>&1; "
+                    f"SOUND_HDA_NID={shlex.quote(nid)} _sound_hda_nid_valid"
+                )
+                proc = run_bash_c(command, timeout=10)
+                self.assertEqual(proc.returncode, expected, msg=proc.stderr)
+                self.assertNotIn("value too great for base", proc.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
