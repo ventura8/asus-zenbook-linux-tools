@@ -167,13 +167,15 @@ _prompt_tui_selection_prepare() {
 _prompt_tui_selection() {
     local ui_in_fd="$1"
     local ui_out_fd="$2"
-    local choice_tmp tui_rc
+    local choice_tmp tui_rc=0
 
     _prompt_tui_selection_prepare choice_tmp || return $?
-    if _run_tui_selection "$ui_in_fd" "$ui_out_fd" "$choice_tmp"; then
+    # Capture the TUI status directly: `$?` after `if …; fi` is 0 when the
+    # condition failed, which turned Esc/Cancel (exit 1) into the text fallback.
+    _run_tui_selection "$ui_in_fd" "$ui_out_fd" "$choice_tmp" || tui_rc=$?
+    if [[ "$tui_rc" -eq 0 ]]; then
         _apply_tui_selection "$choice_tmp"
         return $?
     fi
-    tui_rc=$?
     _handle_tui_selection_error "$tui_rc" "$ui_out_fd" "$choice_tmp"
 }

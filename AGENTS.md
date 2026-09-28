@@ -1096,7 +1096,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   so nested quotes do not inflate CCN). Empty selection is a successful no-op (no deps, no runtime deploy,
   no components; message `No components were selected. Nothing was installed.`). TUI Ok with
   nothing checked, `NONINTERACTIVE_CHOICE=` / `none`, or text `,` apply empty; Esc/Cancel still
-  aborts; bare Enter in text mode still defaults to all recommended. Kcov `install_none` runs
+  aborts (TUI exit 1 → `Installation cancelled by user.`; `_prompt_tui_selection` captures the
+  status with `|| tui_rc=$?` — `$?` after a failed `if …; fi` is 0 and silently fell back to text
+  mode); bare Enter in text mode still defaults to all recommended. Kcov `install_none` runs
   `install.sh` with `NONINTERACTIVE_CHOICE=none` so `_print_empty_install_completion` is covered.
   Helper load order sources
   `lib/install-shared.sh` before `lib/install-os-detection.sh` and desktop helpers.
