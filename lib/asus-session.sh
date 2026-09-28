@@ -351,11 +351,12 @@ _asus_probe_de_schema_family() {
     local schemas
     command -v gsettings >/dev/null 2>&1 || return 1
     schemas=$(gsettings list-schemas 2>/dev/null) || return 1
-    printf '%s\n' "$schemas" | grep -Fxq -- "org.cinnamon.desktop.keybindings" && {
+    # Here-strings: `printf | grep -q` over the long schema list can SIGPIPE (141).
+    grep -Fxq -- "org.cinnamon.desktop.keybindings" <<< "$schemas" && {
         printf '%s\n' cinnamon
         return 0
     }
-    printf '%s\n' "$schemas" | grep -Fxq -- "org.mate.control-center.keybinding" && {
+    grep -Fxq -- "org.mate.control-center.keybinding" <<< "$schemas" && {
         printf '%s\n' mate
         return 0
     }

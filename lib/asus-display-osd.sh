@@ -6,7 +6,7 @@ _ASUS_DISPLAY_OSD_XDOTOOL="xdotool"
 
 _resolve_user_id() {
     local user="$1"
-    if echo "$user" | grep -Eq '^[0-9]+$'; then
+    if grep -Eq '^[0-9]+$' <<< "$user"; then
         echo "$user"
         return 0
     fi

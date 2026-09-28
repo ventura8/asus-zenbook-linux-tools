@@ -88,8 +88,8 @@ _get_fallback_next_profile_info() {
 
 _normalize_detected_profile() {
     local detected="$1"
-    if echo "$detected" | grep -Eq \
-        '^(all|main_external|screenpad_external|external_only|main_only|screenpad_only)$'; then
+    if grep -Eq '^(all|main_external|screenpad_external|external_only|main_only|screenpad_only)$' \
+        <<< "$detected"; then
         echo "$detected"
         return 0
     fi
