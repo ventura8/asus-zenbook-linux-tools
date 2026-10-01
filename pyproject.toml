@@ -8,7 +8,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.13,<4"
 evdev = "==2.0.0"
-dbus-python = "==1.4.0"
+dbus-python = "==1.5.0"
 
 [tool.poetry.group.dev.dependencies]
 PyYAML = "==6.0.3"
