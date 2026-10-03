@@ -125,7 +125,7 @@ _run_kinds_wait_one() {
             printf 'Release package smoke failed (%s).\n' "${_rw_kinds[$i]}" >&2
             _rw_failed=1
         fi
-        unset '_rw_pids[i]'
+        unset '_rw_pids[i]' '_rw_kinds[i]'
         break
     done
 }
@@ -155,6 +155,7 @@ _run_kinds_parallel() {
         [[ "$failed" -ne 0 ]] && break
     done
     if [[ "$failed" -ne 0 ]]; then
+        printf 'Stopping remaining release package smoke kinds: %s\n' "${kinds[*]:-none}" >&2
         _run_kinds_kill_remaining pids
         return 1
     fi

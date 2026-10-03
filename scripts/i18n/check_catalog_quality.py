@@ -162,9 +162,8 @@ def _entry_key(entry: PoEntry) -> str:
 
 
 def _source_values(entry: PoEntry) -> tuple[str, ...]:
-    if entry.msgid_plural:
-        return (entry.msgid, entry.msgid_plural)
-    return (entry.msgid,)
+    plural = (entry.msgid_plural,) if entry.msgid_plural else ()
+    return (entry.msgid, *plural)
 
 
 def _translation_values(entry: PoEntry) -> tuple[str, ...]:

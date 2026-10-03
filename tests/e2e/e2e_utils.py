@@ -393,7 +393,7 @@ def require_real_system_mode(test_case: unittest.TestCase) -> None:
         test_case.skipTest("Set E2E_REAL_ALLOW_SYSTEM_CHANGES=1 to run real-system E2E tests")
 
 
-def _host_dirty_paths() -> list[str]:
+def host_dirty_paths() -> list[str]:
     """Return install marker / unowned state paths that indicate a dirty host."""
     present = [str(path) for path in INSTALL_MARKERS if path.exists()]
     if STATE_DIR.exists() and not E2E_OWNED_SENTINEL.exists():
@@ -403,14 +403,14 @@ def _host_dirty_paths() -> list[str]:
 
 def assert_host_clean(test_case: unittest.TestCase) -> None:
     """Fail when prior install markers or state remain on the host."""
-    present = _host_dirty_paths()
+    present = host_dirty_paths()
     if present:
         test_case.fail("Host is not clean before real E2E; remove leftovers or run uninstall: " + ", ".join(present))
 
 
 def restore_host_if_dirty(uninstall_script: str, timeout: int) -> None:
     """Best-effort uninstall when markers or unowned state remain after a failed real E2E test."""
-    if not _host_dirty_paths():
+    if not host_dirty_paths():
         return
     env = os.environ.copy()
     env["SKIP_PKG_REMOVE"] = "1"

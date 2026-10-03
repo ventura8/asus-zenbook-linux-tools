@@ -184,6 +184,7 @@ run_python_coverage_gate() {
         _report_missing_python_coverage_files "$missing_files"
         return 1
     fi
+    echo "  ✓ Python coverage ${total_percent}% (minimum ${min_percent}%)"
     return 0
 }
 

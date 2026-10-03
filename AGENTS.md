@@ -577,6 +577,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Docker coverage/compat matrices — same gates as CI `lint` (cheap∥heavy) /
   `package-smoke`'s `deb` cell / `coverage` (kcov∥python) / `distro-tests-*` family jobs).
 - Run real-system E2E explicitly with `sudo E2E_REAL_ALLOW_SYSTEM_CHANGES=1 ./scripts/run_real_e2e.sh`.
+  The driver refuses to start (before arming its EXIT `uninstall.sh` cleanup) when
+  `tests.e2e.e2e_utils.host_dirty_paths()` reports a live install — otherwise the
+  cleanup tore down the developer's working setup even though every test refused.
   `run_real_e2e.sh` splits traps: EXIT runs `cleanup_real_e2e "$?"` (preserve status);
   INT/TERM call cleanup with nonzero (130). Chown `.coverage.real-e2e` and
   `.coverage.real-e2e.*` after runs under sudo; it exports `PYTHONDONTWRITEBYTECODE=1`

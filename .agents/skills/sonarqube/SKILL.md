@@ -137,7 +137,13 @@ Tear down when finished: `docker rm -f asus-sonar-local`.
    `tools/shell_complexity.py` (new `*)` arms add CCN), the 600-line gate, and
    audit every `[[ … -eq/-lt … ]]` whose operand is not a status/count for a
    prior `^[0-9]+$` check (see AGENTS.md "Shell style").
-7. Known false positives to leave with a stated reason: `S1481` "unused local"
+7. Prefer a real fix over leaving a finding: `S1481` on arrays consumed only via
+   nameref went away by also using them visibly (diagnostics, explicit args,
+   emptiness checks); `S8495` by building the tuple with one return; `S8997` with
+   `mock.patch.object` / `mock.patch.dict` instead of manual save/restore.
+   Duplication on the hyphenated systemd entrypoints (`bin/asus-hotkey-daemon.py`,
+   `bin/asus-touchpad-share.py`) is the scanner following symlinks — they are in
+   `sonar.exclusions`. Remaining false positives to leave with a stated reason: `S1481` "unused local"
    on a variable consumed only through a nameref/`eval` or inside a heredoc,
    plus the two Python cases in rule 4.
 8. After fixing, re-run the repo's own gates — `scripts/run-lints.sh` and the
