@@ -39,11 +39,9 @@ _report_untracked_lanes() {
 }
 
 _collect_parallel_results() {
-    local -n _pids="$1" _names="$2" _logs="$3"
-    # Distinct copy names: local pids/names/logs would shadow nameref targets.
-    local -a pid_copies=("${_pids[@]}")
-    local -a name_copies=("${_names[@]}")
-    local -a log_copies=("${_logs[@]}")
+    # Works on the caller's arrays by name (reported lanes are dropped in place).
+    local pids_name="$1" names_name="$2" logs_name="$3"
+    local -n pid_copies="$pids_name"
     local done_pid="" code=0 report_status=0
 
     while [[ "${#pid_copies[@]}" -gt 0 ]]; do
@@ -51,7 +49,7 @@ _collect_parallel_results() {
         set +e
         wait -n -p done_pid "${pid_copies[@]}"
         code=$?
-        _parallel_report_done "$done_pid" "$code" pid_copies name_copies log_copies
+        _parallel_report_done "$done_pid" "$code" "$pids_name" "$names_name" "$logs_name"
         report_status=$?
         set -e
         if [[ "$report_status" -eq 1 ]]; then
@@ -59,7 +57,7 @@ _collect_parallel_results() {
             return 1
         fi
         if [[ "$report_status" -eq 2 ]]; then
-            _report_untracked_lanes name_copies log_copies
+            _report_untracked_lanes "$names_name" "$logs_name"
             break
         fi
     done

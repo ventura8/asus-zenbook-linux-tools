@@ -15,6 +15,7 @@ from asus_install_selection_accent import (
     nearest_ansi16,
     resolve_accent_rgb,
 )
+from asus_install_selection_output import write_selection
 from asus_install_selection_version import resolve_display_version
 
 EXIT_OK = 0
@@ -503,17 +504,6 @@ def _curses_loop(stdscr: curses.window, model: ChecklistModel) -> int:
             return EXIT_CANCEL
 
 
-def write_selection(path: Path | None, tags: list[str]) -> None:
-    """Write selected tags one per line."""
-    body = "\n".join(tags)
-    if body:
-        body += "\n"
-    if path is None:
-        sys.stdout.write(body)
-        return
-    path.write_text(body, encoding="utf-8")
-
-
 def default_title() -> str:
     """Build the localized dialog title including VERSION."""
     version = resolve_display_version()
@@ -552,6 +542,16 @@ def _run_ui(model: ChecklistModel, script: str) -> int:
         return EXIT_ERROR
 
 
+def _write_selection_status(path: Path | None, tags: list[str]) -> int:
+    """Write the selection; report a rejected ``--output`` path as EXIT_ERROR."""
+    try:
+        write_selection(path, tags)
+    except (ValueError, OSError) as exc:
+        sys.stderr.write(f"{exc}\n")
+        return EXIT_ERROR
+    return EXIT_OK
+
+
 def main(argv: list[str] | None = None) -> int:
     """CLI entry: run checklist and write selected tags."""
     args = parse_args(argv)
@@ -562,9 +562,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     script = args.script_keys or os.environ.get("ASUS_TUI_SCRIPT_KEYS", "")
     status = _run_ui(model, script)
-    if status == EXIT_OK:
-        write_selection(args.output, model.selected_tags())
-    return status
+    if status != EXIT_OK:
+        return status
+    return _write_selection_status(args.output, model.selected_tags())
 
 
 if __name__ == "__main__":

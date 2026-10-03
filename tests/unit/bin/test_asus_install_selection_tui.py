@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import os
 import subprocess
 import tempfile
 import unittest
@@ -21,6 +22,7 @@ from asus_install_selection_accent import (
     resolve_accent_rgb,
     rgb_from_env,
 )
+from asus_install_selection_output import safe_output_path, write_selection
 from asus_install_selection_tui import (
     EXIT_CANCEL,
     EXIT_ERROR,
@@ -38,7 +40,6 @@ from asus_install_selection_tui import (
     run_scripted,
     truncate_label,
     wrap_text,
-    write_selection,
 )
 
 from tests.unit.bin.attr_helpers import call_attr
@@ -207,6 +208,49 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
             write_selection(None, ["WMI", "SOUND"])
         self.assertEqual(buf.getvalue(), "WMI\nSOUND\n")
 
+    def test_output_path_outside_tempdir_is_rejected(self) -> None:
+        """--output outside the temp dir, the temp dir itself, or a symlink fails closed."""
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / ".." / ".." / "etc" / "asus-choice"
+            err = io.StringIO()
+            with patch("sys.stderr", err):
+                status = main(["--script-keys", "\n", "--output", str(outside)])
+            self.assertEqual(status, EXIT_ERROR)
+            self.assertIn("must be inside", err.getvalue())
+            temp_root = Path(tempfile.gettempdir())
+            with self.assertRaises(ValueError):
+                safe_output_path(temp_root)
+            link = Path(tmp) / "link"
+            link.symlink_to(Path(tmp) / "target")
+            with self.assertRaisesRegex(ValueError, "symlink"):
+                safe_output_path(link)
+            # Simulate a symlink swapped in after validation: the open must not follow it.
+            race = (
+                patch.object(Path, "is_symlink", return_value=False),
+                patch.object(Path, "resolve", lambda self, strict=False: Path(os.path.abspath(self))),
+                patch("sys.stderr", io.StringIO()),
+            )
+            with race[0], race[1], race[2]:
+                self.assertEqual(call_attr(tui, "_write_selection_status", link, ["WMI"]), EXIT_ERROR)
+            self.assertFalse((Path(tmp) / "target").exists())
+            # Same race on a parent directory: the pinned dir walk must not follow it.
+            elsewhere = Path(tmp) / "elsewhere"
+            elsewhere.mkdir()
+            dir_link = Path(tmp) / "dirlink"
+            dir_link.symlink_to(elsewhere)
+            with race[0], race[1], race[2]:
+                self.assertEqual(
+                    call_attr(tui, "_write_selection_status", dir_link / "choice", ["WMI"]),
+                    EXIT_ERROR,
+                )
+            self.assertFalse((elsewhere / "choice").exists())
+            nested = Path(tmp) / "sub"
+            nested.mkdir()
+            write_selection(nested / "choice", ["WMI"])
+            self.assertEqual((nested / "choice").read_text(encoding="utf-8"), "WMI\n")
+            inside = Path(tmp) / "choice"
+            self.assertEqual(safe_output_path(inside), inside.resolve())
+
     def test_draw_checklist_with_mock_window(self) -> None:
         """draw_checklist paints via a fake curses window."""
         win = MagicMock()
@@ -225,8 +269,7 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
         win = MagicMock()
         win.getmaxyx.return_value = (24, 80)
         long_desc = (
-            "Installs the WMI hotkey daemon for ScreenPad brightness, "
-            "fan Quiet/Balanced/Performance, camera privacy, and window swap."
+            "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/Performance, camera privacy, and window swap."
         )
         model = ChecklistModel(
             tags=["WMI", "TOUCHPAD", "SOUND", "DESKTOP"],
