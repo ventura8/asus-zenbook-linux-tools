@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import os
 import subprocess
 import tempfile
 import unittest
@@ -223,6 +224,15 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
             link.symlink_to(Path(tmp) / "target")
             with self.assertRaisesRegex(ValueError, "symlink"):
                 safe_output_path(link)
+            # Simulate a symlink swapped in after validation: the open must not follow it.
+            race = (
+                patch.object(Path, "is_symlink", return_value=False),
+                patch.object(Path, "resolve", lambda self, strict=False: Path(os.path.abspath(self))),
+                patch("sys.stderr", io.StringIO()),
+            )
+            with race[0], race[1], race[2]:
+                self.assertEqual(call_attr(tui, "_write_selection_status", link, ["WMI"]), EXIT_ERROR)
+            self.assertFalse((Path(tmp) / "target").exists())
             inside = Path(tmp) / "choice"
             self.assertEqual(safe_output_path(inside), inside.resolve())
 

@@ -527,7 +527,10 @@ def write_selection(path: Path | None, tags: list[str]) -> None:
     if path is None:
         sys.stdout.write(body)
         return
-    safe_output_path(path).write_text(body, encoding="utf-8")
+    # O_NOFOLLOW: a symlink swapped in after validation cannot redirect the write.
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | os.O_NOFOLLOW
+    with os.fdopen(os.open(safe_output_path(path), flags, 0o600), "w", encoding="utf-8") as out:
+        out.write(body)
 
 
 def default_title() -> str:
@@ -572,7 +575,7 @@ def _write_selection_status(path: Path | None, tags: list[str]) -> int:
     """Write the selection; report a rejected ``--output`` path as EXIT_ERROR."""
     try:
         write_selection(path, tags)
-    except ValueError as exc:
+    except (ValueError, OSError) as exc:
         sys.stderr.write(f"{exc}\n")
         return EXIT_ERROR
     return EXIT_OK
