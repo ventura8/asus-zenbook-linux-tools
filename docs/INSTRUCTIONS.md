@@ -89,7 +89,7 @@ This runs the interactive component wizard. Reconfigure with
 `.github/workflows/ppa-release.yml` (secrets `GPG_PRIVATE_KEY`,
 `GPG_PASSPHRASE`). The same workflow also builds RPM, Arch, AppImage, Flatpak,
 and Snap artifacts and attaches them to the GitHub Release (native `.deb` plus
-multi-distro packages). Current notes: [v1.0.10](releases/v1.0.10.md).
+multi-distro packages). Current notes: [v1.0.11](releases/v1.0.11.md).
 
 ## GitHub Release native packages
 
@@ -130,7 +130,7 @@ Use native packages for full systemd and udev integration.
 Human README quick-starts stay interactive. For CI or non-TTY automation only:
 
 ```bash
-TAG=v1.0.10
+TAG=v1.0.11
 git clone --depth 1 --branch "$TAG" \
   https://github.com/ventura8/asus-zenbook-linux-tools.git &&
   cd asus-zenbook-linux-tools &&
