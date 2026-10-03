@@ -36,6 +36,7 @@ from asus_install_selection_tui import (
     main,
     parse_args,
     run_scripted,
+    safe_output_path,
     truncate_label,
     wrap_text,
     write_selection,
@@ -207,6 +208,24 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
             write_selection(None, ["WMI", "SOUND"])
         self.assertEqual(buf.getvalue(), "WMI\nSOUND\n")
 
+    def test_output_path_outside_tempdir_is_rejected(self) -> None:
+        """--output outside the temp dir, the temp dir itself, or a symlink fails closed."""
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / ".." / ".." / "etc" / "asus-choice"
+            err = io.StringIO()
+            with patch("sys.stderr", err):
+                status = main(["--script-keys", "\n", "--output", str(outside)])
+            self.assertEqual(status, EXIT_ERROR)
+            self.assertIn("must be inside", err.getvalue())
+            with self.assertRaises(ValueError):
+                safe_output_path(Path(tempfile.gettempdir()))
+            link = Path(tmp) / "link"
+            link.symlink_to(Path(tmp) / "target")
+            with self.assertRaisesRegex(ValueError, "symlink"):
+                safe_output_path(link)
+            inside = Path(tmp) / "choice"
+            self.assertEqual(safe_output_path(inside), inside.resolve())
+
     def test_draw_checklist_with_mock_window(self) -> None:
         """draw_checklist paints via a fake curses window."""
         win = MagicMock()
@@ -225,8 +244,7 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
         win = MagicMock()
         win.getmaxyx.return_value = (24, 80)
         long_desc = (
-            "Installs the WMI hotkey daemon for ScreenPad brightness, "
-            "fan Quiet/Balanced/Performance, camera privacy, and window swap."
+            "Installs the WMI hotkey daemon for ScreenPad brightness, fan Quiet/Balanced/Performance, camera privacy, and window swap."
         )
         model = ChecklistModel(
             tags=["WMI", "TOUCHPAD", "SOUND", "DESKTOP"],

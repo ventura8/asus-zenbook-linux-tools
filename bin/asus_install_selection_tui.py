@@ -6,6 +6,7 @@ import argparse
 import curses
 import os
 import sys
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -503,6 +504,21 @@ def _curses_loop(stdscr: curses.window, model: ChecklistModel) -> int:
             return EXIT_CANCEL
 
 
+def safe_output_path(path: Path) -> Path:
+    """Resolve ``--output`` and require a non-symlink path inside the temp dir.
+
+    The installer passes a ``mktemp`` file; anything else (traversal, symlinks,
+    paths outside ``tempfile.gettempdir()``) is rejected.
+    """
+    base = Path(tempfile.gettempdir()).resolve()
+    if path.is_symlink():
+        raise ValueError(f"refusing symlink output path: {path}")
+    resolved = path.resolve()
+    if resolved == base or not resolved.is_relative_to(base):
+        raise ValueError(f"output path must be inside {base}: {path}")
+    return resolved
+
+
 def write_selection(path: Path | None, tags: list[str]) -> None:
     """Write selected tags one per line."""
     body = "\n".join(tags)
@@ -511,7 +527,7 @@ def write_selection(path: Path | None, tags: list[str]) -> None:
     if path is None:
         sys.stdout.write(body)
         return
-    path.write_text(body, encoding="utf-8")
+    safe_output_path(path).write_text(body, encoding="utf-8")
 
 
 def default_title() -> str:
@@ -552,6 +568,16 @@ def _run_ui(model: ChecklistModel, script: str) -> int:
         return EXIT_ERROR
 
 
+def _write_selection_status(path: Path | None, tags: list[str]) -> int:
+    """Write the selection; report a rejected ``--output`` path as EXIT_ERROR."""
+    try:
+        write_selection(path, tags)
+    except ValueError as exc:
+        sys.stderr.write(f"{exc}\n")
+        return EXIT_ERROR
+    return EXIT_OK
+
+
 def main(argv: list[str] | None = None) -> int:
     """CLI entry: run checklist and write selected tags."""
     args = parse_args(argv)
@@ -562,9 +588,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     script = args.script_keys or os.environ.get("ASUS_TUI_SCRIPT_KEYS", "")
     status = _run_ui(model, script)
-    if status == EXIT_OK:
-        write_selection(args.output, model.selected_tags())
-    return status
+    if status != EXIT_OK:
+        return status
+    return _write_selection_status(args.output, model.selected_tags())
 
 
 if __name__ == "__main__":
