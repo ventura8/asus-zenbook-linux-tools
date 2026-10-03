@@ -6,7 +6,6 @@ import argparse
 import curses
 import os
 import sys
-import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -16,6 +15,7 @@ from asus_install_selection_accent import (
     nearest_ansi16,
     resolve_accent_rgb,
 )
+from asus_install_selection_output import write_selection
 from asus_install_selection_version import resolve_display_version
 
 EXIT_OK = 0
@@ -502,35 +502,6 @@ def _curses_loop(stdscr: curses.window, model: ChecklistModel) -> int:
             return EXIT_OK
         if action == "cancel":
             return EXIT_CANCEL
-
-
-def safe_output_path(path: Path) -> Path:
-    """Resolve ``--output`` and require a non-symlink path inside the temp dir.
-
-    The installer passes a ``mktemp`` file; anything else (traversal, symlinks,
-    paths outside ``tempfile.gettempdir()``) is rejected.
-    """
-    base = Path(tempfile.gettempdir()).resolve()
-    if path.is_symlink():
-        raise ValueError(f"refusing symlink output path: {path}")
-    resolved = path.resolve()
-    if resolved == base or not resolved.is_relative_to(base):
-        raise ValueError(f"output path must be inside {base}: {path}")
-    return resolved
-
-
-def write_selection(path: Path | None, tags: list[str]) -> None:
-    """Write selected tags one per line."""
-    body = "\n".join(tags)
-    if body:
-        body += "\n"
-    if path is None:
-        sys.stdout.write(body)
-        return
-    # O_NOFOLLOW: a symlink swapped in after validation cannot redirect the write.
-    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | os.O_NOFOLLOW
-    with os.fdopen(os.open(safe_output_path(path), flags, 0o600), "w", encoding="utf-8") as out:
-        out.write(body)
 
 
 def default_title() -> str:

@@ -22,6 +22,7 @@ from asus_install_selection_accent import (
     resolve_accent_rgb,
     rgb_from_env,
 )
+from asus_install_selection_output import safe_output_path, write_selection
 from asus_install_selection_tui import (
     EXIT_CANCEL,
     EXIT_ERROR,
@@ -37,10 +38,8 @@ from asus_install_selection_tui import (
     main,
     parse_args,
     run_scripted,
-    safe_output_path,
     truncate_label,
     wrap_text,
-    write_selection,
 )
 
 from tests.unit.bin.attr_helpers import call_attr
@@ -234,6 +233,21 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
             with race[0], race[1], race[2]:
                 self.assertEqual(call_attr(tui, "_write_selection_status", link, ["WMI"]), EXIT_ERROR)
             self.assertFalse((Path(tmp) / "target").exists())
+            # Same race on a parent directory: the pinned dir walk must not follow it.
+            elsewhere = Path(tmp) / "elsewhere"
+            elsewhere.mkdir()
+            dir_link = Path(tmp) / "dirlink"
+            dir_link.symlink_to(elsewhere)
+            with race[0], race[1], race[2]:
+                self.assertEqual(
+                    call_attr(tui, "_write_selection_status", dir_link / "choice", ["WMI"]),
+                    EXIT_ERROR,
+                )
+            self.assertFalse((elsewhere / "choice").exists())
+            nested = Path(tmp) / "sub"
+            nested.mkdir()
+            write_selection(nested / "choice", ["WMI"])
+            self.assertEqual((nested / "choice").read_text(encoding="utf-8"), "WMI\n")
             inside = Path(tmp) / "choice"
             self.assertEqual(safe_output_path(inside), inside.resolve())
 

@@ -1151,7 +1151,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   under it; keep the dialog header short (keys help only) so four multi-line descriptions
   fit a standard terminal. Text-mode fallback keeps the same detailed msgids. Headless
   tests use `--script-keys` / `ASUS_TUI_SCRIPT_KEYS`. `--output` must resolve inside
-  `tempfile.gettempdir()` and not be a symlink (`safe_output_path`; the installer
+  `tempfile.gettempdir()` and not be a symlink (`safe_output_path` in
+  `bin/asus_install_selection_output.py`; the write walks a pinned temp-dir fd
+  with `O_NOFOLLOW` on every hop; the installer
   passes a `mktemp` file); otherwise the TUI exits `EXIT_ERROR`. Do not add `whiptail`/`libnewt`/`newt`
   as install dependencies.
   `uninstall.sh` removes those packages through the
