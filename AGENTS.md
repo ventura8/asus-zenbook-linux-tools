@@ -101,9 +101,9 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   verification. No Launchpad API token — anonymous FTP + GPG only.
   The `build-packages` matrix job builds non-Debian artifacts in parallel with PPA upload.
   The `upload-to-ppa` and `build-packages` jobs set `permissions: { contents: read }`
-  (least privilege) and `upload-to-ppa` runs in the protected GitHub Environment `ppa-release`
-  (required reviewers,
-  self-approval disabled). Both `upload-to-ppa` and `github-release` use
+  (least privilege) and `upload-to-ppa` runs in the GitHub Environment `ppa-release`
+  (no required reviewers: tag pushes
+  release without a manual approval step). Both `upload-to-ppa` and `github-release` use
   `runs-on: ubuntu-26.04`. Workflow-level `concurrency` uses
   `group: ppa-release` with `cancel-in-progress: false`. Signing uses **repository** secrets
   `GPG_PRIVATE_KEY` / `GPG_PASSPHRASE` (do not move them to environment secrets).
@@ -250,7 +250,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Required GitHub Actions **repository** secrets (same key as Ubuntu-Hello PPA
   uploads; keep at repo scope — do not relocate to the `ppa-release` environment):
   `GPG_PRIVATE_KEY` (ASCII-armored private key) and `GPG_PASSPHRASE`.
-  The `ppa-release` environment is for required-reviewer gating only.
+  The `ppa-release` environment has no protection rules (releases run unattended).
 - Maintainer one-time Launchpad setup: create PPA `asus-zenbook-linux-tools` under
   `ventura8`, enable **Resolute**, ensure the GPG public key is already validated on
   Launchpad. Per release: bump `VERSION`, merge workflow to default branch, push tag

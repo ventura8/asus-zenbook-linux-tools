@@ -324,7 +324,7 @@ Full-DE XFCE builds pinned `xfconf` from source (`_install_xfconf_from_source`).
   (`gpg --passphrase-fd 0`) with a trap-cleaned `sign-code.sh`.
 - Requires **repository** secrets `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` (no
   Launchpad token; do not relocate them to environment secrets). The job may use
-  GitHub Environment `ppa-release` for required-reviewer gating only.
+  GitHub Environment `ppa-release` (no required reviewers; releases run unattended).
 - CI also runs Debian package smoke (`dpkg-buildpackage -b -us -uc`) on push/PR via
   the `package-smoke` matrix's `deb` cell. That smoke must exercise an upgrade path
   (reinstall with planted share `__pycache__` via `apt-get install --reinstall`)
