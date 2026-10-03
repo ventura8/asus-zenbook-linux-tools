@@ -218,8 +218,9 @@ class TestInstallSelectionTuiLogic(unittest.TestCase):
                 status = main(["--script-keys", "\n", "--output", str(outside)])
             self.assertEqual(status, EXIT_ERROR)
             self.assertIn("must be inside", err.getvalue())
+            temp_root = Path(tempfile.gettempdir())
             with self.assertRaises(ValueError):
-                safe_output_path(Path(tempfile.gettempdir()))
+                safe_output_path(temp_root)
             link = Path(tmp) / "link"
             link.symlink_to(Path(tmp) / "target")
             with self.assertRaisesRegex(ValueError, "symlink"):
