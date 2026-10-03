@@ -272,10 +272,11 @@ _fill_pct_by_name() {
 }
 
 _check_scripts_against_pct_map() {
-    # Uses caller-scoped scripts[] and pct_by_name (repo-relative keys).
+    # Args: min_percent script...; uses caller-scoped pct_by_name (repo-relative keys).
     local min_percent="$1"
+    shift
     local shell_cov_fail="" script pct
-    for script in "${scripts[@]}"; do
+    for script in "$@"; do
         pct="${pct_by_name[$script]:-0}"
         if ! _report_script_coverage_line "$script" "$pct" "$min_percent"; then
             shell_cov_fail="$shell_cov_fail $script"
@@ -314,5 +315,9 @@ check_kcov_report_percentages() {
     local -A pct_by_name=()
     _load_product_shell_scripts_for_gate || return $?
     _fill_pct_by_name "$cov_json" "$kcov_root" || return $?
-    _check_scripts_against_pct_map "$min_percent"
+    if [[ "${#pct_by_name[@]}" -eq 0 ]]; then
+        echo "  ✗ kcov report has no per-script coverage rows: $cov_json" >&2
+        return 1
+    fi
+    _check_scripts_against_pct_map "$min_percent" "${scripts[@]}"
 }

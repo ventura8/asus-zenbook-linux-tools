@@ -28,6 +28,16 @@ _parallel_report_done() {
     return $?
 }
 
+_report_untracked_lanes() {
+    # Lanes still pending when wait -n reported an unknown PID (diagnostic only).
+    local -n _ul_names="$1" _ul_logs="$2"
+    local i=0
+    for i in "${!_ul_names[@]}"; do
+        printf '  ? Untracked lane: %s  →  %s\n' "${_ul_names[$i]}" "${_ul_logs[$i]:-}" >&2
+    done
+    return 0
+}
+
 _collect_parallel_results() {
     local -n _pids="$1" _names="$2" _logs="$3"
     # Distinct copy names: local pids/names/logs would shadow nameref targets.
@@ -49,6 +59,7 @@ _collect_parallel_results() {
             return 1
         fi
         if [[ "$report_status" -eq 2 ]]; then
+            _report_untracked_lanes name_copies log_copies
             break
         fi
     done

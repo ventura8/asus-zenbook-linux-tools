@@ -88,6 +88,25 @@ _cleanup_real_e2e_on_signal() {
     cleanup_real_e2e 130
 }
 
+_require_clean_host() {
+    # The EXIT cleanup runs uninstall.sh; on a host with a live install that
+    # would tear down the user's working setup, so refuse before arming it.
+    local dirty=""
+    dirty="$(PYTHONDONTWRITEBYTECODE=1 python3 -c \
+        'from tests.e2e.e2e_utils import host_dirty_paths; print("\n".join(host_dirty_paths()))')" \
+        || return 1
+    if [[ -n "$dirty" ]]; then
+        echo "Refusing to run real-system E2E: host already has an install (cleanup would uninstall it)." >&2
+        sed 's/^/  /' <<< "$dirty" >&2
+        echo "Uninstall first (sudo ./uninstall.sh), then re-run." >&2
+        return 1
+    fi
+    return 0
+}
+
+# set -e exits here when the host is not clean.
+_require_clean_host
+
 trap 'cleanup_real_e2e "$?"' EXIT
 trap '_cleanup_real_e2e_on_signal' INT TERM
 

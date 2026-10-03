@@ -356,7 +356,7 @@ _wait_bg_jobs_fail_fast() {
         code=$?
         set -e
         if [[ -z "$done_pid" ]]; then
-            echo "  ✗ wait -n returned without a completed PID" >&2
+            echo "  ✗ wait -n returned without a completed PID (pending: ${labels[*]})" >&2
             _kill_bg_pids "${pids[@]}"
             return 1
         fi

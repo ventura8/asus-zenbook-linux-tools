@@ -282,12 +282,12 @@ class TestDotTestRunner(unittest.TestCase):
     def test_install_captured_logging_writes_product_records(self):
         """install_captured_logging routes product logs to a file, not stderr."""
         root = logging.getLogger()
-        previous_handlers = list(root.handlers)
         capture_state = get_attr(dot_test_runner, "_CAPTURE_STATE")
-        previous_path = capture_state["path"]
-        previous_handler = capture_state["handler"]
-        previous_handle = logging.Logger.handle
-        try:
+        with (
+            mock.patch.object(logging.Logger, "handle", logging.Logger.handle),
+            mock.patch.object(root, "handlers", list(root.handlers)),
+            mock.patch.dict(capture_state),
+        ):
             with tempfile.TemporaryDirectory() as tmp:
                 log_path = Path(tmp) / "product.log"
                 with mock.patch.dict(os.environ, {"UNIT_TEST_PRODUCT_LOG": str(log_path)}):
@@ -297,13 +297,6 @@ class TestDotTestRunner(unittest.TestCase):
                 text = log_path.read_text(encoding="utf-8")
             self.assertIn("captured-for-debug", text)
             self.assertIn("asus_unit_capture_probe", text)
-        finally:
-            logging.Logger.handle = previous_handle
-            root.handlers.clear()
-            for handler in previous_handlers:
-                root.addHandler(handler)
-            capture_state["path"] = previous_path
-            capture_state["handler"] = previous_handler
 
 
 if __name__ == "__main__":
