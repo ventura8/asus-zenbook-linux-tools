@@ -1,3 +1,13 @@
+asus-zenbook-linux-tools (1.0.10) resolute; urgency=medium
+
+  * Clear the remaining SonarQube Cloud findings (unused nameref locals,
+    tuple shape, manual global patching in a test) and exclude the hyphenated
+    systemd entrypoint symlinks from duplication analysis.
+  * run_real_e2e.sh refuses to run on a host with a live install instead of
+    uninstalling it in its EXIT cleanup.
+
+ -- ventura8 <alexandrescu.sergiu@gmail.com>  Sat, 03 Oct 2026 13:28:02 +0300
+
 asus-zenbook-linux-tools (1.0.9) resolute; urgency=medium
 
   * SonarQube Cloud cleanup of the shell code base (behaviour-preserving):
