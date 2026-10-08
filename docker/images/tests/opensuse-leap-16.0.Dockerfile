@@ -1,4 +1,4 @@
-FROM opensuse/leap:16.0@sha256:f239b4819f4dd322d99509f1b5b14f2107bf23857f9ccd3c14333f0928a2bcc6
+FROM opensuse/leap:16.0@sha256:7f3aeccb6a613c0fc1690d3d3e5eb493fd477ee4587de20640017fc36d72f9b0
 
 # Leap lacks ydotool (unlike Tumbleweed); xdotool covers Display Toggle OSD fallback.
 RUN zypper --non-interactive refresh \
