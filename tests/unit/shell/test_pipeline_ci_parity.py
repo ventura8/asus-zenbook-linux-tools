@@ -113,7 +113,7 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             script,
         )
 
-    def test_fedora_family_images_pin_alsa_utils_nevra_glob(self) -> None:
+    def test_fedora_family_images_pin_exact_alsa_utils(self) -> None:
         """alsa-utils-* only installs alsabat; smoke needs the main alsa-utils RPM."""
         for rel in (
             "docker/images/tests/fedora-44.Dockerfile",
@@ -121,7 +121,7 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             "docker/images/tests/almalinux-10.Dockerfile",
         ):
             text = (self.repo_root / rel).read_text(encoding="utf-8")
-            self.assertRegex(text, r"(?m)^\s*alsa-utils-\[0-9\]\*\s*\\?\s*$", msg=rel)
+            self.assertRegex(text, r"(?m)^\s*alsa-utils-[0-9][0-9.]*\s*\\?\s*$", msg=rel)
             self.assertNotRegex(text, r"(?m)^\s*alsa-utils-\*\s*\\?\s*$", msg=rel)
 
     def test_ci_deb_package_job_calls_shared_smoke_script(self) -> None:
