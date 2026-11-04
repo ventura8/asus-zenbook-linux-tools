@@ -118,6 +118,24 @@ def build_kde_mock_env(
     return env, dest_dir, mock_bin, home_dir
 
 
+# Shared `case "$1"` arms of the xfconf-query stub; callers append the closing arms.
+XFCONF_STUB_CASE_ARMS = (
+    'case "$1" in\n'
+    '  -c)\n'
+    '    case "$3" in\n'
+    "      -p)\n"
+    '        if [ "$5" = "-s" ] || [ "$5" = "--set" ]; then exit 0; fi\n'
+    '        if [ "$5" = "-r" ] || [ "$5" = "--reset" ]; then exit 0; fi\n'
+    '        if [ "$5" = "-n" ] || [ "$5" = "--create" ]; then exit 0; fi\n'
+    '        if [ "$#" -le 4 ]; then echo "mock_val"; exit 0; fi\n'
+    "        ;;\n"
+    "      -l|--list) exit 0 ;;\n"
+    "    esac\n"
+    "    ;;\n"
+    "  --version) echo 'xfconf-query 4.18.0'; exit 0 ;;\n"
+)
+
+
 def build_xfce_mock_env(
     tmp: str,
 ) -> tuple[dict[str, str], Path, Path, Path]:
@@ -127,22 +145,7 @@ def build_xfce_mock_env(
     # xfconf-query stub
     write_executable(
         mock_bin / "xfconf-query",
-        "#!/bin/sh\n"
-        'case "$1" in\n'
-        '  -c)\n'
-        '    case "$3" in\n'
-        "      -p)\n"
-        '        if [ "$5" = "-s" ] || [ "$5" = "--set" ]; then exit 0; fi\n'
-        '        if [ "$5" = "-r" ] || [ "$5" = "--reset" ]; then exit 0; fi\n'
-        '        if [ "$5" = "-n" ] || [ "$5" = "--create" ]; then exit 0; fi\n'
-        '        if [ "$#" -le 4 ]; then echo "mock_val"; exit 0; fi\n'
-        "        ;;\n"
-        "      -l|--list) exit 0 ;;\n"
-        "    esac\n"
-        "    ;;\n"
-        "  --version) echo 'xfconf-query 4.18.0'; exit 0 ;;\n"
-        "esac\n"
-        "exit 0\n",
+        "#!/bin/sh\n" + XFCONF_STUB_CASE_ARMS + "esac\nexit 0\n",
     )
 
     return env, dest_dir, mock_bin, home_dir

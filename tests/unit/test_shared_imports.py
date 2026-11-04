@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 
 import shared_imports
+from tests.shared.failing_module import failing_module_path
 
 
 class SharedImportsTests(unittest.TestCase):
@@ -45,11 +46,8 @@ class SharedImportsTests(unittest.TestCase):
         """Failed exec_module should remove the partial module from sys.modules."""
         module_name = "_shared_imports_failing_load_test"
         sys.modules.pop(module_name, None)
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            bad_module = Path(tmp_dir) / "bad_module.py"
-            bad_module.write_text("raise RuntimeError('boom')\n", encoding="utf-8")
-            with self.assertRaises(RuntimeError):
-                shared_imports.load_module_from_path(module_name, str(bad_module))
+        with failing_module_path() as bad_module, self.assertRaises(RuntimeError):
+            shared_imports.load_module_from_path(module_name, str(bad_module))
         self.assertNotIn(module_name, sys.modules)
 
     def test_load_module_from_path_keeps_successful_module(self):

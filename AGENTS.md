@@ -315,6 +315,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   Examples: `ruff check --fix` (and `ruff format` when formatting is in scope), `markdownlint --fix` when available,
   and any other project-supported autofix. Do not skip autofix and rewrite cleanable issues by hand.
 - **Strict Linting Requirements**:
+  - **Lint driver errexit**: `run_all_lints` and `_run_all_lint_waves` must call the
+    waves bare. `_run_selected_lint_waves || exit 1` disables `set -e` inside every step
+    subshell, so a failing `pylint`/`shellcheck`/`hadolint` still printed its pass line
+    (true from v1.0.0 to v1.0.11, pinned by `tests/unit/shell/test_run_lints_waves.py`).
   - Python: Clean `ruff` and `pylint` (10.00/10 rating required; `step_pylint`
     passes `--fail-under=10` so a 9.98 score fails the gate).
   - Cyclomatic Complexity: `radon cc` **A-rank** maximum (all blocks must score ≤ 5).
@@ -675,7 +679,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `ASUS_COVERAGE_SHARD` / `--kcov-only` / `--python-coverage-only`);
   shards export partial data under `reports/coverage-shards/`, then
   `coverage-merge` runs **on the host** (no Docker image): install
-  `kcov` + `coverage.py`, normalize GHA `coverage-shards-download/`
+  `kcov` + `coverage.py` (version read from the `pyproject.toml` pin, never a
+  second literal, so Dependabot bumps cannot skew shards vs merge), normalize GHA `coverage-shards-download/`
   artifact dirs into `kcov-N`/`python-N`, rewrite Docker `/workspace`
   prefixes in kcov metadata, then one `coverage combine --keep` of
   all `coverage.dat` shards (never raw-`cp` the first shard — that skips
@@ -767,15 +772,14 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `dh_auto_test` does not run product tests.
 - Pin CI base images with `FROM tag@sha256:…` (keep the floating tag for Dependabot)
   including `fedora-44.Dockerfile`, `ubuntu-26.04.Dockerfile`, Leap/Alma/Manjaro.
-  Fedora / Rocky / Alma test image `dnf install` lines use versioned name globs
-  (`pkg-*`) so hadolint DL3041 stays clean; on Fedora 44 pin
-  `python3-3.14*` / `python3-devel-3.14*` (default interpreter is 3.14). Install
-  `systemd-[0-9]*` (not bare `systemd-*`) so `systemd-tests` /
-  `systemd-standalone-*` are not pulled into conflicting requests. Prefer exact
-  `zlib-devel` on Alma/Rocky when `-*` globs miss on EL mirrors.
-  Use `alsa-utils-[0-9]*` (NEVRA), not `alsa-utils-*`: the latter matches only
-  subpackages like `alsa-utils-alsabat` and skips the main `alsa-utils` RPM
-  (Fedora 44 smoke then fails `rpm -q alsa-utils`). Install
+  Fedora / Rocky / Alma test image `dnf install` lines pin exact `name-version`
+  (e.g. `git-2.56.0`, no release, no glob): hadolint DL3041 rejects every trailing
+  `*`, including `pkg-*`, `pkg-[0-9]*` and `pkg-3.14*`. Exact names also stop globs
+  pulling conflicting subpackages (`systemd-tests`, `git-pull-request`). Dependabot
+  does not see these, so when a repo drops a version the image build fails: re-query
+  with `dnf repoquery --latest-limit=1 --qf '%{version}\n' <name>` on the pinned base
+  and bump. EL10 `zlib-devel` is provided by `zlib-ng-compat-devel`; kcov needs
+  explicit `sqlite-devel`. `dnf remove` lists stay bare names. Install
   `gettext-*` (or Debian/Arch `gettext`, openSUSE `gettext-tools`) so `msgfmt` is
   present for WMI locale catalog compile in unit/smoke; DESTDIR unit/e2e helpers
   may stub `msgfmt` for speed. openSUSE
@@ -807,7 +811,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   log names may still include `de_family`. Pin GitHub Actions by full commit SHA with a
   `# vX.Y.Z` comment; keep every
   `uses:` action on a release that declares `runs.using: node24` (currently
-  `actions/upload-artifact@043fb46d…` **v7.0.1**, not v4.6.x Node 20). Same pins
+  `actions/upload-artifact@cf430e03…` **v7.0.2**, not v4.6.x Node 20). Same pins
   in `.github/workflows/ci.yml` and `ppa-release.yml`; bump both together.
   `tests/unit/shell/test_pipeline_ci_parity.py` guards the upload-artifact SHA.
   `_docker_prune_one_oldest_cache` treats successful dir removal as progress even when
@@ -969,8 +973,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   enabled).
   Dockerfile `rocky-10` uses `FROM rockylinux/rockylinux:10@sha256:…` (pinned digest)
   and must not hard-require `ydotool`, `alsa-tools`, or `xdotool`. EL10 `dnf`
-  install lines must use `git-[0-9]*` / `gcc-[0-9]*` / `gcc-c++-[0-9]*` /
-  `systemd-[0-9]*` (not bare `git-*` / `gcc-*` / `gcc-c++-*` / `systemd-*`) so
+  install lines pin exact `name-version` (see the DL3041 note above) so
   cross-toolchains and git addons are not pulled. Do **not** rely
   on platform `python3-gobject` for CI `python3.13`: poetry installs
   `evdev` into the 3.13 venv, then `pip install 'PyGObject>=3.42,<3.52'` (pin below
@@ -981,12 +984,10 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `cairo-gobject-devel`; keep `python3.13-devel` and `dbus-devel`), then smoke
   `kcov --version` fail-closed before/after stripping build deps and before
   `dnf clean all` (`kcov --help` exits 1 even when kcov works). AlmaLinux 10 mirrors that
-  PyGObject pin; prefer exact `zlib-devel` (not `-*` globs that miss on current
+  PyGObject pin; pin `zlib-ng-compat-devel` (not `-*` globs that miss on current
   EL10 mirrors). kcov on Rocky/Alma needs `libcurl-devel` at the installed
   libcurl NEVRA (`el10-kcov-libcurl.sh`; `--nobest` fallback — not latest
-  AppStream devel). Fedora test images use `git-[0-9]*` (not `git-*`) —
-  so hadolint DL3041 stays happy without pulling `git-extras` /
-  `git-pull-request`, which conflict on `/usr/bin/git-pull-request`.
+  AppStream devel).
   `debian-trixie` pins `FROM debian:trixie@sha256:…` (tag kept for Dependabot).
   Package install/remove must use
   `bash -c` (not `bash -lc`) so test PATH stubs are not wiped by login profiles.

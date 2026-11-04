@@ -131,12 +131,12 @@ _run_kinds_wait_one() {
 }
 
 _run_kinds_kill_remaining() {
-    local -n _rk_pids="$1"
+    local -n _rkr_pids="$1"
     local i=0
     local -a remaining=()
-    for i in "${!_rk_pids[@]}"; do
-        if kill -0 "${_rk_pids[$i]}" 2>/dev/null; then
-            remaining+=("${_rk_pids[$i]}")
+    for i in "${!_rkr_pids[@]}"; do
+        if kill -0 "${_rkr_pids[$i]}" 2>/dev/null; then
+            remaining+=("${_rkr_pids[$i]}")
         fi
     done
     if [[ "${#remaining[@]}" -gt 0 ]]; then
