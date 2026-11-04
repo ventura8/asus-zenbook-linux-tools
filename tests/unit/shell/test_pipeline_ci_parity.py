@@ -332,7 +332,7 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
 
     def test_ci_actions_pin_node24_upload_artifact(self) -> None:
         """upload-artifact must be Node 24 (v7+) — v4.6.2 forces Node 20 warnings."""
-        approved = "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+        approved = "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9"
         for rel in (".github/workflows/ci.yml", ".github/workflows/ppa-release.yml"):
             text = (self.repo_root / rel).read_text(encoding="utf-8")
             uses = [
@@ -343,7 +343,7 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
             self.assertTrue(uses, msg=rel)
             for line in uses:
                 self.assertIn(approved, line, msg=f"{rel}: {line}")
-                self.assertIn("# v7.0.1", line, msg=f"{rel}: {line}")
+                self.assertIn("# v7.0.2", line, msg=f"{rel}: {line}")
             self.assertNotIn(
                 "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
                 text,

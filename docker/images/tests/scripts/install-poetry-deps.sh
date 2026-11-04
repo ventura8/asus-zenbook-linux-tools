@@ -7,8 +7,8 @@ DEPS_DIR="${DEPS_DIR:-/opt/asus-zenbook-deps}"
 
 "$PYTHON_BIN" -m venv /opt/poetry-venv
 /opt/poetry-venv/bin/pip install --no-cache-dir --root-user-action=ignore \
-    --upgrade pip==26.0.1 setuptools==82.0.1 wheel==0.47.0
-/opt/poetry-venv/bin/pip install --no-cache-dir --root-user-action=ignore poetry==2.4.1
+    --upgrade pip==26.3 setuptools==84.2.1 wheel==0.48.0
+/opt/poetry-venv/bin/pip install --no-cache-dir --root-user-action=ignore poetry==2.5.1
 
 export PATH="/opt/poetry-venv/bin:${PATH}"
 export POETRY_VIRTUALENVS_IN_PROJECT=true
