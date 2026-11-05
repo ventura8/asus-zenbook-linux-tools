@@ -187,6 +187,7 @@ Release progress:
 - [ ] Install sections document `sha256sum -c SHA256SUMS` before local asset install (openSUSE:
   `sudo zypper install --allow-unsigned-rpm ./asus-zenbook-linux-tools-*.rpm` after checksum
   verification so dependencies resolve normally—not bare `rpm -Uvh` without deps)
+- [ ] Snap Store: `publish-snap-store` result checked after the tag (red until classic is approved)
 - [ ] AGENTS.md / architecture skill tree updated
 - [ ] Commit title + description amended to match release themes (only when user
   explicitly confirmed amend)

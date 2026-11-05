@@ -100,6 +100,12 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   release asset; openSUSE RPMs use `zypper install --allow-unsigned-rpm` after checksum
   verification. No Launchpad API token — anonymous FTP + GPG only.
   The `build-packages` matrix job builds non-Debian artifacts in parallel with PPA upload.
+  The `publish-snap-store` job uploads the built snap with `snapcraft upload --release=stable`
+  on every tag. It needs repository secret `SNAPCRAFT_STORE_CREDENTIALS` (scoped
+  `snapcraft export-login`), fails visibly when that is missing or the store refuses, and
+  `github-release` does not wait for it. Classic confinement needs store approval per snap
+  (forum `store-requests/classic-confinement`); until granted, uploads stop at manual
+  review and this job stays red. That red is real status: do not add `continue-on-error`.
   The `upload-to-ppa` and `build-packages` jobs set `permissions: { contents: read }`
   (least privilege) and `upload-to-ppa` runs in the GitHub Environment `ppa-release`
   (no required reviewers: tag pushes
