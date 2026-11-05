@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 from tests.e2e.e2e_utils import PROJECT_ROOT, run_e2e_command
-from tests.e2e.mock.mock_de_env import build_xfce_mock_env
+from tests.e2e.mock.mock_de_env import XFCONF_STUB_CASE_ARMS, build_xfce_mock_env
 from tests.e2e.mock.mock_env import write_executable
 
 INSTALL_SCRIPT = os.path.join(PROJECT_ROOT, "install.sh")
@@ -28,22 +28,8 @@ class TestInstallXfceDesktopE2E(unittest.TestCase):
                 mock_bin / "xfconf-query",
                 "#!/bin/sh\n"
                 f'echo "$@" >> "{recorded_calls}"\n'
-                'case "$1" in\n'
-                '  -c)\n'
-                '    case "$3" in\n'
-                "      -p)\n"
-                '        if [ "$5" = "-s" ] || [ "$5" = "--set" ]; then exit 0; fi\n'
-                '        if [ "$5" = "-r" ] || [ "$5" = "--reset" ]; then exit 0; fi\n'
-                '        if [ "$5" = "-n" ] || [ "$5" = "--create" ]; then exit 0; fi\n'
-                '        if [ "$#" -le 4 ]; then echo "mock_val"; exit 0; fi\n'
-                "        ;;\n"
-                "      -l|--list) exit 0 ;;\n"
-                "    esac\n"
-                "    ;;\n"
-                "  --version) echo 'xfconf-query 4.18.0'; exit 0 ;;\n"
-                "  *) exit 1 ;;\n"
-                "esac\n"
-                "exit 1\n",
+                + XFCONF_STUB_CASE_ARMS
+                + "  *) exit 1 ;;\nesac\nexit 1\n",
             )
 
             proc = run_e2e_command(["bash", INSTALL_SCRIPT], env=env, timeout=25)

@@ -302,7 +302,7 @@ hard-fail if those packages are missing; soft-skip only after install when
 Shell/uinput still cannot start. **Not nightly.** SteamOS compatibility is
 covered through the Arch lane and Arch-derivative detection tests.
 Pin workflow `uses:` by commit SHA (`# vX.Y.Z` comment) on Node 24 runtimes
-only (`actions/upload-artifact` **v7.0.1+**, not v4.6.x); keep `ci.yml` and
+only (`actions/upload-artifact` **v7.0.2+**, not v4.6.x); keep `ci.yml` and
 `ppa-release.yml` in sync (`test_ci_actions_pin_node24_upload_artifact`).
 Rocky 10 Full-DE KDE uses `kf6-kconfig` / `kwriteconfig6` (same as Alma 10). Alma/RHEL 10
 Full-DE XFCE builds pinned `xfconf` from source (`_install_xfconf_from_source`).

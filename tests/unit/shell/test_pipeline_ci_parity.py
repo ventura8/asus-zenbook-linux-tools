@@ -113,7 +113,7 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             script,
         )
 
-    def test_fedora_family_images_pin_alsa_utils_nevra_glob(self) -> None:
+    def test_fedora_family_images_pin_exact_alsa_utils(self) -> None:
         """alsa-utils-* only installs alsabat; smoke needs the main alsa-utils RPM."""
         for rel in (
             "docker/images/tests/fedora-44.Dockerfile",
@@ -121,7 +121,7 @@ class TestPipelineCiParityPackaging(unittest.TestCase):
             "docker/images/tests/almalinux-10.Dockerfile",
         ):
             text = (self.repo_root / rel).read_text(encoding="utf-8")
-            self.assertRegex(text, r"(?m)^\s*alsa-utils-\[0-9\]\*\s*\\?\s*$", msg=rel)
+            self.assertRegex(text, r"(?m)^\s*alsa-utils-[0-9][0-9.]*\s*\\?\s*$", msg=rel)
             self.assertNotRegex(text, r"(?m)^\s*alsa-utils-\*\s*\\?\s*$", msg=rel)
 
     def test_ci_deb_package_job_calls_shared_smoke_script(self) -> None:
@@ -332,7 +332,7 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
 
     def test_ci_actions_pin_node24_upload_artifact(self) -> None:
         """upload-artifact must be Node 24 (v7+) — v4.6.2 forces Node 20 warnings."""
-        approved = "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+        approved = "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9"
         for rel in (".github/workflows/ci.yml", ".github/workflows/ppa-release.yml"):
             text = (self.repo_root / rel).read_text(encoding="utf-8")
             uses = [
@@ -343,7 +343,7 @@ class TestPipelineCiParityWorkflow(unittest.TestCase):
             self.assertTrue(uses, msg=rel)
             for line in uses:
                 self.assertIn(approved, line, msg=f"{rel}: {line}")
-                self.assertIn("# v7.0.1", line, msg=f"{rel}: {line}")
+                self.assertIn("# v7.0.2", line, msg=f"{rel}: {line}")
             self.assertNotIn(
                 "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
                 text,

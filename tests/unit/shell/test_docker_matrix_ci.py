@@ -1,5 +1,6 @@
 """CI full-DE wiring and Dockerfile pin tests for the Docker matrix."""
 
+import re
 import shlex
 import tempfile
 import unittest
@@ -126,15 +127,10 @@ class TestDockerMatrixCiAndImages(DockerMatrixFixture):
         self.assertTrue(all("xdotool" not in line for line in rocky_install_lines))
         self.assertIn("rockylinux/rockylinux:10@", rocky)
         self.assertNotIn("rockylinux/rockylinux:9@", rocky)
-        self.assertIn("git-[0-9]*", rocky)
-        self.assertIn("gcc-[0-9]*", rocky)
-        self.assertIn("gcc-c++-[0-9]*", rocky)
-        self.assertIn("binutils-[0-9]*", rocky)
-        self.assertIn("cmake-[0-9]*", rocky)
-        self.assertIn("\n        python3.13 \\\n", rocky)
-        self.assertNotIn("\n        git-* \\\n", rocky)
-        self.assertNotIn("\n        binutils-* \\\n", rocky)
-        self.assertNotIn("\n        python3.13-* \\\n", rocky)
+        for package in ("git", "gcc", "gcc-c++", "binutils", "cmake", "python3.13"):
+            self.assertRegex(rocky, rf"\n        {re.escape(package)}-[0-9][^ *]* \\\n")
+        self.assertNotIn("-* \\\n", rocky)
+        self.assertNotIn("-[0-9]* \\\n", rocky)
         os_detect = (self.repo_root / "lib/install-os-detection.sh").read_text(encoding="utf-8")
         self.assertIn("_should_request_ydotool_deb", os_detect)
         self.assertIn("_should_request_ydotool_rpm", os_detect)

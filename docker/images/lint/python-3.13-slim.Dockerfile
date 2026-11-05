@@ -1,4 +1,4 @@
-FROM python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0
+FROM python:3.13-slim@sha256:ae14d4ce8771606477a81446e7ef429edd6762305fc50c84507c1041fa8285d1
 
 ARG TARGETARCH
 ARG DEBIAN_FRONTEND=noninteractive
@@ -28,7 +28,7 @@ RUN apt-get update \
     && rm -f /tmp/nodesource.asc \
     && apt-get update \
     && apt-get install -y --no-install-recommends nodejs=* \
-    && npm install -g --ignore-scripts npm@12.0.2 markdownlint-cli@0.49.1 \
+    && npm install -g --ignore-scripts npm@12.2.1 markdownlint-cli@0.50.0 \
     && rm -rf /root/.npm \
     && rm -rf /var/lib/apt/lists/* \
     && case "${TARGETARCH}" in \

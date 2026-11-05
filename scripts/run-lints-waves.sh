@@ -43,7 +43,8 @@ _lint_wave_mode() {
 }
 
 _run_all_lint_waves() {
-    _run_lint_wave "cheap-checks" "${LINT_WAVE1_STEPS[@]}" || return 1
+    # No `||` around wave calls: it would disable errexit inside the step subshells.
+    _run_lint_wave "cheap-checks" "${LINT_WAVE1_STEPS[@]}"
     _run_lint_wave "heavy-checks" "${LINT_WAVE2_STEPS[@]}"
     return $?
 }

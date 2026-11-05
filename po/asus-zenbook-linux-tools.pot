@@ -44,7 +44,7 @@ msgstr ""
 msgid "ASUS ZenBook"
 msgstr ""
 
-#: lib/install-selection-tui.sh:8 lib/install-shared.sh:112
+#: lib/install-selection-tui.sh:8 lib/install-shared.sh:122
 #, sh-format
 msgid "ASUS ZenBook Linux Setup %s"
 msgstr ""
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Available components:"
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:103 bin/asus-fan-toggle.sh:106
+#: bin/asus-fan-toggle.sh:107 bin/asus-fan-toggle.sh:110
 msgid "Balanced"
 msgstr ""
 
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Enter component numbers or names, separated by commas."
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:244
+#: bin/asus-fan-toggle.sh:248
 msgid "Fan profile"
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 msgid "GNOME shortcuts configured."
 msgstr ""
 
-#: lib/install-shared.sh:113
+#: lib/install-shared.sh:123
 msgid "Hardware features for your Linux desktop"
 msgstr ""
 
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Installation complete."
 msgstr ""
 
-#: bin/asus_install_selection_tui.py:526
+#: bin/asus_install_selection_tui.py:516
 #, python-format
 msgid "Installing ASUS ZenBook Linux Tools %s."
 msgstr ""
@@ -234,7 +234,7 @@ msgstr ""
 msgid "Main display only"
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:245
+#: bin/asus-fan-toggle.sh:249
 #, sh-format
 msgid "Mode: %s"
 msgstr ""
@@ -253,7 +253,7 @@ msgctxt "ScreenPad backlight state"
 msgid "On"
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:104
+#: bin/asus-fan-toggle.sh:108
 msgid "Performance (Boost)"
 msgstr ""
 
@@ -262,7 +262,7 @@ msgid ""
 "Press Enter to install all recommended components, or enter 'all' or 'none'."
 msgstr ""
 
-#: bin/asus-fan-toggle.sh:105
+#: bin/asus-fan-toggle.sh:109
 msgid "Quiet (Silent)"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "ScreenPad only"
 msgstr ""
 
-#: bin/asus_install_selection_tui.py:528
+#: bin/asus_install_selection_tui.py:518
 #, python-format
 msgid ""
 "Select only the components you use. Unselected services and shortcuts will "

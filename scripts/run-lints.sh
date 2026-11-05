@@ -567,7 +567,9 @@ run_all_lints() {
     echo "$LINT_BANNER_RULE"
     echo "      ASUS ZenBook Linux Tools Linting           "
     echo "$LINT_BANNER_RULE"
-    _run_selected_lint_waves || exit 1
+    # Bare call: `|| exit 1` here would disable errexit inside every step subshell,
+    # so a failing linter without its own `exit 1` would still print its pass line.
+    _run_selected_lint_waves
     _lint_run_registered_cleanups
     trap - EXIT
     echo "$LINT_BANNER_RULE"

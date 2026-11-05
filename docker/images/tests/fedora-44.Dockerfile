@@ -1,42 +1,36 @@
-FROM fedora:44@sha256:43b29f65a41eb9c35e1cd5323e3bdf3b655c2357a9f4f1ff2f9c2798e5045d80
+FROM fedora:44@sha256:15da97ed9aa94dd3d92c3925eb89520f6c80e07ea7ee24cba848d1f8b6912b3e
 
-# Use version globs for hadolint DL3041. Fedora 44 ships Python 3.14 as
-# python3 — pin python3-3.14* / python3-devel-3.14*. Do NOT use systemd-* —
-# it pulls systemd-tests and systemd-standalone-* and conflicts across
-# fedora/updates; constrain to systemd-<digit>… . Use git-[0-9]* (not bare
-# git-*): the broad glob also pulls git-extras and git-pull-request, which
-# conflict on /usr/bin/git-pull-request.
+# Exact name-version pins satisfy hadolint DL3041 (globs do not); bump them when
+# the repos move on. Fedora 44 ships Python 3.14 as python3.
 RUN dnf -y install --setopt=install_weak_deps=False --nodocs \
-    bash-* \
-    python3-3.14* \
-    python3-pip-* \
-    python3-devel-3.14* \
-    gcc-* \
-    git-[0-9]* \
-    curl-* \
-    sudo-* \
-    ca-certificates-* \
-    systemd-[0-9]* \
-    kcov-* \
-    which-* \
-    dbus-daemon-* \
-    dbus-devel-* \
-    pkgconf-pkg-config-* \
-    glib2-* \
-    glib2-devel-* \
-    gsettings-desktop-schemas-* \
-    libnotify-* \
-    python3-evdev-* \
-    python3-gobject-* \
-    gettext-* \
-    # Prefer alsa-utils-[0-9]* (NEVRA) over a trailing-star name glob: the latter
-    # only pulls subpackages such as alsa-utils-alsabat and skips main alsa-utils.
-    alsa-tools-* \
-    alsa-utils-[0-9]* \
-    ydotool-* \
-    xdotool-* \
-    xfconf-* \
-    kf6-kconfig-* \
+    bash-5.3.9 \
+    python3-3.14.10 \
+    python3-pip-26.0.1 \
+    python3-devel-3.14.10 \
+    gcc-16.2.1 \
+    git-2.56.0 \
+    curl-8.18.0 \
+    sudo-1.9.17 \
+    ca-certificates-2026.2.92_v9.0.319 \
+    systemd-259.10 \
+    kcov-43 \
+    which-2.25 \
+    dbus-daemon-1.16.2 \
+    dbus-devel-1.16.2 \
+    pkgconf-pkg-config-2.5.1 \
+    glib2-2.88.4 \
+    glib2-devel-2.88.4 \
+    gsettings-desktop-schemas-50.1 \
+    libnotify-0.8.9 \
+    python3-evdev-1.9.3 \
+    python3-gobject-3.56.3 \
+    gettext-0.26 \
+    alsa-tools-1.2.15 \
+    alsa-utils-1.2.16 \
+    ydotool-1.0.4 \
+    xdotool-3.20211022.1 \
+    xfconf-4.20.0 \
+    kf6-kconfig-6.31.0 \
     && dnf clean all
 
 COPY docker/images/tests/scripts/install-poetry-deps.sh \
