@@ -18,9 +18,9 @@ class TestSnapStorePublishWiring(unittest.TestCase):
         cls.workflow = (repo_root / ".github/workflows/ppa-release.yml").read_text(encoding="utf-8")
         cls.job = cls.workflow[cls.workflow.index("  publish-snap-store:") :]
 
-    def test_job_is_unconditional_and_uses_the_built_snap(self) -> None:
-        """The job has no skip condition and publishes the release build artifact."""
-        self.assertNotIn("if:", self.job.split("steps:", maxsplit=1)[0])
+    def test_job_survives_unrelated_build_failures_and_uses_the_built_snap(self) -> None:
+        """Only a failed PPA upload skips it; it publishes the release build artifact."""
+        self.assertIn("if: ${{ !cancelled() && needs.upload-to-ppa.result == 'success' }}", self.job)
         self.assertIn("needs: [upload-to-ppa, build-packages]", self.job)
         self.assertIn("name: release-pkg-snap", self.job)
 

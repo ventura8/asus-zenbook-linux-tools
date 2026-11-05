@@ -101,7 +101,8 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   verification. No Launchpad API token — anonymous FTP + GPG only.
   The `build-packages` matrix job builds non-Debian artifacts in parallel with PPA upload.
   The `publish-snap-store` job uploads the built snap with `snapcraft upload --release=stable`
-  on every tag. It needs repository secret `SNAPCRAFT_STORE_CREDENTIALS` (scoped
+  on every tag where the PPA upload succeeded (an unrelated `build-packages` leg failing
+  does not skip it). It needs repository secret `SNAPCRAFT_STORE_CREDENTIALS` (scoped
   `snapcraft export-login`), fails visibly when that is missing or the store refuses, and
   `github-release` does not wait for it. Classic confinement needs store approval per snap
   (forum `store-requests/classic-confinement`); until granted, uploads stop at manual

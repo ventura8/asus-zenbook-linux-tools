@@ -16,9 +16,9 @@ RUN chmod +x /tmp/el10-kcov-libcurl.sh \
     && dnf config-manager --set-enabled crb \
     && dnf -y install \
         bash-5.2.26 \
-        python3.13-3.13.16 \
+        python3.13-3.13.18 \
         python3.13-pip-25.1.1 \
-        python3.13-devel-3.13.16 \
+        python3.13-devel-3.13.18 \
         gcc-14.3.1 \
         gcc-c++-14.3.1 \
         make-4.4.1 \

@@ -415,9 +415,11 @@ jobs:
           prerelease: false
 
   # Store publish is independent of github-release: a rejected store upload must
-  # go red without withholding the PPA or the GitHub Release assets. It never
-  # skips: missing credentials or a store refusal fail this job visibly.
+  # go red without withholding the PPA or the GitHub Release assets. Only a failed
+  # PPA upload skips it, not an unrelated build-packages leg; a failed snap leg,
+  # missing credentials or a store refusal fail this job visibly.
   publish-snap-store:
+    if: ${{ !cancelled() && needs.upload-to-ppa.result == 'success' }}
     runs-on: ubuntu-24.04
     needs: [upload-to-ppa, build-packages]
     timeout-minutes: 20
@@ -446,9 +448,10 @@ jobs:
           sudo snap install snapcraft --classic
 
       - name: Upload snap and release to the stable channel
+        env:
+          VERSION: ${{ needs.upload-to-ppa.outputs.version }}
         run: |
           set -euo pipefail
-          VERSION="${{ needs.upload-to-ppa.outputs.version }}"
           if [ -z "$VERSION" ]; then
             echo "Missing validated VERSION from upload-to-ppa job output" >&2
             exit 1
