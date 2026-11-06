@@ -12,6 +12,7 @@ contact: https://github.com/ventura8/asus-zenbook-linux-tools/issues
 issues: https://github.com/ventura8/asus-zenbook-linux-tools/issues
 source-code: https://github.com/ventura8/asus-zenbook-linux-tools
 website: https://github.com/ventura8/asus-zenbook-linux-tools
+icon: assets/icons/asus-screenpad-toggle-symbolic.svg
 grade: stable
 confinement: classic
 platforms:

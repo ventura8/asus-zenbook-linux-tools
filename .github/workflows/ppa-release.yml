@@ -413,3 +413,53 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: false
+
+  # Store publish is independent of github-release: a rejected store upload must
+  # go red without withholding the PPA or the GitHub Release assets. Only a failed
+  # PPA upload skips it, not an unrelated build-packages leg; a failed snap leg,
+  # missing credentials or a store refusal fail this job visibly.
+  publish-snap-store:
+    if: ${{ !cancelled() && needs.upload-to-ppa.result == 'success' }}
+    runs-on: ubuntu-24.04
+    needs: [upload-to-ppa, build-packages]
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+    steps:
+      - name: Require Snap Store credentials
+        run: |
+          set -euo pipefail
+          if [ -z "$SNAPCRAFT_STORE_CREDENTIALS" ]; then
+            echo "SNAPCRAFT_STORE_CREDENTIALS repository secret is not set" >&2
+            exit 1
+          fi
+
+      - name: Download snap release artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: release-pkg-snap
+          path: snap-artifact
+
+      - name: Install snapcraft
+        run: |
+          set -euo pipefail
+          sudo snap install snapcraft --classic
+
+      - name: Upload snap and release to the stable channel
+        env:
+          VERSION: ${{ needs.upload-to-ppa.outputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -z "$VERSION" ]; then
+            echo "Missing validated VERSION from upload-to-ppa job output" >&2
+            exit 1
+          fi
+          shopt -s nullglob
+          snaps=(snap-artifact/asus-zenbook-linux-tools_"${VERSION}"_*.snap)
+          if [ "${#snaps[@]}" -ne 1 ]; then
+            echo "Expected exactly one snap for ${VERSION}, found ${#snaps[@]}" >&2
+            exit 1
+          fi
+          snapcraft upload --release=stable "${snaps[0]}"
