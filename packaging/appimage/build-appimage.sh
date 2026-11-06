@@ -91,7 +91,7 @@ chmod +x "${APP_DIR}/AppRun"
 
 cp "${REPO_ROOT}/packaging/appimage/org.github.ventura8.AsusZenBookLinuxTools.desktop" \
     "${APP_DIR}/org.github.ventura8.AsusZenBookLinuxTools.desktop"
-cp "${REPO_ROOT}/assets/icons/asus-screenpad-toggle-symbolic.svg" \
+cp "${REPO_ROOT}/assets/icons/asus-zenbook-linux-tools.svg" \
     "${APP_DIR}/asus-zenbook-linux-tools.svg"
 ln -sf asus-zenbook-linux-tools.svg "${APP_DIR}/.DirIcon"
 mkdir -p "${APP_DIR}/usr/share/applications" "${APP_DIR}/usr/share/metainfo"
