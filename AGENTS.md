@@ -152,7 +152,11 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   metainfo stock icon must match the app id
   (`org.github.ventura8.AsusZenBookLinuxTools`); AppImage installs
   `usr/share/metainfo/<app-id>.appdata.xml` (appimagetool's expected name) so
-  AppStream validation succeeds. RPM `%files` lists `/usr/share/asus-zenbook-linux-tools/`
+  AppStream validation succeeds. **App icon:** `assets/icons/asus-zenbook-linux-tools.svg`
+  (original artwork, no vendor logos or trademarks) is the Snap `icon:` key (`meta/gui/`),
+  the Flatpak app-id icon, and the AppImage `Icon=` file. `asus-*-symbolic.svg` glyphs are
+  runtime notification assets only: do not use them for store or launcher icons
+  (`tests/unit/shell/test_packaging_app_icon.py`). RPM `%files` lists `/usr/share/asus-zenbook-linux-tools/`
   once (no redundant `%dir`) and keeps a dated `%changelog` entry. Snapcraft
   declares `title`/`license`/`contact`/`issues`/`source-code`/`website`.
   **Arch staging:** [`packaging/stage-payload.sh`](packaging/stage-payload.sh)

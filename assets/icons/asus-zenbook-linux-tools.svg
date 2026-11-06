@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!--
+    Application icon (store listing, launcher): an original drawing of a generic
+    dual-screen laptop with a shell prompt. Holds no vendor logo or trademark.
+    Not a *-symbolic notification glyph, so themes must not recolor it.
+  -->
+  <title>ASUS ZenBook Linux Tools</title>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F7FE0"/>
+      <stop offset="1" stop-color="#1656AE"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#tile)"/>
+  <rect x="42" y="44" width="172" height="114" rx="12" fill="#F4F7FB"/>
+  <rect x="52" y="54" width="152" height="94" rx="5" fill="#10233F"/>
+  <g fill="none" stroke="#5EEAD4" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M74 78 L100 101 L74 124"/>
+    <path d="M116 124 H154"/>
+  </g>
+  <path d="M42 166 H214 L232 200 H24 Z" fill="#F4F7FB" stroke="#F4F7FB" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M58 170 H198 L208 190 H48 Z" fill="#F59E0B" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/>
+</svg>
