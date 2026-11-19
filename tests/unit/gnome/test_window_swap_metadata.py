@@ -13,6 +13,8 @@ _METADATA = (
     / "asus-window-swap@ventura8.github.com"
     / "metadata.json"
 )
+_REQUIRED_FLOOR = 45
+_REQUIRED_CEILING = 51
 
 
 class TestWindowSwapShellVersions(unittest.TestCase):
@@ -23,10 +25,29 @@ class TestWindowSwapShellVersions(unittest.TestCase):
         payload = json.loads(_METADATA.read_text(encoding="utf-8"))
         versions = payload.get("shell-version")
         self.assertIsInstance(versions, list)
-        self.assertIn("51", versions)
-        # Keep the historical ESM/LTS range so older installs still validate.
-        for major in ("45", "46", "47", "48", "49", "50"):
-            self.assertIn(major, versions)
+        self.assertTrue(versions, "shell-version must not be empty")
+
+        numeric: list[int] = []
+        for entry in versions:
+            self.assertIsInstance(entry, str)
+            self.assertRegex(entry, r"^[0-9]+$")
+            numeric.append(int(entry))
+
+        # Pin the Ubuntu 26.10 floor/ceiling so dropping 51 (or 45–50) fails closed.
+        for major in range(_REQUIRED_FLOOR, _REQUIRED_CEILING + 1):
+            self.assertIn(str(major), versions)
+
+        newest = max(numeric)
+        oldest = min(numeric)
+        self.assertEqual(oldest, _REQUIRED_FLOOR)
+        self.assertGreaterEqual(newest, _REQUIRED_CEILING)
+        # Contiguous from oldest through newest declared major (no 45…51,53 gaps).
+        for major in range(oldest, newest + 1):
+            self.assertIn(
+                str(major),
+                versions,
+                f"shell-version gap: missing {major} between {oldest} and {newest}",
+            )
 
 
 if __name__ == "__main__":
