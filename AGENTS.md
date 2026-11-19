@@ -6,7 +6,7 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.11`, displayed as `v1.0.11`). After bumping `VERSION`, run
+  (currently `1.0.12`, displayed as `v1.0.12`). After bumping `VERSION`, run
   `scripts/sync_poetry_version.sh` (also invoked from `step_version_sync` and
   `install-poetry-deps.sh`) so `pyproject.toml` `tool.poetry.version` matches; do not hand-edit
   the poetry version. PKGBUILD, RPM `%version`, and Snap `adopt-info` read `VERSION` at build time
@@ -1383,9 +1383,15 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   live Wayland session (`ReloadExtension` is unimplemented; that drops ShowOsd
   until logout). Extension `disable()` must always `unexport()` even when
   `flush()` throws (null `_dbus` without unexport leaves `/AsusWindowSwap` stuck).
-  Newly installed extensions are not loaded by a live Wayland Shell until
-  logout/login; install must not claim the D-Bus API is live until then—chord
-  fallback remains until one logout.
+  `metadata.json` `shell-version` must list every supported Shell major as a
+  string (GNOME 40+); omit a major (e.g. `"51"` on Ubuntu 26.10 / GNOME 51) and
+  Shell refuses to load the extension with version validation on — Window Swap
+  and ScreenPad `ShowOsd` go dark until the catalog is updated. Keep the range
+  contiguous from the oldest supported major through the newest validated host
+  (currently `"45"`…`"51"`; gated by
+  `tests/unit/gnome/test_window_swap_metadata.py`). Newly installed extensions
+  are not loaded by a live Wayland Shell until logout/login; install must not
+  claim the D-Bus API is live until then—chord fallback remains until one logout.
   Uninstall strips the UUID from `enabled-extensions` on the session bus before
   deleting the extension directory.
 - **Session env (`lib/asus-session.sh`)**: Resolve `DISPLAY` /
