@@ -19,8 +19,8 @@ RUN chmod +x /tmp/el10-kcov-libcurl.sh \
         python3.13-3.13.18 \
         python3.13-pip-25.1.1 \
         python3.13-devel-3.13.18 \
-        gcc-14.3.1 \
-        gcc-c++-14.3.1 \
+        gcc-14.4.1 \
+        gcc-c++-14.4.1 \
         make-4.4.1 \
         cmake-3.31.8 \
         sudo-1.9.17 \
@@ -28,12 +28,12 @@ RUN chmod +x /tmp/el10-kcov-libcurl.sh \
         systemd-257 \
         binutils-2.41 \
         binutils-devel-2.41 \
-        elfutils-devel-0.194 \
-        elfutils-libelf-devel-0.194 \
+        elfutils-devel-0.195 \
+        elfutils-libelf-devel-0.195 \
         sqlite-3.46.1 \
         sqlite-devel-3.46.1 \
         zlib-ng-compat-devel-2.2.3 \
-        openssl-devel-3.5.8 \
+        openssl-devel-3.5.9 \
         which-2.21 \
         git-2.52.0 \
         dbus-daemon-1.14.10 \
@@ -47,7 +47,7 @@ RUN chmod +x /tmp/el10-kcov-libcurl.sh \
         gobject-introspection-devel-1.79.1 \
         cairo-gobject-1.18.2 \
         cairo-gobject-devel-1.18.2 \
-        alsa-utils-1.2.15.2 \
+        alsa-utils-1.2.16 \
     && /tmp/el10-kcov-libcurl.sh \
     && rm -f /tmp/el10-kcov-libcurl.sh \
     && curl -fL --proto '=https' --tlsv1.2 --retry 8 --retry-all-errors --retry-delay 2 \

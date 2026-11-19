@@ -8,7 +8,7 @@ RUN dnf -y install --setopt=install_weak_deps=False --nodocs \
     python3-pip-26.0.1 \
     python3-devel-3.14.10 \
     gcc-16.2.1 \
-    git-2.56.0 \
+    git-2.56.1 \
     curl-8.18.0 \
     sudo-1.9.17 \
     ca-certificates-2026.2.92_v9.0.319 \
@@ -30,7 +30,7 @@ RUN dnf -y install --setopt=install_weak_deps=False --nodocs \
     ydotool-1.0.4 \
     xdotool-3.20211022.1 \
     xfconf-4.20.0 \
-    kf6-kconfig-6.31.0 \
+    kf6-kconfig-6.32.0 \
     && dnf clean all
 
 COPY docker/images/tests/scripts/install-poetry-deps.sh \

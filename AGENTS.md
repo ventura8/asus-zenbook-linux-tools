@@ -790,7 +790,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Pin CI base images with `FROM tag@sha256:…` (keep the floating tag for Dependabot)
   including `fedora-44.Dockerfile`, `ubuntu-26.04.Dockerfile`, Leap/Alma/Manjaro.
   Fedora / Rocky / Alma test image `dnf install` lines pin exact `name-version`
-  (e.g. `git-2.56.0`, no release, no glob): hadolint DL3041 rejects every trailing
+  (e.g. `git-2.56.1`, no release, no glob): hadolint DL3041 rejects every trailing
   `*`, including `pkg-*`, `pkg-[0-9]*` and `pkg-3.14*`. Exact names also stop globs
   pulling conflicting subpackages (`systemd-tests`, `git-pull-request`). Dependabot
   does not see these, so when a repo drops a version the image build fails: re-query
