@@ -3,6 +3,8 @@ asus-zenbook-linux-tools (1.0.12) resolute; urgency=medium
   * GNOME Window Swap metadata declares Shell 51 so Ubuntu 26.10 / GNOME 51
     loads asus-window-swap (MoveFocused / ShowOsd) after OS upgrades.
   * Unit test gates contiguous shell-version majors through 51.
+  * PPA upload matrix publishes to resolute and stonking so Ubuntu 26.10
+    add-apt-repository no longer points at an empty suite.
 
  -- ventura8 <alexandrescu.sergiu@gmail.com>  Thu, 19 Nov 2026 14:20:00 +0200
 

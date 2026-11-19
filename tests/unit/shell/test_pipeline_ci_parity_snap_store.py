@@ -40,6 +40,13 @@ class TestSnapStorePublishWiring(unittest.TestCase):
         release_job = workflow_section(self.workflow, "  github-release:", "  publish-snap-store:")
         self.assertIn("needs: [upload-to-ppa, build-packages]", release_job)
 
+    def test_ppa_upload_covers_resolute_and_stonking(self) -> None:
+        """Ubuntu 26.04 and 26.10 both need a published PPA suite."""
+        upload = workflow_section(self.workflow, "  upload-to-ppa:", "  build-packages:")
+        self.assertIn("distro: [resolute, stonking]", upload)
+        self.assertIn("ppa-distro-logs-${{ matrix.distro }}", upload)
+        self.assertIn("fail-fast: false", upload)
+
 
 if __name__ == "__main__":
     unittest.main()

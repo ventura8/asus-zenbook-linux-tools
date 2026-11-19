@@ -73,15 +73,20 @@ npm install --prefix="${HOME}/.local" markdownlint-cli@0.49.1 eslint@10.11.0
 # npm ci
 ```
 
-## Ubuntu PPA Install (resolute)
+## Ubuntu PPA Install (resolute + stonking)
 
-Preferred on Ubuntu 26.04 / resolute:
+Preferred on Ubuntu 26.04 / resolute and Ubuntu 26.10 / stonking (after the
+PPA series is enabled and a matching upload has published):
 
 ```bash
 sudo add-apt-repository ppa:ventura8/asus-zenbook-linux-tools && \
   sudo apt update && \
   sudo apt install asus-zenbook-linux-tools
 ```
+
+If `apt update` reports a missing `stonking Release` file, that series is not
+published on the PPA yet — use the checksum-verified checkout installer below
+(or a GitHub Release `.deb`) until the series is enabled and built.
 
 This runs the interactive component wizard. Reconfigure with
 `sudo dpkg-reconfigure asus-zenbook-linux-tools` or

@@ -88,23 +88,29 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - `asus-control-center.sh` opens each desktop's native Settings app (GNOME Settings Activate,
   then family-specific settings CLIs / `.desktop` files). There is no bundled preferences UI.
 
-## Launchpad PPA Release (Ubuntu resolute)
+## Launchpad PPA Release (Ubuntu resolute + stonking)
 
 - Tag push `v*` runs [`.github/workflows/ppa-release.yml`](.github/workflows/ppa-release.yml):
-  GPG-sign a native source package and `dput "$PPA_NAME"` to
-  `ppa:ventura8/asus-zenbook-linux-tools` (**resolute only**; built-in `ppa:` target,
-  no custom `~/.dput.cf`), then attach **multi-format release artifacts** to the
-  GitHub Release (`.deb`, Fedora/Rocky/openSUSE `.rpm`, Arch `.pkg.tar.zst`,
+  GPG-sign a native source package per `upload-to-ppa` matrix cell and `dput "$PPA_NAME"`
+  to `ppa:ventura8/asus-zenbook-linux-tools` (**resolute** and **stonking**; built-in
+  `ppa:` target, no custom `~/.dput.cf`), then attach **multi-format release artifacts**
+  to the GitHub Release (`.deb`, Fedora/Rocky/openSUSE `.rpm`, Arch `.pkg.tar.zst`,
   AppImage, Flatpak bundle, classic Snap, plus **`SHA256SUMS`** manifest). Install docs
   require `grep -F 'asset' SHA256SUMS | sha256sum -c -` before installing a downloaded
   release asset; openSUSE RPMs use `zypper install --allow-unsigned-rpm` after checksum
   verification. No Launchpad API token — anonymous FTP + GPG only.
-  The `build-packages` matrix job builds non-Debian artifacts in parallel with PPA upload.
-  The `publish-snap-store` job uploads the built snap with `snapcraft upload --release=stable`
-  on every tag where the PPA upload succeeded (an unrelated `build-packages` leg failing
-  does not skip it). It needs repository secret `SNAPCRAFT_STORE_CREDENTIALS` (scoped
-  `snapcraft export-login`), fails visibly when that is missing or the store refuses, and
-  `github-release` does not wait for it. Classic confinement needs store approval per snap
+  Before the first upload for a new Ubuntu series, enable that series on the PPA
+  ([+edit](https://launchpad.net/~ventura8/+archive/ubuntu/asus-zenbook-linux-tools/+edit));
+  otherwise `add-apt-repository` on that release creates a Suites entry whose
+  `dists/<series>/Release` 404s and `apt update` fails closed. Artifact log uploads use
+  `ppa-distro-logs-${{ matrix.distro }}` so parallel series cells do not clobber each
+  other. The `build-packages` matrix job builds non-Debian artifacts in parallel with
+  PPA upload. The `publish-snap-store` job uploads the built snap with
+  `snapcraft upload --release=stable` on every tag where the PPA upload succeeded (an
+  unrelated `build-packages` leg failing does not skip it). It needs repository secret
+  `SNAPCRAFT_STORE_CREDENTIALS` (scoped `snapcraft export-login`), fails visibly when
+  that is missing or the store refuses, and `github-release` does not wait for it.
+  Classic confinement needs store approval per snap
   (forum `store-requests/classic-confinement`); until granted, uploads stop at manual
   review and this job stays red. That red is real status: do not add `continue-on-error`.
   The `upload-to-ppa` and `build-packages` jobs set `permissions: { contents: read }`
@@ -116,7 +122,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `GPG_PRIVATE_KEY` / `GPG_PASSPHRASE` (do not move them to environment secrets).
   Before importing the signing key, the job rejects tags whose target commit is
   not an ancestor of the repository default branch. Source version is
-  `${VERSION}+1ppa${PPA_UPLOAD_REVISION}~resolute1` (`PPA_UPLOAD_REVISION` in
+  `${VERSION}+1ppa${PPA_UPLOAD_REVISION}~${distro}1` (`PPA_UPLOAD_REVISION` in
   `ppa-release.yml`; bump when re-uploading the same `VERSION`, reset to `1` on
   a new release).
   Signing uses a short-lived `sign-code.sh` created under a temp directory outside the
