@@ -73,9 +73,10 @@ npm install --prefix="${HOME}/.local" markdownlint-cli@0.49.1 eslint@10.11.0
 # npm ci
 ```
 
-## Ubuntu PPA Install (resolute)
+## Ubuntu PPA Install (resolute + stonking)
 
-Preferred on Ubuntu 26.04 / resolute:
+Preferred on Ubuntu 26.04 / resolute and Ubuntu 26.10 / stonking (after the
+PPA series is enabled and a matching upload has published):
 
 ```bash
 sudo add-apt-repository ppa:ventura8/asus-zenbook-linux-tools && \
@@ -83,13 +84,17 @@ sudo add-apt-repository ppa:ventura8/asus-zenbook-linux-tools && \
   sudo apt install asus-zenbook-linux-tools
 ```
 
+If `apt update` reports a missing `stonking Release` file, that series is not
+published on the PPA yet — use the checksum-verified checkout installer below
+(or a GitHub Release `.deb`) until the series is enabled and built.
+
 This runs the interactive component wizard. Reconfigure with
 `sudo dpkg-reconfigure asus-zenbook-linux-tools` or
 `sudo asus-zenbook-configure`. Tag releases upload via
 `.github/workflows/ppa-release.yml` (secrets `GPG_PRIVATE_KEY`,
 `GPG_PASSPHRASE`). The same workflow also builds RPM, Arch, AppImage, Flatpak,
 and Snap artifacts and attaches them to the GitHub Release (native `.deb` plus
-multi-distro packages). Current notes: [v1.0.11](releases/v1.0.11.md).
+multi-distro packages). Current notes: [v1.0.12](releases/v1.0.12.md).
 
 ## GitHub Release native packages
 
@@ -130,7 +135,7 @@ Use native packages for full systemd and udev integration.
 Human README quick-starts stay interactive. For CI or non-TTY automation only:
 
 ```bash
-TAG=v1.0.11
+TAG=v1.0.12
 git clone --depth 1 --branch "$TAG" \
   https://github.com/ventura8/asus-zenbook-linux-tools.git &&
   cd asus-zenbook-linux-tools &&

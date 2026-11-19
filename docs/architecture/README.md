@@ -63,6 +63,8 @@
 │   └── asus-touchpad-share.py
 ├── gnome/
 │   └── asus-window-swap@ventura8.github.com/
+│       ├── extension.js
+│       └── metadata.json   # shell-version majors through GNOME 51
 ├── lib/
 │   ├── asus-bootstrap.sh
 │   ├── asus-common.sh
@@ -158,6 +160,8 @@
   to `max_brightness`, writes silently (no OSD), and exits 0 with nothing saved.
 - Feedback after a successful ScreenPad write: GNOME extension `ShowOsd`
   (`--dest org.gnome.Shell`, path `/org/gnome/Shell/Extensions/AsusWindowSwap`;
+  `metadata.json` `shell-version` must include the host Shell major — Ubuntu
+  26.10 ships GNOME 51, so omit `"51"` and Shell will not load the extension;
   OSD targets the ScreenPad monitor — `DP-3` / ScreenPad geometry — not the
   primary panel) → Plasma `org.kde.osdService.brightnessChanged` /
   `showProgress` → LXQt Spec `value`-hint notify via `lxqt-notificationd` (no

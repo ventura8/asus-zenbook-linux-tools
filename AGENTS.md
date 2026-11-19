@@ -6,7 +6,7 @@
 features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, and touchpad corner gestures).
 
 - **Version single source of truth**: The release number lives only in the root `VERSION` file
-  (currently `1.0.11`, displayed as `v1.0.11`). After bumping `VERSION`, run
+  (currently `1.0.12`, displayed as `v1.0.12`). After bumping `VERSION`, run
   `scripts/sync_poetry_version.sh` (also invoked from `step_version_sync` and
   `install-poetry-deps.sh`) so `pyproject.toml` `tool.poetry.version` matches; do not hand-edit
   the poetry version. PKGBUILD, RPM `%version`, and Snap `adopt-info` read `VERSION` at build time
@@ -88,23 +88,29 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - `asus-control-center.sh` opens each desktop's native Settings app (GNOME Settings Activate,
   then family-specific settings CLIs / `.desktop` files). There is no bundled preferences UI.
 
-## Launchpad PPA Release (Ubuntu resolute)
+## Launchpad PPA Release (Ubuntu resolute + stonking)
 
 - Tag push `v*` runs [`.github/workflows/ppa-release.yml`](.github/workflows/ppa-release.yml):
-  GPG-sign a native source package and `dput "$PPA_NAME"` to
-  `ppa:ventura8/asus-zenbook-linux-tools` (**resolute only**; built-in `ppa:` target,
-  no custom `~/.dput.cf`), then attach **multi-format release artifacts** to the
-  GitHub Release (`.deb`, Fedora/Rocky/openSUSE `.rpm`, Arch `.pkg.tar.zst`,
+  GPG-sign a native source package per `upload-to-ppa` matrix cell and `dput "$PPA_NAME"`
+  to `ppa:ventura8/asus-zenbook-linux-tools` (**resolute** and **stonking**; built-in
+  `ppa:` target, no custom `~/.dput.cf`), then attach **multi-format release artifacts**
+  to the GitHub Release (`.deb`, Fedora/Rocky/openSUSE `.rpm`, Arch `.pkg.tar.zst`,
   AppImage, Flatpak bundle, classic Snap, plus **`SHA256SUMS`** manifest). Install docs
   require `grep -F 'asset' SHA256SUMS | sha256sum -c -` before installing a downloaded
   release asset; openSUSE RPMs use `zypper install --allow-unsigned-rpm` after checksum
   verification. No Launchpad API token — anonymous FTP + GPG only.
-  The `build-packages` matrix job builds non-Debian artifacts in parallel with PPA upload.
-  The `publish-snap-store` job uploads the built snap with `snapcraft upload --release=stable`
-  on every tag where the PPA upload succeeded (an unrelated `build-packages` leg failing
-  does not skip it). It needs repository secret `SNAPCRAFT_STORE_CREDENTIALS` (scoped
-  `snapcraft export-login`), fails visibly when that is missing or the store refuses, and
-  `github-release` does not wait for it. Classic confinement needs store approval per snap
+  Before the first upload for a new Ubuntu series, enable that series on the PPA
+  ([+edit](https://launchpad.net/~ventura8/+archive/ubuntu/asus-zenbook-linux-tools/+edit));
+  otherwise `add-apt-repository` on that release creates a Suites entry whose
+  `dists/<series>/Release` 404s and `apt update` fails closed. Artifact log uploads use
+  `ppa-distro-logs-${{ matrix.distro }}` so parallel series cells do not clobber each
+  other. The `build-packages` matrix job builds non-Debian artifacts in parallel with
+  PPA upload. The `publish-snap-store` job uploads the built snap with
+  `snapcraft upload --release=stable` on every tag where the PPA upload succeeded (an
+  unrelated `build-packages` leg failing does not skip it). It needs repository secret
+  `SNAPCRAFT_STORE_CREDENTIALS` (scoped `snapcraft export-login`), fails visibly when
+  that is missing or the store refuses, and `github-release` does not wait for it.
+  Classic confinement needs store approval per snap
   (forum `store-requests/classic-confinement`); until granted, uploads stop at manual
   review and this job stays red. That red is real status: do not add `continue-on-error`.
   The `upload-to-ppa` and `build-packages` jobs set `permissions: { contents: read }`
@@ -116,7 +122,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   `GPG_PRIVATE_KEY` / `GPG_PASSPHRASE` (do not move them to environment secrets).
   Before importing the signing key, the job rejects tags whose target commit is
   not an ancestor of the repository default branch. Source version is
-  `${VERSION}+1ppa${PPA_UPLOAD_REVISION}~resolute1` (`PPA_UPLOAD_REVISION` in
+  `${VERSION}+1ppa${PPA_UPLOAD_REVISION}~${distro}1` (`PPA_UPLOAD_REVISION` in
   `ppa-release.yml`; bump when re-uploading the same `VERSION`, reset to `1` on
   a new release).
   Signing uses a short-lived `sign-code.sh` created under a temp directory outside the
@@ -784,7 +790,7 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
 - Pin CI base images with `FROM tag@sha256:…` (keep the floating tag for Dependabot)
   including `fedora-44.Dockerfile`, `ubuntu-26.04.Dockerfile`, Leap/Alma/Manjaro.
   Fedora / Rocky / Alma test image `dnf install` lines pin exact `name-version`
-  (e.g. `git-2.56.0`, no release, no glob): hadolint DL3041 rejects every trailing
+  (e.g. `git-2.56.1`, no release, no glob): hadolint DL3041 rejects every trailing
   `*`, including `pkg-*`, `pkg-[0-9]*` and `pkg-3.14*`. Exact names also stop globs
   pulling conflicting subpackages (`systemd-tests`, `git-pull-request`). Dependabot
   does not see these, so when a repo drops a version the image build fails: re-query
@@ -1383,9 +1389,15 @@ features under Linux (WMI hotkeys, ScreenPad window swapping, audio amp fixes, a
   live Wayland session (`ReloadExtension` is unimplemented; that drops ShowOsd
   until logout). Extension `disable()` must always `unexport()` even when
   `flush()` throws (null `_dbus` without unexport leaves `/AsusWindowSwap` stuck).
-  Newly installed extensions are not loaded by a live Wayland Shell until
-  logout/login; install must not claim the D-Bus API is live until then—chord
-  fallback remains until one logout.
+  `metadata.json` `shell-version` must list every supported Shell major as a
+  string (GNOME 40+); omit a major (e.g. `"51"` on Ubuntu 26.10 / GNOME 51) and
+  Shell refuses to load the extension with version validation on — Window Swap
+  and ScreenPad `ShowOsd` go dark until the catalog is updated. Keep the range
+  contiguous from the oldest supported major through the newest validated host
+  (currently `"45"`…`"51"`; gated by
+  `tests/unit/gnome/test_window_swap_metadata.py`). Newly installed extensions
+  are not loaded by a live Wayland Shell until logout/login; install must not
+  claim the D-Bus API is live until then—chord fallback remains until one logout.
   Uninstall strips the UUID from `enabled-extensions` on the session bus before
   deleting the extension directory.
 - **Session env (`lib/asus-session.sh`)**: Resolve `DISPLAY` /
