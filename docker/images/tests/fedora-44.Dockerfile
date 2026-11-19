@@ -1,4 +1,4 @@
-FROM fedora:44@sha256:15da97ed9aa94dd3d92c3925eb89520f6c80e07ea7ee24cba848d1f8b6912b3e
+FROM fedora:45@sha256:a7d72ba2745b100a3351087472e5ee7b2450af7cf331e7673007e3817612839c
 
 # Exact name-version pins satisfy hadolint DL3041 (globs do not); bump them when
 # the repos move on. Fedora 44 ships Python 3.14 as python3.
