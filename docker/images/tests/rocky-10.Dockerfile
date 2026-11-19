@@ -1,5 +1,5 @@
 # Keep tag rocky:10 / filename rocky-10; pin digest (Dependabot keeps floating :10).
-FROM rockylinux/rockylinux:10@sha256:827d37bc128288ccf160ee318bb3cb92d591164cb217e92f8bc61e3982ae1834
+FROM rockylinux/rockylinux:10@sha256:d24beedc58f79b9e0e9289fedaa4fcbcbe692b1438883a86f177fd7c51053ca8
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG KCOV_VERSION=v43

@@ -1,4 +1,4 @@
-FROM almalinux:10@sha256:5a4b41a427c9717be8f4ac2a32aa22efbae5f9124fbcb79a6765394f312acfe8
+FROM almalinux:10@sha256:ccf217024b3d5e268cc208d1edb384a1edee6359370cf6ea1ecbc42254e57375
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG KCOV_VERSION=v43
