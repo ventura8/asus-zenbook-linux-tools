@@ -2,18 +2,21 @@
 
 [[package]]
 name = "anybadge"
-version = "1.16.0"
+version = "1.18.0"
 description = "Simple, flexible badge generator for project badges."
 optional = false
 python-versions = ">=3.7"
 groups = ["dev"]
 files = [
-    {file = "anybadge-1.16.0-py3-none-any.whl", hash = "sha256:bc9ef2e20d875ee09237a15250a17b6fd7e67276f083d32a297963cdec179918"},
-    {file = "anybadge-1.16.0.tar.gz", hash = "sha256:f4e95eca834482f9932f9020ac2fe04a5ca863728b446324a8d35b1e67faab71"},
+    {file = "anybadge-1.18.0-py3-none-any.whl", hash = "sha256:7924f3dbf355f412aa4bff4e90bf4079787299144408cc71d094c9ab96ab4a26"},
+    {file = "anybadge-1.18.0.tar.gz", hash = "sha256:1f275a1aa14a8d04d1043b420550504eb72d44d222fea78e2a6a0347f8a2e6e3"},
 ]
 
 [package.dependencies]
 packaging = "*"
+
+[package.extras]
+emoji = ["emoji"]
 
 [[package]]
 name = "astroid"
@@ -623,4 +626,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "ruff", "sph
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4"
-content-hash = "c2d322b30b6078042dacaade044df46fca73bc8cef3743af156c1b7b12a14e08"
+content-hash = "b2f2c7bb9f751d5fb9ad0021e75576ed0f59b6dbfdf9c2b5f945c468de016bf3"
