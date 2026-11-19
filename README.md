@@ -76,12 +76,10 @@ via `/run/host` (`--filesystem=host`); native packages are recommended.
 ### One-Liner (any supported distro)
 
 ```bash
-curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.12/install.sh.sha256 \
-  -o install.sh.sha256 &&
-  curl -fsSL \
-  https://raw.githubusercontent.com/ventura8/asus-zenbook-linux-tools/v1.0.12/install.sh \
-  -o install.sh &&
+TAG=v1.0.12 && cd "$(mktemp -d)" &&
+  git clone --depth 1 --branch "$TAG" \
+    https://github.com/ventura8/asus-zenbook-linux-tools.git &&
+  cd asus-zenbook-linux-tools &&
   sha256sum -c install.sh.sha256 &&
   sudo bash ./install.sh
 ```
